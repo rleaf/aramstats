@@ -1,9 +1,12 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+// @ts-ignore
+import Search from '../components/Search.vue'
+
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <!-- <Nav /> -->
+    <Search />
   </main>
 </template>

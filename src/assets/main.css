@@ -1,35 +1,43 @@
-@import './base.css';
+/* @import './base.css'; */
+:root {
+  --light1: #ffffff;
+  --light2: #c4c4c4;
+  --light3: #fff;
+  
+  --dark1: #16192c;
+  --dark2: #434368;
+  --dark3: #000;
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  --test: #484880;
 
-  font-weight: normal;
+  --blue1: #79d2e2;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+:root {
+  --color-background: var(--light1);
+  --color-font: var(--blue1);
+  --color-blue1: var(--blue1);
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--dark1);
   }
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+body {
+  background: var(--color-background);
+  min-height: 100vh;
+  margin: 0;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+h1 {
+   font-weight: normal;
+   font-size: 2rem;
+   color: var(--color-blue1);
 }
