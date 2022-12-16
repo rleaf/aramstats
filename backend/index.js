@@ -7,9 +7,9 @@ const app = express()
 app.use(bodyParser.json())
 app.use(cors())
 
-const tests = require('./routes/api/tests')
+const summoners = require('./routes/api/summoners')
 
-app.use('/api/tests', tests)
+app.use('/api/summoners', summoners)
 
 const port = process.env.PORT || 5000
 

@@ -9,34 +9,53 @@ export default {
       return {
          input: '',
          region: '',
-         pickRegionAlert: false
+         inputAlert: false,
+         alertMessage: String
       }
    },
 
-   props: {
-      // input: String
-   },
-
    methods: {
-      onEnter() {
+      async onEnter() {
          // Put route handling here
-         // Check if region is empty
          // Check if input field is empty
          // Check if summoner exists....etc...
          // Route to according page....etc...
-         if (this.region == '') {
-            this.pickRegionAlert = true
-
+         if (this.region == '' || this.input == '') {
+            this.alertMessage = 'Enter a summoner name and/or region.'
+            this.inputAlert = true
             setTimeout(() => {
-               this.pickRegionAlert = false
-            }, 1000)
-         } else {
-            this.$router.push(`/${this.region.toLowerCase()}/${this.input}`)
+               this.inputAlert = false
+            }, 800)
+
+            return
          }
+         this.$router.push({path: `/${this.region.toLowerCase()}/${this.input}`})
+         // try {
+         //    const user = await this.lookup()
+         //    if(user) {
+         //       this.$router.push(
+         //          {path: `/${this.region.toLowerCase()}/${this.input}`}
+         //       )
+         //       console.log(user)
+         //    }
+         // } catch (err) {
+         //    console.log(err);
+         // }
       },
+
+      // async lookup() {
+      //    const url = 'http://localhost:5000/api/users'
+      //    try {
+      //       const res = await axios.get(url)
+      //       // console.log(res.data)
+      //       return res.data
+      //    } catch (err) {
+      //       console.log(err)
+      //    }
+      // },
+
       regionSelect(region) {
          this.region = region
-         console.log(this.region, 'wee');
       }
    },
 }
@@ -58,8 +77,8 @@ export default {
             />
          </div>
          <Transition name="fade">
-            <div class="region-alert" v-show="pickRegionAlert">
-               Select a region
+            <div class="region-alert" v-show="inputAlert">
+               {{ this.alertMessage }}
             </div>
          </Transition>
    </div>
@@ -111,9 +130,10 @@ button {
 }
 
 .fade-leave-active {
-   transition: opacity 0.5s ease;
+   transition: opacity 0.6s ease;
 }
-.fade-leave-active {
-   transition: opacity 1s;
+
+.fade-leave-to {
+   opacity: 0;
 }
 </style>

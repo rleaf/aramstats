@@ -4,7 +4,9 @@
   --light2: #cfcfcf;
   --light3: #fff;
   
-  --dark1: #16192c;
+  /* --dark1: #16192c; */
+  /* Temporary while working on backend*/
+  --dark1: #525257;
   --dark2: #434368;
   --dark3: #000;
 
