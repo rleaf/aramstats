@@ -29,7 +29,9 @@ export default {
 
             return
          }
-         this.$router.push({path: `/${this.region.toLowerCase()}/${this.input}`})
+
+         const inputURI = encodeURI(this.input)
+         this.$router.push({path: `/${this.region.toLowerCase()}/${inputURI}`})
          // try {
          //    const user = await this.lookup()
          //    if(user) {

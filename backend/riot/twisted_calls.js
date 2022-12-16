@@ -24,24 +24,20 @@ const REGION_GROUPS = {
    oce: RegionGroups.SEA
 }
 
-async function summonerByNameExample(summoner, region) {
-   return await api.Summoner.getByName(summoner, REGION_CONSTANTS[region])
+// Get Summoner info
+async function getSummoner(summoner, region) {
+   return (await api.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
 }
 
-async function summonerTimeline(summoner, region) {
-   const summonerRes = summonerByNameExample(summoner, region)
-   return await api.MatchV5.list(summonerRes.response.puuid, REGION_GROUPS[region], { queue: 450 })
-}
-
+// Get Match history of ARAM games, in 5 count
 async function getMatchHistory(summoner, region) {
    const summonerGet = (await api.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
-   console.log(summonerGet.puuid)
    return (await api.MatchV5.list(summonerGet.puuid, REGION_GROUPS[region], { queue: 450, count: 5 })).response
 }
 
-async function getMatchId() {
-   const match = (await api.MatchV5.get('NA1_4269202593', RegionGroups.AMERICAS)).response
-   console.log('match', match)
+// Get Match Info
+async function getMatchInfo(matchId, region) {
+   return (await api.MatchV5.get(matchId, REGION_GROUPS[region])).response  
 }
 
 
@@ -63,8 +59,7 @@ async function getMatchId() {
 
 
 module.exports = {
-   summonerByNameExample,
-   // matchV5TimelineLatestMatchExample,
+   getSummoner,
    getMatchHistory,
-   getMatchId
+   getMatchInfo
 }

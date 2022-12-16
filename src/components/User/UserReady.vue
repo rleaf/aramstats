@@ -7,11 +7,11 @@ export default {
    },
 
    mounted() {
-      console.log(this.userInfo);
+
    },
 
    props: {
-      userInfo: Array
+      userInfo: Object
    }
 
 }
@@ -19,7 +19,7 @@ export default {
 
 <template>
    <div>
-      {{ this.userInfo[0] }}
+      {{ this.userInfo }}
    </div>
 </template>
 
