@@ -12,10 +12,16 @@ router
    .route('/:region/:summonername')
    .get(async (req, res) => {
       const posts = await loadProfileCollection()
-      const test = twisted.summonerByNameExample(req.params.summonername, req.params.region)
-      test.then((res) => {
-         console.log(res.response)
-      })
+
+      // const test = twisted.getMatchHistory(req.params.summonername, req.params.region)
+      // test.then((res) => {
+      //    console.log(res)
+      // })
+
+      // Hello read this :)
+      // Iteratively pull oldest match to newest match. How does the 'start' query work.
+
+      twisted.getMatchId()
       
       res.send(await posts.find().toArray());
    })

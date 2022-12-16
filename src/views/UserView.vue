@@ -13,7 +13,7 @@ import axios from 'axios'
       data() {
          return {
             userInfo: this.$route.params,
-            // localRes: null,
+            localRes: null,
             userReadyRender: false
          }
       },
@@ -32,7 +32,6 @@ import axios from 'axios'
                const res = await axios.get(url)
                this.localRes = res.data
                this.userReadyRender = true
-               // console.log(this.localRes[0]);
             } catch (err) {
                console.log(err)
             }
