@@ -30,9 +30,14 @@ async function getSummoner(summoner, region) {
 }
 
 // Get Match history of ARAM games, in 5 count
-async function getMatchHistory(summoner, region) {
+async function getSummonerMatches(summoner, region) {
    const summonerGet = (await api.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
-   return (await api.MatchV5.list(summonerGet.puuid, REGION_GROUPS[region], { queue: 450, count: 5 })).response
+   return (await api.MatchV5.list(summonerGet.puuid, REGION_GROUPS[region], { queue: 450, start: 0, count: 5 })).response
+}
+
+async function getAllSummonerMatches(summoner, region, index) {
+   const summonerGet = (await api.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
+   return (await api.MatchV5.list(summonerGet.puuid, REGION_GROUPS[region], { queue: 450, start: index, count: 100 })).response
 }
 
 // Get Match Info
@@ -60,6 +65,7 @@ async function getMatchInfo(matchId, region) {
 
 module.exports = {
    getSummoner,
-   getMatchHistory,
+   getSummonerMatches,
+   getAllSummonerMatches,
    getMatchInfo
 }
