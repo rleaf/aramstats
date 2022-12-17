@@ -29,15 +29,28 @@ async function getSummoner(summoner, region) {
    return (await api.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
 }
 
-// Get Match history of ARAM games, in 5 count
+// Get variable match history of ARAM games. Primarily used for utility.
 async function getSummonerMatches(summoner, region) {
    const summonerGet = (await api.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
    return (await api.MatchV5.list(summonerGet.puuid, REGION_GROUPS[region], { queue: 450, start: 0, count: 5 })).response
 }
 
-async function getAllSummonerMatches(summoner, region, index) {
+// Get total match history of ARAM games
+async function getAllSummonerMatches(summoner, region) {
    const summonerGet = (await api.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
-   return (await api.MatchV5.list(summonerGet.puuid, REGION_GROUPS[region], { queue: 450, start: index, count: 100 })).response
+   let matchList = []
+   let stop = true
+
+   for (let i = 0; stop; i=i+100) {
+      const pull = (await api.MatchV5.list(summonerGet.puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })).response
+
+      matchList.push(pull)
+      if (pull.length == 0) {
+         stop = false
+      }
+   }
+
+   return matchList.flat()
 }
 
 // Get Match Info

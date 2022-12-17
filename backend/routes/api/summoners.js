@@ -24,11 +24,20 @@ router
       if (summoner) {
          // Check if summ is already in database & if summoner isn't, add to database
          // and do initial match pull.
-         summonerCheckInitialMatchPull(client, summoner, req.params.region)
+         await summonerCheckInitialMatchPull(client, summoner, req.params.region)
          
          // Get matches for summoner
 
-
+         // ***************************************
+         // Parse matches
+         for (let i = 0; i <= 2; i++) {
+            let matchId = await client.findOne({ matches: {$indexOfArray: i} })
+            console.log(matchId)
+            const matchStats = await twisted.getMatchInfo(matchId, req.params.region)
+            client.updateOne({'name': summoner.name}, {$set : {'matchInfo': matchStats}})
+         }
+         // ***************************************
+         
          // Send back data
          res.send(await client.find({ name: summoner.name}).toArray())  
       }
@@ -49,27 +58,19 @@ async function summonerCheckInitialMatchPull(client, summoner, region) {
       } else {
          // Add new summoner to database.
          client.insertOne(summoner)
+         
+         // Pull all games
+         const matchList = await twisted.getAllSummonerMatches(summoner.name, region)
+         client.updateOne({'name': summoner.name}, {$set : {'matches': matchList}})
          console.log(`Added ${summoner.name} to database.`)
 
-         // const matchList = await twisted.getSummonerMatches(summoner.name, region)
-         // console.log(matchList)
-
-         // **************************************************
-         // Figure out a way to iteratively pull by 100 matches until end of API
-         // let group
-         // let idx = 0
-         // const matchList = await twisted.getAllSummonerMatches(summoner.name, region, idx)
-         // client.updateOne({'name': summoner.name}, {$set : {'matches': matchList}})
-         // **************************************************
-
-         // client.insertOne(matchList)
       }
 }
 
 // Utility
 async function deleteSummoner(client, summoner) {
    await client.deleteMany({ name: summoner })
-   console.log('deleted');
+   console.log(`Deleted ${summoner.name}`);
 }
 
 module.exports = router

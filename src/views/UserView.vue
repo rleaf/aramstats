@@ -13,7 +13,7 @@ import axios from 'axios'
       data() {
          return {
             userInfo: this.$route.params,
-            localRes: null,
+            summonerInfo: null,
             userReadyRender: false
          }
       },
@@ -27,14 +27,14 @@ import axios from 'axios'
       methods: {
          async lookup() {
             const url = `http://localhost:5000/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
-            
             try {
                const res = await axios.get(url)
-               this.localRes = res.data
+               this.summonerInfo = res.data.shift()
                this.userReadyRender = true
             } catch (err) {
                console.log(err)
             }
+            console.log(document.cookie)
          },
       }
    }
@@ -47,7 +47,7 @@ import axios from 'axios'
          v-if="!userReadyRender"/>
       <UserReady
          v-if="userReadyRender"
-         :userInfo="this.localRes"
+         :userInfo="this.summonerInfo"
          />
    </div>
 </template>
