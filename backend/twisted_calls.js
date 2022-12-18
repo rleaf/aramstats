@@ -1,6 +1,10 @@
 const twisted = require('twisted')
 const { RegionGroups } = require('twisted/dist/constants')
-const api = new twisted.LolApi()
+const api = new twisted.LolApi({
+   debug: {
+      logRatelimits: true
+   }
+})
 
 const REGION_CONSTANTS = {
    na: twisted.Constants.Regions.AMERICA_NORTH,
