@@ -45,14 +45,32 @@ async function getAllSummonerMatches(summoner, region) {
    let matchList = []
    let stop = true
 
-   for (let i = 0; stop; i=i+100) {
-      const pull = (await api.MatchV5.list(summonerGet.puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })).response
 
-      matchList.push(pull)
-      if (pull.length == 0) {
+   // *****************************************
+   // rate limit errors overwritting games. fix pls
+   // *****************************************
+   for (let i = 0; stop; i=i+100) {
+      const pull = await api.MatchV5.list(summonerGet.puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })
+      matchList.push(pull.response)
+
+
+      if (pull.response.length == 0) {
          stop = false
       }
    }
+      
+   // let i = 0
+   // while (stop) {
+   //    const pull = (await api.MatchV5.list(summonerGet.puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })).response
+
+   //    matchList.push(pull)
+   //    if(pull.length == 0) {
+   //       stop = false
+   //    }
+
+   //    i+=100
+   // }
+
 
    return matchList.flat()
 }

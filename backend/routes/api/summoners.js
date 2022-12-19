@@ -17,13 +17,12 @@ router
       // Check summoner existence.
       const summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
          .catch((e) => {
-            console.log('Summoner DNE')
+            console.log('Summoner DNE', e)
             res.send('Summoner DNE')
             return
          })
-      
-      if (summoner) {
          
+      if (summoner) {   
          const result = (await client.collection(summoner.name).find({}).toArray()).shift()
 
          // Check if summoner is in database
@@ -36,7 +35,12 @@ router
          // await client.collection('fri').deleteMany()
 
          // Parse matches
-         await matchParserV2(client, summoner, req.params.region)
+         const hasMatchContainer = (await client.collection(summoner.name).findOne({matchContainer: {$exists: true}}))
+         if (hasMatchContainer == null) {
+            await matchParserV2(client, summoner, req.params.region)
+         } else {
+            console.log(`Account ${summoner.name} already parsed.`)
+         }
 
 
 
@@ -62,6 +66,10 @@ async function summonerCheckInitialMatchPullv2(client, summoner, region) {
    
    // Pull all games
    const matchList = await twisted.getAllSummonerMatches(summoner.name, region)
+      .catch((e) => {
+         console.log('matchList',)
+      })
+
    await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set : {'matchId': matchList}})
    console.log(`Added ${summoner.name} to database.`)
 }
@@ -72,11 +80,11 @@ async function matchParserV2(client, summoner, region) {
 
    let parsedIndex = result.parsedIndex
    const matchLength = result.matchId.length
+   let matchContainer
    
    // Check if existing match containers
    // const huh = (await client.collection(summoner.name).find().sort({ matchEnd: -1 }).limit(1).toArray()).shift()
    const huh = (await client.collection(summoner.name).findOne({ matchEnd: {$exists: true}}))
-   let matchContainer
 
    if (huh == undefined) {
       // Summoner has no recorded parsed matches.
@@ -90,26 +98,61 @@ async function matchParserV2(client, summoner, region) {
       console.log(`Has existing parsed matches`)
       matchContainer = (await client.collection(summoner.name).find().sort({ matchEnd: -1 }).limit(1).toArray()).shift().matchEnd
    }
-
-   // Set to +2 for dev
+   
    console.log(`Starting parse at ${parsedIndex}`)
-   for ( ; parsedIndex < matchLength; parsedIndex++) {
-      console.log(`carrot cake ${parsedIndex}`)
+   while (parsedIndex <= matchLength) {
+      
+      console.log(`Parsed ${parsedIndex} matches`)
+      // if (parsedIndex % 10 == 0) {
+      // }
+      
       const match = await twisted.getMatchInfo(result.matchId[parsedIndex], region)
          .catch((e) => {
-            console.log(e)
+            if (parsedIndex != matchLength) {
+               parsedIndex--                
+               // await client.connection(summoner.name).deleteOne()
+            }
+            console.log(`Got rate limit check, reducing parsedIndex by 1`, e)
          })
-      // console.log(matchContainer)
+
+      await client.collection(summoner.name).updateOne({'matchEnd': matchContainer}, {$push: {'matches': match}})
       
       if (parsedIndex != 0 && parsedIndex % 25 == 0) {
-         matchContainer = await addMatchContainer(client, summoner, parsedIndex, parsedIndex+25)
+         containerExists = await client.collection(summoner.name).findOne({ matchEnd: parsedIndex+25})
+
+         if (containerExists == null) {
+            matchContainer = await addMatchContainer(client, summoner, parsedIndex, parsedIndex+25)
+         }
       }
       
       if (parsedIndex == matchLength) {
+         console.log(`Setting parse to ${parsedIndex}`)
          await client.collection(summoner.name).updateOne({name: summoner.name}, {$set: {'parsedIndex': parsedIndex}})
+         console.log(`I am done :)`)
+         break
       }
-      await client.collection(summoner.name).updateOne({'matchEnd': matchContainer}, {$push: {'matches': match}})
+      
+      parsedIndex++
    }
+
+   // console.log(`Starting parse at ${parsedIndex}`)
+   // for ( ; parsedIndex < matchLength; parsedIndex++) {
+   //    console.log(`carrot cake ${parsedIndex}`)
+   //    const match = await twisted.getMatchInfo(result.matchId[parsedIndex], region)
+   //       .catch((e) => {
+   //          console.log('yuh', e)
+   //       })
+   //    // console.log(matchContainer)
+      
+   //    if (parsedIndex != 0 && parsedIndex % 25 == 0) {
+   //       matchContainer = await addMatchContainer(client, summoner, parsedIndex, parsedIndex+25)
+   //    }
+      
+   //    if (parsedIndex == matchLength - 1) {
+   //       await client.collection(summoner.name).updateOne({name: summoner.name}, {$set: {'parsedIndex': parsedIndex + 1}})
+   //    }
+   //    await client.collection(summoner.name).updateOne({'matchEnd': matchContainer}, {$push: {'matches': match}})
+   // }
 }
 
 async function addMatchContainer(client, summoner, start, end) {
@@ -139,12 +182,6 @@ async function matchParser(client, summoner, region) {
    for (let i = parsedIndex; i < result.matchId.length; i++) {
       console.log(`carrot cake ${i}`)
       const match = await twisted.getMatchInfo(result.matchId[i], region)
-         .catch((e) => {
-            console.log(e)
-            // if {e.status == 429} {
-            //    console.log('rate limit error')
-            // }
-         })
       await client.updateOne({'name': summoner.name}, {$push : {'matchInfo': match}})
       // matchStats.push(match)
    }
