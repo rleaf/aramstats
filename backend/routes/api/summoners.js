@@ -2,7 +2,7 @@ const express = require('express')
 const mongodb = require('mongodb')
 const dotenv = require('dotenv')
 const twisted = require('../../twisted_calls')
-const { compileScript } = require('vue/compiler-sfc')
+// const { compileScript } = require('vue/compiler-sfc')
 
 
 dotenv.config()
@@ -67,17 +67,27 @@ async function summonerCheckInitialMatchPullv2(client, result, summoner, region)
    await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set : {'parsedIndex': 0}})
    
    // Pull all games
+   await matchIdPull(client, summoner, region)
+}
+
+async function matchIdPull(client, summoner, region) {
+   console.log('yee')
    const matchList = await twisted.getAllSummonerMatches(summoner.name, region)
       .catch((e) => {
          console.log('matchList',)
       })
-
+   
    await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set : {'matchId': matchList}})
    console.log(`Added ${summoner.name} to database.`)
+
 }
 
 async function matchParserV2(client, summoner, region) {
    const result = (await client.collection(summoner.name).find({}).toArray()).shift()
+
+   if (result.matchId == undefined) {
+      await matchIdPull(client, summoner, region)
+   }
 
    let parsedIndex = result.parsedIndex
    const matchLength = result.matchId.length
