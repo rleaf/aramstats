@@ -2,7 +2,6 @@ const express = require('express')
 const mongodb = require('mongodb')
 const dotenv = require('dotenv')
 const twisted = require('../../twisted_calls')
-// const { compileScript } = require('vue/compiler-sfc')
 
 
 dotenv.config()
@@ -12,7 +11,6 @@ const router = express.Router()
 router
    .route('/:region/:summonerURI')
    .get(async (req, res) => {
-      const client = await loadSummonerCollection()
 
       // Check summoner existence.
       const summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
@@ -21,13 +19,15 @@ router
             res.send('Summoner DNE')
             return
          })
+
+      const client = await loadSummonerCollection()
+
          
       if (summoner) {   
          const result = (await client.collection(summoner.name).find({}).toArray()).shift()
 
          // Check if summoner is in database
-         
-         await summonerCheckInitialMatchPullv2(client, result, summoner, req.params.region)
+         await summonerCheckInitialMatchPullv2(client, summoner, req.params.region)
 
          // UTIL 
          // await client.collection('fri').deleteMany()
@@ -35,7 +35,7 @@ router
          // Parse matches
          const hasMatchContainer = (await client.collection(summoner.name).findOne({matchContainer: {$exists: true}}))
          if (hasMatchContainer == null) {
-            await matchParserV2(client, summoner, req.params.region)
+            await matchParserV2(client, result, summoner, req.params.region)
          } else {
             console.log(`Account ${summoner.name} already parsed.`)
          }
@@ -45,7 +45,7 @@ router
          // Yeet data
          // res.send(summoner) 
          // res.send(await client.find({ name: summoner.name}).toArray()) 
-         res.send(result) 
+         res.send(result)
       }
 
 
@@ -53,25 +53,28 @@ router
 
 async function loadSummonerCollection() {
    const client = await mongodb.MongoClient.connect(process.env.DB_CONNECTION_STRING)
-   // return client.db('users').collection('summoner')
    return client.db('summoners')
 }
 
-async function summonerCheckInitialMatchPullv2(client, result, summoner, region) {
-   // Add new summoner to database
-   if (result != undefined) {
+async function summonerCheckInitialMatchPullv2(client, summoner, region) {
+
+   parsedIdxExist = await client.collection(summoner.name).findOne({'parsedIndex': {$exists: true}})
+
+   if (parsedIdxExist) {
       return
    }
-
-   await client.collection(summoner.name).insertOne(summoner)
-   await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set : {'parsedIndex': 0}})
    
+   // Add new summoner to database
+   await client.collection(summoner.name).insertOne(summoner)
+
    // Pull all games
    await matchIdPull(client, summoner, region)
+
+   // Finalize summoner creation, add parsedIndex
+   await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set : {'parsedIndex': 0}})
 }
 
 async function matchIdPull(client, summoner, region) {
-   console.log('yee')
    const matchList = await twisted.getAllSummonerMatches(summoner.name, region)
       .catch((e) => {
          console.log('matchList',)
@@ -82,13 +85,12 @@ async function matchIdPull(client, summoner, region) {
 
 }
 
-async function matchParserV2(client, summoner, region) {
-   const result = (await client.collection(summoner.name).find({}).toArray()).shift()
+async function matchParserV2(client, result, summoner, region) {
+   // const result = (await client.collection(summoner.name).find({}).toArray()).shift()
 
    if (result.matchId == undefined) {
       await matchIdPull(client, summoner, region)
    }
-
    let parsedIndex = result.parsedIndex
    const matchLength = result.matchId.length
    
@@ -99,14 +101,15 @@ async function matchParserV2(client, summoner, region) {
    console.log(`Starting parse at ${parsedIndex}`)
    while (parsedIndex <= matchLength) {
       
-      console.log(`Parsed ${parsedIndex + 1} matches`)
+      // console.log(`Parsed ${parsedIndex + 1} matches`)
+      console.log(`${parsedIndex}`)
       
       const match = await twisted.getMatchInfo(result.matchId[parsedIndex], region)
          .catch(async (e) => {
             console.log(e.status)
          })
       
-      if (match != null) {
+      if (match) {
          await client.collection(summoner.name).updateOne({'matchEnd': matchEndIndex}, {$push: {'matches': match}})
          await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set: {'parsedIndex': parsedIndex}})
 

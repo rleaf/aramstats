@@ -20,7 +20,8 @@
     "mongoose": "^6.8.0",
     "twisted": "^1.52.0",
     "vue": "^3.2.45",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "vue3-cookies": "^1.0.6"
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^5.0.1",
