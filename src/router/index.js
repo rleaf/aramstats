@@ -18,7 +18,12 @@ const router = createRouter({
       path: '/:region/:username',
       name: 'user',
       component: () => import('../views/UserView.vue')
-    }
+    },
+    // {
+    //   path: '/:region/username',
+    //   name: 'userCall',
+    //   component: () => import('../components/User/UserCall.vue')
+    // }
   ]
 })
 

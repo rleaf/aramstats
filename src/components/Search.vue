@@ -10,7 +10,8 @@ export default {
          input: '',
          region: '',
          inputAlert: false,
-         alertMessage: String
+         alertMessage: String,
+         callProc: true
       }
    },
 
@@ -30,8 +31,14 @@ export default {
             return
          }
 
-         const inputURI = encodeURI(this.input)
-         this.$router.push({path: `/${this.region.toLowerCase()}/${inputURI}`})
+         // const inputURI = encodeURI(this.input)
+         // this.$router.push({path: `/${this.region.toLowerCase()}/${inputURI}`})
+         this.$router.push({ name: `user`, params: {
+            region: this.region.toLowerCase(),
+            username: encodeURI(this.input),
+         }})
+
+         this.callProc = true
          // try {
          //    const user = await this.lookup()
          //    if(user) {

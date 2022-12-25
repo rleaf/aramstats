@@ -14,19 +14,44 @@ import axios from 'axios'
          return {
             userInfo: this.$route.params,
             summonerInfo: null,
-            userReadyRender: false
+            userReadyRender: false,
+            proc: false,
+            activePull: false
          }
       },
+      beforeRouteEnter(to, from, next) {
+         if (from.name == 'home') {
+            next(x => {
+               x.proc = true
+            })
+         } else {
+            next()
+         }
+      },
+      
       created() {
-         this.lookup()
+         console.log('create', this.proc)
       },
 
       mounted() {
+         console.log('mounted', this.proc)
+         if (this.proc) {
+            this.lookup()
+         }
       },
       
       methods: {
          async lookup() {
             const url = `http://localhost:5000/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
+
+            try {
+               const _activePull = await axios.get(url)
+               console.log('_activepull', _activePull.data.activePull)
+               this.activePull = _activePull
+            } catch (error) {
+               
+            }
+
             try {
                const res = await axios.get(url)
                this.summonerInfo = res.data.shift()
@@ -34,7 +59,6 @@ import axios from 'axios'
             } catch (err) {
                console.log(err)
             }
-            console.log(document.cookie)
          },
       }
    }

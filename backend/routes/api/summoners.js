@@ -15,40 +15,43 @@ router
       // Check summoner existence.
       const summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
          .catch((e) => {
-            console.log('Summoner DNE', e)
+            console.log('Summoner DNE', e.status)
             res.send('Summoner DNE')
             return
          })
 
       const client = await loadSummonerCollection()
 
-         
-      if (summoner) {   
-         const result = (await client.collection(summoner.name).find({}).toArray()).shift()
+      // Check if already pulling
+      
+      // Check if summoner is in database
+      if (summoner) {
 
-         // Check if summoner is in database
+         check = await client.collection(summoner.name).findOne({'activePull': {$exists: true}})
+   
+         if(check && check.activePull == true) {
+            console.log('already pulling')
+            res.send('Already pulling')
+            return 
+         }
+
          await summonerCheckInitialMatchPullv2(client, summoner, req.params.region)
-
+   
          // UTIL 
          // await client.collection('fri').deleteMany()
-
+   
          // Parse matches
          const hasMatchContainer = (await client.collection(summoner.name).findOne({matchContainer: {$exists: true}}))
          if (hasMatchContainer == null) {
-            await matchParserV2(client, result, summoner, req.params.region)
+            await matchParserV2(client, summoner, req.params.region)
          } else {
             console.log(`Account ${summoner.name} already parsed.`)
          }
 
-
-
          // Yeet data
-         // res.send(summoner) 
-         // res.send(await client.find({ name: summoner.name}).toArray()) 
+         result = (await client.collection(summoner.name).find({}).toArray()).shift()
          res.send(result)
       }
-
-
    })
 
 async function loadSummonerCollection() {
@@ -67,11 +70,16 @@ async function summonerCheckInitialMatchPullv2(client, summoner, region) {
    // Add new summoner to database
    await client.collection(summoner.name).insertOne(summoner)
 
+   // Add liveUpdate
+   await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set : {'activePull': true}})
+
    // Pull all games
    await matchIdPull(client, summoner, region)
 
    // Finalize summoner creation, add parsedIndex
    await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set : {'parsedIndex': 0}})
+
+   // return (await client.collection(summoner.name).find({}).toArray()).shift()
 }
 
 async function matchIdPull(client, summoner, region) {
@@ -85,12 +93,13 @@ async function matchIdPull(client, summoner, region) {
 
 }
 
-async function matchParserV2(client, result, summoner, region) {
-   // const result = (await client.collection(summoner.name).find({}).toArray()).shift()
+async function matchParserV2(client, summoner, region) {
+   const result = (await client.collection(summoner.name).find({}).toArray()).shift()
 
-   if (result.matchId == undefined) {
-      await matchIdPull(client, summoner, region)
+   if (result == undefined) {
+      await summonerCheckInitialMatchPullv2(client, summoner, region)
    }
+
    let parsedIndex = result.parsedIndex
    const matchLength = result.matchId.length
    
@@ -125,11 +134,14 @@ async function matchParserV2(client, result, summoner, region) {
 
       if (parsedIndex == matchLength) {
          console.log(`I am done :)`)
+         await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set: {'activePull' : false}})
          break
       }
 
       
    }
+
+   return 
 }
 
 async function removeParse(client, summoner, matchEndIndex) {
