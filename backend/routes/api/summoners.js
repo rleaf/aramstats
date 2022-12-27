@@ -41,29 +41,59 @@ router
          // UTIL 
          // await client.collection('fri').deleteMany()
    
-         // Parse matches
-         const hasMatchContainer = (await client.collection(summoner.name).findOne({matchContainer: {$exists: true}}))
-         if (hasMatchContainer == null) {
-            await matchParserV2(client, summoner, req.params.region)
-         } else {
-            console.log(`Account ${summoner.name} already parsed.`)
-         }
+         // Parse & scribe individual matches
+         await matchParserV2(client, summoner, req.params.region)
 
-         // Stats logic
-         const matchContainer = (await client.collection(summoner.name).find({'matches': {$exists: true}}).toArray())
-         let stats = []
+         // Add total matches per champ
+         const allChamps = await client.collection(summoner.name).find({'championName': {$exists: true}}).toArray()
 
-         const champions = cat.iterateMatchFeed(summoner.puuid, matchContainer)
+         // Parse average stats of all games
+         allChamps.forEach(async x => {
 
-         console.log('wow', champions.length)
+            // Total games & wins
+            // let wr = cat.winRate(x.matches)
+            
+            // // average dmg, healing, dt. dht = dmghealingtank
+            // let dht = cat.combat(x.matches)
+            // dht = dht.map(x => Math.round(x / wr[0]))
+            // // console.log('dht', dht)
+            
+            // let kda = cat.kda(x.matches)
+            // kda = kda.map(x => Math.round(x / wr[0]))
+            // console.log(kda)
 
+            // let gold = cat.gold(x.matches)
+            // gold = gold.map(x => Math.round(x / wr[0]))
 
+            let avg = cat.averages(x.matches).flat()
 
+            // Pushing data
+            await client.collection(summoner.name).updateOne(
+               {'championName': x.championName},
+               {$set: {
+                  'totalGames': avg[0],
+                  'wins': avg[1],
+                  'averageTotalDamageDealt': avg[2],
+                  'averageHealingOnTeammates': avg[3],
+                  'averageTotalDamageTaken': avg[4],
+                  'averageKills': avg[5],
+                  'averageDeaths': avg[6],
+                  'averageAssists': avg[7],
+                  'averageGoldEarned': avg[8],
+                  'totalTripleKills': avg[9],
+                  'totalQuadraKills': avg[10],
+                  'totalPentaKills': avg[11],
+                  }
+               }
+            )
+         })
+         // await totalGames(client, summoner, allChamps)
 
+        
 
          // Yeet data
          result = (await client.collection(summoner.name).find({}).toArray()).shift()
-         res.send(champions)
+         res.send(allChamps)
       }
    })
 
@@ -72,25 +102,39 @@ async function loadSummonerCollection() {
    return client.db('summoners')
 }
 
+// async function totalGames(client, summoner, x) {
+//    x.forEach(y => {
+//       client.collection(summoner.name).insertOne({ totalGames: x.matches.length })
+//    });
+// }
+
 async function summonerCheckInitialMatchPullv2(client, summoner, region) {
 
-   parsedIdxExist = await client.collection(summoner.name).findOne({'parsedIndex': {$exists: true}})
+   parsedIdxExist = await client.collection(summoner.name).findOne(
+      {'parsedIndex': {$exists: true}}
+   )
 
    if (parsedIdxExist) {
       return
    }
    
-   // Live update flag
-   await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set : {'activePull': true}})
-
    // Add new summoner to database
    await client.collection(summoner.name).insertOne(summoner)
+
+   // Live update flag
+   await client.collection(summoner.name).updateOne(
+      {'name': summoner.name},
+      {$set: {'activePull': true}}
+   )
 
    // Pull all games
    await matchIdPull(client, summoner, region)
 
    // Finalize summoner creation, add parsedIndex
-   await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set : {'parsedIndex': 0}})
+   await client.collection(summoner.name).updateOne(
+      {'name': summoner.name},
+      {$set : {'parsedIndex': 0}}
+   )
 
    // return (await client.collection(summoner.name).find({}).toArray()).shift()
 }
@@ -101,58 +145,105 @@ async function matchIdPull(client, summoner, region) {
          console.log('matchList',)
       })
    
-   await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set : {'matchId': matchList}})
+   await client.collection(summoner.name).updateOne(
+      {'name': summoner.name},
+      {$set : {'matchId': matchList}}
+   )
+
    console.log(`Added ${summoner.name} to database.`)
 
 }
 
 async function matchParserV2(client, summoner, region) {
    const result = (await client.collection(summoner.name).find({}).toArray()).shift()
-
+   
    if (result == undefined) {
       await summonerCheckInitialMatchPullv2(client, summoner, region)
    }
 
    let parsedIndex = result.parsedIndex
-   const matchLength = result.matchId.length
+   let matchLength = result.matchId.length
+
+   if (parsedIndex == (matchLength - 1)) {
+      console.log(`Account ${summoner.name} already parsed.`)
+      return
+   }
    
    // Check if existing parses || init matchContainer
-   let matchEndIndex = await parseCheck(client, summoner)
-   
+   // let matchEndIndex = await parseCheck(client, summoner)
    
    console.log(`Starting parse at ${parsedIndex}`)
-   while (parsedIndex <= matchLength) {
+   for ( ; parsedIndex < matchLength; parsedIndex++) {
       
-      // console.log(`Parsed ${parsedIndex + 1} matches`)
       console.log(`${parsedIndex}`)
       
-      const match = await twisted.getMatchInfo(result.matchId[parsedIndex], region)
+      const game = await twisted.getMatchInfo(result.matchId[parsedIndex], region)
          .catch(async (e) => {
             console.log(e.status)
          })
-      
-      if (match) {
-         await client.collection(summoner.name).updateOne({'matchEnd': matchEndIndex}, {$push: {'matches': match}})
-         await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set: {'parsedIndex': parsedIndex}})
+   
+      if (game) {
+         const champions = cat.scribe(summoner.puuid, game)
 
-         if (parsedIndex != 0 && parsedIndex % 25 == 0) {
-            matchEndIndex = await addMatchContainer(client, summoner, parsedIndex, parsedIndex+25)
-         }
+         await createChampionDocument(client, summoner, champions.championName)
 
-         parsedIndex++
-         
+         await client.collection(summoner.name).updateOne(
+            {'championName': champions.championName},
+            {$push: {'matches': champions}}
+         )
+
+         await client.collection(summoner.name).updateOne(
+            {'name': summoner.name},
+            {$set: {'parsedIndex': parsedIndex}}
+         )
+
+         // await client.collection(summoner.name).updateOne(
+         //    {'matchEnd': matchEndIndex},
+         //    {$push: {'matches': champions}}
+         // )
+   
+         // if (parsedIndex != 0 && parsedIndex % 25 == 0) {
+         //    matchEndIndex = await addMatchContainer(client, summoner, parsedIndex, parsedIndex+25)
+         // }
       } else {
          console.log(`Got rate limit check, recycling same game.`)
+         parsedIndex--
       }
+   }
 
-      if (parsedIndex == matchLength) {
-         console.log(`I am done :)`)
-         await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set: {'activePull' : false}})
-         break
-      }
+   console.log(`I am done :)`)
+   await client.collection(summoner.name).updateOne(
+      {'name': summoner.name},
+      {$set: {'activePull' : false}}
+   )
+
+
+   // while (parsedIndex <= matchLength) {
+      
+   //    // console.log(`Parsed ${parsedIndex + 1} matches`)
+      
+   //    // if (match) {
+   //    //    await client.collection(summoner.name).updateOne({'matchEnd': matchEndIndex}, {$push: {'matches': match}})
+   //    //    await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set: {'parsedIndex': parsedIndex}})
+
+   //    //    if (parsedIndex != 0 && parsedIndex % 25 == 0) {
+   //    //       matchEndIndex = await addMatchContainer(client, summoner, parsedIndex, parsedIndex+25)
+   //    //    }
+
+   //    //    parsedIndex++
+         
+   //    // } else {
+   //    //    console.log(`Got rate limit check, recycling same game.`)
+   //    // }
+
+   //    if (parsedIndex == matchLength) {
+   //       console.log(`I am done :)`)
+   //       await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set: {'activePull' : false}})
+   //       break
+   //    }
 
       
-   }
+   // }
 
    return 
 }
@@ -166,6 +257,32 @@ async function removeParse(client, summoner, matchEndIndex) {
    const toad = (await client.collection(summoner.name).find({'matchEnd': matchEndIndex})).toArray()
    console.log('toad', await toad)
    console.log(`Got rate limit check, reducing parsedIndex by 1`)
+}
+
+async function createChampionDocument(client, summoner, champion) {
+
+   const food = await client.collection(summoner.name).findOne({ championName: champion})
+
+   if (food == undefined) {
+      await client.collection(summoner.name).insertOne(
+         { 
+            championName: champion,
+            totalGames: 0,
+            wins: 0,
+            averageTotalDamageDealt: 0,
+            averageHealingOnTeammates: 0,
+            averageTotalDamageTaken: 0,
+            averageKills: 0,
+            averageDeaths: 0,
+            averageAssists: 0,
+            averageGoldEarned: 0,
+            totalTripleKills: 0,
+            totalQuadraKills: 0,
+            totalPentaKills: 0,
+            matches: []
+         }
+      )
+   } 
 }
 
 async function parseCheck(client, summoner) {
