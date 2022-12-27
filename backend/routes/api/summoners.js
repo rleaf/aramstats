@@ -2,6 +2,7 @@ const express = require('express')
 const mongodb = require('mongodb')
 const dotenv = require('dotenv')
 const twisted = require('../../twisted_calls')
+const cat = require('../../cat')
 
 
 dotenv.config()
@@ -48,9 +49,21 @@ router
             console.log(`Account ${summoner.name} already parsed.`)
          }
 
+         // Stats logic
+         const matchContainer = (await client.collection(summoner.name).find({'matches': {$exists: true}}).toArray())
+         let stats = []
+
+         const champions = cat.iterateMatchFeed(summoner.puuid, matchContainer)
+
+         console.log('wow', champions.length)
+
+
+
+
+
          // Yeet data
          result = (await client.collection(summoner.name).find({}).toArray()).shift()
-         res.send(result)
+         res.send(champions)
       }
    })
 
@@ -67,11 +80,11 @@ async function summonerCheckInitialMatchPullv2(client, summoner, region) {
       return
    }
    
+   // Live update flag
+   await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set : {'activePull': true}})
+
    // Add new summoner to database
    await client.collection(summoner.name).insertOne(summoner)
-
-   // Add liveUpdate
-   await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set : {'activePull': true}})
 
    // Pull all games
    await matchIdPull(client, summoner, region)
