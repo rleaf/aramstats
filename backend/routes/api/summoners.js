@@ -32,7 +32,8 @@ router
    
          if(check && check.activePull == true) {
             console.log('already pulling')
-            res.send('Already pulling')
+            res.write('Already pulling')
+            // res.send('Already pulling')
             return 
          }
 
@@ -50,21 +51,6 @@ router
          // Parse average stats of all games
          allChamps.forEach(async x => {
 
-            // Total games & wins
-            // let wr = cat.winRate(x.matches)
-            
-            // // average dmg, healing, dt. dht = dmghealingtank
-            // let dht = cat.combat(x.matches)
-            // dht = dht.map(x => Math.round(x / wr[0]))
-            // // console.log('dht', dht)
-            
-            // let kda = cat.kda(x.matches)
-            // kda = kda.map(x => Math.round(x / wr[0]))
-            // console.log(kda)
-
-            // let gold = cat.gold(x.matches)
-            // gold = gold.map(x => Math.round(x / wr[0]))
-
             let avg = cat.averages(x.matches).flat()
 
             // Pushing data
@@ -76,9 +62,7 @@ router
                   'averageTotalDamageDealt': avg[2],
                   'averageHealingOnTeammates': avg[3],
                   'averageTotalDamageTaken': avg[4],
-                  'averageKills': avg[5],
-                  'averageDeaths': avg[6],
-                  'averageAssists': avg[7],
+                  'averageKDA': `${avg[5]}/${avg[6]}/${avg[7]}`,
                   'averageGoldEarned': avg[8],
                   'totalTripleKills': avg[9],
                   'totalQuadraKills': avg[10],
@@ -87,13 +71,10 @@ router
                }
             )
          })
-         // await totalGames(client, summoner, allChamps)
-
-        
-
+         console.log(`I am done :)`)
          // Yeet data
-         result = (await client.collection(summoner.name).find({}).toArray()).shift()
-         res.send(allChamps)
+         result = (await client.collection(summoner.name).find({}).toArray())
+         res.send(result)
       }
    })
 
@@ -211,7 +192,7 @@ async function matchParserV2(client, summoner, region) {
       }
    }
 
-   console.log(`I am done :)`)
+   console.log(`Finished parsing matches`)
    await client.collection(summoner.name).updateOne(
       {'name': summoner.name},
       {$set: {'activePull' : false}}
@@ -272,9 +253,7 @@ async function createChampionDocument(client, summoner, champion) {
             averageTotalDamageDealt: 0,
             averageHealingOnTeammates: 0,
             averageTotalDamageTaken: 0,
-            averageKills: 0,
-            averageDeaths: 0,
-            averageAssists: 0,
+            averageKDA: '',
             averageGoldEarned: 0,
             totalTripleKills: 0,
             totalQuadraKills: 0,

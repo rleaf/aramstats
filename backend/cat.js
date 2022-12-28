@@ -1,5 +1,6 @@
 /*
-   cat.js contains the scribing and data prep actions
+   cat.js contains the scribing for parsing individual matches 
+   and the math logic for average stats
 */
 
 function scribe(puuid, game) {
@@ -79,14 +80,17 @@ function scribe(puuid, game) {
 }
 
 function averages(matches) {
+   let stats = {}
+   // stats.totalGames = 0
+   
    let totalGames = 0
    let wins = 0
    let totalDmgDealt = 0
    let healingOnTeam = 0
    let totalTank = 0
    let kills = 0
-   let assists = 0
    let deaths = 0
+   let assists = 0
    let gold = 0
    let tripleKills = 0
    let quadraKills = 0

@@ -15,7 +15,8 @@ import axios from 'axios'
             userInfo: this.$route.params,
             summonerInfo: null,
             userReadyRender: false,
-            proc: false,
+            // hmmmm
+            proc: true,
             activePull: false
          }
       },
@@ -29,12 +30,7 @@ import axios from 'axios'
          }
       },
       
-      created() {
-         console.log('create', this.proc)
-      },
-
       mounted() {
-         console.log('mounted', this.proc)
          if (this.proc) {
             this.lookup()
          }
@@ -44,21 +40,25 @@ import axios from 'axios'
          async lookup() {
             const url = `http://localhost:5000/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
 
-            try {
-               const _activePull = await axios.get(url)
-               console.log('_activepull', _activePull.data.activePull)
-               this.activePull = _activePull
-            } catch (error) {
-               
-            }
+            // try {
+            //    const res = await axios.get(url)
+            //    this.summonerInfo = res.data
+            // } catch (err) {
+            //    console.log(err)
+            // } finally {
+            //    this.userReadyRender = true
+            // }
 
-            try {
-               const res = await axios.get(url)
-               this.summonerInfo = res.data.shift()
-               this.userReadyRender = true
-            } catch (err) {
-               console.log(err)
-            }
+            await axios.get(url)
+               .then((res) => {
+                  this.summonerInfo = res.data
+               })
+               .then(() => {
+                  this.userReadyRender = true
+               })
+               .catch((e) => {
+                  console.log(e)
+               })
          },
       }
    }
@@ -66,7 +66,7 @@ import axios from 'axios'
 
 <template>
    <div>
-      {{ this.$route.params.username }}
+      <!-- {{ this.$route.params.username }} -->
       <UserLoading 
          v-if="!userReadyRender"/>
       <UserReady
