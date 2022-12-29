@@ -1,13 +1,51 @@
 <script>
+import { propsToAttrMap } from '@vue/shared';
 
+export default {
+   data() {
+      return {
+
+      }
+   },
+   
+   props: {
+      messages: String,
+   },
+}
 </script>
 
 <template>
-   <div>
-      Loading Profile
+   <div class="loading-main">
+      <div>
+         <div>
+
+            <h2>
+               Parsing summoner...
+            </h2>
+         </div>
+         <p>
+            This will take a bit.
+         </p>
+      </div>
    </div>
 </template>
 
 <style scoped>
+.loading-main {
+   display: flex;
+   width: 100%;
+   justify-content: center;
+   margin-top: 20vh;
+   /* align-items: center; */
+}
 
+h2 {
+   font-weight: normal;
+   color: var(--light2);
+}
+
+p {
+   color: var(--light2);
+   text-align: center;
+}
 </style>

@@ -16,38 +16,30 @@ import axios from 'axios'
             summonerInfo: null,
             userReadyRender: false,
             // hmmmm
-            proc: true,
+            // proc: true,
             activePull: false
          }
       },
-      beforeRouteEnter(to, from, next) {
-         if (from.name == 'home') {
-            next(x => {
-               x.proc = true
-            })
-         } else {
-            next()
-         }
-      },
+      // beforeRouteEnter(to, from, next) {
+      //    if (from.name == 'home') {
+      //       next(x => {
+      //          x.proc = true
+      //       })
+      //    } else {
+      //       next()
+      //    }
+      // },
       
       mounted() {
-         if (this.proc) {
-            this.lookup()
-         }
+         // if (this.proc) {
+         //    this.lookup()
+         // }
+         this.lookup()
       },
       
       methods: {
          async lookup() {
             const url = `http://localhost:5000/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
-
-            // try {
-            //    const res = await axios.get(url)
-            //    this.summonerInfo = res.data
-            // } catch (err) {
-            //    console.log(err)
-            // } finally {
-            //    this.userReadyRender = true
-            // }
 
             await axios.get(url)
                .then((res) => {

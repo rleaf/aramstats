@@ -1,13 +1,16 @@
 <script>
 import TableLite from "vue3-table-lite";
+import Match from './Match.vue'
 
 export default {
    components: {
+      Match,
      'table-light': TableLite 
    },
    data() {
       return {
          championIcon: `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/champion/${this.champion.championName}.png`,
+         expand: false
          // table: {
          //    isLoading: false,
          //    columns: [
@@ -81,9 +84,6 @@ export default {
       }
    },
 
-   created() {
-      // console.log(this.champion, 'weeeeee')
-   },
    mounted() {
       // for (let i = 1; i < this.champion.length; i++) {
          //    this.table.rows.push(this.champion[i])
@@ -94,6 +94,16 @@ export default {
          
    },
 
+   methods: {
+      toggle() {
+         this.expand = !this.expand
+      },
+
+      winOrLoss(x) {
+         return (x.win) ? 'win': 'loss'
+      }
+   },
+
    props: {
       champion: Object
    }
@@ -101,10 +111,8 @@ export default {
 </script>
 
 <template>
-   <div class="row-container">
-      <div class="container">
-         <!-- <div class="champ-img cell">
-         </div> -->
+   <div class="row-container" @click="toggle()">
+      <div class="row-stats">
          <img :src=championIcon alt="">
          <div class="champ-name cell">
             {{ this.champion.championName }}
@@ -115,7 +123,7 @@ export default {
          <div class="wins cell">
             {{ this.champion.wins }}
          </div>
-         <div class="average-dmg cell">
+         <div class="avg-dmg cell">
             {{ this.champion.averageTotalDamageDealt }}
          </div>
          <div class="avg-healing cell">
@@ -140,35 +148,41 @@ export default {
             {{ this.champion.totalPentaKills }}
          </div>
       </div>
-
-
-
-      <!-- <table-light
-         :is-loading="this.table.isLoading"
-         :columns="this.table.columns"
-         :rows="this.table.rows"
-         :sortable="this.table.sortable"
-      ></table-light> -->
+      <!-- <Transition name="slide">
+      </Transition> -->
+      <div class="matches" v-show="this.expand">
+         <Match v-for="match in this.champion.matches"
+         :key="match.matchId"
+         :match="match"
+         :class="winOrLoss(match)"/>
+      </div>
    </div>
 </template>
 
 <style scoped>
+.matches {
+   border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
 
 .row-container {
    width: 100%;
-   /* height: 200px; */
-   background-color: #363636;
+   margin-bottom: 2px;
+   /* background-color: rgba(0, 0, 0, 0.6); */
 }
 
-.container {
+.style-0 {
+   background-color: rgba(0, 0, 0, 0.65);
+}
+
+.style-1 {
+   background-color: rgba(0, 0, 0, 0.45);
+}
+
+.row-stats {
    display: flex;
-   /* gap: 30px; */
-   /* justify-content: left; */
    align-items: center;
    height: 40px;
-   margin-bottom: 2px;
-   /* line-height: 40px; */
-   background-color: #36375a;
+   /* background-color: #36375a; */
    color: var(--light2);
 }
 
@@ -182,5 +196,4 @@ img {
 .cell {
    width: 109px;
 }
-
 </style>

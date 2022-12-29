@@ -2,17 +2,18 @@
 :root {
   --light1: #ffffff;
   --light2: #cfcfcf;
-  --light3: #fff;
+  --light3: #acacac;
   
   /* --dark1: #16192c; */
   /* Temporary while working on backend*/
-  --dark1: #4d4d4d;
+  --dark1: #021930;
+  /* --dark1: hsl(240, 38%, 13%); */
   --dark2: #434368;
   --dark3: #000;
 
   --test: #484880;
 
-  --blue1: #79d2e2;
+  --blue1: #cfcfcf;
 
   --font-main: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
     Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;

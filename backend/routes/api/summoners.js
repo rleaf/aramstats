@@ -32,8 +32,8 @@ router
    
          if(check && check.activePull == true) {
             console.log('already pulling')
-            res.write('Already pulling')
-            // res.send('Already pulling')
+            // res.write('Already pulling')
+            res.send('Already pulling')
             return 
          }
 
@@ -52,6 +52,7 @@ router
          allChamps.forEach(async x => {
 
             let avg = cat.averages(x.matches).flat()
+            // let names = cat.names(x.matches).flat()
 
             // Pushing data
             await client.collection(summoner.name).updateOne(
@@ -248,6 +249,7 @@ async function createChampionDocument(client, summoner, champion) {
       await client.collection(summoner.name).insertOne(
          { 
             championName: champion,
+            trueChampionName: '',
             totalGames: 0,
             wins: 0,
             averageTotalDamageDealt: 0,

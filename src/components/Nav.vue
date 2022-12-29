@@ -37,7 +37,7 @@ a {
    padding-right: 0.5rem;
    font-size: 1.1rem;
    text-decoration: none;
-   color: var(--color-font);
+   color: var(--light2);
    transition: 0.4s;
 }
 

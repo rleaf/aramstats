@@ -3,16 +3,27 @@
    and the math logic for average stats
 */
 
-function scribe(puuid, game) {
-   let champion = {}
+// const CHAMPION_NAME = {
+//    do champ names here 
+// }
 
+function scribe(puuid, game) {
+   // console.log(game)
+   let champion = {}
    let participantIndex = game.metadata.participants.findIndex((x) => x == puuid)
    let player = game.info.participants[participantIndex]
 
    // Meta 
    champion['matchId'] = game.metadata.matchId
    champion['gameCreation'] = game.info.gameCreation
-   champion['gameDuration'] = game.info.gameDuration
+
+   if (game.info.gameEndTimestamp) {
+      // Seconds
+      champion['gameDuration'] = Math.round(game.info.gameDuration / 60)
+   } else {
+      // Milliseconds
+      champion['gameDuration'] = Math.round(game.info.gameDuration / 60000)
+   }
    champion['gameVersion'] = game.info.gameVersion
    champion['summonerName'] = player.summonerName
    champion['win'] = player.win
@@ -129,6 +140,10 @@ function averages(matches) {
    return [totalGames, wins, averages, tripleKills, quadraKills, pentaKills]
 }
 
+function names(matches) {
+   // do names here later
+}
+
 function winRate(matches) {
    let totalGames = 0   
    let win = 0
@@ -184,8 +199,9 @@ function gold(matches) {
 module.exports = {
    scribe,
    averages,
+   names,
    winRate,
    combat,
    kda,
-   gold
+   gold,
 }  
