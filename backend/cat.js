@@ -8,7 +8,6 @@
 // }
 
 function scribe(puuid, game) {
-   // console.log(game)
    let champion = {}
    let participantIndex = game.metadata.participants.findIndex((x) => x == puuid)
    let player = game.info.participants[participantIndex]
@@ -48,11 +47,12 @@ function scribe(puuid, game) {
    champion['summoner1Id'] = player.summoner1Id
    champion['summoner2Id'] = player.summoner2Id
 
-   // Magic, physical, true, total damage dealt
+   // Magic, physical, true, total damage dealt & DPM
    champion['magicDamageDealtToChampions'] = player.magicDamageDealtToChampions
    champion['physicalDamageDealtToChampions'] = player.physicalDamageDealtToChampions
    champion['trueDamageDealtToChampions'] = player.trueDamageDealtToChampions
    champion['totalDamageDealtToChampions'] = player.totalDamageDealtToChampions
+   champion['damagePerMinute'] = Math.round(player.totalDamageDealtToChampions / champion['gameDuration'])
 
    // Magic, physical, true,total damage taken
    champion['magicDamageTaken'] = player.magicDamageTaken
@@ -97,6 +97,7 @@ function averages(matches) {
    let totalGames = 0
    let wins = 0
    let totalDmgDealt = 0
+   let totalDamagePerMinute = 0
    let healingOnTeam = 0
    let totalTank = 0
    let kills = 0
@@ -120,8 +121,9 @@ function averages(matches) {
       quadraKills += matches[i].quadraKills
       pentaKills += matches[i].pentaKills
 
-      // Damage, healing, tanking
+      // Damage % DPM, healing, tanking
       totalDmgDealt += matches[i].totalDamageDealtToChampions
+      totalDamagePerMinute += matches[i].damagePerMinute
       healingOnTeam += matches[i].totalHealsOnTeammates
       totalTank += matches[i].totalDamageTaken
 
@@ -134,7 +136,7 @@ function averages(matches) {
       gold += matches[i].goldEarned
    }
 
-   let total = [totalDmgDealt, healingOnTeam, totalTank, kills, deaths, assists, gold]
+   let total = [totalDmgDealt, totalDamagePerMinute, healingOnTeam, totalTank, kills, deaths, assists, gold]
    let averages = total.map(x => Math.round(x / totalGames))
 
    return [totalGames, wins, averages, tripleKills, quadraKills, pentaKills]

@@ -37,10 +37,15 @@ router
             return 
          }
 
-         await summonerCheckInitialMatchPullv2(client, summoner, req.params.region)
-   
-         // UTIL 
-         // await client.collection('fri').deleteMany()
+         parsedIdxExist = await client.collection(summoner.name).findOne(
+            {'parsedIndex': {$exists: true}}
+         )
+         
+         if(!parsedIdxExist) {
+            await summonerCheckInitialMatchPullv2(client, summoner, req.params.region)
+         } else {
+            await matchIdPull(client, summoner, req.params.region)
+         }
    
          // Parse & scribe individual matches
          await matchParserV2(client, summoner, req.params.region)
@@ -61,13 +66,14 @@ router
                   'totalGames': avg[0],
                   'wins': avg[1],
                   'averageTotalDamageDealt': avg[2],
-                  'averageHealingOnTeammates': avg[3],
-                  'averageTotalDamageTaken': avg[4],
-                  'averageKDA': `${avg[5]}/${avg[6]}/${avg[7]}`,
-                  'averageGoldEarned': avg[8],
-                  'totalTripleKills': avg[9],
-                  'totalQuadraKills': avg[10],
-                  'totalPentaKills': avg[11],
+                  'averageDamagePerMinute': avg[3],
+                  'averageHealingOnTeammates': avg[4],
+                  'averageTotalDamageTaken': avg[5],
+                  'averageKDA': `${avg[6]}/${avg[7]}/${avg[8]}`,
+                  'averageGoldEarned': avg[9],
+                  'totalTripleKills': avg[10],
+                  'totalQuadraKills': avg[11],
+                  'totalPentaKills': avg[12],
                   }
                }
             )
@@ -92,13 +98,13 @@ async function loadSummonerCollection() {
 
 async function summonerCheckInitialMatchPullv2(client, summoner, region) {
 
-   parsedIdxExist = await client.collection(summoner.name).findOne(
-      {'parsedIndex': {$exists: true}}
-   )
+   // parsedIdxExist = await client.collection(summoner.name).findOne(
+   //    {'parsedIndex': {$exists: true}}
+   // )
 
-   if (parsedIdxExist) {
-      return
-   }
+   // if (parsedIdxExist) {
+   //    return
+   // }
    
    // Add new summoner to database
    await client.collection(summoner.name).insertOne(summoner)
@@ -117,8 +123,8 @@ async function summonerCheckInitialMatchPullv2(client, summoner, region) {
       {'name': summoner.name},
       {$set : {'parsedIndex': 0}}
    )
-
-   // return (await client.collection(summoner.name).find({}).toArray()).shift()
+   
+   console.log(`Added ${summoner.name} to database.`)
 }
 
 async function matchIdPull(client, summoner, region) {
@@ -131,47 +137,49 @@ async function matchIdPull(client, summoner, region) {
       {'name': summoner.name},
       {$set : {'matchId': matchList}}
    )
-
-   console.log(`Added ${summoner.name} to database.`)
-
 }
 
 async function matchParserV2(client, summoner, region) {
-   const result = (await client.collection(summoner.name).find({}).toArray()).shift()
+
+   // // Pull all games
+   // await matchIdPull(client, summoner, region)
    
+   const result = (await client.collection(summoner.name).find({}).toArray()).shift()
+
    if (result == undefined) {
       await summonerCheckInitialMatchPullv2(client, summoner, region)
    }
 
    let parsedIndex = result.parsedIndex
-   let matchLength = result.matchId.length
+   let matchIdReversed = result.matchId.reverse()
 
-   if (parsedIndex == (matchLength - 1)) {
+   if (parsedIndex == (result.matchId.length - 1)) {
       console.log(`Account ${summoner.name} already parsed.`)
       return
    }
    
-   // Check if existing parses || init matchContainer
-   // let matchEndIndex = await parseCheck(client, summoner)
-   
    console.log(`Starting parse at ${parsedIndex}`)
-   for ( ; parsedIndex < matchLength; parsedIndex++) {
+   for ( ; parsedIndex < matchIdReversed.length; parsedIndex++) {
       
       console.log(`${parsedIndex}`)
-      
-      const game = await twisted.getMatchInfo(result.matchId[parsedIndex], region)
+
+      const game = await twisted.getMatchInfo(matchIdReversed[parsedIndex], region)
          .catch(async (e) => {
             console.log(e.status)
          })
-   
+
       if (game) {
          const champions = cat.scribe(summoner.puuid, game)
 
          await createChampionDocument(client, summoner, champions.championName)
 
+         // await client.collection(summoner.name).updateOne(
+         //    {'championName': champions.championName},
+         //    {$push: {'matches': champions}}
+         // )
          await client.collection(summoner.name).updateOne(
             {'championName': champions.championName},
-            {$push: {'matches': champions}}
+            {$push: {'matches': {$each: [champions], $position: 0}}}
          )
 
          await client.collection(summoner.name).updateOne(
@@ -242,7 +250,6 @@ async function removeParse(client, summoner, matchEndIndex) {
 }
 
 async function createChampionDocument(client, summoner, champion) {
-
    const food = await client.collection(summoner.name).findOne({ championName: champion})
 
    if (food == undefined) {
@@ -253,6 +260,7 @@ async function createChampionDocument(client, summoner, champion) {
             totalGames: 0,
             wins: 0,
             averageTotalDamageDealt: 0,
+            averageDamagePerMinute: 0,
             averageHealingOnTeammates: 0,
             averageTotalDamageTaken: 0,
             averageKDA: '',

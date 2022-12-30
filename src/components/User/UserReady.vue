@@ -1,5 +1,4 @@
 <script>
-import { isIntegerKey } from '@vue/shared'
 import Champion from '../Champion.vue'
 import axios from 'axios'
 
@@ -14,10 +13,12 @@ export default {
             IconId: `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/profileicon/${this.userInfo[0].profileIconId}.png`,
             name: this.userInfo[0].name
          },
-         selected: String,
-         refresh: 'Refresh',
+         selected: 'Total Games',
+         refresh: 'Update',
          order: true,
+         dmgDpmState: 0,
          championKey: 0,
+         isDisabled: false,
       }
    },
 
@@ -28,55 +29,62 @@ export default {
    computed: {
       sortedChamps() {
          switch (this.selected) {
-            case 'champion':
+            case 'Champion':
                return (this.order) ?
                   this.championInfo.slice(1).sort((a, b) => a.championName.localeCompare(b.championName)):
                   this.championInfo.slice(1).sort((a, b) => b.championName.localeCompare(a.championName))
-            case 'totalGames':
+            case 'Total Games':
                return (this.order) ?
                   this.championInfo.slice(1).sort((a, b) => b.totalGames - a.totalGames):
                   this.championInfo.slice(1).sort((a, b) => a.totalGames - b.totalGames)
-            case 'wins':
+            case 'Wins':
                return (this.order) ?
                   this.championInfo.slice(1).sort((a, b) => b.wins - a.wins):
                   this.championInfo.slice(1).sort((a, b) => a.wins - b.wins)
-            case 'avgDmg':
-               return (this.order) ?
+            case 'Average Damage':
+               if (this.dmgDpmState < 2) {
+                  return (this.order) ?
                   this.championInfo.slice(1).sort((a, b) => b.averageTotalDamageDealt - a.averageTotalDamageDealt):
                   this.championInfo.slice(1).sort((a, b) => a.averageTotalDamageDealt - b.averageTotalDamageDealt)
-            case 'avgHeal':
+               } else {
+                  return (this.order) ?
+                     this.championInfo.slice(1).sort((a, b) => b.averageDamagePerMinute - a.averageDamagePerMinute) :
+                     this.championInfo.slice(1).sort((a, b) => a.averageDamagePerMinute - b.averageDamagePerMinute)
+               }
+            case 'Average Healing to Teammates':
                return (this.order) ?
                   this.championInfo.slice(1).sort((a, b) => b.averageHealingOnTeammates - a.averageHealingOnTeammates):
                   this.championInfo.slice(1).sort((a, b) => a.averageHealingOnTeammates - b.averageHealingOnTeammates)
-            case 'avgDmgTake':
+            case 'Average Damage Taken':
                return (this.order) ?
                   this.championInfo.slice(1).sort((a, b) => b.averageTotalDamageTaken - a.averageTotalDamageTaken):
                   this.championInfo.slice(1).sort((a, b) => a.averageTotalDamageTaken - b.averageTotalDamageTaken)
-            case 'avgKDA':
+            case 'Average KDA':
                return (this.order) ?
                   this.championInfo.slice(1).sort((a, b) => b.averageKDA - a.averageKDA):
                   this.championInfo.slice(1).sort((a, b) => a.averageKDA - b.averageKDA)
-            case 'avgGold':
+            case 'Average Gold':
                return (this.order) ?
                   this.championInfo.slice(1).sort((a, b) => b.averageGoldEarned - a.averageGoldEarned):
                   this.championInfo.slice(1).sort((a, b) => a.averageGoldEarned - b.averageGoldEarned)
-            case 'tripleKills':
+            case 'Triple kills':
                return (this.order) ?
                   this.championInfo.slice(1).sort((a, b) => b.totalTripleKills - a.totalTripleKills):
                   this.championInfo.slice(1).sort((a, b) => a.totalTripleKills - b.totalTripleKills)
-            case 'quadraKills':
+            case 'Quadra kills':
                return (this.order) ?
                   this.championInfo.slice(1).sort((a, b) => b.totalQuadraKills - a.totalQuadraKills):
                   this.championInfo.slice(1).sort((a, b) => a.totalQuadraKills - b.totalQuadraKills)
-            case 'pentaKills':
+            case 'Penta kills':
                return (this.order) ?
                   this.championInfo.slice(1).sort((a, b) => b.totalPentaKills - a.totalPentaKills):
                   this.championInfo.slice(1).sort((a, b) => a.totalPentaKills - b.totalPentaKills)
             default:
                return this.championInfo.slice(1).sort((a, b) => b.totalGames - a.totalGames)
          }
-      }
+      },
    },
+
    props: {
       userInfo: Object
    },
@@ -95,6 +103,28 @@ export default {
          }
       },
 
+      sortingBy() {
+         // if (this.selected == null) {
+         //    let x = (this.order) ? 'Descending' : 'Ascending'
+         //    return `Total Games ${x}`
+         // }
+
+         if (this.selected == 'Average Damage') {
+            if (this.dmgDpmState == 2 || this.dmgDpmState == 1) {
+               return 'Average Damage'
+            } else {
+               return 'Damage per minute'
+            }
+         }
+
+         return this.selected
+      },
+
+      avgDmgDpm(x) {
+         (this.dmgDpmState == 3) ? this.dmgDpmState = 0 : this.dmgDpmState++
+         this.sortProc(x)
+      },
+
       everyOther(i) {
          return (i % 2 == 0) ? `style-0` : `style-1`
       },
@@ -104,19 +134,22 @@ export default {
       },
 
       async refreshSummoner() {
-
+         console.log('frogs')
+         this.isDisabled = true
          const url = `http://localhost:5000/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
 
-         this.refresh = 'Updating'
+         this.refresh = 'Updating...'
          await axios.get(url)
             .then((res) => {
                this.championInfo = res.data
+               console.log('toads')
             })
             .then(() => {
                this.rerender()
             })
             .then(() => {
-               this.refresh = 'Refresh'
+               this.isDisabled = false
+               this.refresh = 'Update'
             })
       }
    }
@@ -134,7 +167,7 @@ export default {
                {{ this.profile.name }}
 
                <div class="refresh">
-                  <a @click="refreshSummoner()">
+                  <a :class="{ disable: this.isDisabled }" @click="refreshSummoner()">
                      {{ this.refresh }}
                   </a>
                </div>
@@ -142,18 +175,32 @@ export default {
          </div>
       </div>
       <div class="stats-main">
+         <div class="sorting-by">
+            Sorting by: {{ sortingBy() }}
+            <!-- Sorting by: {{ this.selected }} -->
+            <!-- Sorting by: {{ this.selected }} {{ (this.order) ? 'Descending' : 'Ascending' }} -->
+         </div>
          <div class="headers">
-            <div class='champ-name-header' @click="sortProc('champion')">Champion</div>
-            <div class='total-games-header' @click="sortProc('totalGames')">Total Games</div>
-            <div class='wins-header' @click="sortProc('wins')">Wins</div>
-            <div class='avg-dmg-header' @click="sortProc('avgDmg')">avg Dmg</div>
-            <div class='avg-healing-header' @click="sortProc('avgHeal')">avg Heal</div>
-            <div class='avg-dt-header' @click="sortProc('avgDmgTake')">avg DT</div>
-            <div class='avg-kda-header' @click="sortProc('avgKDA')">avg KDA</div>
-            <div class='avg-gold-header' @click="sortProc('avgGold')">avg Gold</div>
-            <div class='triple-kills-header' @click="sortProc('tripleKills')">Triple Kills</div>
-            <div class='quadra-kills-header' @click="sortProc('quadraKills')">Quadra Kills</div>
-            <div class='penta-kills-header' @click="sortProc('pentaKills')">Penta Kills</div>
+            <div class='champ-name header' @click="sortProc('Champion')">Champion</div>
+            <div class='total-games header' @click="sortProc('Total Games')">Total Games</div>
+            <div class='wins header' @click="sortProc('Wins')">Wins</div>
+            <div class='avg-dmg header' @click="avgDmgDpm('Average Damage')">avg Dmg</div>
+            <!-- <div class='avg-dmg header' @click="sortProc('avgDmg')">DPM</div> -->
+            <div class='avg-healing header' @click="sortProc('Average Healing to Teammates')">avg Heal</div>
+            <div class='avg-dt header' @click="sortProc('Average Damage Taken')">avg DT</div>
+            <div class='avg-kda header' @click="sortProc('Average KDA')">avg KDA</div>
+            <div class='avg-gold header' @click="sortProc('Average Gold')">avg Gold</div>
+            <div>
+               <div class="tqp header" @click="sortProc('Triple kills')">
+                  T
+               </div>
+               <div class="tqp header" @click="sortProc('Quadra kills')">
+                  Q
+               </div>
+               <div class="tqp header" @click="sortProc('Penta kills')">
+                  P
+               </div>
+            </div>
          </div>
          <div :key="this.championKey">
             <!-- <transition-group name="flip-list">
@@ -172,6 +219,19 @@ export default {
 /* .flip-list-move {
    transition: transform 0.5s;
 } */
+.disable {
+   pointer-events: none;
+}
+.sorting-by {
+   color: var(--light2);
+   padding-bottom: 1rem;
+}
+.tqp {
+   display: inline-block;
+   width: 40px;
+   /* padding-right: 20px; */
+}
+
 .headers {
    padding-left: 46px;
    height: 2rem;
@@ -183,12 +243,14 @@ export default {
 }
 
 .headers > div {
-   width: 109px;
+   /* width: 104.9px; */
+   /* width: 10%; */
+   flex: 0 0 120px;
    /* font-weight: bold; */
    color: var(--light2);
 }
 
-.headers > div:hover {
+.header:hover {
    text-decoration: underline;
    color: var(--light1);
    cursor: pointer;
@@ -216,7 +278,7 @@ export default {
    /* margin: 0 15vw 0 15vw; */
    margin-left: auto;
    margin-right: auto;
-   max-width: 1200px;
+   width: 1200px;
 
 }
 

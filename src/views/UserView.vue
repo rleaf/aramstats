@@ -15,8 +15,6 @@ import axios from 'axios'
             userInfo: this.$route.params,
             summonerInfo: null,
             userReadyRender: false,
-            // hmmmm
-            // proc: true,
             activePull: false
          }
       },
@@ -31,9 +29,6 @@ import axios from 'axios'
       // },
       
       mounted() {
-         // if (this.proc) {
-         //    this.lookup()
-         // }
          this.lookup()
       },
       
@@ -47,6 +42,7 @@ import axios from 'axios'
                })
                .then(() => {
                   this.userReadyRender = true
+                  console.log('weee', this.userReadyRender)
                })
                .catch((e) => {
                   console.log(e)

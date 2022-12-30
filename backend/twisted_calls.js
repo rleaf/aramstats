@@ -45,10 +45,6 @@ async function getAllSummonerMatches(summoner, region) {
    let matchList = []
    let stop = true
 
-
-   // *****************************************
-   // rate limit errors overwritting games. fix pls
-   // *****************************************
    for (let i = 0; stop; i=i+100) {
       const pull = await api.MatchV5.list(summonerGet.puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })
       matchList.push(pull.response)

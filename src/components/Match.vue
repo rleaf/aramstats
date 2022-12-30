@@ -17,7 +17,7 @@ export default {
       this.date = new Date(this.match.gameCreation)
       const now = Date.now()
       const diffTime = Math.abs(this.date - now)
-      this.daysSince = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+      this.daysSince = Math.round(diffTime / (1000 * 60 * 60 * 24))
       this.date = this.date.toLocaleString().split(/[ ,]+/)[0]
 
       // console.log(this.match)
@@ -40,9 +40,10 @@ export default {
 <template>
    <div class="match-container">
       <!-- {{ this.match }} -->
+
       <div class="left-box">
          <div class="game-creation">
-            {{ this.daysSince }} days ago
+            {{ this.daysSince }} day(s) ago
             <div class="date">
                {{ this.date }},
                {{ this.match.gameDuration }} min
@@ -57,7 +58,13 @@ export default {
       <div class="right-box">
          <div class="total-dmg match-cell">
             {{ this.match.totalDamageDealtToChampions }}
+            <div class="dpm">
+               {{ this.match.damagePerMinute }} DPM
+            </div>
          </div>
+         <!-- <div class="total-dpm match-cell">
+            {{ this.match.damagePerMinute }}
+         </div> -->
          <div class="total-heal match-cell">
             {{ this.match.totalHealsOnTeammates }}
          </div>
@@ -70,28 +77,41 @@ export default {
          <div class="gold-earned match-cell">
             {{ this.match.goldEarned }}
          </div>
-         <div class="triple-kills match-cell">
-            {{ this.match.tripleKills }}
-         </div>
-         <div class="quadra-kills match-cell">
-            {{ this.match.quadraKills }}
-         </div>
-         <div class="penta-kills match-cell">
-            {{ this.match.pentaKills }}
+         <div class="tqp-match-wrapper match-cell">
+            <div class="tqp-match">
+               {{ this.match.tripleKills }}
+            </div>
+            <div class="tqp-match">
+               {{ this.match.quadraKills }}
+            </div>
+            <div class="tqp-match">
+               {{ this.match.pentaKills }}
+            </div>
          </div>
       </div>
    </div>
 </template>
 
 <style scoped>
+.dpm {
+   font-size: 0.7rem;
+   font-style: oblique;
+   color: var(--light3);
+}
 
+.tqp-match {
+   display: inline-block;
+   width: 40px;
+   /* padding-right: 20px; */
+}
 .match-items img {
    width: 25px;
 }
 
 .date {
    font-style: oblique;
-   font-size: 0.70rem;
+   font-size: 0.7rem;
+   color: var(--light3);
 }
 
 .game-creation {
@@ -108,6 +128,7 @@ export default {
 }
 .right-box {
    display: flex;
+   padding-right: 72px;
    justify-content: flex-end;
    align-items: center;
    height: 40px;
@@ -115,11 +136,11 @@ export default {
 }
 
 .win {
-   background: linear-gradient(90deg, rgba(0, 255, 0, 0.027), rgba(0, 255, 0, 0))
+   background: linear-gradient(90deg, rgba(0, 255, 0, 0.04), rgba(0, 255, 0, 0))
 }
 
 .loss {
-   background: linear-gradient(90deg, rgba(255, 0, 0, 0.055), rgba(255, 0, 0, 0))
+   background: linear-gradient(90deg, rgba(255, 0, 0, 0.07), rgba(255, 0, 0, 0))
 }
 
 .match-container {
@@ -128,7 +149,6 @@ export default {
 }
 
 .match-cell {
-   /* width: 109px; */
-   width: 104.91px;
+   flex: 0 0 120px;
 }
 </style>

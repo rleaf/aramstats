@@ -24,7 +24,8 @@ export default {
             </h2>
          </div>
          <p>
-            This will take a bit.
+            This will take a bit when parsing a new summoner. Feel free to close this page and check back later,
+            otherwise this page will refresh automatically.
          </p>
       </div>
    </div>
@@ -42,10 +43,12 @@ export default {
 h2 {
    font-weight: normal;
    color: var(--light2);
+   text-align: center;
 }
 
 p {
    color: var(--light2);
    text-align: center;
+   width: 400px;
 }
 </style>

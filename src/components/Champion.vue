@@ -10,7 +10,8 @@ export default {
    data() {
       return {
          championIcon: `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/champion/${this.champion.championName}.png`,
-         expand: false
+         fid: `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/champion/Fiddlesticks.png`,
+         expand: false,
          // table: {
          //    isLoading: false,
          //    columns: [
@@ -113,9 +114,9 @@ export default {
 <template>
    <div class="row-container" @click="toggle()">
       <div class="row-stats">
-         <img :src=championIcon alt="">
+         <img :src="(this.champion.championName == 'FiddleSticks') ? this.fid : championIcon" alt="">
          <div class="champ-name cell">
-            {{ this.champion.championName }}
+            {{  this.champion.championName }}
          </div>
          <div class="total-games cell">
             {{ this.champion.totalGames }}
@@ -125,7 +126,13 @@ export default {
          </div>
          <div class="avg-dmg cell">
             {{ this.champion.averageTotalDamageDealt }}
+            <div class="avg-dpm">
+               {{ this.champion.averageDamagePerMinute }} DPM
+            </div>
          </div>
+         <!-- <div class="avg-dpm cell">
+            {{ this.champion.averageDamagePerMinute }}
+         </div> -->
          <div class="avg-healing cell">
             {{ this.champion.averageHealingOnTeammates }}
          </div>
@@ -138,14 +145,20 @@ export default {
          <div class="avg-gold cell">
             {{ this.champion.averageGoldEarned }}
          </div>
-         <div class="triple-kills cell">
-            {{ this.champion.totalTripleKills }}
+         <div class="tqp-wrapper cell">
+            <div class="tqp-1">
+               {{ this.champion.totalTripleKills }}
+            </div>
+            <div class="tqp-1">
+               {{ this.champion.totalQuadraKills }}
+            </div>
+            <div class="tqp-1">
+               {{ this.champion.totalPentaKills }}
+            </div>
          </div>
          <div class="quadra-kills cell">
-            {{ this.champion.totalQuadraKills }}
          </div>
          <div class="penta-kills cell">
-            {{ this.champion.totalPentaKills }}
          </div>
       </div>
       <!-- <Transition name="slide">
@@ -160,12 +173,22 @@ export default {
 </template>
 
 <style scoped>
+.avg-dpm {
+   font-size: 0.7rem;
+   font-style: oblique;
+   color: var(--light3);
+}
+.tqp-1 {
+   display: inline-block;
+   width: 40px;
+   /* padding-right: 20px; */
+}
 .matches {
    border-top: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .row-container {
-   width: 100%;
+   max-width: 1200px;
    margin-bottom: 2px;
    /* background-color: rgba(0, 0, 0, 0.6); */
 }
@@ -194,6 +217,8 @@ img {
 }
 
 .cell {
-   width: 109px;
+   /* width: 109px; */
+   /* width: 200px; */
+   flex: 0 0 120px;
 }
 </style>
