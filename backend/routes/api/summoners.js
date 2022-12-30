@@ -4,14 +4,20 @@ const dotenv = require('dotenv')
 const twisted = require('../../twisted_calls')
 const cat = require('../../cat')
 
-
+// const queue = require('express-queue')
+// const queueMw = queue({ activeLimit: 1, queuedLimit: -1})
 dotenv.config()
 
 const router = express.Router()
+// router.use(queueMw)
+
 
 router
    .route('/:region/:summonerURI')
    .get(async (req, res) => {
+      
+      // console.log(`router: ${req.app.queueMw}`)
+      // console.log(`queueLength: ${queueMw.queue.getLength()}`)
 
       // Check summoner existence.
       const summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
@@ -33,7 +39,7 @@ router
          if(check && check.activePull == true) {
             console.log('already pulling')
             // res.write('Already pulling')
-            res.send('Already pulling')
+            res.send('pulling')
             return 
          }
 
@@ -78,7 +84,7 @@ router
                }
             )
          })
-         console.log(`I am done :)`)
+         console.log(`Finished parsing ${summoner.name}`)
          // Yeet data
          result = (await client.collection(summoner.name).find({}).toArray())
          res.send(result)
@@ -159,6 +165,8 @@ async function matchParserV2(client, summoner, region) {
    }
    
    console.log(`Starting parse at ${parsedIndex}`)
+   // console.log(`Parsing match_id ${matchIdReversed[parsedIndex]}`)
+
    for ( ; parsedIndex < matchIdReversed.length; parsedIndex++) {
       
       console.log(`${parsedIndex}`)
@@ -177,6 +185,7 @@ async function matchParserV2(client, summoner, region) {
          //    {'championName': champions.championName},
          //    {$push: {'matches': champions}}
          // )
+
          await client.collection(summoner.name).updateOne(
             {'championName': champions.championName},
             {$push: {'matches': {$each: [champions], $position: 0}}}

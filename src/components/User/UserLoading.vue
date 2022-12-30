@@ -21,10 +21,11 @@ export default {
 
             <h2>
                Parsing summoner...
+               <!-- {{ messages }} -->
             </h2>
          </div>
          <p>
-            This will take a bit when parsing a new summoner. Feel free to close this page and check back later,
+            This will take a bit when parsing a new summoner. Feel free to close this page and check back later
             otherwise this page will refresh automatically.
          </p>
       </div>
@@ -49,6 +50,7 @@ h2 {
 p {
    color: var(--light2);
    text-align: center;
-   width: 400px;
+   width: 500px;
+   line-height: 1.5;
 }
 </style>

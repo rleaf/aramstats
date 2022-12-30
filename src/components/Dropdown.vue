@@ -53,6 +53,7 @@ export default {
 .dropdown-container {
       display: inline-block;
       width: 80px;
+      cursor: pointer;
    }
 
 button {
