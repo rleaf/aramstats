@@ -1,16 +1,11 @@
 <script>
-import { propsToAttrMap } from '@vue/shared';
 
 export default {
    data() {
       return {
 
       }
-   },
-   
-   props: {
-      messages: String,
-   },
+   },  
 }
 </script>
 
@@ -21,7 +16,6 @@ export default {
 
             <h2>
                Parsing summoner...
-               <!-- {{ messages }} -->
             </h2>
          </div>
          <p>

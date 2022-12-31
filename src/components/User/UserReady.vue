@@ -22,10 +22,6 @@ export default {
       }
    },
 
-   mounted() {
-      // this.userInfo.shift()
-   },
-
    computed: {
       sortedChamps() {
          switch (this.selected) {
@@ -104,11 +100,6 @@ export default {
       },
 
       sortingBy() {
-         // if (this.selected == null) {
-         //    let x = (this.order) ? 'Descending' : 'Ascending'
-         //    return `Total Games ${x}`
-         // }
-
          if (this.selected == 'Average Damage') {
             if (this.dmgDpmState == 2 || this.dmgDpmState == 1) {
                return 'Average Damage'
@@ -134,15 +125,13 @@ export default {
       },
 
       async refreshSummoner() {
-         console.log('frogs')
          this.isDisabled = true
-         const url = `http://localhost:5000/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
+         const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
 
          this.refresh = 'Updating...'
          await axios.get(url)
             .then((res) => {
                this.championInfo = res.data
-               console.log('toads')
             })
             .then(() => {
                this.rerender()
@@ -159,14 +148,13 @@ export default {
 
 <template>
    <div class="user-ready-main">
-      <!-- {{ this.userInfo }} -->
       <div class="profile-landing">
          <div class="profile-name">
             <img class="pfp" :src=profile.IconId  alt="">
             <div>
                {{ this.profile.name }}
 
-               <div class="refresh">
+               <div class="refresh-button">
                   <a :class="{ disable: this.isDisabled }" @click="refreshSummoner()">
                      {{ this.refresh }}
                   </a>
@@ -177,8 +165,6 @@ export default {
       <div class="stats-main">
          <div class="sorting-by">
             Sorting by: {{ sortingBy() }}
-            <!-- Sorting by: {{ this.selected }} -->
-            <!-- Sorting by: {{ this.selected }} {{ (this.order) ? 'Descending' : 'Ascending' }} -->
          </div>
          <div class="headers">
             <div class='champ-name header' @click="sortProc('Champion')">Champion</div>
@@ -229,24 +215,17 @@ export default {
 .tqp {
    display: inline-block;
    width: 40px;
-   /* padding-right: 20px; */
 }
 
 .headers {
    padding-left: 46px;
    height: 2rem;
-   /* padding-bottom: 8px; */
    display: flex;
    align-items: center;
-   /* gap: 1%; */
-
 }
 
 .headers > div {
-   /* width: 104.9px; */
-   /* width: 10%; */
    flex: 0 0 120px;
-   /* font-weight: bold; */
    color: var(--light2);
 }
 
@@ -256,30 +235,18 @@ export default {
    cursor: pointer;
 }
 
-/* .headers > div:hover p {
-   cursor: pointer;
-} */
-.refresh {
-   /* padding-left: 45px;
-   padding-top: 45px; */
-   /* color: var(--light1); */
-}
-
-.refresh a {
+.refresh-button a {
    font-size: 1rem;
    border: 1px solid var(--light1);
    border-radius: 5px;
    cursor: pointer;
    padding: 4px 9px;
-
 }
 
 .user-ready-main {
-   /* margin: 0 15vw 0 15vw; */
    margin-left: auto;
    margin-right: auto;
    width: 1200px;
-
 }
 
 .stats-main {
@@ -287,7 +254,6 @@ export default {
 }
 
 .profile-landing {
-   /* background: #363636; */
    display: block;
    border-radius: 3px;
    width: 100%;
@@ -296,7 +262,6 @@ export default {
 
 .profile-name {
    display: flex;
-   /* width: 150px; */
    justify-content: left;
    align-items: center;
    gap: 20px;

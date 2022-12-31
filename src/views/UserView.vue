@@ -33,31 +33,20 @@ import axios from 'axios'
             .then((res) => this.summonerInfo = res)
       },
 
-      // computed: {
-      //    summonerData() {
-      //       this.lookup()
-      //    }
-      // },
-
       watch: {
          summonerInfo(curr, prev) {
-            console.log('new summonerInfo')
             if (this.summonerInfo === 'pulling') {
-               console.log('pulling')
                return
             } else {
-               console.log('summonerInfo is good')
                this.userReadyRender = true
             }
-
-            console.log(curr)
-            console.log(prev)
          }
       },
       
       methods: {
          async lookup() {
-            const url = `http://localhost:5000/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
+            const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
+
             let data
 
             await axios.get(url)
@@ -65,19 +54,6 @@ import axios from 'axios'
                .catch(e => console.log(e))
 
             return data
-            // await axios.get(url)
-            //    .then(res => {
-            //       if(res.data === 'pulling') {
-            //          return
-            //       } else {
-            //          this.summonerInfo = res.data
-            //          this.userReadyRender = true
-            //       }
-            //    })
-            //    .then(() => {
-            //       console.log('weee', this.userReadyRender)
-            //    })
-            //    .catch(e => console.log(e))
          },
       }
    }
@@ -85,14 +61,11 @@ import axios from 'axios'
 
 <template>
    <div>
-      <!-- {{ this.$route.params.username }} -->
       <UserLoading 
-         v-if="!userReadyRender"
-         :messages="this.summonerInfo"/>
+         v-if="!userReadyRender"/>
       <UserReady
          v-if="userReadyRender"
-         :userInfo="this.summonerInfo"
-         />
+         :userInfo="this.summonerInfo"/>
    </div>
 </template>
 
