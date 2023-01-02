@@ -126,7 +126,6 @@ export default {
 
       async refreshSummoner() {
          this.isDisabled = true
-         // const url = `/api/summoners/update/${this.$route.params.region}/${this.$route.params.username}`
          const url = `/api/summoners/update/${this.$route.params.region}/${this.$route.params.username}`
 
          this.refresh = 'Updating...'

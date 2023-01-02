@@ -83,6 +83,8 @@ export default {
          :options="[
             {id: 1, region: 'NA'},
             {id: 2, region: 'EUW'},
+            {id: 3, region: 'EUNE'},
+            {id: 4, region: 'OCE'},
          ]"
             @region-emit="regionSelect" 
             />

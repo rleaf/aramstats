@@ -228,7 +228,7 @@ async function matchIdPull(client, summoner, region) {
       .catch((e) => {
          console.log('matchIdPull Error', e) 
       })
-   
+
    await client.collection(summoner.name).updateOne(
       {'name': summoner.name},
       {$set : {'matchId': matchList}}
