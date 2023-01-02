@@ -46,12 +46,12 @@ import axios from 'axios'
       methods: {
          async lookup() {
             const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
-
+            console.log('url', url)
             let data
 
             await axios.get(url)
                .then(res => data = res.data)
-               .catch(e => console.log(e))
+               .catch(e => console.log('error', e))
 
             return data
          },

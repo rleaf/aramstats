@@ -17,11 +17,12 @@ const summoners = require('./routes/api/summoners')
 app.use('/api/summoners', summoners)
 // console.log(`queueLength: ${queueMw.queue.getLength()}`)
 
-if(process.env.NODE_ENV === 'production') {
-   app.use(express.static(__dirname + '/public/'))
+// console.log(process.env.NODE_ENV)
 
-   app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'))
-}
+// app.use(express.static(__dirname + '/public/'))
+// app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'))
+// if(process.env.NODE_ENV === 'production') {
+// }
 
 
 const port = process.env.PORT || 5000

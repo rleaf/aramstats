@@ -29,11 +29,11 @@ router
 
       const client = await loadSummonerCollection()
 
-      // Check if already pulling
       
       // Check if summoner is in database
       if (summoner) {
-
+         
+         // Check if already pulling
          check = await client.collection(summoner.name).findOne({'activePull': {$exists: true}})
    
          if(check && check.activePull == true) {
@@ -90,6 +90,12 @@ router
          res.send(result)
       }
    })
+
+router.get('/update/:region/:summonerURI', async (req, res) => {
+   console.log(req.params)
+   console.log('toads')
+   res.send('toads')
+})
 
 async function loadSummonerCollection() {
    const client = await mongodb.MongoClient.connect(process.env.DB_CONNECTION_STRING)
@@ -152,14 +158,18 @@ async function matchParserV2(client, summoner, region) {
    
    const result = (await client.collection(summoner.name).find({}).toArray()).shift()
 
-   if (result == undefined) {
-      await summonerCheckInitialMatchPullv2(client, summoner, region)
-   }
+   // if (result == undefined) {
+   //    await summonerCheckInitialMatchPullv2(client, summoner, region)
+   // }
 
    let parsedIndex = result.parsedIndex
    let matchIdReversed = result.matchId.reverse()
 
-   if (parsedIndex == (result.matchId.length - 1)) {
+   // if (parsedIndex == (result.matchId.length - 1)) {
+   //    console.log(`Account ${summoner.name} already parsed.`)
+   //    return
+   // }
+   if (parsedIndex == result.matchId.length) {
       console.log(`Account ${summoner.name} already parsed.`)
       return
    }
@@ -177,7 +187,9 @@ async function matchParserV2(client, summoner, region) {
          })
 
       if (game) {
+         // console.log('1', game)
          const champions = cat.scribe(summoner.puuid, game)
+         // console.log('2', champions)
 
          await createChampionDocument(client, summoner, champions.championName)
 
@@ -215,34 +227,6 @@ async function matchParserV2(client, summoner, region) {
       {'name': summoner.name},
       {$set: {'activePull' : false}}
    )
-
-
-   // while (parsedIndex <= matchLength) {
-      
-   //    // console.log(`Parsed ${parsedIndex + 1} matches`)
-      
-   //    // if (match) {
-   //    //    await client.collection(summoner.name).updateOne({'matchEnd': matchEndIndex}, {$push: {'matches': match}})
-   //    //    await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set: {'parsedIndex': parsedIndex}})
-
-   //    //    if (parsedIndex != 0 && parsedIndex % 25 == 0) {
-   //    //       matchEndIndex = await addMatchContainer(client, summoner, parsedIndex, parsedIndex+25)
-   //    //    }
-
-   //    //    parsedIndex++
-         
-   //    // } else {
-   //    //    console.log(`Got rate limit check, recycling same game.`)
-   //    // }
-
-   //    if (parsedIndex == matchLength) {
-   //       console.log(`I am done :)`)
-   //       await client.collection(summoner.name).updateOne({'name': summoner.name}, {$set: {'activePull' : false}})
-   //       break
-   //    }
-
-      
-   // }
 
    return 
 }
