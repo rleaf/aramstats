@@ -47,24 +47,15 @@ router
          }
 
          parsedIdxExist = await summonerCollection.findOne(
-               {'parsedIndex': {$exists: true}}
-            )
+            {'parsedIndex': {$exists: true}}
+         )
 
-         if(parsedIdxExist) {
-            console.log(`Summoner ${summoner.name} already initially parsed`)
-
-            result = (await client.collection(summoner.name).find({}).toArray())
-            res.send(result)
-
-            return
-         } 
-            // else {
-            //    await matchIdPull(client, summoner, req.params.region)
-            // }
-         
-         // Create summoner collection and pull all matchIds
-         await summonerCheckInitialMatchPullv2(client, summoner, req.params.region)
-                  
+         if(!parsedIdxExist) {
+            await summonerCheckInitialMatchPullv2(client, summoner, req.params.region)
+         } else {
+            await matchIdPull(client, summoner, req.params.region)
+         }
+   
          // Parse & scribe individual matches
          await matchParserV2(client, summoner, req.params.region)
 
@@ -77,6 +68,7 @@ router
          allChamps.forEach(async x => {
 
             let avg = cat.averages(x.matches).flat()
+            // let names = cat.names(x.matches).flat()
 
             // Pushing data
             await client.collection(summoner.name).updateOne(
@@ -97,7 +89,6 @@ router
                }
             )
          })
-
          console.log(`Finished parsing ${summoner.name}`)
          // Yeet data
          result = (await client.collection(summoner.name).find({}).toArray())
@@ -105,80 +96,10 @@ router
       }
    })
 
-
 router.get('/update/:region/:summonerURI', async (req, res) => {
-   
-   const summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
-   .catch((e) => {
-      console.log('Summoner DNE', e.status)
-      res.send('Summoner DNE')
-      return
-   })
-   
-   const client = await loadSummonerCollection()
-
-   check = await summonerCollection.findOne(
-      {'activePull': {$exists: true}}
-   )
-
-   if(check && check.activePull == true) {
-      console.log('Already updating summoner')
-      res.send('Already updating')
-      return 
-   }
-
-   await client.collection(summoner.name).updateOne(
-      {'name': summoner.name},
-      {$set: {'activePull' : true}}
-   )
-
-   /* Update summoner profile
-         - Refresh matchId pull
-         - Get current parsed Index
-         - Iterate over matchId pull with parsed Index
-   */
-   await matchIdPull(client, summoner, req.params.region)
-   const summonerDB = client.collection(summoner.name).findOne(
-      {'name': summoner.name}
-   )
-   
-   let parsedIndex = (await summonerDB).parsedIndex
-   let matches = (await summonerDB).matchId.reverse()
-
-   for ( ; parsedIndex < matches.length; parsedIndex++) {
-
-      console.log(`Parsing match: ${parsedIndex}`)
-
-      const game = await twisted.getMatchInfo(matches[parsedIndex], req.params.region)
-         .catch(async (e) => {
-            console.log(`Got rate limit check (${e.status}), recycling same game`)
-            parsedIndex--
-         })
-      
-      if (game) {
-         const champions = cat.scribe(summoner.puuid, game)
-   
-         await createChampionDocument(client, summoner, champions.championName)
-         await client.collection(summoner.name).updateOne(
-            {'championName': champions.championName},
-            {$push: {'matches': {$each: [champions], $position: 0}}}
-         )
-      }
-   }
-   
-   await client.collection(summoner.name).updateOne(
-      {'name': summoner.name},
-      {$set: {'parsedIndex': matches.length}}
-   )
-
-   await client.collection(summoner.name).updateOne(
-      {'name': summoner.name},
-      {$set: {'activePull' : false}}
-   )
-
-   console.log(`Finished updating ${summoner.name}`)
-   result = (await client.collection(summoner.name).find({}).toArray())
-   res.send(result)
+   console.log(req.params)
+   console.log('toads')
+   res.send('toads')
 })
 
 async function loadSummonerCollection() {
@@ -201,12 +122,12 @@ async function summonerCheckInitialMatchPullv2(client, summoner, region) {
    // if (parsedIdxExist) {
    //    return
    // }
-   const summonerCollection = client.collection(summoner.name)
+   
    // Add new summoner to database
-   await summonerCollection.insertOne(summoner)
+   await client.collection(summoner.name).insertOne(summoner)
 
    // Live update flag
-   await summonerCollection.updateOne(
+   await client.collection(summoner.name).updateOne(
       {'name': summoner.name},
       {$set: {'activePull': true}}
    )
@@ -215,7 +136,7 @@ async function summonerCheckInitialMatchPullv2(client, summoner, region) {
    await matchIdPull(client, summoner, region)
 
    // Finalize summoner creation, add parsedIndex
-   await summonerCollection.updateOne(
+   await client.collection(summoner.name).updateOne(
       {'name': summoner.name},
       {$set : {'parsedIndex': 0}}
    )
@@ -226,7 +147,7 @@ async function summonerCheckInitialMatchPullv2(client, summoner, region) {
 async function matchIdPull(client, summoner, region) {
    const matchList = await twisted.getAllSummonerMatches(summoner.name, region)
       .catch((e) => {
-         console.log('matchIdPull Error', e) 
+         console.log('matchList',)
       })
    
    await client.collection(summoner.name).updateOne(
@@ -236,47 +157,83 @@ async function matchIdPull(client, summoner, region) {
 }
 
 async function matchParserV2(client, summoner, region) {
-   /*
-   Initial parse through summoner matches
-   */
 
+   // // Pull all games
+   // await matchIdPull(client, summoner, region)
+   
    const result = (await client.collection(summoner.name).find({}).toArray()).shift()
-   let matches = result.matchId.reverse()
 
-   await client.collection(summoner.name).updateOne(
-      {'name': summoner.name},
-      {$set: {'parsedIndex': matches.length}}
-   )
+   // if (result == undefined) {
+   //    await summonerCheckInitialMatchPullv2(client, summoner, region)
+   // }
 
-   for (let i = 0 ; i < matches.length; i++) {
+   let parsedIndex = result.parsedIndex
+   let matchIdReversed = result.matchId.reverse()
+
+   // if (parsedIndex == (result.matchId.length - 1)) {
+   //    console.log(`Account ${summoner.name} already parsed.`)
+   //    return
+   // }
+   if (parsedIndex == result.matchId.length) {
+      console.log(`Account ${summoner.name} already parsed.`)
+      return
+   }
+   
+   console.log(`Starting parse at ${parsedIndex}`)
+   // console.log(`Parsing match_id ${matchIdReversed[parsedIndex]}`)
+
+   for ( ; parsedIndex < matchIdReversed.length; parsedIndex++) {
       
-      console.log(`Parsing match: ${i}`)
+      console.log(`${parsedIndex}`)
 
-      const game = await twisted.getMatchInfo(matches[i], region)
+      const game = await twisted.getMatchInfo(matchIdReversed[parsedIndex], region)
          .catch(async (e) => {
-            if (e.status == 429) {
-               console.log(`Got rate limit check (${e.status}), recycling same game.`,)
-               i--
-            }
+            console.log(e.status)
          })
-      
+
       if (game) {
+         // console.log('1', game)
          const champions = cat.scribe(summoner.puuid, game)
+         // console.log('2', champions)
 
          await createChampionDocument(client, summoner, champions.championName)
+
+         // await client.collection(summoner.name).updateOne(
+         //    {'championName': champions.championName},
+         //    {$push: {'matches': champions}}
+         // )
+
          await client.collection(summoner.name).updateOne(
             {'championName': champions.championName},
             {$push: {'matches': {$each: [champions], $position: 0}}}
          )
+
+         await client.collection(summoner.name).updateOne(
+            {'name': summoner.name},
+            {$set: {'parsedIndex': parsedIndex}}
+         )
+
+         // await client.collection(summoner.name).updateOne(
+         //    {'matchEnd': matchEndIndex},
+         //    {$push: {'matches': champions}}
+         // )
+   
+         // if (parsedIndex != 0 && parsedIndex % 25 == 0) {
+         //    matchEndIndex = await addMatchContainer(client, summoner, parsedIndex, parsedIndex+25)
+         // }
+      } else {
+         console.log(`Got rate limit check, recycling same game.`)
+         parsedIndex--
       }
    }
 
-   console.log(`Finished initial match parse`)
-
+   console.log(`Finished parsing matches`)
    await client.collection(summoner.name).updateOne(
       {'name': summoner.name},
       {$set: {'activePull' : false}}
    )
+
+   return 
 }
 
 async function removeParse(client, summoner, matchEndIndex) {
