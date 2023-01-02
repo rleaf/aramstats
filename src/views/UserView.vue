@@ -15,6 +15,7 @@ import axios from 'axios'
             userInfo: this.$route.params,
             summonerInfo: null,
             userReadyRender: false,
+            userDNERender: false,
             activePull: false,
          }
       },
@@ -30,30 +31,33 @@ import axios from 'axios'
       
       created() {
          this.lookup()
-            .then((res) => this.summonerInfo = res)
       },
 
       watch: {
-         summonerInfo(curr, prev) {
-            if (this.summonerInfo === 'pulling') {
-               return
-            } else {
-               this.userReadyRender = true
-            }
-         }
+         // summonerInfo(curr, prev) {
+         //    if (this.summonerInfo === 'pulling') {
+         //       return
+         //    } else {
+         //       // this.userReadyRender = true
+         //    }
+         // }
       },
       
       methods: {
          async lookup() {
             const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
-            console.log('url', url)
             let data
 
             await axios.get(url)
-               .then(res => data = res.data)
-               .catch(e => console.log('error', e))
-
-            return data
+               .then(res => {
+                  this.summonerInfo = res.data
+                  this.userReadyRender = true
+               })
+               .catch(e => {
+                  if (e.response.status == 404) {
+                     this.userDNERender = true
+                  }
+               })
          },
       }
    }
@@ -62,10 +66,13 @@ import axios from 'axios'
 <template>
    <div>
       <UserLoading 
-         v-if="!userReadyRender"/>
+         v-if="!userReadyRender && !userDNERender"/>
       <UserReady
          v-if="userReadyRender"
          :userInfo="this.summonerInfo"/>
+      <UserDNE
+         v-if="userDNERender"
+         :user="this.$route.params.username"/>
    </div>
 </template>
 

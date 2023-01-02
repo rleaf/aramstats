@@ -96,7 +96,7 @@ export default {
 .dpm {
    font-size: 0.7rem;
    font-style: oblique;
-   color: var(--light3);
+   color: var(--color-font);
 }
 
 .tqp-match {
@@ -111,7 +111,7 @@ export default {
 .date {
    font-style: oblique;
    font-size: 0.7rem;
-   color: var(--light3);
+   color: var(--color-font);
 }
 
 .game-creation {
@@ -124,7 +124,7 @@ export default {
    display: flex;
    align-items: center;
    height: 40px;
-   color: var(--light3);
+   color: var(--color-font);
 }
 .right-box {
    display: flex;
@@ -132,20 +132,20 @@ export default {
    justify-content: flex-end;
    align-items: center;
    height: 40px;
-   color: var(--light3);
+   color: var(--color-font);
 }
 
 .win {
-   background: linear-gradient(90deg, rgba(0, 255, 0, 0.04), rgba(0, 255, 0, 0))
+   background: linear-gradient(90deg, var(--win), rgba(0, 0, 0, 0))
 }
 
 .loss {
-   background: linear-gradient(90deg, rgba(255, 0, 0, 0.07), rgba(255, 0, 0, 0))
+   background: linear-gradient(90deg, var(--loss), rgba(0, 0, 0, 0))
 }
 
 .match-container {
    font-size: 0.9rem;
-   border-top: 1px solid rgba(255, 255, 255, 0.1)
+   border-top: 1px solid var(--matches-border-top);
 }
 
 .match-cell {

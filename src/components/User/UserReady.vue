@@ -209,7 +209,7 @@ export default {
    pointer-events: none;
 }
 .sorting-by {
-   color: var(--light2);
+   color: var(--color-font);
    padding-bottom: 1rem;
 }
 .tqp {
@@ -226,18 +226,18 @@ export default {
 
 .headers > div {
    flex: 0 0 120px;
-   color: var(--light2);
+   color: var(--color-font);
 }
 
 .header:hover {
    text-decoration: underline;
-   color: var(--light1);
+   color: var(--color-font-hover);
    cursor: pointer;
 }
 
 .refresh-button a {
    font-size: 1rem;
-   border: 1px solid var(--light1);
+   border: 1px solid var(--color-font);
    border-radius: 5px;
    cursor: pointer;
    padding: 4px 9px;
@@ -268,7 +268,7 @@ export default {
    padding-top: 45px;
    padding-left: 45px;
    font-size: 1.5rem;
-   color: white;
+   color: var(--color-font);
 }
 
 .pfp {

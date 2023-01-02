@@ -37,12 +37,12 @@ export default {
 
 h2 {
    font-weight: normal;
-   color: var(--light2);
+   color: var(--color-font);
    text-align: center;
 }
 
 p {
-   color: var(--light2);
+   color: var(--color-font);
    text-align: center;
    width: 500px;
    line-height: 1.5;

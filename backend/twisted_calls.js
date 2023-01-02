@@ -11,8 +11,8 @@ const REGION_CONSTANTS = {
    euw: twisted.Constants.Regions.EU_WEST,
    eune: twisted.Constants.Regions.EU_EAST,
    kr: twisted.Constants.Regions.KOREA,
-   las: twisted.Constants.Regions.LAT_SOUTH,
    lan: twisted.Constants.Regions.LAT_NORTH,
+   las: twisted.Constants.Regions.LAT_SOUTH,
    oce: twisted.Constants.Regions.OCEANIA,
    tr: twisted.Constants.Regions.TURKEY,
    ru: twisted.Constants.Regions.RUSSIA,
@@ -23,9 +23,16 @@ const REGION_CONSTANTS = {
 
 const REGION_GROUPS = {
    na: RegionGroups.AMERICAS,
-   eu: RegionGroups.EUROPE,
-   kr: RegionGroups.KOREA,
-   oce: RegionGroups.SEA
+   euw: RegionGroups.EUROPE,
+   eune: RegionGroups.EUROPE,
+   kr: RegionGroups.ASIA,
+   lan: RegionGroups.AMERICAS,
+   las: RegionGroups.AMERICAS,
+   oce: RegionGroups.SEA,
+   tr: RegionGroups.EUROPE,
+   ru: RegionGroups.EUROPE,
+   jp: RegionGroups.ASIA,
+   br: RegionGroups.AMERICAS,
 }
 
 // Get Summoner info
@@ -49,7 +56,6 @@ async function getAllSummonerMatches(summoner, region) {
    for (let i = 0; stop; i=i+100) {
       const pull = await api.MatchV5.list(summonerGet.puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })
       matchList.push(pull.response)
-
 
       if (pull.response.length == 0) {
          stop = false

@@ -3,8 +3,11 @@
     <div>
       <h2>About</h2>
       <p>
+        <u>aramstats.lol</u> parses all of a summoner's ARAM games available in the Riot API.
+      </p>
+      <p>
         This site is new so there may be some lingering issues.
-        If you encounter any of these issues, feel free to reach out at <u>owl#4626</u> and let me know.
+        If you encounter any of these issues or have any neat ideas, feel free to reach out at <u>owl#4626</u>.
       </p>
     </div>
   </div>
@@ -21,12 +24,12 @@
 
 h2 {
   font-weight: normal;
-  color: var(--light2);
+  color: var(--color-font);
   text-align: center;
 }
 
 p {
-  color: var(--light2);
+  color: var(--color-font);
   text-align: center;
   width: 500px;
   line-height: 1.5;

@@ -19,10 +19,6 @@ export default {
 
    methods: {
       async onEnter() {
-         // Put route handling here
-         // Check if input field is empty
-         // Check if summoner exists....etc...
-         // Route to according page....etc...
          if (this.region == '' || this.input == '') {
             this.alertMessage = 'Enter a summoner name and/or region.'
             this.inputAlert = true
@@ -41,29 +37,7 @@ export default {
          }})
 
          this.callProc = true
-         // try {
-         //    const user = await this.lookup()
-         //    if(user) {
-         //       this.$router.push(
-         //          {path: `/${this.region.toLowerCase()}/${this.input}`}
-         //       )
-         //       console.log(user)
-         //    }
-         // } catch (err) {
-         //    console.log(err);
-         // }
       },
-
-      // async lookup() {
-      //    const url = 'http://localhost:5000/api/users'
-      //    try {
-      //       const res = await axios.get(url)
-      //       // console.log(res.data)
-      //       return res.data
-      //    } catch (err) {
-      //       console.log(err)
-      //    }
-      // },
 
       regionSelect(region) {
          this.region = region
@@ -75,7 +49,7 @@ export default {
 
 <template>
    <div class="search">
-      <h1>Howling Abyss Stats</h1>
+      <h1>ARAM Stats</h1>
       <div class="container">
          <input type="text" v-on:keyup.enter="onEnter" placeholder="Summoner Name" v-model="input">
          <!-- <button>Search</button> -->
@@ -85,6 +59,7 @@ export default {
             {id: 2, region: 'EUW'},
             {id: 3, region: 'EUNE'},
             {id: 4, region: 'OCE'},
+            {id: 5, region: 'KR'},
          ]"
             @region-emit="regionSelect" 
             />
@@ -109,24 +84,24 @@ export default {
 
 .container {
    /* display: inline-block; */
-   background-color: var(--light1);
+   background-color: var(--search-bar);
    border-radius: 5px;
 }
 
 input {
    display: inline-block;
-   background-color: var(--light1);
+   background-color: var(--search-bar);
    border: none;
    border-radius: 5px;
    padding: 1rem;
    font-size: 1rem;
-   color: var(--dark3);
+   color: var(--color-font-search);
    /* width: 300px; */
 }
 
 input:focus {
    outline: none;
-   background-color: var(--light1);
+   background-color: var(--search-bar);
    transition: 0.4s;
 }
 

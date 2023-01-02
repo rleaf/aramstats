@@ -2,7 +2,7 @@
 export default {
    data() {
       return {
-         msg: `This project isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.`,
+         msg: `Aramstats.lol isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.`,
       }
    }
 }
@@ -16,7 +16,7 @@ export default {
 
 <style scoped>
 .legal {
-   color: var(--light3);
+   color: var(--color-font);
    text-align: center;
    position: absolute;
    max-width: 800px;

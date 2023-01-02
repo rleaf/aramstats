@@ -105,6 +105,12 @@ export default {
       }
    },
 
+   computed: {
+      trueChampionName() {
+         return (this.champion.trueChampionName) ? this.champion.trueChampionName : this.champion.championName
+      }
+   },
+
    props: {
       champion: Object
    }
@@ -116,7 +122,7 @@ export default {
       <div class="row-stats">
          <img :src="(this.champion.championName == 'FiddleSticks') ? this.fid : championIcon" alt="">
          <div class="champ-name cell">
-            {{  this.champion.championName }}
+            {{ trueChampionName }}
          </div>
          <div class="total-games cell">
             {{ this.champion.totalGames }}
@@ -176,7 +182,7 @@ export default {
 .avg-dpm {
    font-size: 0.7rem;
    font-style: oblique;
-   color: var(--light3);
+   color: var(--color-font);
 }
 .tqp-1 {
    display: inline-block;
@@ -184,7 +190,7 @@ export default {
    /* padding-right: 20px; */
 }
 .matches {
-   border-top: 1px solid rgba(255, 255, 255, 0.3);
+   border-top: 1px solid var(--border-top);
 }
 
 .row-container {
@@ -194,11 +200,11 @@ export default {
 }
 
 .style-0 {
-   background-color: rgba(0, 0, 0, 0.65);
+   background-color: var(--champion-0);
 }
 
 .style-1 {
-   background-color: rgba(0, 0, 0, 0.45);
+   background-color: var(--champion-1);
 }
 
 .row-stats {
@@ -206,7 +212,7 @@ export default {
    align-items: center;
    height: 40px;
    /* background-color: #36375a; */
-   color: var(--light2);
+   color: var(--color-font);
 }
 
 img {

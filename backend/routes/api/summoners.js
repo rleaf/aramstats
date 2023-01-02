@@ -15,15 +15,15 @@ const router = express.Router()
 router
    .route('/:region/:summonerURI')
    .get(async (req, res) => {
-      
+
       // console.log(`router: ${req.app.queueMw}`)
       // console.log(`queueLength: ${queueMw.queue.getLength()}`)
 
       // Check summoner existence.
       const summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
          .catch((e) => {
-            console.log('Summoner DNE', e.status)
-            res.send('Summoner DNE')
+            // console.log('Summoner DNE', e.status)
+            res.status(404).send('Summoner DNE')
             return
          })
 
@@ -58,10 +58,7 @@ router
 
             return
          } 
-            // else {
-            //    await matchIdPull(client, summoner, req.params.region)
-            // }
-         
+
          // Create summoner collection and pull all matchIds
          await summonerCheckInitialMatchPullv2(client, summoner, req.params.region)
                   
@@ -117,7 +114,7 @@ router.get('/update/:region/:summonerURI', async (req, res) => {
    
    const client = await loadSummonerCollection()
 
-   check = await summonerCollection.findOne(
+   check = await client.collection(summoner.name).findOne(
       {'activePull': {$exists: true}}
    )
 
@@ -157,12 +154,14 @@ router.get('/update/:region/:summonerURI', async (req, res) => {
       
       if (game) {
          const champions = cat.scribe(summoner.puuid, game)
-   
-         await createChampionDocument(client, summoner, champions.championName)
-         await client.collection(summoner.name).updateOne(
-            {'championName': champions.championName},
-            {$push: {'matches': {$each: [champions], $position: 0}}}
-         )
+
+         if (champions) {
+            await createChampionDocument(client, summoner, champions.championName)
+            await client.collection(summoner.name).updateOne(
+               {'championName': champions.championName},
+               {$push: {'matches': {$each: [champions], $position: 0}}}
+            )
+         }
       }
    }
    
@@ -263,11 +262,13 @@ async function matchParserV2(client, summoner, region) {
       if (game) {
          const champions = cat.scribe(summoner.puuid, game)
 
-         await createChampionDocument(client, summoner, champions.championName)
-         await client.collection(summoner.name).updateOne(
-            {'championName': champions.championName},
-            {$push: {'matches': {$each: [champions], $position: 0}}}
-         )
+         if (champions) {
+            await createChampionDocument(client, summoner, champions.championName)
+            await client.collection(summoner.name).updateOne(
+               {'championName': champions.championName},
+               {$push: {'matches': {$each: [champions], $position: 0}}}
+            )
+         }
       }
    }
 
@@ -294,10 +295,36 @@ async function createChampionDocument(client, summoner, champion) {
    const food = await client.collection(summoner.name).findOne({ championName: champion})
 
    if (food == undefined) {
+
+      const championNameBook = {
+         'AurelionSol' : 'Aurelion Sol',
+         'Belveth' : "Bel'Veth",
+         'Chogath' : "Cho'Gath",
+         'DrMundo' : 'Dr. Mundo',
+         'FiddleSticks' : 'Fiddlesticks',
+         'JarvanIV' : 'Jarvan IV',
+         "KSante" : "K'Sante",
+         "Kaisa" : "Kai'Sa",
+         'Khazix' : "Kha'Zix",
+         'KogMaw' : "Kog'Maw",
+         'Leblanc' : 'LeBlanc',
+         'LeeSin' : 'Lee Sin',
+         'MasterYi' : 'Master Yi',
+         'MissFortune' : 'Miss Fortune',
+         'MonkeyKing' : 'Wukong',
+         'Nunu' : 'Nunu & Willump',
+         'RekSai' : "Rek'Sai",
+         'Renata' : 'Renata Glasc',
+         'TahmKench' : 'Tahm Kench',
+         'TwistedFate' : 'Twisted Fate',
+         'Velkoz' : "Vel'Koz",
+         'XinZhao' : 'Xin Zhao'
+      }
+      
       await client.collection(summoner.name).insertOne(
          { 
             championName: champion,
-            trueChampionName: '',
+            trueChampionName: championNameBook[champion],
             totalGames: 0,
             wins: 0,
             averageTotalDamageDealt: 0,

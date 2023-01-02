@@ -37,12 +37,12 @@ a {
    padding-right: 0.5rem;
    font-size: 1.1rem;
    text-decoration: none;
-   color: var(--light2);
+   color: var(--color-font);
    transition: 0.4s;
 }
 
 a:hover {
-   color: #ffffff;
+   color: var(--color-font-hover);
 }
 
 </style>

@@ -1,19 +1,35 @@
 /* @import './base.css'; */
 :root {
   --light1: #ffffff;
-  --light2: #cfcfcf;
+  --light2: #dadada;
   --light3: #acacac;
-  
-  /* --dark1: #16192c; */
-  /* Temporary while working on backend*/
-  --dark1: #021930;
-  /* --dark1: hsl(240, 38%, 13%); */
+  --light4: rgba(204, 204, 204, 0.65);
+  --light5: rgba(228, 228, 228, 0.65);
+  --light6: rgba(255, 255, 255, 0.123);
+  --light7: rgba(255, 255, 255, 0.514);
+  --lightWin: rgba(116, 214, 116, 0.603);
+  --lightLoss: rgba(236, 125, 125, 0.603);
+  --lightBorder: 
+  /* --matches-border-top-day: rgba(255, 255, 255, 0.1); */
+
+
+  --dark1: #4d4d4d;
   --dark2: #434368;
   --dark3: #000;
+  --dark4: rgba(0, 0, 0, 0.65);
+  --dark5: rgba(0, 0, 0, 0.45);
+  --dark6: rgba(0, 0, 0, 0.384);
+  /* dark7 = dark5 */
+  --darkWin: rgba(0, 255, 0, 0.062);
+  --darkLoss: rgba(255, 0, 0, 0.075);
+
+  --blue1: #021930;
+  --blue2: #434368;
+  --blue3: #000;
+  /* --match-border-top:  */
 
   --test: #484880;
 
-  --blue1: #cfcfcf;
 
   --font-main: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
     Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -21,13 +37,33 @@
 
 :root {
   --color-background: var(--light1);
-  --color-font: var(--blue1);
-  --color-blue1: var(--blue1);
+  --color-font: var(--dark3);
+  --color-font-search: var(--dark3);
+  --color-font-hover: var(--dark1);
+  --search-bar: var(--light2);
+  --search-bar-dropdown-hover: var(--light3);
+  --champion-0: var(--light4);
+  --champion-1: var(--light5);
+  --win: var(--lightWin);
+  --loss: var(--lightLoss);
+
+  --matches-border-top: var(--dark6);
+  --border-top: var(--dark5);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-background: var(--dark1);
+    --color-background: var(--blue1);
+    --color-font: var(--light2);
+    --color-font-search: var(--dark3);
+    --color-font-hover: var(--light1);
+    --champion-0: var(--dark4);
+    --champion-1: var(--dark5);
+    --win: var(--darkWin);
+    --loss: var(--darkLoss);
+    
+    --matches-border-top: var(--light6);
+    --border-top: var(--light7);
   }
 }
 
@@ -44,5 +80,5 @@ body {
 h1 {
    font-weight: normal;
    font-size: 2rem;
-   color: var(--color-blue1);
+   color: var(--color-font);
 }
