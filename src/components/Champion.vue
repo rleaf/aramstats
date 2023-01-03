@@ -12,87 +12,7 @@ export default {
          championIcon: `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/champion/${this.champion.championName}.png`,
          fid: `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/champion/Fiddlesticks.png`,
          expand: false,
-         // table: {
-         //    isLoading: false,
-         //    columns: [
-         //       {
-         //          label: "Champion",
-         //          field: "championName",
-         //          sortable: true,
-         //          isKey: true,
-         //       },
-         //       {
-         //          label: "Total Games",
-         //          field: "totalGames",
-         //          sortable: true,
-         //       },
-         //       {
-         //          label: "Wins",
-         //          field: "wins",
-         //          sortable: true,
-         //       },
-         //       {
-         //          label: "Avg Damage",
-         //          field: "averageTotalDamageDealt",
-         //          sortable: true,
-         //       },
-         //       {
-         //          label: "Avg Healing",
-         //          field: "averageHealingOnTeammates",
-         //          sortable: true,
-         //       },
-         //       {
-         //          label: "Avg DT",
-         //          field: "averageTotalDamageTaken",
-         //          sortable: true,
-         //       },
-         //       {
-         //          label: "Avg KDA",
-         //          field: "averageKDA",
-         //          sortable: true,
-         //       },
-         //       {
-         //          label: "Avg Gold",
-         //          field: "averageGoldEarned",
-         //          sortable: true,
-         //       },
-         //       {
-         //          label: "Triple Kills",
-         //          field: "totalTripleKills",
-         //          sortable: true,
-         //       },
-         //       {
-         //          label: "Quadra Kills",
-         //          field: "totalQuadraKills",
-         //          sortable: true,
-         //       },
-         //       {
-         //          label: "Penta Kills",
-         //          field: "totalPentaKills",
-         //          sortable: true,
-         //       },
-               
-         //    ],
-         //    rows: [
-
-         //    ],
-         //    totalRecordCount: 0,
-         //    sortable: {
-         //       order: "id",
-         //       sort: "asc",
-         //    },
-         // }
       }
-   },
-
-   mounted() {
-      // for (let i = 1; i < this.champion.length; i++) {
-         //    this.table.rows.push(this.champion[i])
-         // }
-         // if (this.champion.championName == 'TahmKench') {
-         //    this.champion.championName = 'Tahm Kench'
-         // }
-         
    },
 
    methods: {
@@ -206,7 +126,6 @@ export default {
 .row-container {
    max-width: 1200px;
    margin-bottom: 2px;
-   /* background-color: rgba(0, 0, 0, 0.6); */
 }
 
 .style-0 {
@@ -221,20 +140,16 @@ export default {
    display: flex;
    align-items: center;
    height: 40px;
-   /* background-color: #36375a; */
    color: var(--color-font);
 }
 
 img {
    height: 36px;
-   /* padding-top: 4px; */
    padding-left: 2px;
    padding-right: 8px;
 }
 
 .cell {
-   /* width: 109px; */
-   /* width: 200px; */
    flex: 0 0 120px;
 }
 </style>

@@ -4,26 +4,18 @@ const dotenv = require('dotenv')
 const twisted = require('../../twisted_calls')
 const cat = require('../../cat')
 
-// const queue = require('express-queue')
-// const queueMw = queue({ activeLimit: 1, queuedLimit: -1})
 dotenv.config()
 
 const router = express.Router()
-// router.use(queueMw)
-
 
 router
    .route('/:region/:summonerURI')
    .get(async (req, res) => {
 
-      // console.log(`router: ${req.app.queueMw}`)
-      // console.log(`queueLength: ${queueMw.queue.getLength()}`)
-
       // Check summoner existence.
       const summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
          .catch((e) => {
-            // console.log('Summoner DNE', e.status)
-            res.status(404).send('Summoner DNE')
+            res.status(e.status).send(e.statusText)
             return
          })
 

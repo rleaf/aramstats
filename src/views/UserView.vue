@@ -1,13 +1,13 @@
 <script>
 import UserLoading from '../components/User/UserLoading.vue'
-import UserDNE from '../components/User/UserDNE.vue'
+import UserError from '../components/User/UserError.vue'
 import UserReady from '../components/User/UserReady.vue'
 import axios from 'axios'
 
    export default {
       components: {
          UserLoading,
-         UserDNE,
+         UserError,
          UserReady
       },
       data() {
@@ -15,8 +15,9 @@ import axios from 'axios'
             userInfo: this.$route.params,
             summonerInfo: null,
             userReadyRender: false,
-            userDNERender: false,
+            userErrorRender: false,
             activePull: false,
+            errorStatusParent: Number,
          }
       },
       // beforeRouteEnter(to, from, next) {
@@ -57,9 +58,8 @@ import axios from 'axios'
                   }
                })
                .catch(e => {
-                  if (e.response.status == 404) {
-                     this.userDNERender = true
-                  }
+                  this.errorStatusParent = e.response.status
+                  this.userErrorRender = true
                })
          },
       }
@@ -69,13 +69,14 @@ import axios from 'axios'
 <template>
    <div>
       <UserLoading 
-         v-if="!userReadyRender && !userDNERender"/>
+         v-if="!userReadyRender && !userErrorRender"/>
       <UserReady
          v-if="userReadyRender"
          :userInfo="this.summonerInfo"/>
-      <UserDNE
-         v-if="userDNERender"
-         :user="this.$route.params.username"/>
+      <UserError
+         v-if="userErrorRender"
+         :user="this.$route.params.username"
+         :errorStatus="this.errorStatusParent"/>
    </div>
 </template>
 

@@ -32,18 +32,16 @@ export default {
    width: 100%;
    justify-content: center;
    margin-top: 20vh;
-   /* align-items: center; */
+   text-align: center;
 }
 
 h2 {
    font-weight: normal;
    color: var(--color-font);
-   text-align: center;
 }
 
 p {
    color: var(--color-font);
-   text-align: center;
    width: 500px;
    line-height: 1.5;
 }

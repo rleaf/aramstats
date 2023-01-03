@@ -14,24 +14,31 @@ export default {
    },
 
    created() {
-      this.date = new Date(this.match.gameCreation)
-      const now = Date.now()
-      const diffTime = Math.abs(this.date - now)
-      this.daysSince = Math.round(diffTime / (1000 * 60 * 60 * 24))
-      this.date = this.date.toLocaleString().split(/[ ,]+/)[0]
-
-      // console.log(this.match)
-
-      for (let i = 0; i < 7; i++) {
-         if (this.match[`item${i}`] != 0) {
-            let x = `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/item/${this.match[`item${i}`]}.png`
-            this.items.push(x)
-         }
-      }
+      this.timeSet()
+      this.itemImages()
    },
    
    props: {
       match: Object
+   },
+
+   methods: {
+      timeSet() {
+         this.date = new Date(this.match.gameCreation)
+         const now = Date.now()
+         const diffTime = Math.abs(this.date - now)
+         this.daysSince = Math.round(diffTime / (1000 * 60 * 60 * 24))
+         this.date = this.date.toLocaleString().split(/[ ,]+/)[0]
+      },
+
+      itemImages() {
+         for (let i = 0; i < 7; i++) {
+            if (this.match[`item${i}`] != 0) {
+               let x = `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/item/${this.match[`item${i}`]}.png`
+               this.items.push(x)
+            }
+         }
+      }
    }
 
 }
@@ -102,7 +109,6 @@ export default {
 .tqp-match {
    display: inline-block;
    width: 40px;
-   /* padding-right: 20px; */
 }
 .match-items img {
    width: 25px;

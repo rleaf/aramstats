@@ -16,10 +16,6 @@ export default {
       },
    },
 
-   mounted() {
-
-   },
-   
    methods: {
       showOptions() {
          this.optionsShown = true
