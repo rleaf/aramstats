@@ -169,16 +169,26 @@ export default {
       </div>
       <!-- <Transition name="slide">
       </Transition> -->
-      <div class="matches" v-show="this.expand">
-         <Match v-for="match in this.champion.matches"
-         :key="match.matchId"
-         :match="match"
-         :class="winOrLoss(match)"/>
-      </div>
+         <div class="matches" v-show="this.expand">
+            <Match v-for="match in this.champion.matches"
+            :key="match.matchId"
+            :match="match"
+            :class="winOrLoss(match)"/>
+         </div>
    </div>
 </template>
 
 <style scoped>
+/* .slide-enter-active,
+.slide-leave-active {
+   transition: all 0.3s ease-out;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+   transform: translateY(-80px);
+   opacity: 0;
+} */
 .avg-dpm {
    font-size: 0.7rem;
    font-style: oblique;

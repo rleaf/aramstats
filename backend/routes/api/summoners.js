@@ -41,7 +41,7 @@ router
          )
    
          if(check && check.activePull == true) {
-            console.log('already pulling')
+            console.log(`already pulling ${summoner.name}`)
             res.send('pulling')
             return 
          }
@@ -95,7 +95,7 @@ router
             )
          })
 
-         console.log(`Finished parsing ${summoner.name}`)
+         console.log(`Finished parsing ${summoner.name} (${req.params.region})`)
          // Yeet data
          result = (await client.collection(summoner.name).find({}).toArray())
          res.send(result)
@@ -144,7 +144,7 @@ router.get('/update/:region/:summonerURI', async (req, res) => {
 
    for ( ; parsedIndex < matches.length; parsedIndex++) {
 
-      console.log(`Parsing match: ${parsedIndex}`)
+      console.log(`Updating ${summoner.name} ${req.params.region}, match ${parsedIndex}`)
 
       const game = await twisted.getMatchInfo(matches[parsedIndex], req.params.region)
          .catch(async (e) => {
@@ -249,7 +249,9 @@ async function matchParserV2(client, summoner, region) {
 
    for (let i = 0 ; i < matches.length; i++) {
       
-      console.log(`Parsing match: ${i}`)
+      if (i % 10 == 0) {
+         console.log(`Parsing ${summoner.name} (${region}), match ${i}`)
+      }
 
       const game = await twisted.getMatchInfo(matches[i], region)
          .catch(async (e) => {

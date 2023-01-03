@@ -191,11 +191,11 @@ export default {
          <div :key="this.championKey">
             <!-- <transition-group name="flip-list">
             </transition-group> -->
-            <Champion v-for="(champ, i) in sortedChamps"
-            :key="champ.championName"
-            :champion=champ
-            :class="everyOther(i)"
-            />
+               <Champion v-for="(champ, i) in sortedChamps"
+               :key="champ.championName"
+               :champion=champ
+               :class="everyOther(i)"
+               />
          </div>
       </div>
    </div>
@@ -251,6 +251,7 @@ export default {
 
 .stats-main {
    display: block;
+   padding-bottom: 10vh;
 }
 
 .profile-landing {

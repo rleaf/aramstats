@@ -33,25 +33,28 @@ import axios from 'axios'
          this.lookup()
       },
 
-      watch: {
-         // summonerInfo(curr, prev) {
-         //    if (this.summonerInfo === 'pulling') {
-         //       return
-         //    } else {
-         //       // this.userReadyRender = true
-         //    }
-         // }
-      },
+      // watch: {
+      //    summonerInfo(curr, prev) {
+      //       if (this.summonerInfo === 'pulling') {
+      //          return
+      //       } else {
+      //          // this.userReadyRender = true
+      //       }
+      //    }
+      // },
       
       methods: {
          async lookup() {
             const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
-            let data
 
             await axios.get(url)
                .then(res => {
                   this.summonerInfo = res.data
-                  this.userReadyRender = true
+                  if (res.data === 'pulling') {
+                     return
+                  } else {
+                     this.userReadyRender = true
+                  }
                })
                .catch(e => {
                   if (e.response.status == 404) {
