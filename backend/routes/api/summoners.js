@@ -15,8 +15,13 @@ router
       // Check summoner existence.
       const summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
          .catch((e) => {
-            res.status(e.status).send(e.statusText)
-            return
+            if (e.status == 429) {
+               console.log(`Hit rate limit on getSummoner for ${req.params.summonerURI} (${req.params.region})`)
+            }
+            if (e.status == 404) {
+               res.status(e.status).send(e.statusText)
+               return
+            }
          })
 
       const client = await loadSummonerCollection()
@@ -211,19 +216,31 @@ async function summonerCheckInitialMatchPullv2(client, summoner, region) {
       {$set : {'parsedIndex': 0}}
    )
    
-   console.log(`Added ${summoner.name} to database.`)
+   console.log(`Added ${summoner.name} (${region}) to database.`)
 }
 
 async function matchIdPull(client, summoner, region) {
-   const matchList = await twisted.getAllSummonerMatches(summoner.name, region)
-      .catch((e) => {
-         console.log('matchIdPull Error', e) 
+   // const matchList = await twisted.getAllSummonerMatches(summoner.name, region)
+   // let matchList
+
+   await twisted.getAllSummonerMatches(summoner.name, region)
+      .then((res) => {
+         let matchList = res
+
+         client.collection(summoner.name).updateOne(
+            {'name': summoner.name},
+            {$set : {'matchId': matchList}}
+         )
+      })
+      .catch(async (e) => {
+         console.log(`(${e.status}) @ matchIdPull. Repulling summoner matches.`) 
+         await matchIdPull(client, summoner, region)
       })
 
-   await client.collection(summoner.name).updateOne(
-      {'name': summoner.name},
-      {$set : {'matchId': matchList}}
-   )
+   // await client.collection(summoner.name).updateOne(
+   //    {'name': summoner.name},
+   //    {$set : {'matchId': matchList}}
+   // )
 }
 
 async function matchParserV2(client, summoner, region) {
@@ -248,7 +265,7 @@ async function matchParserV2(client, summoner, region) {
       const game = await twisted.getMatchInfo(matches[i], region)
          .catch(async (e) => {
             if (e.status == 429) {
-               console.log(`Got rate limit check (${e.status}), recycling same game.`,)
+               console.log(`(${e.status}) @ getMatchInfo. Recycling same game.`,)
                i--
             }
          })

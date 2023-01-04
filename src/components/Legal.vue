@@ -17,10 +17,14 @@ export default {
 <style scoped>
 .legal {
    color: var(--color-font);
+   left: 0;
+   right: 0;
+   margin-left: auto;
+   margin-right: auto;
    text-align: center;
    position: absolute;
    max-width: 800px;
    font-size: 0.9rem;
-   bottom: 2rem;
+   bottom: 3rem;
 }
 </style>

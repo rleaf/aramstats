@@ -1,12 +1,11 @@
 <script>
 import Dropdown from '../components/Dropdown.vue'
-import Legal from './Legal.vue'
 
 export default {
    components: {
       Dropdown,
-      Legal
    },
+
    data() {
       return {
          input: '',
@@ -69,7 +68,6 @@ export default {
                {{ this.alertMessage }}
             </div>
          </Transition>
-         <Legal />
    </div>
 </template>
 

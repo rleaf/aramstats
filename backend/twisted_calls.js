@@ -1,3 +1,4 @@
+const e = require('express')
 const twisted = require('twisted')
 const { RegionGroups } = require('twisted/dist/constants')
 const api = new twisted.LolApi({
@@ -42,7 +43,6 @@ async function getSummoner(summoner, region) {
 
 // Get variable match history of ARAM games. Primarily used for utility.
 async function getSummonerMatches(summoner, region) {
-   // const summonerGet = (await api.Summoner.getByName(summoner, twisted.Constants.Regions.OCEANIA)).response
    const summonerGet = (await api.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
    return (await api.MatchV5.list(summonerGet.puuid, REGION_GROUPS[region], { queue: 450, start: 0, count: 5 })).response
 }
@@ -61,19 +61,6 @@ async function getAllSummonerMatches(summoner, region) {
          stop = false
       }
    }
-      
-   // let i = 0
-   // while (stop) {
-   //    const pull = (await api.MatchV5.list(summonerGet.puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })).response
-
-   //    matchList.push(pull)
-   //    if(pull.length == 0) {
-   //       stop = false
-   //    }
-
-   //    i+=100
-   // }
-
 
    return matchList.flat()
 }
