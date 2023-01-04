@@ -48,7 +48,7 @@ router
             )
 
          if(parsedIdxExist) {
-            console.log(`Summoner ${summoner.name} already initially parsed`)
+            console.log(`Summoner ${summoner.name} (${req.params.region}) already initially parsed`)
 
             result = (await client.collection(summoner.name).find({}).toArray())
             res.send(result)
@@ -57,13 +57,24 @@ router
          } 
 
          // Create summoner collection and pull all matchIds
-         await summonerCheckInitialMatchPullv2(client, summoner, req.params.region)
+         await summonerCheckInitialMatchPullv2(summonerCollection, summoner, req.params.region)
                   
          // Parse & scribe individual matches
-         await matchParserV2(client, summoner, req.params.region)
+         await matchParserV2(summonerCollection, summoner, req.params.region)
 
-         // Add total matches per champ
-         const allChamps = await summonerCollection.find(
+         // Average all matches
+         await totalMatches(summonerCollection)
+
+         console.log(`Finished parsing ${summoner.name} (${req.params.region})`)
+         // Yeet data
+         result = (await client.collection(summoner.name).find({}).toArray())
+         res.send(result)
+      }
+   })
+
+async function totalMatches(collection) {
+   // const summonerCollection = client.collection(summoner.name)
+   const allChamps = await collection.find(
             {'championName': {$exists: true}}
          ).toArray()
 
@@ -73,7 +84,7 @@ router
             let avg = cat.averages(x.matches).flat()
 
             // Pushing data
-            await client.collection(summoner.name).updateOne(
+            await collection.updateOne(
                {'championName': x.championName},
                {$set: {
                   'totalGames': avg[0],
@@ -91,37 +102,29 @@ router
                }
             )
          })
-
-         console.log(`Finished parsing ${summoner.name} (${req.params.region})`)
-         // Yeet data
-         result = (await client.collection(summoner.name).find({}).toArray())
-         res.send(result)
-      }
-   })
-
+}
 
 router.get('/update/:region/:summonerURI', async (req, res) => {
    
    const summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
-   .catch((e) => {
-      console.log('Summoner DNE', e.status)
-      res.send('Summoner DNE')
-      return
-   })
-   
+      .catch((e) => {
+         console.log(`Update error for ${req.params.summonerURI}`, e)
+         return
+      })
    const client = await loadSummonerCollection()
+   const summonerCollection = client.collection(summoner.name)
 
-   check = await client.collection(summoner.name).findOne(
+   check = await summonerCollection.findOne(
       {'activePull': {$exists: true}}
    )
 
    if(check && check.activePull == true) {
-      console.log('Already updating summoner')
+      console.log(`Already updating ${summoner.name} (${req.params.region})`)
       res.send('Already updating')
       return 
    }
 
-   await client.collection(summoner.name).updateOne(
+   await summonerCollection.updateOne(
       {'name': summoner.name},
       {$set: {'activePull' : true}}
    )
@@ -131,17 +134,30 @@ router.get('/update/:region/:summonerURI', async (req, res) => {
          - Get current parsed Index
          - Iterate over matchId pull with parsed Index
    */
-   await matchIdPull(client, summoner, req.params.region)
-   const summonerDB = client.collection(summoner.name).findOne(
+   const summonerDoc = await summonerCollection.findOne(
       {'name': summoner.name}
    )
-   
-   let parsedIndex = (await summonerDB).parsedIndex
-   let matches = (await summonerDB).matchId.reverse()
 
+
+   let matches = (await matchIdPull(summonerCollection, summoner, req.params.region, length=true)).reverse()
+   let parsedIndex = (await summonerDoc).parsedIndex
+
+   if (matches[parsedIndex] == undefined) {
+      console.log(`${summoner.name} (${req.params.region}) already updated.`)
+
+      await summonerCollection.updateOne(
+         {'name': summoner.name},
+         {$set: {'activePull' : false}}
+      )
+
+      result = (await summonerCollection.find({}).toArray())
+      res.send(result)
+      return
+   }
+   
    for ( ; parsedIndex < matches.length; parsedIndex++) {
 
-      console.log(`Updating ${summoner.name} ${req.params.region}, match ${parsedIndex}`)
+      console.log(`Updating ${summoner.name} (${req.params.region}), match ${matches[parsedIndex]}`)
 
       const game = await twisted.getMatchInfo(matches[parsedIndex], req.params.region)
          .catch(async (e) => {
@@ -153,27 +169,31 @@ router.get('/update/:region/:summonerURI', async (req, res) => {
          const champions = cat.scribe(summoner.puuid, game)
 
          if (champions) {
-            await createChampionDocument(client, summoner, champions.championName)
-            await client.collection(summoner.name).updateOne(
+            await createChampionDocument(summonerCollection, champions.championName)
+            await summonerCollection.updateOne(
                {'championName': champions.championName},
                {$push: {'matches': {$each: [champions], $position: 0}}}
             )
          }
       }
+      
    }
    
-   await client.collection(summoner.name).updateOne(
+   // Get new averages
+   totalMatches(summonerCollection)
+   
+   await summonerCollection.updateOne(
       {'name': summoner.name},
       {$set: {'parsedIndex': matches.length}}
    )
 
-   await client.collection(summoner.name).updateOne(
+   await summonerCollection.updateOne(
       {'name': summoner.name},
       {$set: {'activePull' : false}}
    )
 
    console.log(`Finished updating ${summoner.name}`)
-   result = (await client.collection(summoner.name).find({}).toArray())
+   result = (await summonerCollection.find({}).toArray())
    res.send(result)
 })
 
@@ -188,7 +208,7 @@ async function loadSummonerCollection() {
 //    });
 // }
 
-async function summonerCheckInitialMatchPullv2(client, summoner, region) {
+async function summonerCheckInitialMatchPullv2(collection, summoner, region) {
 
    // parsedIdxExist = await client.collection(summoner.name).findOne(
    //    {'parsedIndex': {$exists: true}}
@@ -197,61 +217,59 @@ async function summonerCheckInitialMatchPullv2(client, summoner, region) {
    // if (parsedIdxExist) {
    //    return
    // }
-   const summonerCollection = client.collection(summoner.name)
    // Add new summoner to database
-   await summonerCollection.insertOne(summoner)
+   await collection.insertOne(summoner)
 
    // Live update flag
-   await summonerCollection.updateOne(
+   await collection.updateOne(
       {'name': summoner.name},
       {$set: {'activePull': true}}
    )
 
    // Pull all games
-   await matchIdPull(client, summoner, region)
+   await matchIdPull(collection, summoner, region)
 
    // Finalize summoner creation, add parsedIndex
-   await summonerCollection.updateOne(
+   await collection.updateOne(
       {'name': summoner.name},
       {$set : {'parsedIndex': 0}}
    )
    
-   console.log(`Added ${summoner.name} (${region}) to database.`)
+   let length = (await collection.findOne({'name': summoner.name})).matchId.length
+   console.log(`Added ${summoner.name} (${region}) to database, [${length} matches].`)
 }
 
-async function matchIdPull(client, summoner, region) {
-   // const matchList = await twisted.getAllSummonerMatches(summoner.name, region)
-   // let matchList
-
+async function matchIdPull(collection, summoner, region, length=false) {
+   let matchList
+   
    await twisted.getAllSummonerMatches(summoner.name, region)
       .then((res) => {
-         let matchList = res
+         matchList = res
 
-         client.collection(summoner.name).updateOne(
+         collection.updateOne(
             {'name': summoner.name},
             {$set : {'matchId': matchList}}
          )
       })
       .catch(async (e) => {
          console.log(`(${e.status}) @ matchIdPull. Repulling summoner matches.`) 
-         await matchIdPull(client, summoner, region)
+         await matchIdPull(collection, summoner, region)
       })
 
-   // await client.collection(summoner.name).updateOne(
-   //    {'name': summoner.name},
-   //    {$set : {'matchId': matchList}}
-   // )
+   if (length) {
+      return matchList
+   }
 }
 
-async function matchParserV2(client, summoner, region) {
+async function matchParserV2(collection, summoner, region) {
    /*
    Initial parse through summoner matches
    */
 
-   const result = (await client.collection(summoner.name).find({}).toArray()).shift()
+   const result = (await collection.find({}).toArray()).shift()
    let matches = result.matchId.reverse()
 
-   await client.collection(summoner.name).updateOne(
+   await collection.updateOne(
       {'name': summoner.name},
       {$set: {'parsedIndex': matches.length}}
    )
@@ -274,8 +292,8 @@ async function matchParserV2(client, summoner, region) {
          const champions = cat.scribe(summoner.puuid, game)
 
          if (champions) {
-            await createChampionDocument(client, summoner, champions.championName)
-            await client.collection(summoner.name).updateOne(
+            await createChampionDocument(collection, champions.championName)
+            await collection.updateOne(
                {'championName': champions.championName},
                {$push: {'matches': {$each: [champions], $position: 0}}}
             )
@@ -285,7 +303,7 @@ async function matchParserV2(client, summoner, region) {
 
    console.log(`Finished initial match parse`)
 
-   await client.collection(summoner.name).updateOne(
+   await collection.updateOne(
       {'name': summoner.name},
       {$set: {'activePull' : false}}
    )
@@ -302,8 +320,8 @@ async function removeParse(client, summoner, matchEndIndex) {
    console.log(`Got rate limit check, reducing parsedIndex by 1`)
 }
 
-async function createChampionDocument(client, summoner, champion) {
-   const food = await client.collection(summoner.name).findOne({ championName: champion})
+async function createChampionDocument(collection, champion) {
+   const food = await collection.findOne({ championName: champion})
 
    if (food == undefined) {
 
@@ -332,7 +350,7 @@ async function createChampionDocument(client, summoner, champion) {
          'XinZhao' : 'Xin Zhao'
       }
       
-      await client.collection(summoner.name).insertOne(
+      await collection.insertOne(
          { 
             championName: champion,
             trueChampionName: championNameBook[champion],
