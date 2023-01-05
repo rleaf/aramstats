@@ -75,33 +75,33 @@ router
 async function totalMatches(collection) {
    // const summonerCollection = client.collection(summoner.name)
    const allChamps = await collection.find(
-            {'championName': {$exists: true}}
-         ).toArray()
+      {'championName': {$exists: true}}
+   ).toArray()
 
-         // Parse average stats of all games
-         allChamps.forEach(async x => {
+   // Parse average stats of all games
+   allChamps.forEach(async x => {
 
-            let avg = cat.averages(x.matches).flat()
+      let avg = cat.averages(x.matches).flat()
 
-            // Pushing data
-            await collection.updateOne(
-               {'championName': x.championName},
-               {$set: {
-                  'totalGames': avg[0],
-                  'wins': avg[1],
-                  'averageTotalDamageDealt': avg[2],
-                  'averageDamagePerMinute': avg[3],
-                  'averageHealingOnTeammates': avg[4],
-                  'averageTotalDamageTaken': avg[5],
-                  'averageKDA': `${avg[6]}/${avg[7]}/${avg[8]}`,
-                  'averageGoldEarned': avg[9],
-                  'totalTripleKills': avg[10],
-                  'totalQuadraKills': avg[11],
-                  'totalPentaKills': avg[12],
-                  }
-               }
-            )
-         })
+      // Pushing data
+      await collection.updateOne(
+         {'championName': x.championName},
+         {$set: {
+            'totalGames': avg[0],
+            'wins': avg[1],
+            'averageTotalDamageDealt': avg[2],
+            'averageDamagePerMinute': avg[3],
+            'averageHealingOnTeammates': avg[4],
+            'averageTotalDamageTaken': avg[5],
+            'averageKDA': `${avg[6]}/${avg[7]}/${avg[8]}`,
+            'averageGoldEarned': avg[9],
+            'totalTripleKills': avg[10],
+            'totalQuadraKills': avg[11],
+            'totalPentaKills': avg[12],
+            }
+         }
+      )
+   })
 }
 
 router.get('/update/:region/:summonerURI', async (req, res) => {
@@ -138,8 +138,7 @@ router.get('/update/:region/:summonerURI', async (req, res) => {
       {'name': summoner.name}
    )
 
-
-   let matches = (await matchIdPull(summonerCollection, summoner, req.params.region, length=true)).reverse()
+   let matches = (await matchIdPull(summonerCollection, summoner, req.params.region, length=true)).slice().reverse()
    let parsedIndex = (await summonerDoc).parsedIndex
 
    if (matches[parsedIndex] == undefined) {
@@ -154,7 +153,7 @@ router.get('/update/:region/:summonerURI', async (req, res) => {
       res.send(result)
       return
    }
-   
+
    for ( ; parsedIndex < matches.length; parsedIndex++) {
 
       console.log(`Updating ${summoner.name} (${req.params.region}), match ${matches[parsedIndex]}`)
@@ -176,11 +175,10 @@ router.get('/update/:region/:summonerURI', async (req, res) => {
             )
          }
       }
-      
    }
    
    // Get new averages
-   totalMatches(summonerCollection)
+   await totalMatches(summonerCollection)
    
    await summonerCollection.updateOne(
       {'name': summoner.name},
@@ -192,7 +190,7 @@ router.get('/update/:region/:summonerURI', async (req, res) => {
       {$set: {'activePull' : false}}
    )
 
-   console.log(`Finished updating ${summoner.name}`)
+   console.log(`Finished updating ${summoner.name} (${req.params.region})`)
    result = (await summonerCollection.find({}).toArray())
    res.send(result)
 })
@@ -245,7 +243,6 @@ async function matchIdPull(collection, summoner, region, length=false) {
    await twisted.getAllSummonerMatches(summoner.name, region)
       .then((res) => {
          matchList = res
-
          collection.updateOne(
             {'name': summoner.name},
             {$set : {'matchId': matchList}}
