@@ -225,28 +225,13 @@ async function summonerCheckInitialMatchPullv2(collection, summoner, region) {
 }
 
 async function matchIdPull(collection, summoner, region, length=false) {
-   let matchList
 
-   matchList = await twisted.getAllSummonerMatches(summoner.name, region)
+   let matchList = await twisted.getAllSummonerMatches(summoner.name, region)
 
    collection.updateOne(
       {'name': summoner.name},
       {$set : {'matchId': matchList}}
    )
-
-
-   // await twisted.getAllSummonerMatches(summoner.name, region)
-   //    .then((res) => {
-   //       matchList = res
-   //       collection.updateOne(
-   //          {'name': summoner.name},
-   //          {$set : {'matchId': matchList}}
-   //       )
-   //    })
-   //    .catch(async (e) => {
-   //       console.log(`(${e.status}) @ matchIdPull. Repulling summoner matches.`) 
-   //       await matchIdPull(collection, summoner, region)
-   //    })
 
    if (length) {
       return new Promise(resolve => resolve(matchList))
