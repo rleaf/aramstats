@@ -61,7 +61,6 @@ async function getAllSummonerMatches(summoner, region) {
          stop = false
       }
    }
-
    return matchList.flat()
 }
 
