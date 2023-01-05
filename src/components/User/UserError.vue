@@ -33,6 +33,17 @@ export default {
          <br>
          <img src="https://i.redd.it/6p956lq5yiq81.jpg" alt="">
       </div>
+      <div v-if="this.errorStatus == 504">
+         <h2>
+            Riot API servers are probably down.
+         </h2>
+         <p>
+            Check server status <a href="https://developer.riotgames.com/api-status/" target="_blank">here</a>
+            <!-- @owl#4626 in aram academy discord and I'll refresh. -->
+         </p>
+         <br>
+         <img src="https://i.redd.it/6p956lq5yiq81.jpg" alt="">
+      </div>
    </div>
 </template>
 
@@ -54,5 +65,9 @@ p {
    color: var(--color-font);
    width: 500px;
    line-height: 1.5;
+}
+
+p > a {
+   color: var(--color-font);
 }
 </style>

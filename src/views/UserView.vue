@@ -56,6 +56,7 @@ import axios from 'axios'
                   } else {
                      this.userReadyRender = true
                   }
+                  console.log(res, 'res')
                })
                .catch(e => {
                   this.errorStatusParent = e.response.status

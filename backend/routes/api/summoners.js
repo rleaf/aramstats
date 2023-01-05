@@ -11,19 +11,23 @@ const router = express.Router()
 router
    .route('/:region/:summonerURI')
    .get(async (req, res) => {
-
       // Check summoner existence.
-      const summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
-         .catch((e) => {
-            if (e.status == 429) {
-               console.log(`Hit rate limit on getSummoner for ${req.params.summonerURI} (${req.params.region})`)
-            }
-            if (e.status == 404 || e.status == 403) {
-               res.status(e.status).send(e.statusText)
-               return
-            }
-         })
+      console.log(`Searching for ${req.params.summonerURI} (${req.params.region})`)
 
+      let summoner
+
+      try {
+         summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
+      } catch (e) {       
+         if (e.status == 429) {
+            console.log(`Hit rate limit on getSummoner for ${req.params.summonerURI} (${req.params.region})`)
+         }
+         if (e.status == 404 || e.status == 403) {
+            res.status(e.status).send(e.statusText)
+            return
+         }
+      }
+      
       const client = await loadSummonerCollection()
 
       
@@ -67,6 +71,20 @@ router
          // Yeet data
          result = (await client.collection(summoner.name).find({}).toArray())
          res.send(result)
+      } else {
+
+         res.sendStatus(504)
+
+         // Potentially have it to send data for pre-parsed summoners still
+         // const dbSummonerCollection = client.collection(req.params.summonerURI)
+
+         // if (dbSummonerCollection) {
+         //    result = (await dbSummonerCollection.find({}).toArray())
+         //    console.log(result)
+         //    res.send(result)
+         // } else {
+         //    res.sendStatus(504)
+         // }
       }
    })
 
@@ -272,8 +290,6 @@ async function matchParserV2(collection, summoner, region) {
          }
       }
    }
-
-   console.log(`Finished initial match parse`)
 
    await collection.updateOne(
       {'name': summoner.name},
