@@ -69,10 +69,10 @@ export default {
                {{ this.match.damagePerMinute }} DPM
             </div>
          </div>
-         <!-- <div class="total-dpm match-cell">
-            {{ this.match.damagePerMinute }}
-         </div> -->
          <div class="total-heal match-cell">
+            {{ this.match.totalHeal || '-'}}
+         </div>
+         <div class="total-healing-to-teammates match-cell">
             {{ this.match.totalHealsOnTeammates }}
          </div>
          <div class="total-dmg-taken match-cell">
@@ -108,7 +108,7 @@ export default {
 
 .tqp-match {
    display: inline-block;
-   width: 40px;
+   width: 35px;
 }
 .match-items img {
    width: 25px;
@@ -134,7 +134,7 @@ export default {
 }
 .right-box {
    display: flex;
-   padding-right: 72px;
+   padding-right: 103px;
    justify-content: flex-end;
    align-items: center;
    height: 40px;
@@ -155,6 +155,6 @@ export default {
 }
 
 .match-cell {
-   flex: 0 0 120px;
+   flex: 0 0 105px;
 }
 </style>

@@ -68,6 +68,7 @@ function scribe(puuid, game) {
    champion['totalDamageTaken'] = player.totalDamageTaken
 
    // Heals
+   champion['totalHeal'] = player.totalHeal
    champion['totalHealsOnTeammates'] = player.totalHealsOnTeammates
 
    // 4fun
@@ -98,22 +99,23 @@ function scribe(puuid, game) {
 }
 
 function averages(matches) {
-   let stats = {}
-   // stats.totalGames = 0
+   // let stats = {}
    
    let totalGames = 0
    let wins = 0
+   let tripleKills = 0
+   let quadraKills = 0
+   let pentaKills = 0
+   
    let totalDmgDealt = 0
    let totalDamagePerMinute = 0
+   let totalHeal = 0
    let healingOnTeam = 0
    let totalTank = 0
    let kills = 0
    let deaths = 0
    let assists = 0
    let gold = 0
-   let tripleKills = 0
-   let quadraKills = 0
-   let pentaKills = 0
 
    for (let i = 0; i < matches.length; i++) {
 
@@ -131,6 +133,7 @@ function averages(matches) {
       // Damage % DPM, healing, tanking
       totalDmgDealt += matches[i].totalDamageDealtToChampions
       totalDamagePerMinute += matches[i].damagePerMinute
+      totalHeal += matches[i].totalHeal
       healingOnTeam += matches[i].totalHealsOnTeammates
       totalTank += matches[i].totalDamageTaken
 
@@ -143,74 +146,13 @@ function averages(matches) {
       gold += matches[i].goldEarned
    }
 
-   let total = [totalDmgDealt, totalDamagePerMinute, healingOnTeam, totalTank, kills, deaths, assists, gold]
+   let total = [totalDmgDealt, totalDamagePerMinute, totalHeal, healingOnTeam, totalTank, kills, deaths, assists, gold]
    let averages = total.map(x => Math.round(x / totalGames))
 
    return [totalGames, wins, averages, tripleKills, quadraKills, pentaKills]
 }
 
-function names(matches) {
-   // do names here later
-}
-
-function winRate(matches) {
-   let totalGames = 0   
-   let win = 0
-
-   for (let i = 0; i < matches.length; i++) {
-      if (matches[i].win == true) {
-         win++
-      }
-      totalGames++
-   }
-
-   return [totalGames, win]
-}
-
-function combat(matches) {
-   // averages
-   let totalDmgDealt = 0
-   let healingOnTeam = 0
-   let totalTank = 0
-
-   for (let i = 0; i < matches.length; i++) {
-      totalDmgDealt += matches[i].totalDamageDealtToChampions
-      healingOnTeam += matches[i].totalHealsOnTeammates
-      totalTank += matches[i].totalDamageTaken
-   }
-
-   return [totalDmgDealt, healingOnTeam, totalTank]
-}
-
-function kda(matches) {
-   let kills = 0
-   let assists = 0
-   let deaths = 0
-
-   for (let i = 0; i < matches.length; i++) {
-      kills += matches[i].kills
-      deaths += matches[i].deaths
-      assists += matches[i].assists
-   }
-
-   // return kills, deaths, assists
-   return [kills, deaths, assists]
-}
-
-function gold(matches) {
-   let gold = 0
-
-   for (let i = 0; i < matches.length; i++) {
-      gold += matches[i].goldEarned
-   }
-}
-
 module.exports = {
    scribe,
    averages,
-   names,
-   winRate,
-   combat,
-   kda,
-   gold,
 }  

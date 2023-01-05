@@ -33,6 +33,10 @@ export default {
 
    props: {
       champion: Object
+   },
+
+   mounted() {
+      console.log(this.champion.averageGoldEarned)
    }
 }
 </script>
@@ -59,6 +63,9 @@ export default {
          <!-- <div class="avg-dpm cell">
             {{ this.champion.averageDamagePerMinute }}
          </div> -->
+         <div class="avg-healing cell">
+            {{ this.champion.averageTotalHeal || '-' }}
+         </div>
          <div class="avg-healing cell">
             {{ this.champion.averageHealingOnTeammates }}
          </div>
@@ -116,7 +123,7 @@ export default {
 }
 .tqp-1 {
    display: inline-block;
-   width: 40px;
+   width: 35px;
    /* padding-right: 20px; */
 }
 .matches {
@@ -150,6 +157,6 @@ img {
 }
 
 .cell {
-   flex: 0 0 120px;
+   flex: 0 0 105px;
 }
 </style>

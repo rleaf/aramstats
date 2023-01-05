@@ -47,6 +47,10 @@ export default {
                      this.championInfo.slice(1).sort((a, b) => b.averageDamagePerMinute - a.averageDamagePerMinute) :
                      this.championInfo.slice(1).sort((a, b) => a.averageDamagePerMinute - b.averageDamagePerMinute)
                }
+            case 'Average Healing':
+               return (this.order) ?
+                  this.championInfo.slice(1).sort((a, b) => b.averageTotalHeal - a.averageTotalHeal):
+                  this.championInfo.slice(1).sort((a, b) => a.averageTotalHeal - b.averageTotalHeal)
             case 'Average Healing to Teammates':
                return (this.order) ?
                   this.championInfo.slice(1).sort((a, b) => b.averageHealingOnTeammates - a.averageHealingOnTeammates):
@@ -172,7 +176,8 @@ export default {
             <div class='wins header' @click="sortProc('Wins')">Wins</div>
             <div class='avg-dmg header' @click="avgDmgDpm('Average Damage')">avg Dmg</div>
             <!-- <div class='avg-dmg header' @click="sortProc('avgDmg')">DPM</div> -->
-            <div class='avg-healing header' @click="sortProc('Average Healing to Teammates')">avg Heal</div>
+            <div class='avg-healing header' @click="sortProc('Average Healing')">avg Heal</div>
+            <div class='avg-healing-to-teammates header' @click="sortProc('Average Healing to Teammates')">avg HtT</div>
             <div class='avg-dt header' @click="sortProc('Average Damage Taken')">avg DT</div>
             <div class='avg-kda header' @click="sortProc('Average KDA')">avg KDA</div>
             <div class='avg-gold header' @click="sortProc('Average Gold')">avg Gold</div>
@@ -214,7 +219,7 @@ export default {
 }
 .tqp {
    display: inline-block;
-   width: 40px;
+   width: 35px;
 }
 
 .headers {
@@ -225,7 +230,7 @@ export default {
 }
 
 .headers > div {
-   flex: 0 0 120px;
+   flex: 0 0 105px;
    color: var(--color-font);
 }
 

@@ -27,7 +27,7 @@ router
             return
          }
       }
-      
+
       const client = await loadSummonerCollection()
 
       
@@ -50,7 +50,7 @@ router
          let summonerExist = (await summonerCollection.findOne({'name': summoner.name}))
 
          if(summonerExist != null) {
-            console.log(`Summoner ${summoner.name} (${req.params.region}) exists.`)
+            console.log(`Summoner ${summoner.name} (${req.params.region}) already parsed.`)
 
             result = (await client.collection(summoner.name).find({}).toArray())
             res.send(result)
@@ -107,13 +107,14 @@ async function totalMatches(collection) {
             'wins': avg[1],
             'averageTotalDamageDealt': avg[2],
             'averageDamagePerMinute': avg[3],
-            'averageHealingOnTeammates': avg[4],
-            'averageTotalDamageTaken': avg[5],
-            'averageKDA': `${avg[6]}/${avg[7]}/${avg[8]}`,
-            'averageGoldEarned': avg[9],
-            'totalTripleKills': avg[10],
-            'totalQuadraKills': avg[11],
-            'totalPentaKills': avg[12],
+            'averageTotalHeal': avg[4],
+            'averageHealingOnTeammates': avg[5],
+            'averageTotalDamageTaken': avg[6],
+            'averageKDA': `${avg[7]}/${avg[8]}/${avg[9]}`,
+            'averageGoldEarned': avg[10],
+            'totalTripleKills': avg[11],
+            'totalQuadraKills': avg[12],
+            'totalPentaKills': avg[13],
             }
          }
       )
@@ -346,6 +347,7 @@ async function createChampionDocument(collection, champion) {
             wins: 0,
             averageTotalDamageDealt: 0,
             averageDamagePerMinute: 0,
+            averageTotalHeal: 0,
             averageHealingOnTeammates: 0,
             averageTotalDamageTaken: 0,
             averageKDA: '',
