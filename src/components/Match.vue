@@ -1,4 +1,6 @@
 <script>
+import axios from 'axios'
+
 export default {
    data() {
       return {
@@ -7,6 +9,8 @@ export default {
          gameDuration: Number,
          date: null,
          kda: `${this.match.kills}/${this.match.deaths}/${this.match.assists}`,
+         primaryRune: this.match.primaryRune,
+         secondaryTree: this.match.secondaryTree,
          items: [
 
          ],
@@ -16,10 +20,26 @@ export default {
    created() {
       this.timeSet()
       this.itemImages()
+
+      // const url = `http://ddragon.leagueoflegends.com/cdn/12.23.1/data/en_US/runesReforged.json`
+      // axios.get(url)
+      //    .then((res) => {
+      //       console.log(res)
+      //    })
+      // console.log(this.match)
    },
    
    props: {
       match: Object
+   },
+
+   computed: {
+      primary() {
+         return new URL(`../assets/runes/${this.primaryRune}.png`, import.meta.url).href
+      },
+      secondary() {
+         return new URL(`../assets/runes/${this.secondaryTree}.png`, import.meta.url).href
+      }
    },
 
    methods: {
@@ -32,13 +52,13 @@ export default {
       },
 
       itemImages() {
-         for (let i = 0; i < 7; i++) {
+         for (let i = 0; i < 6; i++) {
             if (this.match[`item${i}`] != 0) {
                let x = `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/item/${this.match[`item${i}`]}.png`
                this.items.push(x)
             }
          }
-      }
+      },
    }
 
 }
@@ -49,12 +69,18 @@ export default {
       <!-- {{ this.match }} -->
 
       <div class="left-box">
-         <div class="game-creation">
+         <div class="time">
             {{ this.daysSince }} day(s) ago
             <div class="date">
                {{ this.date }},
                {{ this.match.gameDuration }} min
             </div>
+         </div>
+         <div class="runes" v-if="primary">
+            <!-- <img :src="rune" alt=""> -->
+            <!-- <img :src="`../assets/runes/${this.match.secondaryTree}`" alt=""> -->
+            <img class="primaryRune" :src="primary" alt="">
+            <img class="secondaryTree" :src="secondary" alt="">
          </div>
          <div class="match-items">
             <img v-for="item in this.items"
@@ -100,6 +126,30 @@ export default {
 </template>
 
 <style scoped>
+@import url('../assets/stats.css');
+
+.time {
+   width: 100px;
+}
+.runes {
+   display: flex;
+   align-items: center;
+   gap: 2px;
+}
+
+.primaryRune {
+   width: 25px;
+   /* background: rgba(0, 0, 0, 0.521);
+   padding: 1px;
+   border-radius: 100%; */
+}
+.secondaryTree {
+   width: 15px;
+   background: rgba(0, 0, 0, 0.521);
+   padding: 4px;
+   border-radius: 100%;
+   
+}
 .dpm {
    font-size: 0.7rem;
    font-style: oblique;
@@ -120,22 +170,11 @@ export default {
    color: var(--color-font);
 }
 
-.game-creation {
-   width: 100px;
-}
 .left-box {
    float: left;
    gap: 20px;
    padding-left: 10px;
    display: flex;
-   align-items: center;
-   height: 40px;
-   color: var(--color-font);
-}
-.right-box {
-   display: flex;
-   padding-right: 103px;
-   justify-content: flex-end;
    align-items: center;
    height: 40px;
    color: var(--color-font);
@@ -154,7 +193,5 @@ export default {
    border-top: 1px solid var(--matches-border-top);
 }
 
-.match-cell {
-   flex: 0 0 105px;
-}
+
 </style>

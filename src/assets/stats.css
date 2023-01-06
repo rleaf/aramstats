@@ -1,0 +1,30 @@
+/* UserReady.vue (headers) */
+.headers > div {
+   flex: 0 0 105px;
+   color: var(--color-font);
+}
+
+
+/* Champion.vue */
+.avg-dmg {
+   padding-left: 10px;
+}
+
+.cell {
+   flex: 0 0 105px;
+}
+
+
+/* Match.vue */
+.match-cell {
+   flex: 0 0 105px;
+}
+
+.right-box {
+   display: flex;
+   padding-right: 93px;
+   justify-content: flex-end;
+   align-items: center;
+   height: 40px;
+   color: var(--color-font);
+}

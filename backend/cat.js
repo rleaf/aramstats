@@ -41,6 +41,10 @@ function scribe(puuid, game) {
    champion['assists'] = player.assists
    champion['goldEarned'] = player.goldEarned
 
+   // perks
+   champion['primaryRune'] = player.perks.styles[0].selections[0].perk
+   champion['secondaryTree'] = player.perks.styles[1].style
+
    // Items
    champion['item0'] = player.item0
    champion['item1'] = player.item1
@@ -77,23 +81,23 @@ function scribe(puuid, game) {
    champion['pentaKills'] = player.pentaKills
 
    // pings
-   let pings = {}
-   pings['allInPings'] = player.allInPings
-   pings['assistMePings'] = player.assistMePings
-   pings['baitPings'] = player.baitPings
-   pings['basicPings'] = player.basicPings
-   pings['commandPings'] = player.commandPings
-   pings['dangerPings'] = player.dangerPings
-   pings['enemyMissingPings'] = player.enemyMissingPings
-   pings['enemyVisionPings'] = player.enemyVisionPings
-   pings['getBackPings'] = player.getBackPings
-   pings['holdPings'] = player.holdPings
-   pings['needVisionPings'] = player.needVisionPings
-   pings['onMyWayPings'] = player.onMyWayPings
-   pings['pushPings'] = player.pushPings
-   pings['visionClearedPings'] = player.visionClearedPings
+   // let pings = {}
+   // pings['allInPings'] = player.allInPings
+   // pings['assistMePings'] = player.assistMePings
+   // pings['baitPings'] = player.baitPings
+   // pings['basicPings'] = player.basicPings
+   // pings['commandPings'] = player.commandPings
+   // pings['dangerPings'] = player.dangerPings
+   // pings['enemyMissingPings'] = player.enemyMissingPings
+   // pings['enemyVisionPings'] = player.enemyVisionPings
+   // pings['getBackPings'] = player.getBackPings
+   // pings['holdPings'] = player.holdPings
+   // pings['needVisionPings'] = player.needVisionPings
+   // pings['onMyWayPings'] = player.onMyWayPings
+   // pings['pushPings'] = player.pushPings
+   // pings['visionClearedPings'] = player.visionClearedPings
 
-   champion['pings'] = pings
+   // champion['pings'] = pings
 
    return champion
 }

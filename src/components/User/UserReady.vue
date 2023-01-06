@@ -149,13 +149,17 @@ export default {
 
       async deleteSummoner() {
          const url = `/api/summoners/delete/${this.$route.params.region}/${this.$route.params.username}`
-         const text =  `Remove summoner from database?`
+         const text =  `
+         Remove summoner from database?
+         `
 
          if (confirm(text)) {
-            await axios.get(url)
-               .then((res) => {
-                  console.log(res)
-               })
+            try {
+               await axios.get(url)
+            } catch (e) {
+               console.log('delete', e)
+            }
+            this.$router.push({name: `home`})
          }
          
       }
@@ -179,14 +183,20 @@ export default {
                </div>
             </div>
          </div>
-         <!-- <div class="danger-zone">
+         <div class="danger-zone">
             <div class="purge-wrapper" @mouseover="hover = true" @mouseleave="hover = false">
                <a class="purge" @click="deleteSummoner()" >
                   Delete
                </a>
-               <span v-if="hover" class="purge-tooltip">Confimation will appear after clicking.</span>
             </div>
-         </div> -->
+         </div>
+         <span v-if="hover" class="purge-tooltip">
+            Older parses in the database may not store recently added stats.
+            Click this if you'd like to delete your summoner from the database.
+            You will have to search your profile again.
+            <br><br>
+            Confirmation will appear after clicking.
+         </span>
       </div>
       <div class="stats-main">
          <div class="sorting-by">
@@ -229,6 +239,8 @@ export default {
 </template>
 
 <style scoped>
+@import url('../../assets/stats.css');
+
 /* .flip-list-move {
    transition: transform 0.5s;
 } */
@@ -251,10 +263,7 @@ export default {
    align-items: center;
 }
 
-.headers > div {
-   flex: 0 0 105px;
-   color: var(--color-font);
-}
+
 
 .header:hover {
    text-decoration: underline;
@@ -318,10 +327,12 @@ export default {
 }
 
 .purge-tooltip {
-   clear: both;
+   float: right;
    /* position: inline-block; */
    /* position: absolute; */
    padding-top: 10px;
+   width: 400px;
+   font-size: 0.9rem;
    text-align: end;
    color: var(--color-font);
 }

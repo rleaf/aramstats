@@ -216,7 +216,9 @@ router.get('/update/:region/:summonerURI', async (req, res) => {
 
 
 router.get('/delete/:region/:summonerURI', async (req, res) => {
-   console.log('toad')
+   const client = await loadSummonerCollection()
+   client.collection(req.params.summonerURI).drop()
+   console.log(`${req.params.summonerURI} deleted`)
    res.send('deleted')
 })
 
@@ -358,6 +360,8 @@ async function createChampionDocument(collection, champion) {
             averageTotalDamageTaken: 0,
             averageKDA: '',
             averageGoldEarned: 0,
+            primaryRune: null,
+            secondaryTree: null,
             totalTripleKills: 0,
             totalQuadraKills: 0,
             totalPentaKills: 0,

@@ -23,9 +23,10 @@
   --darkWin: rgba(0, 255, 0, 0.062);
   --darkLoss: rgba(255, 0, 0, 0.075);
 
-  --blue1: #021930;
+  /* --blue1: #021930; */
+  --blue1: #1f2a42;
   --blue2: #28102c;
-  --blue3: #000;
+  --blue3: #1f2a42;
   /* --match-border-top:  */
 
   --test: #484880;

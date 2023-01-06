@@ -85,10 +85,6 @@ export default {
                {{ this.champion.totalPentaKills }}
             </div>
          </div>
-         <div class="quadra-kills cell">
-         </div>
-         <div class="penta-kills cell">
-         </div>
       </div>
       <!-- <Transition name="slide">
       </Transition> -->
@@ -102,9 +98,10 @@ export default {
 </template>
 
 <style scoped>
+@import url('../assets/stats.css');
 /* .slide-enter-active,
 .slide-leave-active {
-   transition: all 0.3s ease-out;
+   transition: all 0.1s ease-out;
 }
 
 .slide-enter-from,
@@ -152,7 +149,5 @@ img {
    padding-right: 8px;
 }
 
-.cell {
-   flex: 0 0 105px;
-}
+
 </style>
