@@ -104,6 +104,9 @@ export default {
          <div class="total-dmg-taken match-cell">
             {{ this.match.totalDamageTaken }}
          </div>
+         <div class="total-mitigated-dmg match-cell">
+            {{ this.match.totalSelfMitigated || '-' }}
+         </div>
          <div class="kda match-cell">
             {{ this.kda }}
          </div>
@@ -156,10 +159,7 @@ export default {
    color: var(--color-font);
 }
 
-.tqp-match {
-   display: inline-block;
-   width: 35px;
-}
+
 .match-items img {
    width: 25px;
 }

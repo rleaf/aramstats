@@ -68,6 +68,9 @@ export default {
          <div class="avg-dmg-taken cell">
             {{ this.champion.averageTotalDamageTaken }}
          </div>
+         <div class="avg-mitigated-dmg cell">
+            {{ this.champion.averageTotalSelfMitigated || '-' }}
+         </div>
          <div class="avg-kda cell">
             {{ this.champion.averageKDA }}
          </div>
@@ -114,11 +117,7 @@ export default {
    font-style: oblique;
    color: var(--color-font);
 }
-.tqp-1 {
-   display: inline-block;
-   width: 35px;
-   /* padding-right: 20px; */
-}
+
 .matches {
    border-top: 1px solid var(--border-top);
 }

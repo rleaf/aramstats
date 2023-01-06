@@ -60,6 +60,10 @@ export default {
                return (this.order) ?
                   this.championInfo.slice(1).sort((a, b) => b.averageTotalDamageTaken - a.averageTotalDamageTaken):
                   this.championInfo.slice(1).sort((a, b) => a.averageTotalDamageTaken - b.averageTotalDamageTaken)
+            case 'Average Self Mitigated Damage':
+               return (this.order) ?
+                  this.championInfo.slice(1).sort((a, b) => b.averageTotalSelfMitigated - a.averageTotalSelfMitigated):
+                  this.championInfo.slice(1).sort((a, b) => a.averageTotalSelfMitigated - b.averageTotalSelfMitigated)
             case 'Average KDA':
                return (this.order) ?
                   this.championInfo.slice(1).sort((a, b) => b.averageKDA - a.averageKDA):
@@ -211,6 +215,7 @@ export default {
             <div class='avg-healing header' @click="sortProc('Average Healing')">avg Heal</div>
             <div class='avg-healing-to-teammates header' @click="sortProc('Average Healing to Teammates')">avg HtT</div>
             <div class='avg-dt header' @click="sortProc('Average Damage Taken')">avg DT</div>
+            <div class='avg-mit header' @click="sortProc('Average Self Mitigated Damage')">avg Mit</div>
             <div class='avg-kda header' @click="sortProc('Average KDA')">avg KDA</div>
             <div class='avg-gold header' @click="sortProc('Average Gold')">avg Gold</div>
             <div>
@@ -251,10 +256,7 @@ export default {
    color: var(--color-font);
    padding-bottom: 1rem;
 }
-.tqp {
-   display: inline-block;
-   width: 35px;
-}
+
 
 .headers {
    padding-left: 46px;

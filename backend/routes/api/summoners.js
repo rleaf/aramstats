@@ -110,11 +110,12 @@ async function totalMatches(collection) {
             'averageTotalHeal': avg[4],
             'averageHealingOnTeammates': avg[5],
             'averageTotalDamageTaken': avg[6],
-            'averageKDA': `${avg[7]}/${avg[8]}/${avg[9]}`,
-            'averageGoldEarned': avg[10],
-            'totalTripleKills': avg[11],
-            'totalQuadraKills': avg[12],
-            'totalPentaKills': avg[13],
+            'averageTotalSelfMitigated': avg[7],
+            'averageKDA': `${avg[8]}/${avg[9]}/${avg[10]}`,
+            'averageGoldEarned': avg[11],
+            'totalTripleKills': avg[12],
+            'totalQuadraKills': avg[13],
+            'totalPentaKills': avg[14],
             }
          }
       )
@@ -358,6 +359,7 @@ async function createChampionDocument(collection, champion) {
             averageTotalHeal: 0,
             averageHealingOnTeammates: 0,
             averageTotalDamageTaken: 0,
+            averageTotalSelfMitigated: 0,
             averageKDA: '',
             averageGoldEarned: 0,
             primaryRune: null,

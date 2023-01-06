@@ -70,6 +70,7 @@ function scribe(puuid, game) {
    champion['physicalDamageTaken'] = player.physicalDamageTaken
    champion['trueDamageTaken'] = player.trueDamageTaken
    champion['totalDamageTaken'] = player.totalDamageTaken
+   champion['totalSelfMitigated'] = player.damageSelfMitigated
 
    // Heals
    champion['totalHeal'] = player.totalHeal
@@ -79,25 +80,6 @@ function scribe(puuid, game) {
    champion['tripleKills'] = player.tripleKills
    champion['quadraKills'] = player.quadraKills
    champion['pentaKills'] = player.pentaKills
-
-   // pings
-   // let pings = {}
-   // pings['allInPings'] = player.allInPings
-   // pings['assistMePings'] = player.assistMePings
-   // pings['baitPings'] = player.baitPings
-   // pings['basicPings'] = player.basicPings
-   // pings['commandPings'] = player.commandPings
-   // pings['dangerPings'] = player.dangerPings
-   // pings['enemyMissingPings'] = player.enemyMissingPings
-   // pings['enemyVisionPings'] = player.enemyVisionPings
-   // pings['getBackPings'] = player.getBackPings
-   // pings['holdPings'] = player.holdPings
-   // pings['needVisionPings'] = player.needVisionPings
-   // pings['onMyWayPings'] = player.onMyWayPings
-   // pings['pushPings'] = player.pushPings
-   // pings['visionClearedPings'] = player.visionClearedPings
-
-   // champion['pings'] = pings
 
    return champion
 }
@@ -116,6 +98,7 @@ function averages(matches) {
    let totalHeal = 0
    let healingOnTeam = 0
    let totalTank = 0
+   let totalMitigated = 0
    let kills = 0
    let deaths = 0
    let assists = 0
@@ -140,6 +123,8 @@ function averages(matches) {
       totalHeal += matches[i].totalHeal
       healingOnTeam += matches[i].totalHealsOnTeammates
       totalTank += matches[i].totalDamageTaken
+      totalMitigated += matches[i].totalSelfMitigated
+
 
       // Kills, deaths, assists
       kills += matches[i].kills
@@ -150,7 +135,18 @@ function averages(matches) {
       gold += matches[i].goldEarned
    }
 
-   let total = [totalDmgDealt, totalDamagePerMinute, totalHeal, healingOnTeam, totalTank, kills, deaths, assists, gold]
+   let total = [
+      totalDmgDealt,
+      totalDamagePerMinute,
+      totalHeal,
+      healingOnTeam,
+      totalTank,
+      totalMitigated,
+      kills,
+      deaths,
+      assists,
+      gold
+   ]
    let averages = total.map(x => Math.round(x / totalGames))
 
    return [totalGames, wins, averages, tripleKills, quadraKills, pentaKills]
