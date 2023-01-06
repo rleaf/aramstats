@@ -19,6 +19,7 @@ export default {
          dmgDpmState: 0,
          championKey: 0,
          isDisabled: false,
+         hover: null,
       }
    },
 
@@ -144,6 +145,19 @@ export default {
                this.isDisabled = false
                this.refresh = 'Update'
             })
+      },
+
+      async deleteSummoner() {
+         const url = `/api/summoners/delete/${this.$route.params.region}/${this.$route.params.username}`
+         const text =  `Remove summoner from database?`
+
+         if (confirm(text)) {
+            await axios.get(url)
+               .then((res) => {
+                  console.log(res)
+               })
+         }
+         
       }
    }
 
@@ -165,6 +179,14 @@ export default {
                </div>
             </div>
          </div>
+         <!-- <div class="danger-zone">
+            <div class="purge-wrapper" @mouseover="hover = true" @mouseleave="hover = false">
+               <a class="purge" @click="deleteSummoner()" >
+                  Delete
+               </a>
+               <span v-if="hover" class="purge-tooltip">Confimation will appear after clicking.</span>
+            </div>
+         </div> -->
       </div>
       <div class="stats-main">
          <div class="sorting-by">
@@ -262,21 +284,47 @@ export default {
 .profile-landing {
    display: block;
    border-radius: 3px;
+   
    width: 100%;
    height: 250px;
 }
 
 .profile-name {
+   /* float: left; */
    display: flex;
    justify-content: left;
    align-items: center;
-   gap: 20px;
    padding-top: 45px;
    padding-left: 45px;
+   gap: 20px;
    font-size: 1.5rem;
    color: var(--color-font);
 }
+.danger-zone {
+   display: flex;
+   justify-content: flex-end;
+   margin-top: -34px;
+   padding-right: 45px;
+}
 
+.purge-wrapper a {
+   font-size: 1rem;
+   /* display: block; */
+   color: var(--color-font);
+   border: 1px solid var(--color-font);
+   border-radius: 5px;
+   cursor: pointer;
+   padding: 4px 9px;
+}
+
+.purge-tooltip {
+   clear: both;
+   /* position: inline-block; */
+   /* position: absolute; */
+   padding-top: 10px;
+   text-align: end;
+   color: var(--color-font);
+}
 .pfp {
    border-radius: 100%;
    width: 90px;

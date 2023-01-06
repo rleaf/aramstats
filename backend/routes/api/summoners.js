@@ -215,6 +215,12 @@ router.get('/update/:region/:summonerURI', async (req, res) => {
 })
 
 
+router.get('/delete/:region/:summonerURI', async (req, res) => {
+   console.log('toad')
+   res.send('deleted')
+})
+
+
 async function loadSummonerCollection() {
    const client = await mongodb.MongoClient.connect(process.env.DB_CONNECTION_STRING)
    return client.db('summoners')

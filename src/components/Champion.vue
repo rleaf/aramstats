@@ -34,10 +34,6 @@ export default {
    props: {
       champion: Object
    },
-
-   mounted() {
-      console.log(this.champion.averageGoldEarned)
-   }
 }
 </script>
 
