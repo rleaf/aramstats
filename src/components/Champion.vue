@@ -1,11 +1,9 @@
 <script>
-import TableLite from "vue3-table-lite";
 import Match from './Match.vue'
 
 export default {
    components: {
       Match,
-     'table-light': TableLite 
    },
    data() {
       return {

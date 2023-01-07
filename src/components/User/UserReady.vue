@@ -1,10 +1,12 @@
 <script>
 import Champion from '../Champion.vue'
+import Histogram from '../Histogram.vue'
 import axios from 'axios'
 
 export default {
    components: {
-      Champion
+      Champion,
+      Histogram
    },
    data() {
       return {
@@ -201,6 +203,9 @@ export default {
             <br><br>
             Confirmation will appear after clicking.
          </span>
+         <Histogram 
+            :data="this.championInfo"
+            :championRender="'toads'"/>
       </div>
       <div class="stats-main">
          <div class="sorting-by">
@@ -297,7 +302,7 @@ export default {
    border-radius: 3px;
    
    width: 100%;
-   height: 250px;
+   height: 350px;
 }
 
 .profile-name {
