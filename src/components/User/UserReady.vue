@@ -1,12 +1,14 @@
 <script>
 import Champion from '../Champion.vue'
 import Histogram from '../Histogram.vue'
+// import List from '../List.vue'
 import axios from 'axios'
 
 export default {
    components: {
       Champion,
-      Histogram
+      Histogram,
+      // List
    },
    data() {
       return {
@@ -22,8 +24,16 @@ export default {
          championKey: 0,
          isDisabled: false,
          hover: null,
+         championFilter: '',
+         champSearchFocus: false
       }
    },
+
+   watch: {
+      // championFilter(curr, prev) {
+      //    console.log(prev, curr)
+      // }
+   }, 
 
    computed: {
       sortedChamps() {
@@ -90,6 +100,15 @@ export default {
                return this.championInfo.slice(1).sort((a, b) => b.totalGames - a.totalGames)
          }
       },
+
+      champSearchList() {
+         return this.championInfo.slice(1).sort((a, b) => a.championName.localeCompare(b.championName))
+            .filter(champ => {
+               // console.log(champ.championName.toLowerCase().includes('sivir'))
+               return champ.championName.toLowerCase().includes(this.championFilter.toLowerCase())
+               // champ.championName.toLowerCase().includes('sivir')
+            })
+      }
    },
 
    props: {
@@ -133,6 +152,24 @@ export default {
 
       rerender() {
          this.championKey += 1
+      },
+
+      championSearch() {
+         if (this.championFilter != '') {
+            this.championFilter = ''
+         }
+         this.champSearchFocus = true
+      },
+      selectChampion(x) {
+         this.championFilter = x
+         this.champSearchFocus = false
+      },
+
+      testo(e) {
+         if (this.$el != e.target) {
+            this.champSearchFocus = false
+         }
+         console.log('toad', this.$el, e.target)
       },
 
       async refreshSummoner() {
@@ -203,9 +240,27 @@ export default {
             <br><br>
             Confirmation will appear after clicking.
          </span>
+         <div class="champion-search">
+            <input 
+               type="text"
+               placeholder="Search champion"
+               v-model="championFilter"
+               @click="championSearch()"
+               @keyup.esc="champSearchFocus = false"
+               >
+            <div class="champion-search-list" v-if="champSearchFocus">
+               <div v-for="champ in champSearchList"
+                  :key="champ.championName"
+                  @click="selectChampion(champ.championName)">
+                  {{ champ.championName }}
+               </div>
+            </div>
+         </div>
+         <!-- <List 
+            :data="this.championInfo"/> -->
          <Histogram 
             :data="this.championInfo"
-            :championRender="'toads'"/>
+            :championFilter="this.championFilter"/>
       </div>
       <div class="stats-main">
          <div class="sorting-by">
@@ -254,6 +309,15 @@ export default {
 /* .flip-list-move {
    transition: transform 0.5s;
 } */
+
+.champion-search-list {
+   position: absolute;
+   background: #313131;
+   color: var(--color-font);
+   width: 150px;
+   height: 200px;
+   overflow-y: scroll;
+}
 .disable {
    pointer-events: none;
 }
@@ -302,7 +366,7 @@ export default {
    border-radius: 3px;
    
    width: 100%;
-   height: 350px;
+   /* height: 350px; */
 }
 
 .profile-name {

@@ -1,171 +1,129 @@
 <script>
 import * as d3 from 'd3'
-import { object } from 'webidl-conversions';
 
 export default {
    data() {
       return {
-         histogram: null,
-         distribution: [],
-         toads: {
-            '100': 1,
-            '200': 2,
-            '300': 3
+         championNameEntry: String,
+         championNameBook: {
+            // book of champ names
          }
       }
    },
 
    mounted() {
-      for (let i = 0; i < 40; i++) {
-         // Demarcate by 100 ((4500-500) / 100 = 40)
-         this.distribution.push([])
-      }
 
-      this.createDistribution()
-      console.log(this.distribution)
-      console.log(this.data[1].matches)
+      // console.log(this.data)
+      // console.log(this.data[39].matches)
+      this.Histogram(this.data[14].matches)
+
    },
+
+   watch: {
+      // championFilter(curr) {
+      //    console.log('curr', curr)
+      //    // if curr is in championNameBook.key, this.championNameEntry = key.value
+      // }
+   },
+
    methods: {
-      // Copyright 2021 Observable, Inc.
-      // Released under the ISC license.
-      // https://observablehq.com/@d3/histogram
-      Histogram(data, {
-            // value = () => 1, // convenience alias for x
-            // domain, // convenience alias for xDomain
-            // label, // convenience alias for xLabel
-            format, // convenience alias for xFormat
-            type = d3.scaleLinear, // convenience alias for xType
-            x = j => j, // given d in data, returns the (quantitative) x-value
-            y = d => 1, // given d in data, returns the (quantitative) weight
-         // thresholds = this.data[1].matches.length, // approximate number of bins to generate, or threshold function
-            thresholds = 40, // approximate number of bins to generate, or threshold function
-            normalize, // whether to normalize values to a total of 100%
-            marginTop = 20, // top margin, in pixels
-            marginRight = 30, // right margin, in pixels
-            marginBottom = 30, // bottom margin, in pixels
-            marginLeft = 40, // left margin, in pixels
-            width = 450, // outer width of chart, in pixels
-            height = 200, // outer height of chart, in pixels
-            insetLeft = 0.5, // inset left edge of bar
-            insetRight = 0.5, // inset right edge of bar
-            xType = type, // type of x-scale
-            xDomain = [500, 4500], // [xmin, xmax]
-            xRange =[marginLeft, width - marginRight], // [left, right]
-            xLabel = "DPM", // a label for the x-axis
-            xFormat = format, // a format specifier string for the x-axis
-            yType = d3.scaleLinear, // type of y-scale
-            yDomain = [0, 30], // [ymin, ymax]
-            yRange =[height - marginBottom, marginTop], // [bottom, top]
-            yLabel = "Game Frequency", // a label for the y-axis
-            yFormat = normalize ? "%" : undefined, // a format specifier string for the y-axis
-            color = "currentColor" // bar fill color
-         } = {}) {
-         // Compute values.
-         const X = d3.map(data, x);
-         const Y0 = d3.map(data, y);
-         const I = d3.range(X.length);
+      Histogram(data) {
+         const margin = { top: 20, right: 20, bottom: 40, left: 80 },
+            width = 400 - margin.left - margin.right,
+            height = 200 - margin.top - margin.bottom;
 
-         // Compute bins.
-         const bins = d3.bin().thresholds(thresholds).value(i => X[i])(I);
-         const Y = Array.from(bins, I => d3.sum(I, i => Y0[i]));
-         if (normalize) {
-            const total = d3.sum(Y);
-            for (let i = 0; i < Y.length; ++i) Y[i] /= total;
-         }
+         const svg = d3.select(".histogram-main")
+            .append("svg")
+               .attr("width", width + margin.left + margin.right)
+               .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+               .attr("transform",
+               `translate(${margin.left},${margin.top})`);
 
-         // Compute default domains.
-         if (xDomain === undefined) xDomain = [bins[0].x0, bins[bins.length - 1].x1];
-         if (yDomain === undefined) yDomain = [0, d3.max(Y)];
-
-         // Construct scales and axes.
-         const xScale = xType(xDomain, xRange);
-         const yScale = yType(yDomain, yRange);
-         const xAxis = d3.axisBottom(xScale).ticks(width / 80, xFormat).tickSizeOuter(0);
-         const yAxis = d3.axisLeft(yScale).ticks(height / 40, yFormat);
-         yFormat = yScale.tickFormat(100, yFormat);
-
-         const svg = d3.create("svg")
-            .attr("width", width)
-            .attr("height", height)
-            .attr("viewBox", [0, 0, width, height])
-            .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+         // X Axis
+         const x = d3.scaleLinear()
+            .domain([0, 4000])
+            .range([0, width])
 
          svg.append("g")
-            .attr("transform", `translate(${marginLeft},0)`)
-            .call(yAxis)
-            .call(g => g.select(".domain").remove())
-            .call(g => g.selectAll(".tick line").clone()
-               .attr("x2", width - marginLeft - marginRight)
-               .attr("stroke-opacity", 0.1))
+            .attr("transform", `translate(0, ${height})`)
+            .call(d3.axisBottom(x))
+               .attr("font-size", "0.7rem")
+               .attr("color", "var(--color-font)")
             .call(g => g.append("text")
-               .attr("x", -marginLeft)
-               .attr("y", 10)
-               .attr("fill", "currentColor")
-               .attr("text-anchor", "start")
-               .text(yLabel));
+               .attr("x", width + 15)
+               .attr("y", 35)
+               .attr("fill", "var(--color-font)")
+               .attr("font-size", "0.8rem")
+               .attr("text-anchor", "end")
+               .text("DPM"))
+
+         // Histogram
+         const histogram = d3.histogram()
+            .value(d => d.damagePerMinute)
+            .domain(x.domain())
+            .thresholds(x.ticks(20))
+
+         const bins = histogram(data)
+
+         // Y Axis
+         const y = d3.scaleLinear()
+            .domain([0, d3.max(bins, d => d.length)])
+            .range([height, 0])
+
+         const yAxisTicks = y.ticks()
+            .filter(tick => Number.isInteger(tick))
+
+         const yAxis = d3.axisLeft(y)
+            .tickValues(yAxisTicks)
+            .tickFormat(d3.format('d'))
 
          svg.append("g")
-            .attr("fill", color)
-            .selectAll("rect")
+            .call(yAxis)
+               .attr("font-size", "0.7rem")
+               .attr("color", "var(--color-font)")
+            .call(g => g.append("text")
+               .attr("x", 0)
+               .attr("y", -10)
+               .attr("fill", "var(--color-font)")
+               .attr("font-size", "0.8rem")
+               .attr("text-anchor", "end")
+               .text("Games"))
+         
+         // append the bar rectangles to the svg element
+         svg.selectAll("rect")
             .data(bins)
             .join("rect")
-            .attr("x", d => xScale(d.x0) + insetLeft)
-            .attr("width", d => Math.max(0, xScale(d.x1) - xScale(d.x0) - insetLeft - insetRight))
-            .attr("y", (d, i) => yScale(Y[i]))
-            .attr("height", (d, i) => yScale(0) - yScale(Y[i]))
-            .append("title")
-            .text((d, i) => [`${d.x0} ≤ x < ${d.x1}`, yFormat(Y[i])].join("\n"));
-
-         svg.append("g")
-            .attr("transform", `translate(0,${height - marginBottom})`)
-            .call(xAxis)
-            .call(g => g.append("text")
-               .attr("x", width - marginRight)
-               .attr("y", 27)
-               .attr("fill", "currentColor")
-               .attr("text-anchor", "end")
-               .text(xLabel));
-
-         return svg.node();
+            .attr("x", 1)
+            .attr("transform", (d) => `translate(${x(d.x0)} , ${y(d.length)})`)
+            .attr("width", d => {
+               if (x(d.x1) - x(d.x0) == 0) {
+                  return 0
+               } 
+               return x(d.x1) - x(d.x0) - 1
+            })
+            .attr("height", (d) => height - y(d.length))
+            .style("fill", "steelblue")
       },
-
-      renderHistogram() {
-         return this.histogram = this.Histogram(this.distribution, {
-            // value: d => d.damagePerMinute,
-            color: "steelblue"
-         }).outerHTML
-      },
-
-      createDistribution() {
-         for (let i = 500; i < 4500; i+=100) {
-            let upper = i + 100
-            let arrIndex = (i - 500) / 100
-            this.data[1].matches.forEach(match => {
-               if (match.damagePerMinute > i && match.damagePerMinute < upper) {
-                  this.distribution[arrIndex].push(match.damagePerMinute)
-               }
-            });
-         }
-
-      }
    },
 
    props: {
       data: null,
-      championRender: String 
+      championFilter: String 
    }
 }
 </script>
 
 <template>
    <div class="histogram-main">
-      <span v-html="renderHistogram()"></span>
+
    </div>
 </template>
 
 <style scoped>
    .histogram-main {
-      display: block;
-      height: 450px;
+      padding-left: 45px;
+      padding-top: 80px;
+      /* height: 450px; */
    }
 </style>
