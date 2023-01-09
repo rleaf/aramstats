@@ -1,14 +1,12 @@
 <script>
 import Champion from '../Champion.vue'
 import Histogram from '../Histogram.vue'
-// import List from '../List.vue'
 import axios from 'axios'
 
 export default {
    components: {
       Champion,
       Histogram,
-      // List
    },
    data() {
       return {
@@ -25,16 +23,24 @@ export default {
          isDisabled: false,
          hover: null,
          championFilter: '',
-         champSearchFocus: false
+         championFocus: '',
+         champSearchFocus: false,
+         championBook: []
       }
    },
 
-   watch: {
-      // championFilter(curr, prev) {
-      //    console.log(prev, curr)
-      // }
-   }, 
-
+   mounted() {
+      for (let i = 0; i < this.championInfo.length; i++) {
+         if ('championName' in this.championInfo[i]) {
+            if (this.championInfo[i].trueChampionName) {
+               this.championBook.push(this.championInfo[i].trueChampionName)
+            } else {
+               this.championBook.push(this.championInfo[i].championName)
+            }
+         }
+      }
+      this.championBook.sort((a, b) => a.localeCompare(b))
+   },
    computed: {
       sortedChamps() {
          switch (this.selected) {
@@ -102,13 +108,10 @@ export default {
       },
 
       champSearchList() {
-         return this.championInfo.slice(1).sort((a, b) => a.championName.localeCompare(b.championName))
-            .filter(champ => {
-               // console.log(champ.championName.toLowerCase().includes('sivir'))
-               return champ.championName.toLowerCase().includes(this.championFilter.toLowerCase())
-               // champ.championName.toLowerCase().includes('sivir')
-            })
-      }
+         return this.championBook.filter(champ => {
+            return champ.toLowerCase().includes(this.championFilter.toLowerCase())
+         })
+      },
    },
 
    props: {
@@ -146,30 +149,17 @@ export default {
          this.sortProc(x)
       },
 
-      everyOther(i) {
-         return (i % 2 == 0) ? `style-0` : `style-1`
-      },
-
-      rerender() {
-         this.championKey += 1
-      },
-
       championSearch() {
          if (this.championFilter != '') {
             this.championFilter = ''
          }
          this.champSearchFocus = true
       },
-      selectChampion(x) {
-         this.championFilter = x
-         this.champSearchFocus = false
-      },
 
-      testo(e) {
-         if (this.$el != e.target) {
-            this.champSearchFocus = false
-         }
-         console.log('toad', this.$el, e.target)
+      selectChampion(champion) {
+         this.championFocus = champion
+         this.championFilter = champion
+         this.champSearchFocus = false
       },
 
       async refreshSummoner() {
@@ -182,7 +172,7 @@ export default {
                this.championInfo = res.data
             })
             .then(() => {
-               this.rerender()
+               this.championKey += 1
             })
             .then(() => {
                this.isDisabled = false
@@ -245,22 +235,21 @@ export default {
                type="text"
                placeholder="Search champion"
                v-model="championFilter"
-               @click="championSearch()"
-               @keyup.esc="champSearchFocus = false"
-               >
-            <div class="champion-search-list" v-if="champSearchFocus">
-               <div v-for="champ in champSearchList"
-                  :key="champ.championName"
-                  @click="selectChampion(champ.championName)">
-                  {{ champ.championName }}
+               @click="championSearch"
+               @keyup.esc="champSearchFocus = false">
+            <div class="champion-search-list" v-show="champSearchFocus">
+               <div class="champion-search-select" v-for="champ in champSearchList"
+                  :key="champ"
+                  @click="selectChampion(champ)">
+                  {{ champ }}
                </div>
             </div>
+            <div class="outside-search" v-show="champSearchFocus"
+               @click="champSearchFocus = false"></div>
          </div>
-         <!-- <List 
-            :data="this.championInfo"/> -->
          <Histogram 
             :data="this.championInfo"
-            :championFilter="this.championFilter"/>
+            :championFilter="this.championFocus"/>
       </div>
       <div class="stats-main">
          <div class="sorting-by">
@@ -271,7 +260,6 @@ export default {
             <div class='total-games header' @click="sortProc('Total Games')">Total Games</div>
             <div class='wins header' @click="sortProc('Wins')">Wins</div>
             <div class='avg-dmg header' @click="avgDmgDpm('Average Damage')">avg Dmg</div>
-            <!-- <div class='avg-dmg header' @click="sortProc('avgDmg')">DPM</div> -->
             <div class='avg-healing header' @click="sortProc('Average Healing')">avg Heal</div>
             <div class='avg-healing-to-teammates header' @click="sortProc('Average Healing to Teammates')">avg HtT</div>
             <div class='avg-dt header' @click="sortProc('Average Damage Taken')">avg DT</div>
@@ -291,13 +279,11 @@ export default {
             </div>
          </div>
          <div :key="this.championKey">
-            <!-- <transition-group name="flip-list">
-            </transition-group> -->
-               <Champion v-for="(champ, i) in sortedChamps"
-               :key="champ.championName"
-               :champion=champ
-               :class="everyOther(i)"
-               />
+            <Champion v-for="(champ, i) in sortedChamps"
+            :key="champ.championName"
+            :champion=champ
+            :class="(i % 2 == 0) ? `style-0` : `style-1`"
+            />
          </div>
       </div>
    </div>
@@ -306,18 +292,61 @@ export default {
 <style scoped>
 @import url('../../assets/stats.css');
 
-/* .flip-list-move {
-   transition: transform 0.5s;
-} */
+.outside-search {
+   position: fixed;
+   z-index: 1;
+   top: 0;
+   left: 0;
+   width: 100vw;
+   height: 100vh;
+}
+
+.champion-search {
+   margin-top: 50px;
+   margin-left: 50px;
+}
+.champion-search input {
+   background: var(--search-bar);
+   color: var(--color-font-search);
+   padding: 0.5rem 0.8rem;
+   border: 1px solid var(--color-font);
+   border-radius: 5px;
+   width: 150px;
+}
+.champion-search input:focus {
+   outline: none;
+   background: white;
+}
+
+.champion-search-select {
+   padding-bottom: 5px;
+}
 
 .champion-search-list {
    position: absolute;
+   margin-top: 2px;
+   z-index: 2;
    background: #313131;
    color: var(--color-font);
+   padding: 0.5rem 0.8rem;
    width: 150px;
-   height: 200px;
+   height: 150px;
    overflow-y: scroll;
 }
+
+.champion-search-list::-webkit-scrollbar-track {
+   background-color: #404040;
+}
+.champion-search-list::-webkit-scrollbar {
+   width: 18px;
+}
+.champion-search-list::-webkit-scrollbar-thumb {
+   border-radius: 2px;
+   box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+   background-color: #737272;
+}
+
+
 .disable {
    pointer-events: none;
 }
@@ -366,11 +395,9 @@ export default {
    border-radius: 3px;
    
    width: 100%;
-   /* height: 350px; */
 }
 
 .profile-name {
-   /* float: left; */
    display: flex;
    justify-content: left;
    align-items: center;
@@ -389,7 +416,6 @@ export default {
 
 .purge-wrapper a {
    font-size: 1rem;
-   /* display: block; */
    color: var(--color-font);
    border: 1px solid var(--color-font);
    border-radius: 5px;
@@ -399,8 +425,6 @@ export default {
 
 .purge-tooltip {
    float: right;
-   /* position: inline-block; */
-   /* position: absolute; */
    padding-top: 10px;
    width: 400px;
    font-size: 0.9rem;
