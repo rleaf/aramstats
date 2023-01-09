@@ -30,17 +30,23 @@ export default {
    },
 
    mounted() {
+
       for (let i = 0; i < this.championInfo.length; i++) {
+         let champ = {}
          if ('championName' in this.championInfo[i]) {
             if (this.championInfo[i].trueChampionName) {
-               this.championBook.push(this.championInfo[i].trueChampionName)
-            } else {
-               this.championBook.push(this.championInfo[i].championName)
-            }
+               champ.trueChampionName = this.championInfo[i].trueChampionName
+            } 
+
+            champ.championName = this.championInfo[i].championName
+            champ.image = `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/champion/${champ.championName}.png`
+            this.championBook.push(champ)
          }
       }
-      this.championBook.sort((a, b) => a.localeCompare(b))
+
+      this.championBook.sort((a, b) => a.championName.localeCompare(b.championName))
    },
+
    computed: {
       sortedChamps() {
          switch (this.selected) {
@@ -109,7 +115,11 @@ export default {
 
       champSearchList() {
          return this.championBook.filter(champ => {
-            return champ.toLowerCase().includes(this.championFilter.toLowerCase())
+            if (champ.trueChampionName) {
+               return champ.trueChampionName.toLowerCase().includes(this.championFilter.toLowerCase())
+            } else {
+               return champ.championName.toLowerCase().includes(this.championFilter.toLowerCase())
+            }
          })
       },
    },
@@ -233,23 +243,34 @@ export default {
          <div class="champion-search">
             <input 
                type="text"
-               placeholder="Search champion"
+               placeholder="Search champion..."
                v-model="championFilter"
                @click="championSearch"
                @keyup.esc="champSearchFocus = false">
             <div class="champion-search-list" v-show="champSearchFocus">
                <div class="champion-search-select" v-for="champ in champSearchList"
-                  :key="champ"
-                  @click="selectChampion(champ)">
-                  {{ champ }}
+                  :key="champ.championName"
+                  @click="selectChampion(champ.trueChampionName || champ.championName)">
+                  <img :src="champ.image" alt="">
+                  {{ champ.trueChampionName || champ.championName }}
                </div>
             </div>
             <div class="outside-search" v-show="champSearchFocus"
                @click="champSearchFocus = false"></div>
          </div>
-         <Histogram 
-            :data="this.championInfo"
-            :championFilter="this.championFocus"/>
+         <div class="profile-wrapper">
+            <!-- <div class="summoner-profile">
+   
+            </div> -->
+            <div class="damage-profile">
+               <Histogram 
+                  :data="this.championInfo"
+                  :championFilter="this.championFocus"/>
+            </div>
+            <!-- <div class="tank-profile">
+   
+            </div> -->
+         </div>
       </div>
       <div class="stats-main">
          <div class="sorting-by">
@@ -292,6 +313,11 @@ export default {
 <style scoped>
 @import url('../../assets/stats.css');
 
+.profile-wrapper {
+   padding-left: 45px;
+   padding-top: 45px;
+}
+
 .outside-search {
    position: fixed;
    z-index: 1;
@@ -306,44 +332,55 @@ export default {
    margin-left: 50px;
 }
 .champion-search input {
-   background: var(--search-bar);
-   color: var(--color-font-search);
+   background: var(--champion-search-bar);
+   color: var(--color-font);
    padding: 0.5rem 0.8rem;
-   border: 1px solid var(--color-font);
+   border: none;
    border-radius: 5px;
-   width: 150px;
+   width: 190px;
 }
 .champion-search input:focus {
    outline: none;
-   background: white;
+   background: var(--champion-search-bar);
 }
 
 .champion-search-select {
-   padding-bottom: 5px;
+   /* padding-bottom: 5px; */
+   display: flex;
+   gap: 10px;
+   align-items: center;
+   padding: 5px 10px;
+   width: 180px;
+   font-size: 0.9rem;
+}
+.champion-search-select img {
+   width: 30px;
+
 }
 
 .champion-search-list {
    position: absolute;
    margin-top: 2px;
    z-index: 2;
-   background: #313131;
+   background: var(--champion-filter-list);
    color: var(--color-font);
-   padding: 0.5rem 0.8rem;
-   width: 150px;
    height: 150px;
    overflow-y: scroll;
 }
+.champion-search-select:hover {
+   background: var(--champion-filter-list-hover);
+}
 
 .champion-search-list::-webkit-scrollbar-track {
-   background-color: #404040;
+   background-color: var(--champion-filter-scroll-track);
 }
 .champion-search-list::-webkit-scrollbar {
-   width: 18px;
+   width: 15px;
 }
 .champion-search-list::-webkit-scrollbar-thumb {
    border-radius: 2px;
-   box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-   background-color: #737272;
+   /* box-shadow: inset 0 0 6px rgba(0, 0, 0, .3); */
+   background-color: var(--light3);
 }
 
 

@@ -7,6 +7,7 @@
   --light5: rgba(228, 228, 228, 0.65);
   --light6: rgba(255, 255, 255, 0.123);
   --light7: rgba(255, 255, 255, 0.514);
+  --light8: #cecece;
   --lightWin: rgba(116, 214, 116, 0.603);
   --lightLoss: rgba(236, 125, 125, 0.603);
   --lightBorder: 
@@ -19,17 +20,17 @@
   --dark4: rgba(0, 0, 0, 0.65);
   --dark5: rgba(0, 0, 0, 0.45);
   --dark6: rgba(0, 0, 0, 0.384);
-  /* dark7 = dark5 */
+  --dark7: rgba(0, 0, 0, 0.2);
   --darkWin: rgba(0, 255, 0, 0.062);
   --darkLoss: rgba(255, 0, 0, 0.075);
-
-  --blue1: #1f2a42;
-  --blue2: #28102c;
-  --blue3: #1f2a42;
+  
+  --blue1: rgb(31, 42, 66);
+  --blue2: rgb(19, 27, 46);
+  --blue3: rgb(19, 27, 46);
+  --blue4: rgb(38, 54, 90);
   /* --match-border-top:  */
 
-  --test: hsl(209, 54%, 56%);
-
+  --bloo: hsl(209, 54%, 56%);
 
   --font-main: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
     Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -44,6 +45,11 @@
   --search-bar-dropdown-hover: var(--light3);
   --champion-0: var(--light4);
   --champion-1: var(--light5);
+  --secondary-tree: var(--dark4);
+  --champion-search-bar: var(--light2);
+  --champion-filter-list: var(--light2);
+  --champion-filter-list-hover: var(--light3);
+  --champion-filter-scroll-track: var(--light8);
   --win: var(--lightWin);
   --loss: var(--lightLoss);
 
@@ -59,6 +65,11 @@
     --color-font-hover: var(--light1);
     --champion-0: var(--dark4);
     --champion-1: var(--dark5);
+    --secondary-tree: var(--dark5);
+    --champion-search-bar: var(--blue2);
+    --champion-filter-list: var(--blue3);
+    --champion-filter-list-hover: var(--blue4);
+    --champion-filter-scroll-track: var(--dark7);
     --win: var(--darkWin);
     --loss: var(--darkLoss);
     

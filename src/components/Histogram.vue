@@ -7,6 +7,7 @@ export default {
          championNameEntry: String,
          x: null,
          y: null,
+         bins: null,
          histogram: null,
          margin: { top: 20, right: 20, bottom: 40, left: 80 },
          width: null,
@@ -65,11 +66,11 @@ export default {
             .domain(this.x.domain())
             .thresholds(this.x.ticks(20))
 
-         const bins = this.histogram(data)
+         if (data) this.bins = this.histogram(data)
 
          // Y Axis
          this.y = d3.scaleLinear()
-            .domain([0, d3.max(bins, d => d.length)])
+            .domain([0, d3.max(this.bins, d => d.length)])
             .range([this.height, 0])
 
          const yAxisTicks = this.y.ticks()
@@ -93,8 +94,13 @@ export default {
                .text("Games"))
          
          // append the bar rectangles to the svg element
+         let maxBin = 0
+         this.bins.forEach(bin => {
+            if (bin.length > maxBin) maxBin = bin.length
+         });
+
          this.svg.selectAll("rect")
-            .data(bins)
+            .data(this.bins)
             .join("rect")
             .attr("x", 1)
             .attr("transform", (d) => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
@@ -105,15 +111,15 @@ export default {
                return this.x(d.x1) - this.x(d.x0) - 1
             })
             .attr("height", (d) => this.height - this.y(d.length))
-            .attr("fill", d => `hsl(221, ${Math.round(d.length * 20)}%, 50%)`)
-
+            .attr("fill", d => `hsl(221, ${Math.round((((maxBin - d.length) / maxBin) * 10) + 50)}%, 50%)`)
+            // .attr("fill", d => `hsl(221, ${Math.round(50 / (((maxBin - d.length) / maxBin) + .65))}%, 50%)`)
       },
       
       updateHistogram(matches) {
-         const bins = this.histogram(matches)
+         this.bins = this.histogram(matches)
 
          this.y = d3.scaleLinear()
-            .domain([0, d3.max(bins, d => d.length)])
+            .domain([0, d3.max(this.bins, d => d.length)])
             .range([this.height, 0])
 
          const yAxisTicks = this.y.ticks()
@@ -127,15 +133,20 @@ export default {
             .transition()
             .call(yAxis)
 
+         let maxBin = 0
+         this.bins.forEach(bin => {
+            if (bin.length > maxBin) maxBin = bin.length
+         });
+
          this.svg.selectAll("rect")
-            .data(bins)
+            .data(this.bins)
             .transition()
-            .duration(2000)
+            .duration(1000)
             .attr("transform", d => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
             .attr("height", d => this.height - this.y(d.length))
-            .attr("fill", d => `hsl(221, ${Math.round(d.length * 15)}%, 50%)`)
-            // .attr("fill", d => `hsl(221, 59%, 50%)`)
-            // .attr("fill", d => `hwb(221 ${Math.round(d.length * 15)}% ${Math.round(d.length * 5)}%)`)
+            .attr("fill", d => `hsl(221, ${Math.round(60 - (((maxBin - d.length) / maxBin) * 40))}%, ${Math.round((((maxBin - d.length) / maxBin) * 8) + 50)}%)`)
+            // .attr("fill", d => `hsl(221, ${Math.round(60 - (((maxBin - d.length) / maxBin) * 35))}%, 50%)`)
+            // .attr("fill", d => `hsl(221, ${Math.round(50 / (((maxBin - d.length) / maxBin) + .50))}%, 50%)`)
       },
 
       getChampionIndex() {
@@ -164,9 +175,8 @@ export default {
 </template>
 
 <style scoped>
-   .histogram-main {
+   /* .histogram-main {
       padding-left: 45px;
-      padding-top: 80px;
-      /* height: 450px; */
-   }
+      padding-top: 45px;
+   } */
 </style>

@@ -148,7 +148,7 @@ export default {
 }
 .secondaryTree {
    width: 15px;
-   background: rgba(0, 0, 0, 0.521);
+   background: var(--secondary-tree);
    padding: 4px;
    border-radius: 100%;
    
