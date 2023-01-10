@@ -1,5 +1,8 @@
 <script>
 import Champion from '../Champion.vue'
+import Overview from '../Overview.vue'
+import Offensive from '../Offensive.vue'
+import Defensive from '../Defensive.vue'
 import Histogram from '../Histogram.vue'
 import ChampSearch from '../ChampSearch.vue'
 import axios from 'axios'
@@ -8,7 +11,10 @@ export default {
    components: {
       Champion,
       Histogram,
-      ChampSearch
+      ChampSearch,
+      Overview,
+      Offensive,
+      Defensive
    },
    data() {
       return {
@@ -218,21 +224,13 @@ export default {
                </div>
             </div>
             <div class="profile" v-show="this.profileSection == 0">
-               <div class="wip">soon.tm</div>
+               <Overview :data="this.championInfo" />
             </div>
             <div class="profile" v-show="this.profileSection == 1">
-               <ChampSearch 
-                  :data="this.championInfo" 
-                  @championFocus="champion => championFilter = champion"/>
-               <Histogram 
-                  :data="this.championInfo"
-                  :championFilter="this.championFilter"/>
+               <Offensive :data="this.championInfo"/>
             </div>
             <div class="profile" v-show="this.profileSection == 2">
-               <!-- <ChampSearch
-                  :data="this.championInfo"
-                  @championFocus="champion => championFilter = champion" /> -->
-               <div class="wip">soon.tm</div>
+               <Defensive :data="this.championInfo"/>
             </div>
          </div>
       </div>
