@@ -4,20 +4,23 @@ import * as d3 from 'd3'
 export default {
    data() {
       return {
-         championNameEntry: String,
+         matches: null,
+         avgDPM: null,
          x: null,
          y: null,
          bins: null,
          histogram: null,
-         margin: { top: 20, right: 20, bottom: 40, left: 80 },
+         margin: { top: 20, right: 20, bottom: 40, left: 45 },
          width: null,
          height: null,
+         std: null,
+         mean: null,
          svg: null,
       }
    },
 
    mounted() {
-      this.width = 400 - this.margin.left - this.margin.right
+      this.width = 350 - this.margin.left - this.margin.right
       this.height = 200 - this.margin.top - this.margin.bottom
       this.Histogram(this.data[25].matches)
    },
@@ -25,9 +28,9 @@ export default {
    watch: {
       championFilter() {
          let championIndex = this.getChampionIndex()
-         let matches = this.data[championIndex].matches
-
-         this.updateHistogram(matches)
+         this.matches = this.data[championIndex].matches
+         this.avgDPM = this.data[championIndex].averageDamagePerMinute
+         this.updateHistogram(this.matches)
       }
    },
 
@@ -99,6 +102,31 @@ export default {
             if (bin.length > maxBin) maxBin = bin.length
          });
 
+         const tooltip = d3
+            .select("body")
+            .append("div")
+            .attr("class", "svg-tooltip")
+            .style("position", "absolute")
+            .style("visibility", "hidden");
+
+         this.std = this.svg.append("g")
+            .append("text")
+            .attr("x", `${this.width - 50}`)
+            .attr("y", 20)
+            .attr("text-align", "right")
+            .attr("fill", "var(--color-font)")
+            .attr("font-size", "0.8rem")
+            .text(`std: -`)
+
+         this.mean = this.svg.append("g")
+            .append("text")
+            .attr("x", `${this.width - 50}`)
+            .attr("y", 0)
+            .attr("text-align", "right")
+            .attr("fill", "var(--color-font)")
+            .attr("font-size", "0.8rem")
+            .text(`mean: -`)
+
          this.svg.selectAll("rect")
             .data(this.bins)
             .join("rect")
@@ -112,7 +140,26 @@ export default {
             })
             .attr("height", (d) => this.height - this.y(d.length))
             .attr("fill", d => `hsl(221, ${Math.round((((maxBin - d.length) / maxBin) * 10) + 50)}%, 50%)`)
-            // .attr("fill", d => `hsl(221, ${Math.round(50 / (((maxBin - d.length) / maxBin) + .65))}%, 50%)`)
+            .on('mouseover', function(_, d) {
+               // need function declaration format to pass 'this'.
+               d3.select(this)
+                  .attr('stroke-width', 1)
+                  .attr('stroke', 'var(--color-font)')
+               tooltip
+                  .style("visibility", "visible")
+                  .text(`count: ${d.length}\nx0: ${d.x0}\nx1: ${d.x1}`)
+            })
+            .on("mousemove", function (e) {
+               tooltip
+                  .style("top", `${e.pageY + -20}px`)
+                  .style("left", `${e.pageX + 10}px`)
+            })
+            .on("mouseout", function () {
+               // change the selection style
+               d3.select(this).attr('stroke-width', '0');
+
+               tooltip.style("visibility", "hidden");
+            });
       },
       
       updateHistogram(matches) {
@@ -138,6 +185,12 @@ export default {
             if (bin.length > maxBin) maxBin = bin.length
          });
 
+         this.std
+            .text(`std: ${this.getStdDev(this.championFilter)}`)
+
+         this.mean
+            .text(`mean: ${this.avgDPM}`)
+
          this.svg.selectAll("rect")
             .data(this.bins)
             .transition()
@@ -145,8 +198,22 @@ export default {
             .attr("transform", d => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
             .attr("height", d => this.height - this.y(d.length))
             .attr("fill", d => `hsl(221, ${Math.round(60 - (((maxBin - d.length) / maxBin) * 40))}%, ${Math.round((((maxBin - d.length) / maxBin) * 8) + 50)}%)`)
-            // .attr("fill", d => `hsl(221, ${Math.round(60 - (((maxBin - d.length) / maxBin) * 35))}%, 50%)`)
-            // .attr("fill", d => `hsl(221, ${Math.round(50 / (((maxBin - d.length) / maxBin) + .50))}%, 50%)`)
+      },
+
+      getStdDev() {
+         let arr = []
+         this.matches.forEach((match) => {
+            arr.push(match.damagePerMinute)
+         })
+         let std = 0
+         let num = arr.length
+         arr.forEach((value) => {
+            std += (value - this.avgDPM) ** 2
+         })
+         std /= num
+         std = Math.round(std ** (1/2))
+         return std
+
       },
 
       getChampionIndex() {
@@ -174,9 +241,24 @@ export default {
    </div>
 </template>
 
-<style scoped>
-   /* .histogram-main {
-      padding-left: 45px;
-      padding-top: 45px;
+<style>
+/* .histogram-main svg{
+      background: var(--champion-filter-scroll-track);
+      padding: 10px;
+      border-radius: 5px;
    } */
+   .svg-tooltip {
+      background: rgba(69, 77, 93, .9);
+      border-radius: .1rem;
+      color: #fff;
+      display: block;
+      font-size: 14px;
+      max-width: 320px;
+      padding: .2rem .4rem;
+      position: absolute;
+      text-overflow: ellipsis;
+      white-space: pre;
+      z-index: 300;
+      visibility: hidden;
+   }
 </style>
