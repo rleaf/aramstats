@@ -1,12 +1,14 @@
 <script>
 import Champion from '../Champion.vue'
 import Histogram from '../Histogram.vue'
+import ChampSearch from '../ChampSearch.vue'
 import axios from 'axios'
 
 export default {
    components: {
       Champion,
       Histogram,
+      ChampSearch
    },
    data() {
       return {
@@ -22,29 +24,9 @@ export default {
          championKey: 0,
          isDisabled: false,
          hover: null,
-         championFilter: '',
-         championFocus: '',
-         champSearchFocus: false,
-         championBook: []
+         profileSection: 0,
+         championFilter: null
       }
-   },
-
-   mounted() {
-
-      for (let i = 0; i < this.championInfo.length; i++) {
-         let champ = {}
-         if ('championName' in this.championInfo[i]) {
-            if (this.championInfo[i].trueChampionName) {
-               champ.trueChampionName = this.championInfo[i].trueChampionName
-            } 
-
-            champ.championName = this.championInfo[i].championName
-            champ.image = `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/champion/${champ.championName}.png`
-            this.championBook.push(champ)
-         }
-      }
-
-      this.championBook.sort((a, b) => a.championName.localeCompare(b.championName))
    },
 
    computed: {
@@ -112,16 +94,6 @@ export default {
                return this.championInfo.slice(1).sort((a, b) => b.totalGames - a.totalGames)
          }
       },
-
-      champSearchList() {
-         return this.championBook.filter(champ => {
-            if (champ.trueChampionName) {
-               return champ.trueChampionName.toLowerCase().includes(this.championFilter.toLowerCase())
-            } else {
-               return champ.championName.toLowerCase().includes(this.championFilter.toLowerCase())
-            }
-         })
-      },
    },
 
    props: {
@@ -157,19 +129,6 @@ export default {
       avgDmgDpm(x) {
          (this.dmgDpmState == 3) ? this.dmgDpmState = 0 : this.dmgDpmState++
          this.sortProc(x)
-      },
-
-      championSearch() {
-         if (this.championFilter != '') {
-            this.championFilter = ''
-         }
-         this.champSearchFocus = true
-      },
-
-      selectChampion(champion) {
-         this.championFocus = champion
-         this.championFilter = champion
-         this.champSearchFocus = false
       },
 
       async refreshSummoner() {
@@ -240,36 +199,34 @@ export default {
             <br><br>
             Confirmation will appear after clicking.
          </span>
-         <div class="champion-search">
-            <input 
-               type="text"
-               placeholder="Search champion..."
-               v-model="championFilter"
-               @click="championSearch"
-               @keyup.esc="champSearchFocus = false">
-            <div class="champion-search-list" v-show="champSearchFocus">
-               <div class="champion-search-select" v-for="champ in champSearchList"
-                  :key="champ.championName"
-                  @click="selectChampion(champ.trueChampionName || champ.championName)">
-                  <img :src="champ.image" alt="">
-                  {{ champ.trueChampionName || champ.championName }}
+         <div class="profile-wrapper">
+            <div class="profile-sections">
+               <div class="summoner-profile-tab" @click="this.profileSection = 0">
+                  Summoner
+               </div>
+               <div class="summoner-profile-tab" @click="this.profileSection = 1">
+                  Damage Profile
+               </div>
+               <div class="summoner-profile-tab" @click="this.profileSection = 2">
+                  Tank Profile
                </div>
             </div>
-            <div class="outside-search" v-show="champSearchFocus"
-               @click="champSearchFocus = false"></div>
-         </div>
-         <div class="profile-wrapper">
-            <!-- <div class="summoner-profile">
+            <div class="profile" v-show="this.profileSection == 0">
    
-            </div> -->
-            <div class="damage-profile">
+            </div>
+            <div class="profile" v-show="this.profileSection == 1">
+               <ChampSearch 
+                  :data="this.championInfo" 
+                  @championFocus="champion => championFilter = champion"/>
                <Histogram 
                   :data="this.championInfo"
-                  :championFilter="this.championFocus"/>
+                  :championFilter="this.championFilter"/>
             </div>
-            <!-- <div class="tank-profile">
-   
-            </div> -->
+            <div class="profile" v-show="this.profileSection == 2">
+               <ChampSearch
+                  :data="this.championInfo"
+                  @championFocus="champion => championFilter = champion" />
+            </div>
          </div>
       </div>
       <div class="stats-main">
@@ -313,76 +270,30 @@ export default {
 <style scoped>
 @import url('../../assets/stats.css');
 
+.profile-sections div {
+   display: inline-block;
+   color: var(--color-font);
+   margin-right: 1rem;
+   padding: 0.5rem 0.8rem;
+   background: rgb(41, 54, 83);
+   border-radius: 5px;
+}
+.profile-sections div:hover {
+   background: rgb(55, 70, 102);
+   cursor: pointer;
+}
+
 .profile-wrapper {
    padding-left: 45px;
    padding-top: 45px;
 }
 
-.outside-search {
-   position: fixed;
-   z-index: 1;
-   top: 0;
-   left: 0;
-   width: 100vw;
-   height: 100vh;
-}
-
-.champion-search {
-   margin-top: 50px;
-   margin-left: 50px;
-}
-.champion-search input {
-   background: var(--champion-search-bar);
-   color: var(--color-font);
-   padding: 0.5rem 0.8rem;
-   border: none;
+.profile {
+   height: 350px;
+   margin-top: 30px;
+   background: rgb(41, 54, 83);
    border-radius: 5px;
-   width: 190px;
 }
-.champion-search input:focus {
-   outline: none;
-   background: var(--champion-search-bar);
-}
-
-.champion-search-select {
-   /* padding-bottom: 5px; */
-   display: flex;
-   gap: 10px;
-   align-items: center;
-   padding: 5px 10px;
-   width: 180px;
-   font-size: 0.9rem;
-}
-.champion-search-select img {
-   width: 30px;
-
-}
-
-.champion-search-list {
-   position: absolute;
-   margin-top: 2px;
-   z-index: 2;
-   background: var(--champion-filter-list);
-   color: var(--color-font);
-   height: 150px;
-   overflow-y: scroll;
-}
-.champion-search-select:hover {
-   background: var(--champion-filter-list-hover);
-}
-
-.champion-search-list::-webkit-scrollbar-track {
-   background-color: var(--champion-filter-scroll-track);
-}
-.champion-search-list::-webkit-scrollbar {
-   width: 15px;
-}
-.champion-search-list::-webkit-scrollbar-thumb {
-   border-radius: 2px;
-   /* box-shadow: inset 0 0 6px rgba(0, 0, 0, .3); */
-   background-color: var(--light3);
-}
-
 
 .disable {
    pointer-events: none;
@@ -399,8 +310,6 @@ export default {
    display: flex;
    align-items: center;
 }
-
-
 
 .header:hover {
    text-decoration: underline;
