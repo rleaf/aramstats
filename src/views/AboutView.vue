@@ -6,8 +6,8 @@
         <u>aramstats.lol</u> parses all of a summoner's ARAM games available in the Riot API.
       </p>
       <p>
-        This site is new so there may be some lingering issues. Feel free to reach out at <u>owl#4626</u>
-        if you encounter any of them.
+        Feel free to reach out at <u>owl#4626</u>
+        if you have any neat ideas.
       </p>
     </div>
   </div>

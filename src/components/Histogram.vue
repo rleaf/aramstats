@@ -103,7 +103,7 @@ export default {
          });
 
          const tooltip = d3
-            .select("body")
+            .select(".histogram-main")
             .append("div")
             .attr("class", "svg-tooltip")
             .style("position", "absolute")
@@ -242,11 +242,11 @@ export default {
 </template>
 
 <style>
-/* .histogram-main svg{
-      background: var(--champion-filter-scroll-track);
-      padding: 10px;
-      border-radius: 5px;
-   } */
+   .histogram-main {
+      padding-top: 50px;
+      padding-left: 20px;
+   }
+
    .svg-tooltip {
       background: rgba(69, 77, 93, .9);
       border-radius: .1rem;

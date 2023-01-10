@@ -84,7 +84,7 @@ export default {
    .champion-search {
       padding-top: 20px;
       padding-left: 20px;
-      padding-bottom: 50px;
+      /* padding-bottom: 50px; */
    }
    
    .champion-search input {

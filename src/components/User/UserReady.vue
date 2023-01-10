@@ -201,18 +201,24 @@ export default {
          </span>
          <div class="profile-wrapper">
             <div class="profile-sections">
-               <div class="summoner-profile-tab" @click="this.profileSection = 0">
-                  Summoner
+               <div class="summoner-profile-tab"
+                  :class="{ 'active-tab': this.profileSection == 0 }"
+                  @click="this.profileSection = 0">
+                  Overview
                </div>
-               <div class="summoner-profile-tab" @click="this.profileSection = 1">
-                  Damage Profile
+               <div class="summoner-profile-tab"
+                  :class="{ 'active-tab': this.profileSection == 1 }"
+                  @click="this.profileSection = 1">
+                  Offensive
                </div>
-               <div class="summoner-profile-tab" @click="this.profileSection = 2">
-                  Tank Profile
+               <div :class="{ 'active-tab': this.profileSection == 2 }" class="summoner-profile-tab" 
+                  
+                  @click="this.profileSection = 2">
+                  Defensive
                </div>
             </div>
             <div class="profile" v-show="this.profileSection == 0">
-   
+               <div class="wip">soon.tm</div>
             </div>
             <div class="profile" v-show="this.profileSection == 1">
                <ChampSearch 
@@ -223,9 +229,10 @@ export default {
                   :championFilter="this.championFilter"/>
             </div>
             <div class="profile" v-show="this.profileSection == 2">
-               <ChampSearch
+               <!-- <ChampSearch
                   :data="this.championInfo"
-                  @championFocus="champion => championFilter = champion" />
+                  @championFocus="champion => championFilter = champion" /> -->
+               <div class="wip">soon.tm</div>
             </div>
          </div>
       </div>
@@ -270,6 +277,12 @@ export default {
 <style scoped>
 @import url('../../assets/stats.css');
 
+.wip {
+   text-align: center;
+   padding-top: 150px;
+   color: var(--color-font);
+}
+
 .profile-sections div {
    display: inline-block;
    color: var(--color-font);
@@ -283,8 +296,12 @@ export default {
    cursor: pointer;
 }
 
+.profile-sections .active-tab {
+   background: rgb(55, 70, 102);
+}
+
 .profile-wrapper {
-   padding-left: 45px;
+   /* padding-left: 45px; */
    padding-top: 45px;
 }
 
@@ -333,6 +350,7 @@ export default {
 
 .stats-main {
    display: block;
+   padding-top: 50px;
    padding-bottom: 10vh;
 }
 
@@ -348,7 +366,7 @@ export default {
    justify-content: left;
    align-items: center;
    padding-top: 45px;
-   padding-left: 45px;
+   /* padding-left: 45px; */
    gap: 20px;
    font-size: 1.5rem;
    color: var(--color-font);
