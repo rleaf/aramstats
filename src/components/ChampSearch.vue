@@ -82,8 +82,10 @@ export default {
 
 <style scoped>
    .champion-search {
-      padding-top: 20px;
-      padding-left: 20px;
+      border-bottom: 1px solid var(--color-font);
+      padding-top: 10px;
+      padding-bottom: 10px;
+      padding-left: 10px;
       /* padding-bottom: 50px; */
    }
    

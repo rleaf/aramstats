@@ -284,7 +284,8 @@ export default {
 .profile-sections div {
    display: inline-block;
    color: var(--color-font);
-   margin-right: 1rem;
+   margin-right: 10px;
+   margin-bottom: 10px;
    padding: 0.5rem 0.8rem;
    background: rgb(41, 54, 83);
    border-radius: 5px;
@@ -305,7 +306,6 @@ export default {
 
 .profile {
    height: 350px;
-   margin-top: 30px;
    background: rgb(41, 54, 83);
    border-radius: 5px;
 }
@@ -387,10 +387,13 @@ export default {
 
 .purge-tooltip {
    float: right;
-   padding-top: 10px;
+   margin-top: 15px;
+   padding: 0.7rem 1.5rem;
+   border-radius: 5px;
    width: 400px;
    font-size: 0.9rem;
    text-align: end;
+   background: rgba(69, 77, 93, .5);
    color: var(--color-font);
 }
 .pfp {

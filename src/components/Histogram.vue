@@ -26,17 +26,15 @@ export default {
    },
 
    watch: {
-      championFilter() {
-         let championIndex = this.getChampionIndex()
-         this.matches = this.data[championIndex].matches
-         this.avgDPM = this.data[championIndex].averageDamagePerMinute
+      championIndex() {
+         this.matches = this.data[this.championIndex].matches
+         this.avgDPM = this.data[this.championIndex].averageDamagePerMinute
          this.updateHistogram(this.matches)
       }
    },
 
    methods: {
       Histogram(data) {
-
          this.svg = d3.select(".histogram-main")
             .append("svg")
                .attr("width", this.width + this.margin.left + this.margin.right)
@@ -215,22 +213,11 @@ export default {
          return std
 
       },
-
-      getChampionIndex() {
-         return this.data.findIndex((e) => {
-            if (e.trueChampionName) {
-               return e.trueChampionName == this.championFilter
-            } else {
-               return e.championName == this.championFilter
-            }
-            
-         })
-      }
    },
 
    props: {
       data: null,
-      championFilter: String 
+      championIndex: Number,
    }
 }
 </script>
@@ -243,8 +230,8 @@ export default {
 
 <style>
    .histogram-main {
-      padding-top: 50px;
-      padding-left: 20px;
+      padding-top: 25px;
+      width: 350px;
    }
 
    .svg-tooltip {
