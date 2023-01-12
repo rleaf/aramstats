@@ -218,11 +218,11 @@ export default {
                   @click="this.profileSection = 1">
                   Offensive
                </div>
-               <div :class="{ 'active-tab': this.profileSection == 2 }" class="summoner-profile-tab" 
+               <!-- <div :class="{ 'active-tab': this.profileSection == 2 }" class="summoner-profile-tab" 
                   
                   @click="this.profileSection = 2">
                   Defensive
-               </div>
+               </div> -->
             </div>
             <div class="profile" v-show="this.profileSection == 0">
                <Overview :data="this.championInfo" />

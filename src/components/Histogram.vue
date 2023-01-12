@@ -9,8 +9,13 @@ export default {
          x: null,
          y: null,
          bins: null,
+         maxBin: 0,
+         maxBin2: 0,
+         binDomain: null,
          bins2: null,
          histogram: null,
+         blueLegend: null,
+         redLegend: null,
          margin: { top: 20, right: 20, bottom: 40, left: 45 },
          width: null,
          height: null,
@@ -31,13 +36,15 @@ export default {
    watch: {
       championData() {
          this.avgDPM = this.championData.averageDamagePerMinute
-         console.log('yeet', this.championData)
          this.updateHistogram(this.championData.matches)
+         // this.comparisonUpdate(this.championData.matches)
       },
-
+      
       comparisonData(_, prev) {
+         (prev) ? this.comparisonUpdate(this.comparisonData, true):
+         this.comparisonUpdate(this.comparisonData)
          // if(prev) this.comparisonData = null
-         this.comparison(this.comparisonData)
+         // this.comparisonUpdate(this.comparisonData)
       }
    },
 
@@ -103,9 +110,8 @@ export default {
                .text("Games"))
          
          // append the bar rectangles to the svg element
-         let maxBin = 0
          this.bins.forEach(bin => {
-            if (bin.length > maxBin) maxBin = bin.length
+            if (bin.length > this.maxBin) this.maxBin = bin.length
          });
 
          const tooltip = d3
@@ -115,17 +121,22 @@ export default {
             .style("position", "absolute")
             .style("visibility", "hidden");
 
-         this.std = this.svg.append("g")
+         this.blueLegend = this.svg.append("g")
+            .classed("blue-legend", true)
+
+         this.blueLegend
             .append("text")
+            .classed("std", true)
             .attr("x", `${this.width - 50}`)
             .attr("y", 20)
             .attr("text-align", "right")
             .attr("fill", "var(--color-font)")
             .attr("font-size", "0.8rem")
-            .text(`std: ${this.getStdDev(this.initChampion)}`)
+            .text(`std: ${this.getStdDev(this.initChampion, this.avgDPM)}`)
 
-         this.mean = this.svg.append("g")
+         this.blueLegend
             .append("text")
+            .classed("mean", true)
             .attr("x", `${this.width - 50}`)
             .attr("y", 0)
             .attr("text-align", "right")
@@ -145,7 +156,7 @@ export default {
                return this.x(d.x1) - this.x(d.x0) - 1
             })
             .attr("height", (d) => this.height - this.y(d.length))
-            .attr("fill", d => `hsl(221, ${Math.round((((maxBin - d.length) / maxBin) * 10) + 50)}%, 50%)`)
+            .attr("fill", d => `hsl(221, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 10) + 50)}%, 50%)`)
             .on('mouseover', function(_, d) {
                // need function declaration format to pass 'this'.
                d3.select(this)
@@ -166,13 +177,17 @@ export default {
 
                tooltip.style("visibility", "hidden");
             });
+         
       },
       
       updateHistogram(data) {
          this.bins = this.histogram(data)
+         if (this.comparisonData) this.binDomain = [this.bins, this.bins2].flat()
+         // let been
+         // (this.comparisonData) ? been = this.binDomain : been = this.bins
 
          this.y = d3.scaleLinear()
-            .domain([0, d3.max(this.bins, d => d.length)])
+            .domain([0, d3.max(this.binDomain || this.bins, d => d.length)])
             .range([this.height, 0])
 
          const yAxisTicks = this.y.ticks()
@@ -186,15 +201,10 @@ export default {
             .transition()
             .call(yAxis)
 
-         let maxBin = 0
-         this.bins.forEach(bin => {
-            if (bin.length > maxBin) maxBin = bin.length
-         });
+         this.blueLegend.selectAll("text.std")
+            .text(`std: ${this.getStdDev(this.championData, this.avgDPM)}`)
 
-         this.std
-            .text(`std: ${this.getStdDev(this.championData)}`)
-
-         this.mean
+         this.blueLegend.selectAll("text.mean")
             .text(`mean: ${this.avgDPM}`)
 
          this.svg.selectAll("rect")
@@ -203,15 +213,25 @@ export default {
             .duration(1000)
             .attr("transform", d => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
             .attr("height", d => this.height - this.y(d.length))
-            .attr("fill", d => `hsl(221, ${Math.round(60 - (((maxBin - d.length) / maxBin) * 40))}%, ${Math.round((((maxBin - d.length) / maxBin) * 8) + 50)}%)`)
+            .attr("fill", d => `hsl(221, ${Math.round(60 - (((this.maxBin - d.length) / this.maxBin) * 40))}%, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 8) + 50)}%)`)
+
+         if(this.comparisonData) {
+            this.svg.select("g.comparison").selectAll("rect")
+               .data(this.bins2)
+               .transition()
+               .duration(1000)
+               .attr("transform", (d) => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
+               .attr("height", (d) => this.height - this.y(d.length))
+               .attr("fill", d => `hsl(9, ${Math.round(90 - (((this.maxBin2 - d.length) / this.maxBin2) * 40))}%, 64%)`)
+         }
       },
 
-      comparison(data) {
+      comparisonUpdate(data, update=false) {
          this.bins2 = this.histogram(data)
-         let binDomain = [this.bins, this.bins2].flat()
+         this.binDomain = [this.bins, this.bins2].flat()
 
          this.y = d3.scaleLinear()
-            .domain([0, d3.max(binDomain, d => d.length)])
+            .domain([0, d3.max(this.binDomain, d => d.length)])
             .range([this.height, 0])
 
          const yAxisTicks = this.y.ticks()
@@ -225,26 +245,102 @@ export default {
             .transition()
             .call(yAxis)
 
-         let maxBin = 0
          this.bins2.forEach(bin => {
-            if (bin.length > maxBin) maxBin = bin.length
+            if (bin.length > this.maxBin2) this.maxBin2 = bin.length
          });
+         
+         let ensembleDPM = 0
+         data.forEach((match) => {
+            ensembleDPM += match.damagePerMinute
+         })
 
-         this.svg.selectAll("rect2")
-            .data(this.bins2)
-            .join("rect")
-            .transition()
-            .duration(1000)
-            .attr("transform", d => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
-            .attr("width", d => {
-               if (this.x(d.x1) - this.x(d.x0) == 0) {
-                  return 0
-               }
-               return this.x(d.x1) - this.x(d.x0) - 1
-            })
-            .attr("height", d => this.height - this.y(d.length))
-            .style("fill", "tomato")
-            .style("opacity", 0.5)
+         ensembleDPM /= data.length
+
+         if (update) {
+            this.svg.select("g.comparison").selectAll("rect")
+               .data(this.bins2)
+               .transition()
+               .duration(1000)
+               .attr("transform", (d) => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
+               .attr("height", (d) => this.height - this.y(d.length))
+               .attr("fill", d => `hsl(9, ${Math.round(90 - (((this.maxBin2 - d.length) / this.maxBin2) * 40))}%, 64%)`)
+
+            this.redLegend.selectAll("text.std")
+               .text(`std: ${this.getStdDev(this.comparisonData, ensembleDPM, true)}`)
+
+            this.redLegend.selectAll("text.mean")
+               .text(`mean: ${Math.round(ensembleDPM)}`)
+
+         } else {
+
+            const tooltip = d3
+               .select(".histogram-main")
+               .append("div")
+               .attr("class", "svg-tooltip-red")
+               .style("position", "absolute")
+               .style("visibility", "hidden");
+
+            this.svg.append("g")
+               .classed("comparison", true)
+               .selectAll("rect")
+               .data(this.bins2)
+               .join("rect")
+               .attr("x", 1)
+               .attr("transform", (d) => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
+               .attr("width", d => {
+                  if (this.x(d.x1) - this.x(d.x0) == 0) {
+                     return 0
+                  }
+                  return this.x(d.x1) - this.x(d.x0) - 1
+               })
+               .attr("height", (d) => this.height - this.y(d.length))
+               .attr("fill", d => `hsl(9, ${Math.round(80 - (((this.maxBin2 - d.length) / this.maxBin2) * 40) )}%, 64%)`)
+               .style("opacity", 0.25)
+               .on('mouseover', function (_, d) {
+                  // need function declaration format to pass 'this'.
+                  d3.select(this)
+                     .attr('stroke-width', 1)
+                     .attr('stroke', 'var(--color-font)')
+                  tooltip
+                     .style("visibility", "visible")
+                     .text(`count: ${d.length}\nx0: ${d.x0}\nx1: ${d.x1}`)
+               })
+               .on("mousemove", function (e) {
+                  tooltip
+                     .style("top", `${e.pageY + -20}px`)
+                     .style("left", `${e.pageX + 10}px`)
+               })
+               .on("mouseout", function () {
+                  // change the selection style
+                  d3.select(this).attr('stroke-width', '0');
+
+                  tooltip.style("visibility", "hidden");
+               });
+
+            this.redLegend = this.svg.append("g")
+               .classed("red-legend", true)
+
+            this.redLegend
+               .append("text")
+               .classed("std", true)
+               .attr("x", `${this.width - 50}`)
+               .attr("y", 70)
+               .attr("text-align", "right")
+               .attr("fill", "var(--color-font)")
+               .attr("font-size", "0.8rem")
+               .text(`std: ${this.getStdDev(this.comparisonData, ensembleDPM,  true)}`)
+
+            this.redLegend
+               .append("text")
+               .classed("mean", true)
+               .attr("x", `${this.width - 50}`)
+               .attr("y", 50)
+               .attr("text-align", "right")
+               .attr("fill", "var(--color-font)")
+               .attr("font-size", "0.8rem")
+               .text(`mean: ${Math.round(ensembleDPM)}`)
+         }
+
 
          this.svg.selectAll("rect")
             .data(this.bins)
@@ -252,18 +348,27 @@ export default {
             .duration(1000)
             .attr("transform", d => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
             .attr("height", d => this.height - this.y(d.length))
-            .attr("fill", d => `hsl(221, ${Math.round(60 - (((maxBin - d.length) / maxBin) * 40))}%, ${Math.round((((maxBin - d.length) / maxBin) * 8) + 50)}%)`)
+            .attr("fill", d => `hsl(221, ${Math.round(60 - (((this.maxBin - d.length) / this.maxBin) * 40))}%, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 8) + 50)}%)`)
       },
 
-      getStdDev(data) {
+      getStdDev(data, mean, comparison=false) {
          let arr = []
-         data.matches.forEach((match) => {
-            arr.push(match.damagePerMinute)
-         })
+         
+         if (comparison == false) {
+            data.matches.forEach((match) => {
+               arr.push(match.damagePerMinute)
+            })
+         } else {
+            data.forEach((match) => {
+               arr.push(match.damagePerMinute)
+            })
+         }
+
          let std = 0
          let num = arr.length
+
          arr.forEach((value) => {
-            std += (value - this.avgDPM) ** 2
+            std += (value - mean) ** 2
          })
          std /= num
          std = Math.round(std ** (1/2))
@@ -295,6 +400,21 @@ export default {
 
    .svg-tooltip {
       background: rgba(69, 77, 93, .9);
+      border-radius: .1rem;
+      color: #fff;
+      display: block;
+      font-size: 14px;
+      max-width: 320px;
+      padding: .2rem .4rem;
+      position: absolute;
+      text-overflow: ellipsis;
+      white-space: pre;
+      z-index: 300;
+      visibility: hidden;
+   }
+
+   .svg-tooltip-red {
+      background: rgba(93, 69, 77, 0.9);
       border-radius: .1rem;
       color: #fff;
       display: block;
