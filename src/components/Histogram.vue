@@ -9,6 +9,7 @@ export default {
          x: null,
          y: null,
          bins: null,
+         bins2: null,
          histogram: null,
          margin: { top: 20, right: 20, bottom: 40, left: 45 },
          width: null,
@@ -30,7 +31,13 @@ export default {
    watch: {
       championData() {
          this.avgDPM = this.championData.averageDamagePerMinute
+         console.log('yeet', this.championData)
          this.updateHistogram(this.championData.matches)
+      },
+
+      comparisonData(_, prev) {
+         // if(prev) this.comparisonData = null
+         this.comparison(this.comparisonData)
       }
    },
 
@@ -161,8 +168,8 @@ export default {
             });
       },
       
-      updateHistogram(matches) {
-         this.bins = this.histogram(matches)
+      updateHistogram(data) {
+         this.bins = this.histogram(data)
 
          this.y = d3.scaleLinear()
             .domain([0, d3.max(this.bins, d => d.length)])
@@ -199,6 +206,55 @@ export default {
             .attr("fill", d => `hsl(221, ${Math.round(60 - (((maxBin - d.length) / maxBin) * 40))}%, ${Math.round((((maxBin - d.length) / maxBin) * 8) + 50)}%)`)
       },
 
+      comparison(data) {
+         this.bins2 = this.histogram(data)
+         let binDomain = [this.bins, this.bins2].flat()
+
+         this.y = d3.scaleLinear()
+            .domain([0, d3.max(binDomain, d => d.length)])
+            .range([this.height, 0])
+
+         const yAxisTicks = this.y.ticks()
+            .filter(tick => Number.isInteger(tick))
+
+         const yAxis = d3.axisLeft(this.y)
+            .tickValues(yAxisTicks)
+            .tickFormat(d3.format('d'))
+
+         this.svg.select(".y-axis")
+            .transition()
+            .call(yAxis)
+
+         let maxBin = 0
+         this.bins2.forEach(bin => {
+            if (bin.length > maxBin) maxBin = bin.length
+         });
+
+         this.svg.selectAll("rect2")
+            .data(this.bins2)
+            .join("rect")
+            .transition()
+            .duration(1000)
+            .attr("transform", d => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
+            .attr("width", d => {
+               if (this.x(d.x1) - this.x(d.x0) == 0) {
+                  return 0
+               }
+               return this.x(d.x1) - this.x(d.x0) - 1
+            })
+            .attr("height", d => this.height - this.y(d.length))
+            .style("fill", "tomato")
+            .style("opacity", 0.5)
+
+         this.svg.selectAll("rect")
+            .data(this.bins)
+            .transition()
+            .duration(1000)
+            .attr("transform", d => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
+            .attr("height", d => this.height - this.y(d.length))
+            .attr("fill", d => `hsl(221, ${Math.round(60 - (((maxBin - d.length) / maxBin) * 40))}%, ${Math.round((((maxBin - d.length) / maxBin) * 8) + 50)}%)`)
+      },
+
       getStdDev(data) {
          let arr = []
          data.matches.forEach((match) => {
@@ -218,6 +274,7 @@ export default {
 
    props: {
       championData: null,
+      comparisonData: null,
       initChampion: null
    }
 }
@@ -231,9 +288,9 @@ export default {
 
 <style>
 .histogram-main {
-      padding-left: 20px;
-      padding-top: 35px;
-      width: 350px;
+      padding: 10px;
+      padding-top: 30px;
+      border-right: 2px solid var(--color-background);
    }
 
    .svg-tooltip {

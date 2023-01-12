@@ -17,7 +17,9 @@ export default {
          championData: null,
          championIndex: null,
          initChampionData: null,
-         nunuIndex: null
+         nunuIndex: null,
+         comparison: null,
+         comparisonData: null,
       }
    },
 
@@ -26,7 +28,7 @@ export default {
          return e.championName == 'Nunu'
       })
 
-      // no...nunu games...?
+      // no...nunu...games...?
       if (this.nunuIndex == -1) this.nunuIndex = 3
 
       this.championData = this.data[this.nunuIndex]
@@ -48,6 +50,26 @@ export default {
                return e.championName == this.championFilter
             }
          })
+
+      },
+
+      champComparison() {
+         let comparisons = this.comparison.split(', ')
+         let ensembleMatches = []
+         
+         comparisons.forEach((comparison) => {
+            let index = this.data.findIndex((e) => {
+               if (e.championName === undefined) return
+               return e.championName.toLowerCase() == comparison.toLowerCase()
+            })
+
+            if (index != -1) {
+               let champion = this.data[index]
+               ensembleMatches.push(champion.matches)
+            }
+         })
+
+         this.comparisonData = ensembleMatches.flat()
       }
    },
 
@@ -59,9 +81,7 @@ export default {
 
 <template>
    <div class="offensive-header">
-      <div class="header-el">
-         <ChampSearch :data="this.data" @championFocus="champion => championFilter = champion" />
-      </div>
+      <ChampSearch :data="this.data" @championFocus="champion => championFilter = champion" />
       <div class="header-el" style="flex-direction: row-end;">
          <div class="stats-a">
             Games: <div class="stat-aa">{{ this.championData.matches.length }}</div>
@@ -75,8 +95,10 @@ export default {
          <div class="stats-a">
             KDA: <div class="stat-aa">{{ this.championData.averageKDA }}</div>
          </div>
-
       </div>
+      <input class="comparison-input" type="text"
+         v-model="comparison" v-on:keyup.enter="champComparison"
+         placeholder="kogmaw, ezreal, nunu, ksante, jarvaniv, morgana...">
    </div>
    
    <div class="offensive-main">
@@ -89,15 +111,14 @@ export default {
          </div>
       </div>
       <Histogram
-         :data="this.data"
          :championData="this.championData"
+         :comparisonData="this.comparisonData"
          :initChampion="this.data[this.nunuIndex]"/>
 
    </div>
 </template>
 
 <style scoped>
-
 .runes-mythic-wrapper {
    display: flex;
    color: var(--color-font);
@@ -108,8 +129,21 @@ export default {
    border-right: 2px solid var(--color-background);
 }
 
-.header-el {
-   display: inline-block;
+.comparison-input {
+   margin-left: auto;
+   background: var(--champion-search-bar);
+   color: var(--color-font);
+   font-style: oblique;
+   padding: 0.5rem 0.8rem;
+   border: none;
+   border-radius: 5px;
+   width: 500px;
+   margin-right: 10px;
+}
+
+.comparison-input:focus {
+   outline: none;
+   background: var(--champion-search-bar);
 }
 .offensive-header {
    display: flex;
