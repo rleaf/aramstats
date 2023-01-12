@@ -20,16 +20,17 @@ export default {
    },
 
    mounted() {
-      this.width = 350 - this.margin.left - this.margin.right
-      this.height = 200 - this.margin.top - this.margin.bottom
-      this.Histogram(this.data[25].matches)
+      this.width = 500 - this.margin.left - this.margin.right
+      this.height = 250 - this.margin.top - this.margin.bottom
+
+      this.avgDPM = this.initChampion.averageDamagePerMinute
+      this.Histogram(this.initChampion.matches)
    },
 
    watch: {
-      championIndex() {
-         this.matches = this.data[this.championIndex].matches
-         this.avgDPM = this.data[this.championIndex].averageDamagePerMinute
-         this.updateHistogram(this.matches)
+      championData() {
+         this.avgDPM = this.championData.averageDamagePerMinute
+         this.updateHistogram(this.championData.matches)
       }
    },
 
@@ -114,7 +115,7 @@ export default {
             .attr("text-align", "right")
             .attr("fill", "var(--color-font)")
             .attr("font-size", "0.8rem")
-            .text(`std: -`)
+            .text(`std: ${this.getStdDev(this.initChampion)}`)
 
          this.mean = this.svg.append("g")
             .append("text")
@@ -123,7 +124,7 @@ export default {
             .attr("text-align", "right")
             .attr("fill", "var(--color-font)")
             .attr("font-size", "0.8rem")
-            .text(`mean: -`)
+            .text(`mean: ${this.avgDPM}`)
 
          this.svg.selectAll("rect")
             .data(this.bins)
@@ -184,7 +185,7 @@ export default {
          });
 
          this.std
-            .text(`std: ${this.getStdDev(this.championFilter)}`)
+            .text(`std: ${this.getStdDev(this.championData)}`)
 
          this.mean
             .text(`mean: ${this.avgDPM}`)
@@ -198,9 +199,9 @@ export default {
             .attr("fill", d => `hsl(221, ${Math.round(60 - (((maxBin - d.length) / maxBin) * 40))}%, ${Math.round((((maxBin - d.length) / maxBin) * 8) + 50)}%)`)
       },
 
-      getStdDev() {
+      getStdDev(data) {
          let arr = []
-         this.matches.forEach((match) => {
+         data.matches.forEach((match) => {
             arr.push(match.damagePerMinute)
          })
          let std = 0
@@ -216,8 +217,8 @@ export default {
    },
 
    props: {
-      data: null,
-      championIndex: Number,
+      championData: null,
+      initChampion: null
    }
 }
 </script>
@@ -229,8 +230,9 @@ export default {
 </template>
 
 <style>
-   .histogram-main {
-      padding-top: 25px;
+.histogram-main {
+      padding-left: 20px;
+      padding-top: 35px;
       width: 350px;
    }
 

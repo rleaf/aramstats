@@ -53,9 +53,11 @@ export default {
 
       itemImages() {
          for (let i = 0; i < 6; i++) {
-            if (this.match[`item${i}`] != 0) {
-               let x = `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/item/${this.match[`item${i}`]}.png`
-               this.items.push(x)
+            if (this.match.items) {
+               if (this.match.items[i] != 0) {
+                  let x = `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/item/${this.match.items[i]}.png`
+                  this.items.push(x)
+               }
             }
          }
       },

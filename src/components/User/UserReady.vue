@@ -199,7 +199,8 @@ export default {
             </div>
          </div>
          <span v-if="hover" class="purge-tooltip">
-            Older parses in the database may not store recently added stats.
+            Older parses in the database may not store recently added stats and/or the 
+            frontend may not be able to properly read recent variations to the API.
             Click this if you'd like to delete your summoner from the database.
             You will have to search your profile again.
             <br><br>
@@ -388,9 +389,9 @@ export default {
 .purge-tooltip {
    float: right;
    margin-top: 15px;
-   padding: 0.7rem 1.5rem;
+   padding: 0.7rem 1.0rem;
    border-radius: 5px;
-   width: 400px;
+   width: 350px;
    font-size: 0.9rem;
    text-align: end;
    background: rgba(69, 77, 93, .5);

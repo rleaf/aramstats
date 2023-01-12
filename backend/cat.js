@@ -46,13 +46,18 @@ function scribe(puuid, game) {
    champion['secondaryTree'] = player.perks.styles[1].style
 
    // Items
-   champion['item0'] = player.item0
-   champion['item1'] = player.item1
-   champion['item2'] = player.item2
-   champion['item3'] = player.item3
-   champion['item4'] = player.item4
-   champion['item5'] = player.item5
-   champion['item6'] = player.item6
+   let items = []
+   for(let i = 0; i < 7; i++) {
+      items.push(player[`item${i}`])
+   }
+   champion['items'] = items
+   // champion['item0'] = player.item0
+   // champion['item1'] = player.item1
+   // champion['item2'] = player.item2
+   // champion['item3'] = player.item3
+   // champion['item4'] = player.item4
+   // champion['item5'] = player.item5
+   // champion['item6'] = player.item6
 
    // Summoner spells
    champion['summoner1Id'] = player.summoner1Id

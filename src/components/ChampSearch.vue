@@ -81,13 +81,6 @@ export default {
 </template>
 
 <style scoped>
-   .champion-search {
-      border-bottom: 1px solid var(--color-font);
-      padding-top: 10px;
-      padding-bottom: 10px;
-      padding-left: 10px;
-      /* padding-bottom: 50px; */
-   }
    
    .champion-search input {
       background: var(--champion-search-bar);
