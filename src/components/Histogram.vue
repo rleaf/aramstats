@@ -125,6 +125,13 @@ export default {
             .classed("blue-legend", true)
 
          this.blueLegend
+            .append("circle")
+            .attr("cx", `${this.width - 70}`)
+            .attr("cy", 6)
+            .attr("r", 6)
+            .style("fill", "var(--bar1)")
+
+         this.blueLegend
             .append("text")
             .classed("std", true)
             .attr("x", `${this.width - 50}`)
@@ -156,7 +163,9 @@ export default {
                return this.x(d.x1) - this.x(d.x0) - 1
             })
             .attr("height", (d) => this.height - this.y(d.length))
-            .attr("fill", d => `hsl(221, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 10) + 50)}%, 50%)`)
+            // .attr("fill", d => `hsl(221, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 10) + 50)}%, 50%)`)
+            .attr("fill", 'var(--bar1)')
+            .style("opacity", 0.7)
             .on('mouseover', function(_, d) {
                // need function declaration format to pass 'this'.
                d3.select(this)
@@ -164,7 +173,7 @@ export default {
                   .attr('stroke', 'var(--color-font)')
                tooltip
                   .style("visibility", "visible")
-                  .text(`count: ${d.length}\nx0: ${d.x0}\nx1: ${d.x1}`)
+                  .text(`games: ${d.length}\nx0: ${d.x0}\nx1: ${d.x1}`)
             })
             .on("mousemove", function (e) {
                tooltip
@@ -213,7 +222,8 @@ export default {
             .duration(1000)
             .attr("transform", d => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
             .attr("height", d => this.height - this.y(d.length))
-            .attr("fill", d => `hsl(221, ${Math.round(60 - (((this.maxBin - d.length) / this.maxBin) * 40))}%, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 8) + 50)}%)`)
+            // .attr("fill", d => `hsl(221, ${Math.round(60 - (((this.maxBin - d.length) / this.maxBin) * 40))}%, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 8) + 50)}%)`)
+            .attr("fill", 'var(--bar1)')
 
          if(this.comparisonData) {
             this.svg.select("g.comparison").selectAll("rect")
@@ -222,7 +232,8 @@ export default {
                .duration(1000)
                .attr("transform", (d) => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
                .attr("height", (d) => this.height - this.y(d.length))
-               .attr("fill", d => `hsl(9, ${Math.round(90 - (((this.maxBin2 - d.length) / this.maxBin2) * 40))}%, 64%)`)
+               // .attr("fill", d => `hsl(9, ${Math.round(90 - (((this.maxBin2 - d.length) / this.maxBin2) * 40))}%, 64%)`)
+               .attr("fill", 'var(--bar2)')
          }
       },
 
@@ -263,7 +274,8 @@ export default {
                .duration(1000)
                .attr("transform", (d) => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
                .attr("height", (d) => this.height - this.y(d.length))
-               .attr("fill", d => `hsl(9, ${Math.round(90 - (((this.maxBin2 - d.length) / this.maxBin2) * 40))}%, 64%)`)
+               // .attr("fill", d => `hsl(9, ${Math.round(90 - (((this.maxBin2 - d.length) / this.maxBin2) * 40))}%, 64%)`)
+               .attr("fill", 'var(--bar2)')
 
             this.redLegend.selectAll("text.std")
                .text(`std: ${this.getStdDev(this.comparisonData, ensembleDPM, true)}`)
@@ -294,8 +306,9 @@ export default {
                   return this.x(d.x1) - this.x(d.x0) - 1
                })
                .attr("height", (d) => this.height - this.y(d.length))
-               .attr("fill", d => `hsl(9, ${Math.round(80 - (((this.maxBin2 - d.length) / this.maxBin2) * 40) )}%, 64%)`)
-               .style("opacity", 0.25)
+               // .attr("fill", d => `hsl(9, ${Math.round(80 - (((this.maxBin2 - d.length) / this.maxBin2) * 40) )}%, 64%)`)
+               .attr("fill", 'var(--bar2)')
+               .style("opacity", 0.6)
                .on('mouseover', function (_, d) {
                   // need function declaration format to pass 'this'.
                   d3.select(this)
@@ -303,7 +316,7 @@ export default {
                      .attr('stroke', 'var(--color-font)')
                   tooltip
                      .style("visibility", "visible")
-                     .text(`count: ${d.length}\nx0: ${d.x0}\nx1: ${d.x1}`)
+                     .text(`games: ${d.length}\nx0: ${d.x0}\nx1: ${d.x1}`)
                })
                .on("mousemove", function (e) {
                   tooltip
@@ -319,6 +332,13 @@ export default {
 
             this.redLegend = this.svg.append("g")
                .classed("red-legend", true)
+
+            this.redLegend
+               .append("circle")
+               .attr("cx", `${this.width - 70}`)
+               .attr("cy", 56)
+               .attr("r", 6)
+               .style("fill", "var(--bar2)")
 
             this.redLegend
                .append("text")
@@ -348,7 +368,8 @@ export default {
             .duration(1000)
             .attr("transform", d => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
             .attr("height", d => this.height - this.y(d.length))
-            .attr("fill", d => `hsl(221, ${Math.round(60 - (((this.maxBin - d.length) / this.maxBin) * 40))}%, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 8) + 50)}%)`)
+            // .attr("fill", d => `hsl(221, ${Math.round(60 - (((this.maxBin - d.length) / this.maxBin) * 40))}%, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 8) + 50)}%)`)
+            .attr("fill", 'var(--bar1)')
       },
 
       getStdDev(data, mean, comparison=false) {
@@ -399,9 +420,9 @@ export default {
    }
 
    .svg-tooltip {
-      background: rgba(69, 77, 93, .9);
+      background: var(--panel1);
       border-radius: .1rem;
-      color: #fff;
+      color: var(--color-font);
       display: block;
       font-size: 14px;
       max-width: 320px;
@@ -414,9 +435,9 @@ export default {
    }
 
    .svg-tooltip-red {
-      background: rgba(93, 69, 77, 0.9);
+      background: var(--panel2);
       border-radius: .1rem;
-      color: #fff;
+      color: var(--color-font);
       display: block;
       font-size: 14px;
       max-width: 320px;

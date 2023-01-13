@@ -1,8 +1,7 @@
 <script>
 import Champion from '../Champion.vue'
-import Overview from '../Overview.vue'
-import Offensive from '../Offensive.vue'
-import Defensive from '../Defensive.vue'
+import Overview from '../Profiles/Overview.vue'
+import ChampionProfile from '../Profiles/ChampionProfile.vue'
 import Histogram from '../Histogram.vue'
 import ChampSearch from '../ChampSearch.vue'
 import axios from 'axios'
@@ -13,8 +12,7 @@ export default {
       Histogram,
       ChampSearch,
       Overview,
-      Offensive,
-      Defensive
+      ChampionProfile,
    },
    data() {
       return {
@@ -216,7 +214,7 @@ export default {
                <div class="summoner-profile-tab"
                   :class="{ 'active-tab': this.profileSection == 1 }"
                   @click="this.profileSection = 1">
-                  Offensive
+                  Champion
                </div>
                <!-- <div :class="{ 'active-tab': this.profileSection == 2 }" class="summoner-profile-tab" 
                   
@@ -228,11 +226,11 @@ export default {
                <Overview :data="this.championInfo" />
             </div>
             <div class="profile" v-show="this.profileSection == 1">
-               <Offensive :data="this.championInfo"/>
+               <ChampionProfile :data="this.championInfo"/>
             </div>
-            <div class="profile" v-show="this.profileSection == 2">
+            <!-- <div class="profile" v-show="this.profileSection == 2">
                <Defensive :data="this.championInfo"/>
-            </div>
+            </div> -->
          </div>
       </div>
       <div class="stats-main">
@@ -288,16 +286,16 @@ export default {
    margin-right: 10px;
    margin-bottom: 10px;
    padding: 0.5rem 0.8rem;
-   background: rgb(41, 54, 83);
+   background: var(--profile-tab);
    border-radius: 5px;
 }
 .profile-sections div:hover {
-   background: rgb(55, 70, 102);
+   background: var(--profile-tab-active);
    cursor: pointer;
 }
 
 .profile-sections .active-tab {
-   background: rgb(55, 70, 102);
+   background: var(--profile-tab-active);
 }
 
 .profile-wrapper {
@@ -307,7 +305,7 @@ export default {
 
 .profile {
    height: 350px;
-   background: rgb(41, 54, 83);
+   background: var(--profile-panel);
    border-radius: 5px;
 }
 

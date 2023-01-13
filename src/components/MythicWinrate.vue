@@ -77,6 +77,14 @@ export default {
             }
          }
 
+      },
+
+      winrateColor(x) {
+         // https://stackoverflow.com/a/12259830/1545958
+         if (x < 50) return 'color: var(--parse50)'
+         if (x < 75) return 'color: var(--parse75)'
+         if (x < 85) return 'color: var(--parse85)'
+         if (x <= 100) return 'color: var(--parse100)'
       }
    },
 
@@ -92,27 +100,34 @@ export default {
          :key="k"
          :class="i % 2 != 0 ? `mythic-style-0` : `mythic-style-1`">
          <img :src="mythicImage(k)" alt="">
-         <div class="mythic-wins">
-            {{ v.win }}/{{ v.totalGames }}
-            ({{ v.winRate }}%)
+         <div class="mythic-percent">
+            <span :style="winrateColor(v.winRate)">{{ v.winRate }}%</span>
+         </div>
+         <div class="mythic-fraction">
+            ({{ v.win }}/{{ v.totalGames }})
+            <!-- (34/29) -->
          </div>
       </div>
    </div>
 </template>
 
 <style scoped>
-   .mythic-style-0 {
-      background: #1f2a42;
+.mythic-style-0 {
+      background: var(--rune-mythic-swap);;
    }
 
-   .mythic-wins {
-      margin-top: -3px;
-      padding-right: 3px;
-      font-size: 0.9rem;
+   .mythic-fraction {
+      margin-left: auto;
+      margin-top: -1px;
+      color: var(--color-font-fade);
+   }
+   .mythic-percent {
+      font-weight: bold;
    }
 
    .mythic-wr {
       display: flex;
+      font-size: 0.8rem;
       align-items: center;
       gap: 5px;
       padding: 2px 5px;

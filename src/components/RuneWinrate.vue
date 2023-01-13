@@ -48,6 +48,14 @@ export default {
             this.rune[prop].winRate = Math.round(this.rune[prop].win / this.rune[prop].totalGames * 100)
          }
 
+      },
+
+      winrateColor(x) {
+         // https://stackoverflow.com/a/12259830/1545958
+         if (x < 50) return 'color: var(--parse50)'
+         if (x < 75) return 'color: var(--parse75)'
+         if (x < 85) return 'color: var(--parse85)'
+         if (x <= 100) return 'color: var(--parse100)'
       }
    },
 
@@ -67,26 +75,32 @@ export default {
          :key="k"
          :class="i % 2 == 0 ? `rune-style-0` : `rune-style-1`">
          <img :src="runeImage(k)" alt="">
-         <div class="rune-wins" >
-            {{ v.win }}/{{ v.totalGames }}
-            ({{ v.winRate }}%)
+         <div class="runes-percent" >
+            <span :style="winrateColor(v.winRate)">{{ v.winRate }}%</span>
+         </div>
+         <div class="runes-fraction">
+            ({{ v.win }}/{{ v.totalGames }})
+            <!-- (34/29) -->
          </div>
       </div>
    </div>
 </template>
 
 <style scoped>
-
-   .rune-style-0 {
-      background: #1f2a42;
+.rune-style-0 {
+      background: var(--rune-mythic-swap);
    }
 
-   .rune-wins {
-      margin-top: -3px;
-      padding-right: 3px;
-      font-size: 0.9rem;
+   .runes-fraction {
+      margin-left: auto;
+      margin-top: -1px;
+      color: var(--color-font-fade);
+   }
+   .runes-percent {
+      font-weight: bold;
    }
    .rune-wr {
+      font-size: 0.8rem;
       display: flex;
       align-items: center;
       gap: 5px;

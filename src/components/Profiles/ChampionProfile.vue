@@ -1,8 +1,8 @@
 <script>
-import Histogram from './Histogram.vue'
-import ChampSearch from './ChampSearch.vue'
-import RuneWinrate from './RuneWinrate.vue'
-import MythicWinrate from './MythicWinrate.vue'
+import Histogram from '../Histogram.vue'
+import ChampSearch from '../ChampSearch.vue'
+import RuneWinrate from '../RuneWinrate.vue'
+import MythicWinrate from '../MythicWinrate.vue'
 
 export default {
    components: {
@@ -70,8 +70,22 @@ export default {
          })
 
          this.comparisonData = ensembleMatches.flat()
+      },
+
+      winrateColor(x) {
+         // https://stackoverflow.com/a/12259830/1545958
+         if (x < 50) return 'color: var(--parse50)'
+         if (x < 75) return 'color: var(--parse75)'
+         if (x < 85) return 'color: var(--parse85)'
+         if (x <= 100) return 'color: var(--parse100)'
       }
    },
+
+   computed: {
+      winrate() {
+         return Math.round((this.championData.wins / this.championData.matches.length) * 100)
+      }
+   }, 
 
    props: {
       data: null
@@ -84,19 +98,24 @@ export default {
       <ChampSearch :data="this.data" @championFocus="champion => championFilter = champion" />
       <div class="header-el" style="flex-direction: row-end;">
          <div class="stats-a">
+            <div :style="winrateColor(winrate)" class="champ-wr">
+               {{ winrate }}%
+            </div>
+            <div class="wr-fraction">
+               ({{ this.championData.wins }}/{{ this.championData.matches.length }})
+            </div>
+         </div>
+         <!-- <div class="stats-a">
             Games: <div class="stat-aa">{{ this.championData.matches.length }}</div>
          </div>
          <div class="stats-a">
             Wins: <div class="stat-aa">{{ this.championData.wins }}</div>
          </div>
          <div class="stats-a">
-            WR: <div class="stat-aa">{{ `${Math.round((this.championData.wins / this.championData.matches.length) * 100)}%` }}</div>
-         </div>
-         <div class="stats-a">
             KDA: <div class="stat-aa">{{ this.championData.averageKDA }}</div>
-         </div>
+         </div> -->
       </div>
-      <input class="comparison-input" type="text"
+      <input class="comparison-input" type="text" spellcheck="false"
          v-model="comparison" v-on:keyup.enter="champComparison"
          placeholder="kogmaw, ezreal, nunu, ksante, jarvaniv, morgana...">
    </div>
@@ -121,11 +140,11 @@ export default {
 <style scoped>
 .runes-mythic-wrapper {
    display: flex;
+   justify-content: space-evenly;
    color: var(--color-font);
    padding: 0 10px;
    gap: 10px;
    width: 240px;
-   /* height: 300px; */
    border-right: 2px solid var(--color-background);
 }
 
@@ -154,26 +173,23 @@ export default {
    padding-bottom: 10px;
    padding-left: 10px;
 }
-.stat-aa {
-   display: inline-block;
+.champ-wr {
    font-weight: bold;
-   font-size: 1rem;
+   color: var(--color-font);
+   font-size: 1.1rem;
+}
+.wr-fraction {
+   color: var(--color-font-fade);
+   font-size: 0.9rem;
 }
 
 .stats-a {
-   display: inline-block;
+   display: flex;
+   align-items: center;
+   gap: 8px;
    padding-left: 1rem;
-   /* font-size: 0.9rem; */
-   /* padding-left: 10px; */
-   color: var(--color-font);
+}
 
-}
-.vert {
-   display: inline-block;
-   width: 0.1em;
-   height: 100%;
-   background: var(--color-font);
-}
 .offensive-main {
    display: flex;
    height: 298px;
