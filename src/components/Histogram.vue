@@ -123,33 +123,24 @@ export default {
 
          this.blueLegend = this.svg.append("g")
             .classed("blue-legend", true)
+            
 
          this.blueLegend
             .append("circle")
-            .attr("cx", `${this.width - 70}`)
-            .attr("cy", 6)
+            .attr("cx", `${this.width - 132}`)
+            .attr("cy", -12)
             .attr("r", 6)
             .style("fill", "var(--bar1)")
 
          this.blueLegend
             .append("text")
-            .classed("std", true)
-            .attr("x", `${this.width - 50}`)
-            .attr("y", 20)
+            .classed("stats", true)
+            .attr("x", `${this.width - 120}`)
+            .attr("y", -8)
             .attr("text-align", "right")
             .attr("fill", "var(--color-font)")
             .attr("font-size", "0.8rem")
-            .text(`std: ${this.getStdDev(this.initChampion, this.avgDPM)}`)
-
-         this.blueLegend
-            .append("text")
-            .classed("mean", true)
-            .attr("x", `${this.width - 50}`)
-            .attr("y", 0)
-            .attr("text-align", "right")
-            .attr("fill", "var(--color-font)")
-            .attr("font-size", "0.8rem")
-            .text(`mean: ${this.avgDPM}`)
+            .text(`mean: ${this.avgDPM}, std: ${this.getStdDev(this.initChampion, this.avgDPM)}`)
 
          this.svg.selectAll("rect")
             .data(this.bins)
@@ -210,11 +201,8 @@ export default {
             .transition()
             .call(yAxis)
 
-         this.blueLegend.selectAll("text.std")
-            .text(`std: ${this.getStdDev(this.championData, this.avgDPM)}`)
-
-         this.blueLegend.selectAll("text.mean")
-            .text(`mean: ${this.avgDPM}`)
+         this.blueLegend.selectAll("text.stats")
+            .text(`mean: ${this.avgDPM}, std: ${this.getStdDev(this.championData, this.avgDPM)}`)
 
          this.svg.selectAll("rect")
             .data(this.bins)
@@ -277,12 +265,8 @@ export default {
                // .attr("fill", d => `hsl(9, ${Math.round(90 - (((this.maxBin2 - d.length) / this.maxBin2) * 40))}%, 64%)`)
                .attr("fill", 'var(--bar2)')
 
-            this.redLegend.selectAll("text.std")
-               .text(`std: ${this.getStdDev(this.comparisonData, ensembleDPM, true)}`)
-
-            this.redLegend.selectAll("text.mean")
-               .text(`mean: ${Math.round(ensembleDPM)}`)
-
+            this.redLegend.selectAll("text.stats")
+               .text(`mean: ${Math.round(ensembleDPM)}, std: ${this.getStdDev(this.comparisonData, ensembleDPM, true)}`)
          } else {
 
             const tooltip = d3
@@ -335,30 +319,30 @@ export default {
 
             this.redLegend
                .append("circle")
-               .attr("cx", `${this.width - 70}`)
-               .attr("cy", 56)
+               .attr("cx", `${this.width - 132}`)
+               .attr("cy", 11)
                .attr("r", 6)
                .style("fill", "var(--bar2)")
 
             this.redLegend
                .append("text")
-               .classed("std", true)
-               .attr("x", `${this.width - 50}`)
-               .attr("y", 70)
+               .classed("stats", true)
+               .attr("x", `${this.width - 120}`)
+               .attr("y", 15)
                .attr("text-align", "right")
                .attr("fill", "var(--color-font)")
                .attr("font-size", "0.8rem")
-               .text(`std: ${this.getStdDev(this.comparisonData, ensembleDPM,  true)}`)
+               .text(`mean: ${Math.round(ensembleDPM)}, std: ${this.getStdDev(this.comparisonData, ensembleDPM,  true)}`)
 
-            this.redLegend
-               .append("text")
-               .classed("mean", true)
-               .attr("x", `${this.width - 50}`)
-               .attr("y", 50)
-               .attr("text-align", "right")
-               .attr("fill", "var(--color-font)")
-               .attr("font-size", "0.8rem")
-               .text(`mean: ${Math.round(ensembleDPM)}`)
+            // this.redLegend
+            //    .append("text")
+            //    .classed("mean", true)
+            //    .attr("x", `${this.width - 50}`)
+            //    .attr("y", 50)
+            //    .attr("text-align", "right")
+            //    .attr("fill", "var(--color-font)")
+            //    .attr("font-size", "0.8rem")
+            //    .text(`mean: ${Math.round(ensembleDPM)}`)
          }
 
 

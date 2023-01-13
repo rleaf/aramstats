@@ -38,6 +38,7 @@ export default {
       championFilter() {
          this.getChampionIndex()
          this.championData = this.data[this.championIndex]
+         console.log(this.championData)
       }
    },
 
@@ -84,7 +85,20 @@ export default {
    computed: {
       winrate() {
          return Math.round((this.championData.wins / this.championData.matches.length) * 100)
-      }
+      },
+
+      kdr() {
+         let x = this.championData.averageKDA.split('/').map(x => parseInt(x))
+         return `${Math.round(( (x[0]+x[2]) / x[1] ) * 100) / 100}`
+      },
+
+      background() {
+         // let url = new URL(`../../assets/champion_images/${this.championData.championName}_0.webp`, import.meta.url).href
+
+         // lazy way for now :)
+         return `background: linear-gradient(to left, rgba(var(--profile-panel-dec-rgb), 0.9) 50%, rgba(var(--profile-panel-dec-rgb), 0.75)),
+            no-repeat url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${this.championData.championName}_0.jpg');`
+      },
    }, 
 
    props: {
@@ -94,50 +108,66 @@ export default {
 </script>
 
 <template>
-   <div class="offensive-header">
-      <ChampSearch :data="this.data" @championFocus="champion => championFilter = champion" />
-      <div class="header-el" style="flex-direction: row-end;">
+   <div class="champion-main" :style="background">
+      <div class="champion-header">
+         <ChampSearch :data="this.data" @championFocus="champion => championFilter = champion" />
          <div class="stats-a">
-            <div :style="winrateColor(winrate)" class="champ-wr">
+            <!-- <div :style="winrateColor(winrate)" class="champ-wr">
+               {{ winrate }}%
+            </div> -->
+            <div style="color: var(--header-stats);" class="champ-wr">
                {{ winrate }}%
             </div>
             <div class="wr-fraction">
-               ({{ this.championData.wins }}/{{ this.championData.matches.length }})
+               ({{ this.championData.wins }}/{{ this.championData.matches.length }}) W/L
             </div>
          </div>
-         <!-- <div class="stats-a">
-            Games: <div class="stat-aa">{{ this.championData.matches.length }}</div>
-         </div>
          <div class="stats-a">
-            Wins: <div class="stat-aa">{{ this.championData.wins }}</div>
+            <div style="color: var(--header-stats);" class="champ-wr">
+               {{ kdr }}
+            </div>
+            <div class="wr-fraction">
+               ({{ this.championData.averageKDA }}) KDA
+            </div>
          </div>
-         <div class="stats-a">
-            KDA: <div class="stat-aa">{{ this.championData.averageKDA }}</div>
-         </div> -->
+         <input class="comparison-input" type="text" spellcheck="false"
+            v-model="comparison" v-on:keyup.enter="champComparison"
+            placeholder="kogmaw, drmundo, renata, ksante, jarvaniv, nunu, xinzhao...">
       </div>
-      <input class="comparison-input" type="text" spellcheck="false"
-         v-model="comparison" v-on:keyup.enter="champComparison"
-         placeholder="kogmaw, ezreal, nunu, ksante, jarvaniv, morgana...">
-   </div>
-   
-   <div class="offensive-main">
-      <div class="runes-mythic-wrapper">
-         <div class="runes-mythic-wr">
-            <RuneWinrate :data="this.championData"/>
+      
+      <div class="champion-body">
+         <div class="runes-mythic-wrapper">
+            <div class="runes-mythic-wr">
+               <RuneWinrate :data="this.championData"/>
+            </div>
+            <div class="runes-mythic-wr">
+               <MythicWinrate :data="this.championData"/>
+            </div>
          </div>
-         <div class="runes-mythic-wr">
-            <MythicWinrate :data="this.championData"/>
+         <Histogram
+            :championData="this.championData"
+            :comparisonData="this.comparisonData"
+            :initChampion="this.data[this.nunuIndex]"/>
+         <div class="temp">
+            You may need to re-parse you summoner if something looks like it's not loading properly.
+            <br><br>
+            Hit 'delete' button up top.
          </div>
       </div>
-      <Histogram
-         :championData="this.championData"
-         :comparisonData="this.comparisonData"
-         :initChampion="this.data[this.nunuIndex]"/>
-
    </div>
 </template>
 
 <style scoped>
+
+.temp {
+   margin-left: auto;
+   margin-right: auto;
+   color: var(--color-font);
+   font-size: 0.9rem;
+   text-align: center;
+   padding-top: 2rem;
+   width: 300px;
+}
 .runes-mythic-wrapper {
    display: flex;
    justify-content: space-evenly;
@@ -164,7 +194,7 @@ export default {
    outline: none;
    background: var(--champion-search-bar);
 }
-.offensive-header {
+.champion-header {
    display: flex;
    align-items: center;
    font-size: 0.9rem;
@@ -186,13 +216,21 @@ export default {
 .stats-a {
    display: flex;
    align-items: center;
-   gap: 8px;
-   padding-left: 1rem;
+   gap: 5px;
+   padding-left: 1.5rem;
 }
 
-.offensive-main {
+.champion-body {
    display: flex;
    height: 298px;
    flex-direction: row;
+}
+
+.champion-main {
+   /* background: var(--profile-panel); */
+   background: linear-gradient(to left, rgba(var(--profile-panel-dec-rgb), 0.9) 50%, rgba(var(--profile-panel-dec-rgb), 0.75)),
+   no-repeat url('../../assets/champion_images/Nunu.webp');
+   /* background-position-y: center; */
+   border-radius: 5px;
 }
 </style>

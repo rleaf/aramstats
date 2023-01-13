@@ -195,15 +195,15 @@ export default {
                   Delete
                </a>
             </div>
+            <span v-if="hover" class="purge-tooltip">
+               Older parses in the database may not store recently added stats and/or the 
+               frontend may not be able to properly read recent variations to the API.
+               Click this if you'd like to delete your summoner from the database.
+               You will have to search your profile again.
+               <br><br>
+               Confirmation will appear after clicking.
+            </span>
          </div>
-         <span v-if="hover" class="purge-tooltip">
-            Older parses in the database may not store recently added stats and/or the 
-            frontend may not be able to properly read recent variations to the API.
-            Click this if you'd like to delete your summoner from the database.
-            You will have to search your profile again.
-            <br><br>
-            Confirmation will appear after clicking.
-         </span>
          <div class="profile-wrapper">
             <div class="profile-sections">
                <div class="summoner-profile-tab"
@@ -274,11 +274,6 @@ export default {
 <style scoped>
 @import url('../../assets/stats.css');
 
-.wip {
-   text-align: center;
-   padding-top: 150px;
-   color: var(--color-font);
-}
 
 .profile-sections div {
    display: inline-block;
@@ -305,8 +300,6 @@ export default {
 
 .profile {
    height: 350px;
-   background: var(--profile-panel);
-   border-radius: 5px;
 }
 
 .disable {
@@ -369,6 +362,7 @@ export default {
    color: var(--color-font);
 }
 .danger-zone {
+   position: relative;
    display: flex;
    justify-content: flex-end;
    margin-top: -34px;
@@ -385,16 +379,17 @@ export default {
 }
 
 .purge-tooltip {
-   float: right;
-   margin-top: 15px;
-   padding: 0.7rem 1.0rem;
+   position: absolute;
+   top: 40px;
+   padding: 0.5rem .7rem;
    border-radius: 5px;
    width: 350px;
    font-size: 0.9rem;
    text-align: end;
-   background: rgba(69, 77, 93, .5);
+   background: rgba(69, 77, 93, .9);
    color: var(--color-font);
 }
+
 .pfp {
    border-radius: 100%;
    width: 90px;

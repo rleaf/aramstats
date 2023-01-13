@@ -87,8 +87,13 @@ export default {
 </template>
 
 <style scoped>
-.rune-style-0 {
-      background: var(--rune-mythic-swap);
+   .rune-style-0 {
+      background: var(--rune-mythic-0);
+      /* background: var(--champion-search-bar); */
+   }
+   .rune-style-1 {
+      background: var(--rune-mythic-1);
+      /* background: var(--champion-search-bar); */
    }
 
    .runes-fraction {

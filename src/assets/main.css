@@ -1,6 +1,7 @@
 /* @import './base.css'; */
 :root {
   --light1: #ffffff;
+  --light11: 255, 255, 255;
   --light2: #dadada;
   --light3: #acacac;
   --light4: rgba(204, 204, 204, 0.65);
@@ -8,6 +9,9 @@
   --light6: rgba(255, 255, 255, 0.123);
   --light7: rgba(255, 255, 255, 0.514);
   --light8: #cecece;
+  --light88: 200, 200, 200;
+  --light9: rgba(218, 218, 218, 0.7);
+  --light10: rgba(218, 218, 218, 035);
   --lightWin: rgba(116, 214, 116, 0.603);
   --lightLoss: rgba(236, 125, 125, 0.603);
   --lightBorder: 
@@ -29,11 +33,15 @@
   --blue3: rgb(19, 27, 46);
   --blue4: rgb(38, 54, 90);
   --blue5: rgb(41, 54, 83);
-  --blue6: rgb(31, 42, 66);
+  --blue325: rgb(20, 26, 39);
+  --blue55: 41, 54, 83;
+  /* --blue55: 20, 26, 39; */
+  --blue6: rgba(19, 27, 46, 0.7);
+  --blue7: rgba(19, 27, 46, 0.35);
   /* --match-border-top:  */
 
   --parseLight1: #B76E00;
-  --parseDark1: #E9BC4A;
+  --parseDark1: #fabb1c;
   --parseLight2: #A645E1;
   --parseDark2: #C76BFF;
   --parseLight3: #00970F;
@@ -42,9 +50,11 @@
   --parseDark4: #F44D4D;
 
   --bar1: #214cda;
-  --bar2: #d3a014;
+  --bar2: #3f3f3f;
   --panel1: rgba(125, 136, 233, 0.9);
-  --panel2: rgba(233, 199, 125, 0.9);
+  --panel2: rgba(156, 156, 156, 0.9);
+  --header-stats: #145e80;
+  --color-background-dec-rgb: var(--light11);
   
 
   --bloo: hsl(209, 54%, 56%);
@@ -55,6 +65,7 @@
 
 :root {
   --color-background: var(--light1);
+  
   --color-font: var(--dark3);
   --color-font-fade: var(--dark2);
   --color-font-search: var(--dark3);
@@ -71,14 +82,15 @@
   --win: var(--lightWin);
   --loss: var(--lightLoss);
   --profile-panel: var(--light8);
-  --rune-mythic-swap: var(--light3);
+  --profile-panel-dec-rgb: var(--light88);
+  --rune-mythic-0: var(--light9);
+  --rune-mythic-1: var(--light10);
   --parse100: var(--parseLight1);
   --parse85: var(--parseLight2);
   --parse75: var(--parseLight3);
   --parse50: var(--parseLight4);
   --profile-tab: var(--light3);
   --profile-tab-active: var(--light8);
-
   --matches-border-top: var(--dark6);
   --border-top: var(--dark5);
 }
@@ -86,6 +98,8 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --color-background: var(--blue1);
+    --color-background-dec-rgb: var(--blue11);
+    
     --color-font: var(--light2);
     --color-font-fade: var(--light3);
     --color-font-search: var(--dark3);
@@ -100,14 +114,22 @@
     --win: var(--darkWin);
     --loss: var(--darkLoss);
     --profile-panel: var(--blue5);
-    --rune-mythic-swap: var(--blue6);
+    --profile-panel-dec-rgb: var(--blue55);
+    --rune-mythic-0: var(--blue6);
+    --rune-mythic-1: var(--blue7);
     --parse100: var(--parseDark1);
     --parse85: var(--parseDark2);
     --parse75: var(--parseDark3);
     --parse50: var(--parseDark4);
-    --bar1: #ffe294;
-    --bar2: #94BFFF;
-    --panel1: rgba(114, 102, 68, 0.9);
+    /* --bar1: #ffe294;
+    --bar2: #94BFFF; */
+    --bar1: #ffffff;
+    --bar2: #75a6e7;
+    --header-stats: #71d2ff; 
+
+    /* --panel1: rgba(114, 102, 68, 0.9);
+    --panel2: rgba(81, 101, 131, 0.9); */
+    --panel1: rgba(110, 110, 110, 0.9);
     --panel2: rgba(81, 101, 131, 0.9);
     --profile-tab: rgb(41, 54, 83);
     --profile-tab-active: rgb(55, 70, 102);

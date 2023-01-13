@@ -98,7 +98,7 @@ export default {
    <div class="mythic-main">
       <div class="mythic-wr" v-for="(v, k, i) in this.mythic"
          :key="k"
-         :class="i % 2 != 0 ? `mythic-style-0` : `mythic-style-1`">
+         :class="i % 2 == 0 ? `mythic-style-0` : `mythic-style-1`">
          <img :src="mythicImage(k)" alt="">
          <div class="mythic-percent">
             <span :style="winrateColor(v.winRate)">{{ v.winRate }}%</span>
@@ -112,8 +112,12 @@ export default {
 </template>
 
 <style scoped>
-.mythic-style-0 {
-      background: var(--rune-mythic-swap);;
+   .mythic-style-0 {
+      background: var(--rune-mythic-0);;
+   }
+
+   .mythic-style-1 {
+      background: var(--rune-mythic-1);;
    }
 
    .mythic-fraction {
