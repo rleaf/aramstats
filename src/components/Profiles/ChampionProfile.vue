@@ -38,7 +38,6 @@ export default {
       championFilter() {
          this.getChampionIndex()
          this.championData = this.data[this.championIndex]
-         console.log(this.championData)
       }
    },
 
@@ -149,7 +148,8 @@ export default {
             :comparisonData="this.comparisonData"
             :initChampion="this.data[this.nunuIndex]"/>
          <div class="temp">
-            You may need to re-parse you summoner if something looks like it's not loading properly.
+            You may need to re-parse you summoner if something looks like it's not loading properly (should look like 
+            <a href="https://i.imgur.com/xzvhrDR.png" target="_blank" style="color: var(--color-font);">this</a>).
             <br><br>
             Hit 'delete' button up top.
          </div>
@@ -168,6 +168,8 @@ export default {
    padding-top: 2rem;
    width: 300px;
 }
+
+
 .runes-mythic-wrapper {
    display: flex;
    justify-content: space-evenly;

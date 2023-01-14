@@ -1,6 +1,6 @@
 <script>
 import Champion from '../Champion.vue'
-import Overview from '../Profiles/Overview.vue'
+import Overview from '../Profiles/OverviewProfile.vue'
 import ChampionProfile from '../Profiles/ChampionProfile.vue'
 import Histogram from '../Histogram.vue'
 import ChampSearch from '../ChampSearch.vue'
