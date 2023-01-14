@@ -74,8 +74,8 @@ button {
    padding: 0.5rem 1rem 0.5rem 1rem;
 }
 
-.dropdown-container:hover {
-   background: var(--light2);
+.dropdown-container button:hover {
+   background: var(--search-bar-hover);
    border-radius: 5px;
 }
 .dropdown-item:hover {

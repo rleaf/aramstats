@@ -386,7 +386,7 @@ export default {
    width: 350px;
    font-size: 0.9rem;
    text-align: end;
-   background: rgba(69, 77, 93, .9);
+   background: var(--profile-panel);
    color: var(--color-font);
 }
 
