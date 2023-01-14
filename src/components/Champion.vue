@@ -54,9 +54,6 @@ export default {
                {{ this.champion.averageDamagePerMinute }} DPM
             </div>
          </div>
-         <!-- <div class="avg-dpm cell">
-            {{ this.champion.averageDamagePerMinute }}
-         </div> -->
          <div class="avg-healing cell">
             {{ this.champion.averageTotalHeal || '-' }}
          </div>
@@ -87,8 +84,6 @@ export default {
             </div>
          </div>
       </div>
-      <!-- <Transition name="slide">
-      </Transition> -->
          <div class="matches" v-show="this.expand">
             <Match v-for="match in this.champion.matches"
             :key="match.matchId"
@@ -100,16 +95,7 @@ export default {
 
 <style scoped>
 @import url('../assets/stats.css');
-/* .slide-enter-active,
-.slide-leave-active {
-   transition: all 0.1s ease-out;
-}
 
-.slide-enter-from,
-.slide-leave-to {
-   transform: translateY(-80px);
-   opacity: 0;
-} */
 .avg-dpm {
    font-size: 0.7rem;
    font-style: oblique;

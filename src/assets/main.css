@@ -24,8 +24,6 @@
   --dark500: rgb(64, 64, 64);
   --dark600: rgb(82, 82, 82);
 
-  --dark4: rgba(0, 0, 0, 0.65);
-  --dark5: rgba(0, 0, 0, 0.45);
   --dark100_o: rgba(0, 0, 0, 0.65);
   --dark100_o2: rgba(0, 0, 0, 0.45);
   --darkWin: rgba(0, 255, 0, 0.062);
@@ -139,7 +137,7 @@
     --panel1: rgba(110, 110, 110, 0.9);
     --panel2: rgba(81, 101, 131, 0.9);
     --profile-tab: var(--blue300s);
-    --profile-tab-active: var(--blue100t);
+    --profile-tab-active: var(--blue200t);
     
     --matches-border-top: var(--dark500);
     --border-top: var(--light800);

@@ -15,7 +15,12 @@ export default {
          
          if (prev) this.rune = {}
          this.runeWinrate()
-      }
+      },
+
+      // comparisonData(_, prev) {
+      //    if (prev) this.rune = {}
+      //    this.runeWinrate()
+      // }
    },
 
    methods: {
@@ -29,7 +34,10 @@ export default {
          2. Get primaryRune & Win/Lose
          3. Calculate WR % for every primaryRune
          */
-         this.data.matches.forEach((match) => {
+         let matches
+         (this.comparison) ? matches = this.data : matches = this.data.matches
+
+         matches.forEach((match) => {
             if (match.primaryRune in this.rune) {
                if (match.win) this.rune[match.primaryRune].win += 1
                this.rune[match.primaryRune].totalGames += 1
@@ -64,7 +72,8 @@ export default {
    },
 
    props: {
-      data: null
+      data: null,
+      comparison: false
    }
 }
 </script>
@@ -80,20 +89,17 @@ export default {
          </div>
          <div class="runes-fraction">
             ({{ v.win }}/{{ v.totalGames }})
-            <!-- (34/29) -->
          </div>
       </div>
    </div>
 </template>
 
 <style scoped>
-   .rune-style-0 {
+.rune-style-0 {
       background: var(--rune-mythic-0);
-      /* background: var(--champion-search-bar); */
    }
    .rune-style-1 {
       background: var(--rune-mythic-1);
-      /* background: var(--champion-search-bar); */
    }
 
    .runes-fraction {
@@ -118,6 +124,13 @@ export default {
    }
 
    .rune-main {
-      padding-top: 10px;
+      /* height: calc(100% - 10px); */
+      height: 250px;
+      margin-top: 10px;
+      overflow-y: scroll;
+   }
+
+   .rune-main::-webkit-scrollbar {
+      display: none;
    }
 </style>

@@ -39,9 +39,11 @@ export default {
             ({{ this.totalWins }}/{{ this.totalMatches }}) WR
          </div>
 
+         
       </div>
       <div class="summoner-stats">
          <div class="summ-wr">
+            
          </div>
       </div>
       <!-- <div class="summoner-stats">

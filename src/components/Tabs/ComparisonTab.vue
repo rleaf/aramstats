@@ -20,6 +20,8 @@ export default {
          nunuIndex: null,
          comparison: null,
          comparisonData: null,
+         comparisonWins: 0,
+         comparisonKDA: null,
       }
    },
 
@@ -70,15 +72,30 @@ export default {
          })
 
          this.comparisonData = ensembleMatches.flat()
+
+         this.comparisonWinRateKDA()
       },
 
-      winrateColor(x) {
-         // https://stackoverflow.com/a/12259830/1545958
-         if (x < 50) return 'color: var(--parse50)'
-         if (x < 75) return 'color: var(--parse75)'
-         if (x < 85) return 'color: var(--parse85)'
-         if (x <= 100) return 'color: var(--parse100)'
+      comparisonWinRateKDA() {
+         this.comparisonKDA = null
+         this.comparisonWins = 0
+         
+         if (this.comparisonData.length != 0) {
+
+            let totalKDA = [0, 0, 0]
+            
+            this.comparisonData.forEach((match) => {
+               if (match.win) this.comparisonWins ++
+               totalKDA[0] += match.kills
+               totalKDA[1] += match.deaths
+               totalKDA[2] += match.assists
+            })
+
+            this.comparisonKDA = totalKDA.map((x) => Math.round(x / this.comparisonData.length))
+         }
+         
       }
+
    },
 
    computed: {
@@ -98,6 +115,22 @@ export default {
          return `background: linear-gradient(to left, rgba(var(--profile-panel-dec-rgb), 0.9) 50%, rgba(var(--profile-panel-dec-rgb), 0.75)),
             no-repeat url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${this.championData.championName}_0.jpg');`
       },
+
+      ensembleWinRate() {
+         if (this.comparisonWins != 0) return `${Math.round((this.comparisonWins / this.comparisonData.length) * 100)}%`
+      },
+
+      ensembleWinRateFraction() {
+         if (this.comparisonWins != 0) return `(${this.comparisonWins}/${this.comparisonData.length}) W/L`
+      },
+
+      ensembleKDR() {
+         if (this.comparisonKDA) return `${Math.round(((this.comparisonKDA[0] + this.comparisonKDA[2]) / this.comparisonKDA[1]) * 100) / 100}`   
+      },
+
+      ensembleKDA() {
+         if (this.comparisonKDA) return `(${this.comparisonKDA[0]}/${this.comparisonKDA[1]}/${this.comparisonKDA[2]}) KDA`
+      },
    }, 
 
    props: {
@@ -110,55 +143,78 @@ export default {
    <div class="champion-main" :style="background">
       <div class="champion-header">
          <ChampSearch :data="this.data" @championFocus="champion => championFilter = champion" />
-         <div class="stats-a">
-            <!-- <div :style="winrateColor(winrate)" class="champ-wr">
-               {{ winrate }}%
-            </div> -->
-            <div style="color: var(--header-stats);" class="champ-wr">
-               {{ winrate }}%
-            </div>
-            <div class="wr-fraction">
-               ({{ this.championData.wins }}/{{ this.championData.matches.length }}) W/L
-            </div>
-         </div>
-         <div class="stats-a">
-            <div style="color: var(--header-stats);" class="champ-wr">
-               {{ kdr }}
-            </div>
-            <div class="wr-fraction">
-               ({{ this.championData.averageKDA }}) KDA
-            </div>
-         </div>
          <input class="comparison-input" type="text" spellcheck="false"
             v-model="comparison" v-on:keyup.enter="champComparison"
             placeholder="kogmaw, drmundo, renata, ksante, jarvaniv, nunu, xinzhao...">
       </div>
       
       <div class="champion-body">
-         <div class="runes-mythic-wrapper">
-            <div class="runes-mythic-wr">
-               <RuneWinrate :data="this.championData"/>
+         <div style="width: 100%;">
+            <div class="wr-kda">
+               <div>
+                  <div style="color: var(--header-stats);" class="champ-wr">
+                     {{ winrate }}%
+                  </div>
+                  <div class="wr-fraction">
+                     ({{ this.championData.wins }}/{{ this.championData.matches.length }}) W/L
+                  </div>
+               </div>
+               <div>
+                  <div style="color: var(--header-stats);" class="champ-wr">
+                     {{ kdr }}
+                  </div>
+                  <div class="wr-fraction">
+                     ({{ this.championData.averageKDA }}) KDA
+                  </div>
+               </div>
             </div>
-            <div class="runes-mythic-wr">
-               <MythicWinrate :data="this.championData"/>
+            <div class="runes-mythic-wrapper">
+               <div class="runes-mythic-wr">
+                  <RuneWinrate :data="this.championData"/>
+               </div>
+               <div class="runes-mythic-wr">
+                  <MythicWinrate :data="this.championData"/>
+               </div>
             </div>
          </div>
          <Histogram
             :championData="this.championData"
             :comparisonData="this.comparisonData"
             :initChampion="this.data[this.nunuIndex]"/>
-         <div class="temp">
-            You may need to re-parse you summoner if something looks like it's not loading properly (should look like 
-            <a href="https://i.imgur.com/xzvhrDR.png" target="_blank" style="color: var(--color-font);">this</a>).
-            <br><br>
-            Hit 'delete' button up top.
+         <!-- <div style="background: var(--profile-panel); width: 100%;"> -->
+         <div style="width: 100%;">
+            <div class="wr-kda">
+               <div>
+                  <div style="color: var(--header-stats);" class="champ-wr">
+                     {{ ensembleWinRate }}
+                  </div>
+                  <div class="wr-fraction">
+                     {{ ensembleWinRateFraction }}
+                  </div>
+               </div>
+               <div>
+                  <div style="color: var(--header-stats);" class="champ-wr">
+                     {{ ensembleKDR }}
+                  </div>
+                  <div class="wr-fraction">
+                     {{ ensembleKDA }}
+                  </div>
+               </div>
+            </div>
+            <div class="runes-mythic-wrapper">
+               <div class="runes-mythic-wr">
+                  <RuneWinrate v-if="this.comparisonData" :data="this.comparisonData" :comparison="true" />
+               </div>
+               <div class="runes-mythic-wr">
+                  <MythicWinrate v-if="this.comparisonData" :data="this.comparisonData" :comparison="true" />
+               </div>
+            </div>
          </div>
       </div>
    </div>
 </template>
 
 <style scoped>
-
 .temp {
    margin-left: auto;
    margin-right: auto;
@@ -176,8 +232,7 @@ export default {
    color: var(--color-font);
    padding: 0 10px;
    gap: 10px;
-   width: 240px;
-   border-right: 2px solid var(--color-background);
+   /* width: 100%; */
 }
 
 .comparison-input {
@@ -206,26 +261,33 @@ export default {
    padding-left: 10px;
 }
 .champ-wr {
+   display: inline-block;
    font-weight: bold;
+   padding-right: 4px;
    color: var(--color-font);
    font-size: 1.1rem;
 }
 .wr-fraction {
+   display: inline-block;
    color: var(--color-font-fade);
    font-size: 0.9rem;
 }
 
-.stats-a {
+.wr-kda {
    display: flex;
    align-items: center;
+   justify-content: space-evenly;
+   text-align: center;
    gap: 5px;
-   padding-left: 1.5rem;
+   /* padding: 5px 0; */
+   padding-top: 10px;
 }
 
 .champion-body {
    display: flex;
    height: 298px;
    flex-direction: row;
+   justify-content: space-evenly;
 }
 
 .champion-main {

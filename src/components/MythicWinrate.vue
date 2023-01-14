@@ -53,8 +53,11 @@ export default {
       },
 
       async mythicWinrate() {
-         for(const match of this.data.matches) {
 
+         let matches
+         (this.comparison) ? matches = this.data : matches = this.data.matches
+
+         for(const match of matches) {
             let mythic = await this.findMythic(match.items)
             
             if (mythic != undefined) {
@@ -89,7 +92,8 @@ export default {
    },
 
    props: {
-      data: null
+      data: null,
+      comparison: false
    }
 }
 </script>
@@ -105,14 +109,13 @@ export default {
          </div>
          <div class="mythic-fraction">
             ({{ v.win }}/{{ v.totalGames }})
-            <!-- (34/29) -->
          </div>
       </div>
    </div>
 </template>
 
 <style scoped>
-   .mythic-style-0 {
+.mythic-style-0 {
       background: var(--rune-mythic-0);;
    }
 
@@ -144,6 +147,13 @@ export default {
    }
 
    .mythic-main {
-      padding-top: 10px;
+      /* height: calc(100% - 10px); */
+      height: 250px;
+      margin-top: 10px;
+      overflow-y: scroll;
+   }
+
+   .mythic-main::-webkit-scrollbar {
+      display: none;
    }
 </style>

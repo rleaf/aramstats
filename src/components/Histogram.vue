@@ -26,7 +26,7 @@ export default {
    },
 
    mounted() {
-      this.width = 500 - this.margin.left - this.margin.right
+      this.width = 600 - this.margin.left - this.margin.right
       this.height = 250 - this.margin.top - this.margin.bottom
 
       this.avgDPM = this.initChampion.averageDamagePerMinute
@@ -37,14 +37,11 @@ export default {
       championData() {
          this.avgDPM = this.championData.averageDamagePerMinute
          this.updateHistogram(this.championData.matches)
-         // this.comparisonUpdate(this.championData.matches)
       },
       
       comparisonData(_, prev) {
-         (prev) ? this.comparisonUpdate(this.comparisonData, true):
-         this.comparisonUpdate(this.comparisonData)
-         // if(prev) this.comparisonData = null
-         // this.comparisonUpdate(this.comparisonData)
+         (prev) ? this.comparisonUpdate(this.comparisonData, true) :
+            this.comparisonUpdate(this.comparisonData)
       }
    },
 
@@ -60,7 +57,7 @@ export default {
 
          // X Axis
          this.x = d3.scaleLinear()
-            .domain([0, 4000])
+            .domain([0, 5000])
             .range([0, this.width])
 
          this.svg.append("g")
@@ -400,6 +397,7 @@ export default {
 .histogram-main {
       padding: 10px;
       padding-top: 30px;
+      border-left: 2px solid var(--color-background);
       border-right: 2px solid var(--color-background);
    }
 
