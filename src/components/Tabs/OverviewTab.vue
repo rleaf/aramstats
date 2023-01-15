@@ -38,6 +38,7 @@ export default {
          <div class="wr-frac">
             ({{ this.totalWins }}/{{ this.totalMatches }}) WR
          </div>
+         <div style="color: var(--color-font); padding-left: 20px;"> this tab still a wip</div>
 
          
       </div>

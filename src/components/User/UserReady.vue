@@ -184,27 +184,27 @@ export default {
                   </a>
                </div>
             </div>
-         </div>
-         <div class="danger-zone">
-            <span style="color: var(--color-font); padding-right: 15px;">hmm? -></span> 
-            <div class="purge-wrapper" @mouseover="hover = true" @mouseleave="hover = false">
-               <a class="purge" @click="deleteSummoner()" >
+            <div class="danger-zone">
+               <span style="color: var(--color-font); padding-right: 15px; font-size: 0.9rem;">hmm? -></span> 
+               <a class="purge" @mouseover="hover = true" @mouseleave="hover = false" @click="deleteSummoner()" >
                   Delete
                </a>
+               <div class="purge-wrapper" >
+               </div>
+               <span v-if="hover" class="purge-tooltip">
+                  If you're seeing missing information, it is hopefully because I made changes since the
+                  last time you parsed your summoner.
+                  <br><br>
+                  Older parses in the database may not store recently added stats and/or the 
+                  frontend may not be able to properly read recent variations made to the API.
+                  Click this if you'd like to delete your summoner from the database.
+                  You will have to search your profile again.
+                  <br><br>
+                   For reference, you can check out <u>Night Owl</u> on NA which will always be UTD.
+                  <br><br>
+                  Confirmation will appear after clicking.
+               </span>
             </div>
-            <span v-if="hover" class="purge-tooltip">
-               If you're seeing missing information, it is hopefully because I made changes since the
-               last time you parsed your summoner.
-               <br><br>
-               Older parses in the database may not store recently added stats and/or the 
-               frontend may not be able to properly read recent variations made to the API.
-               Click this if you'd like to delete your summoner from the database.
-               You will have to search your profile again.
-               <br><br>
-                For reference, you can check out <u>Night Owl</u> on NA which will always be UTD.
-               <br><br>
-               Confirmation will appear after clicking.
-            </span>
          </div>
          <div class="profile-wrapper">
             <div class="profile-sections">
@@ -349,7 +349,6 @@ export default {
 .profile-landing {
    display: block;
    border-radius: 3px;
-   
    width: 100%;
 }
 
@@ -358,7 +357,6 @@ export default {
    justify-content: left;
    align-items: center;
    padding-top: 45px;
-   /* padding-left: 45px; */
    gap: 20px;
    font-size: 1.5rem;
    color: var(--color-font);
@@ -366,12 +364,12 @@ export default {
 .danger-zone {
    position: relative;
    display: flex;
-   justify-content: flex-end;
-   margin-top: -34px;
-   padding-right: 45px;
+   margin-left: auto;
+   align-items: center;
+   padding-top: 38px;
 }
 
-.purge-wrapper a {
+.danger-zone a {
    font-size: 1rem;
    color: var(--color-font);
    border: 1px solid var(--color-font);
@@ -382,7 +380,8 @@ export default {
 
 .purge-tooltip {
    position: absolute;
-   top: 40px;
+   top: 75px;
+   right: 0;
    padding: 0.5rem .7rem;
    border-radius: 5px;
    width: 500px;

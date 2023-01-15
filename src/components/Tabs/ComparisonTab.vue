@@ -72,7 +72,6 @@ export default {
          })
 
          this.comparisonData = ensembleMatches.flat()
-
          this.comparisonWinRateKDA()
       },
 
