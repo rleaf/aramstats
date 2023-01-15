@@ -50,7 +50,7 @@ export default {
          </div>
          <div class="avg-dmg cell">
             {{ this.champion.averageTotalDamageDealt }}
-            <div class="avg-dpm">
+            <div class="sub-cell">
                {{ this.champion.averageDamagePerMinute }} DPM
             </div>
          </div>
@@ -71,6 +71,9 @@ export default {
          </div>
          <div class="avg-gold cell">
             {{ this.champion.averageGoldEarned }}
+            <div class="sub-cell">
+               {{ this.champion.averageGoldPerMinute }} GPM
+            </div>
          </div>
          <div class="tqp-wrapper cell">
             <div class="tqp-1">
@@ -96,7 +99,7 @@ export default {
 <style scoped>
 @import url('../assets/stats.css');
 
-.avg-dpm {
+.sub-cell {
    font-size: 0.7rem;
    font-style: oblique;
    color: var(--color-font);

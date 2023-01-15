@@ -1,11 +1,3 @@
-/*
-   cat.js contains the scribing for parsing individual matches 
-   and the math logic for average stats
-*/
-
-// const CHAMPION_NAME = {
-//    do champ names here 
-// }
 
 function scribe(puuid, game) {
    let champion = {}
@@ -40,6 +32,7 @@ function scribe(puuid, game) {
    champion['deaths'] = player.deaths
    champion['assists'] = player.assists
    champion['goldEarned'] = player.goldEarned
+   champion['goldPerMinute'] = Math.round(player.goldEarned / champion['gameDuration'])
 
    // perks
    champion['primaryRune'] = player.perks.styles[0].selections[0].perk
@@ -83,71 +76,65 @@ function scribe(puuid, game) {
 }
 
 function averages(matches) {
-   // let stats = {}
+
+   let stats = {
+      'totalGames': 0,
+      'wins': 0,
+      'tripleKills': 0,
+      'quadraKills': 0,
+      'pentaKills': 0
+   }
    
-   let totalGames = 0
-   let wins = 0
-   let tripleKills = 0
-   let quadraKills = 0
-   let pentaKills = 0
+   let avg = {
+      'dmgDealt': 0,
+      'damagePerMinute': 0,
+      'heal': 0,
+      'healingOnTeam': 0,
+      'tank': 0,
+      'mitigated': 0,
+      'kills': 0,
+      'deaths': 0,
+      'assists': 0,
+      'gold': 0,
+      'goldPerMinute': 0
+   }
    
-   let totalDmgDealt = 0
-   let totalDamagePerMinute = 0
-   let totalHeal = 0
-   let healingOnTeam = 0
-   let totalTank = 0
-   let totalMitigated = 0
-   let kills = 0
-   let deaths = 0
-   let assists = 0
-   let gold = 0
+   stats.totalGames = matches.length
 
    for (let i = 0; i < matches.length; i++) {
 
-      // Total games & wins 
-      if (matches[i].win == true) {
-         wins++
-      }
-      totalGames++
+      // Wins 
+      if (matches[i].win == true) stats.wins++
 
       // Multikills
-      tripleKills += matches[i].tripleKills
-      quadraKills += matches[i].quadraKills
-      pentaKills += matches[i].pentaKills
+      stats.tripleKills += matches[i].tripleKills
+      stats.quadraKills += matches[i].quadraKills
+      stats.pentaKills += matches[i].pentaKills
 
-      // Damage % DPM, healing, tanking
-      totalDmgDealt += matches[i].totalDamageDealtToChampions
-      totalDamagePerMinute += matches[i].damagePerMinute
-      totalHeal += matches[i].totalHeal
-      healingOnTeam += matches[i].totalHealsOnTeammates
-      totalTank += matches[i].totalDamageTaken
-      totalMitigated += matches[i].totalSelfMitigated
-
+      // Damage, DPM, healing, tanking
+      avg.dmgDealt += matches[i].totalDamageDealtToChampions
+      avg.damagePerMinute += matches[i].damagePerMinute
+      avg.heal += matches[i].totalHeal
+      avg.healingOnTeam += matches[i].totalHealsOnTeammates
+      avg.tank += matches[i].totalDamageTaken
+      avg.mitigated += matches[i].totalSelfMitigated
 
       // Kills, deaths, assists
-      kills += matches[i].kills
-      deaths += matches[i].deaths
-      assists += matches[i].assists
+      avg.kills += matches[i].kills
+      avg.deaths += matches[i].deaths
+      avg.assists += matches[i].assists
 
       // Gold earned
-      gold += matches[i].goldEarned
+      avg.gold += matches[i].goldEarned
+      avg.goldPerMinute += matches[i].goldPerMinute
    }
 
-   let total = [
-      totalDmgDealt,
-      totalDamagePerMinute,
-      totalHeal,
-      healingOnTeam,
-      totalTank,
-      totalMitigated,
-      kills,
-      deaths,
-      assists,
-      gold
-   ]
-   let averages = total.map(x => Math.round(x / totalGames))
+   for (const [k, v] of Object.entries(avg)) {
+      avg[k] = Math.round(v / matches.length)
+   }
 
-   return [totalGames, wins, averages, tripleKills, quadraKills, pentaKills]
+   stats['avg'] = avg
+   return stats
 }
 
 module.exports = {

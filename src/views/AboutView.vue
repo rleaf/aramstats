@@ -6,7 +6,7 @@
         <u>aramstats.lol</u> parses all of a summoner's ARAM games available in the Riot API.
       </p>
       <p>
-        Feel free to reach out at <u>owl#4626</u>
+        Feel free to @owl#4626 in the <a href="https://discord.gg/MydvqhqWmM">aram academy</a> discord
         if you have any neat ideas.
       </p>
     </div>
@@ -20,6 +20,10 @@
   justify-content: center;
   margin-top: 20vh;
   text-align: center;
+}
+
+a {
+  color: var(--color-font);
 }
 
 h2 {

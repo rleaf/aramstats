@@ -93,7 +93,7 @@ export default {
       <div class="right-box">
          <div class="total-dmg match-cell">
             {{ this.match.totalDamageDealtToChampions }}
-            <div class="dpm">
+            <div class="sub-match-cell">
                {{ this.match.damagePerMinute }} DPM
             </div>
          </div>
@@ -114,6 +114,9 @@ export default {
          </div>
          <div class="gold-earned match-cell">
             {{ this.match.goldEarned }}
+            <div class="sub-match-cell">
+               {{ this.match.goldPerMinute }} GPM
+            </div>
          </div>
          <div class="tqp-match-wrapper match-cell">
             <div class="tqp-match">
@@ -155,7 +158,7 @@ export default {
    border-radius: 100%;
    
 }
-.dpm {
+.sub-match-cell {
    font-size: 0.7rem;
    font-style: oblique;
    color: var(--color-font);

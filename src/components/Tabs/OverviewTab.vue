@@ -38,12 +38,12 @@ export default {
          <div class="wr-frac">
             ({{ this.totalWins }}/{{ this.totalMatches }}) WR
          </div>
-         <div style="color: var(--color-font); padding-left: 20px;"> this tab still a wip</div>
-
+         
          
       </div>
       <div class="summoner-stats">
          <div class="summ-wr">
+            <div style="color: var(--color-font); padding-left: 20px;">wip</div>
             
          </div>
       </div>
@@ -55,7 +55,7 @@ export default {
 </template>
 
 <style scoped>
-.wr-frac {
+   .wr-frac {
       color: var(--color-font-fade);
       padding-left: 10px;
       font-size: 0.9rem;

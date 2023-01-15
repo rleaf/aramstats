@@ -192,7 +192,7 @@ export default {
                <div class="purge-wrapper" >
                </div>
                <span v-if="hover" class="purge-tooltip">
-                  If you're seeing missing information, it is hopefully because I made changes since the
+                  If you're seeing missing information, it is hopefully only because I made changes since the
                   last time you parsed your summoner.
                   <br><br>
                   Older parses in the database may not store recently added stats and/or the 
@@ -241,15 +241,15 @@ export default {
          </div>
          <div class="headers">
             <div class='champ-name header' @click="sortProc('Champion')">Champion</div>
-            <div class='total-games header' @click="sortProc('Total Games')">Total Games</div>
+            <div class='total-games header' @click="sortProc('Total Games')">Games</div>
             <div class='wins header' @click="sortProc('Wins')">Wins</div>
-            <div class='avg-dmg header' @click="avgDmgDpm('Average Damage')">avg Dmg</div>
-            <div class='avg-healing header' @click="sortProc('Average Healing')">avg Heal</div>
-            <div class='avg-healing-to-teammates header' @click="sortProc('Average Healing to Teammates')">avg HtT</div>
-            <div class='avg-dt header' @click="sortProc('Average Damage Taken')">avg DT</div>
-            <div class='avg-mit header' @click="sortProc('Average Self Mitigated Damage')">avg Mit</div>
-            <div class='avg-kda header'>avg KDA</div>
-            <div class='avg-gold header' @click="sortProc('Average Gold')">avg Gold</div>
+            <div class='avg-dmg header' @click="avgDmgDpm('Average Damage')">Damage</div>
+            <div class='avg-healing header' @click="sortProc('Average Healing')">Healing</div>
+            <div class='avg-healing-to-teammates header' @click="sortProc('Average Healing to Teammates')">Team <br>Healing</div>
+            <div class='avg-dt header' @click="sortProc('Average Damage Taken')">Dmg Taken</div>
+            <div class='avg-mit header' @click="sortProc('Average Self Mitigated Damage')">Dmg Mit</div>
+            <div class='avg-kda header'>KDA</div>
+            <div class='avg-gold header' @click="sortProc('Average Gold')">Gold</div>
             <div>
                <div class="tqp header" @click="sortProc('Triple kills')">
                   T
@@ -315,9 +315,10 @@ export default {
 
 .headers {
    padding-left: 46px;
+   padding-bottom: .4rem;
    height: 2rem;
    display: flex;
-   align-items: center;
+   align-items: flex-end;
 }
 
 .header:hover {
@@ -387,6 +388,7 @@ export default {
    width: 500px;
    font-size: 0.9rem;
    background: var(--profile-panel);
+   box-shadow: 3px 3px 5px 2px var(--profile-tab);
    color: var(--color-font);
 }
 

@@ -59,10 +59,10 @@ router
          } 
 
          // Create summoner collection and pull all matchIds
-         await summonerCheckInitialMatchPullv2(summonerCollection, summoner, req.params.region)
+         let matchlist = await summonerCheckInitialMatchPullv2(summonerCollection, summoner, req.params.region)
                   
          // Parse & scribe individual matches
-         await matchParserV2(summonerCollection, summoner, req.params.region)
+         await matchParserV2(summonerCollection, matchlist, summoner, req.params.region)
 
          // Average all matches
          await totalMatches(summonerCollection)
@@ -89,7 +89,7 @@ router
    })
 
 async function totalMatches(collection) {
-   // const summonerCollection = client.collection(summoner.name)
+
    const allChamps = await collection.find(
       {'championName': {$exists: true}}
    ).toArray()
@@ -97,25 +97,26 @@ async function totalMatches(collection) {
    // Parse average stats of all games
    allChamps.forEach(async x => {
 
-      let avg = cat.averages(x.matches).flat()
+      let stats = cat.averages(x.matches)
 
       // Pushing data
       await collection.updateOne(
          {'championName': x.championName},
          {$set: {
-            'totalGames': avg[0],
-            'wins': avg[1],
-            'averageTotalDamageDealt': avg[2],
-            'averageDamagePerMinute': avg[3],
-            'averageTotalHeal': avg[4],
-            'averageHealingOnTeammates': avg[5],
-            'averageTotalDamageTaken': avg[6],
-            'averageTotalSelfMitigated': avg[7],
-            'averageKDA': `${avg[8]}/${avg[9]}/${avg[10]}`,
-            'averageGoldEarned': avg[11],
-            'totalTripleKills': avg[12],
-            'totalQuadraKills': avg[13],
-            'totalPentaKills': avg[14],
+            'totalGames': stats.totalGames,
+            'wins': stats.wins,
+            'averageTotalDamageDealt': stats.avg.dmgDealt,
+            'averageDamagePerMinute': stats.avg.damagePerMinute,
+            'averageTotalHeal': stats.avg.heal,
+            'averageHealingOnTeammates': stats.avg.healingOnTeam,
+            'averageTotalDamageTaken': stats.avg.tank,
+            'averageTotalSelfMitigated': stats.avg.mitigated,
+            'averageKDA': `${stats.avg.kills}/${stats.avg.deaths}/${stats.avg.assists}`,
+            'averageGoldEarned': stats.avg.gold,
+            'averageGoldPerMinute': stats.avg.goldPerMinute,
+            'totalTripleKills': stats.tripleKills,
+            'totalQuadraKills': stats.quadraKills,
+            'totalPentaKills': stats.pentaKills,
             }
          }
       )
@@ -152,15 +153,14 @@ router.get('/update/:region/:summonerURI', async (req, res) => {
          - Get current parsed Index
          - Iterate over matchId pull with parsed Index
    */
-   const summonerDoc = await summonerCollection.findOne({'name': summoner.name})
-   const lastMatchId = (await summonerDoc).matchId[0]
+   const lastMatchId = (await summonerCollection.findOne({'name': summoner.name})).lastMatchID
    let matches
 
    try {
-      matches = (await matchIdPull(summonerCollection, summoner, req.params.region, length=true)).slice().reverse()
+      matches = (await matchIdPull(summoner, req.params.region)).slice().reverse()
    } catch (e) {
       console.log(`(${e.status}) @ update. Repulling summoner matches.`)
-      matches = (await matchIdPull(summonerCollection, summoner, req.params.region, length=true)).slice().reverse()
+      matches = (await matchIdPull(summoner, req.params.region)).slice().reverse()
    }
 
    
@@ -204,6 +204,11 @@ router.get('/update/:region/:summonerURI', async (req, res) => {
    
    // Get new averages
    await totalMatches(summonerCollection)
+
+   await summonerCollection.updateOne(
+      {'name': summoner.name},
+      {$set: {'lastMatchID': matches[matches.length - 1]}}
+   )
    
    await summonerCollection.updateOne(
       {'name': summoner.name},
@@ -244,38 +249,50 @@ async function summonerCheckInitialMatchPullv2(collection, summoner, region) {
    )
 
    // Pull all games into 'matchId'
+   let matchlist
+
    try {
-      await matchIdPull(collection, summoner, region)
+      matchlist = await matchIdPull(summoner, region)
    } catch (e) {
       console.log(`(${e.status}) @ initial pull. Repulling summoner matches.`)
-      await matchIdPull(collection, summoner, region)
+      matchlist = await matchIdPull(summoner, region)
    }
 
-   let length = (await collection.findOne({'name': summoner.name})).matchId.length
-   console.log(`Added ${summoner.name} (${region}) to database, [${length} matches].`)
+   // let length = (await collection.findOne({'name': summoner.name})).matchId.length
+
+   await collection.updateOne(
+      {'name': summoner.name},
+      {$set: {'lastMatchID': matchlist[0]}}
+   )
+
+   console.log(`Added ${summoner.name} (${region}) to database, [${matchlist.length} matches].`)
+   return matchlist
 }
 
-async function matchIdPull(collection, summoner, region, length=false) {
+async function matchIdPull(summoner, region) {
 
    let matchList = await twisted.getAllSummonerMatches(summoner.name, region)
 
-   collection.updateOne(
-      {'name': summoner.name},
-      {$set : {'matchId': matchList}}
-   )
+   // collection.updateOne(
+   //    {'name': summoner.name},
+   //    {$set : {'matchId': matchList}}
+   // )
 
-   if (length) {
-      return new Promise(resolve => resolve(matchList))
-   }
+   
+   // if (length) {
+   //    return new Promise(resolve => resolve(matchList))
+   // }
+   return new Promise(resolve => resolve(matchList))
 }
 
-async function matchParserV2(collection, summoner, region) {
+async function matchParserV2(collection, matchlist, summoner, region) {
    /*
    Initial parse through summoner matches
    */
 
-   const result = (await collection.find({}).toArray()).shift()
-   let matches = result.matchId.reverse()
+   // const result = (await collection.find({}).toArray()).shift()
+   // let matches = result.matchId.reverse()
+   let matches = matchlist.reverse()
 
    for (let i = 0 ; i < matches.length; i++) {
       
@@ -365,8 +382,7 @@ async function createChampionDocument(collection, champion) {
             averageTotalSelfMitigated: 0,
             averageKDA: '',
             averageGoldEarned: 0,
-            primaryRune: null,
-            secondaryTree: null,
+            averageGoldPerMinute: 0,
             totalTripleKills: 0,
             totalQuadraKills: 0,
             totalPentaKills: 0,
