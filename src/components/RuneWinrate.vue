@@ -2,7 +2,7 @@
 export default {
    data() {
       return {
-         rune: {}
+         rune: []
       }
    },
 
@@ -13,14 +13,9 @@ export default {
    watch: {
       data(_, prev) {
          
-         if (prev) this.rune = {}
+         if (prev) this.rune = []
          this.runeWinrate()
-      },
-
-      // comparisonData(_, prev) {
-      //    if (prev) this.rune = {}
-      //    this.runeWinrate()
-      // }
+      }
    },
 
    methods: {
@@ -34,28 +29,25 @@ export default {
          2. Get primaryRune & Win/Lose
          3. Calculate WR % for every primaryRune
          */
+
          let matches
          (this.comparison) ? matches = this.data : matches = this.data.matches
 
-         matches.forEach((match) => {
-            if (match.primaryRune in this.rune) {
-               if (match.win) this.rune[match.primaryRune].win += 1
-               this.rune[match.primaryRune].totalGames += 1
+         for (const match of matches) {
+            let runeIdx = this.rune.findIndex(el => el.name == match.primaryRune)
+
+            if (runeIdx == -1) {
+               this.rune.push({ 'name': match.primaryRune, 'wins': 0, 'totalGames': 1, 'winRate': 0 })
+               if (match.win) this.rune[this.rune.length - 1].wins++
             } else {
-               this.rune[match.primaryRune] = {
-                  totalGames: 0,
-                  win: 0
-               }
-
-               if (match.win) this.rune[match.primaryRune].win += 1
-               this.rune[match.primaryRune].totalGames += 1
+               if (match.win) this.rune[runeIdx].wins++
+               this.rune[runeIdx].totalGames++
             }
-         })
-
-         for (const prop in this.rune) {
-            this.rune[prop].winRate = Math.round(this.rune[prop].win / this.rune[prop].totalGames * 100)
          }
 
+         for (const rune of this.rune) {
+            rune.winRate = Math.round(rune.wins / rune.totalGames * 100)
+         }
       },
 
       winrateColor(x) {
@@ -68,7 +60,9 @@ export default {
    },
 
    computed: {
-      // sorting (sort object?)
+      runeSort() {
+         return this.rune.sort((a, b) => b.totalGames - a.totalGames)
+      }
    },
 
    props: {
@@ -80,22 +74,22 @@ export default {
 
 <template>
    <div class="rune-main">
-      <div class="rune-wr" v-for="(v, k, i) in this.rune"
-         :key="k"
+      <div class="rune-wr" v-for="(r, i) in runeSort"
+         :key="r.name"
          :class="i % 2 == 0 ? `rune-style-0` : `rune-style-1`">
-         <img :src="runeImage(k)" alt="">
+         <img :src="runeImage(r.name)" alt="">
          <div class="runes-percent" >
-            <span :style="winrateColor(v.winRate)">{{ v.winRate }}%</span>
+            <span :style="winrateColor(r.winRate)">{{ r.winRate }}%</span>
          </div>
          <div class="runes-fraction">
-            ({{ v.win }}/{{ v.totalGames }})
+            ({{ r.wins }}/{{ r.totalGames }})
          </div>
       </div>
    </div>
 </template>
 
 <style scoped>
-.rune-style-0 {
+   .rune-style-0 {
       background: var(--rune-mythic-0);
    }
    .rune-style-1 {

@@ -4,7 +4,7 @@ import axios from 'axios'
 export default {
    data() {
       return {
-         mythic: {},
+         mythic: []
       }
    },
 
@@ -16,7 +16,7 @@ export default {
    watch: {
       data(_, prev) {
 
-         if (prev) this.mythic = {}
+         if (prev) this.mythic = []
          this.mythicWinrate()
       }
    },
@@ -59,23 +59,20 @@ export default {
 
          for(const match of matches) {
             let mythic = await this.findMythic(match.items)
-            
+
             if (mythic != undefined) {
-               if (mythic in this.mythic) {
-                  if (match.win) this.mythic[mythic].win += 1
-                  this.mythic[mythic].totalGames += 1
+               let mythicIdx = this.mythic.findIndex(el => el.name == mythic)
+
+               if (mythicIdx == -1) {
+                  this.mythic.push({ 'name': mythic, 'wins': 0, 'totalGames': 1, 'winRate': 0})
+                  if (match.win) this.mythic[this.mythic.length - 1].wins++
                } else {
-                  this.mythic[mythic] = {
-                     totalGames: 0,
-                     win: 0
-                  }
-      
-                  if (match.win) this.mythic[mythic].win += 1
-                  this.mythic[mythic].totalGames += 1
+                  if (match.win) this.mythic[mythicIdx].wins++
+                  this.mythic[mythicIdx].totalGames++
                }
       
-               for (const prop in this.mythic) {
-                  this.mythic[prop].winRate = Math.round(this.mythic[prop].win / this.mythic[prop].totalGames * 100)
+               for (const item of this.mythic) {
+                  item.winRate = Math.round(item.wins / item.totalGames * 100)
                }
             }
          }
@@ -91,6 +88,12 @@ export default {
       }
    },
 
+   computed: {
+      mythicSort() {
+         return this.mythic.sort((a, b) => b.totalGames - a.totalGames)
+      }
+   },
+
    props: {
       data: null,
       comparison: false
@@ -100,22 +103,22 @@ export default {
 
 <template>
    <div class="mythic-main">
-      <div class="mythic-wr" v-for="(v, k, i) in this.mythic"
-         :key="k"
+      <div class="mythic-wr" v-for="(m, i) in mythicSort"
+         :key="m.name"
          :class="i % 2 == 0 ? `mythic-style-0` : `mythic-style-1`">
-         <img :src="mythicImage(k)" alt="">
+         <img :src="mythicImage(m.name)" alt="">
          <div class="mythic-percent">
-            <span :style="winrateColor(v.winRate)">{{ v.winRate }}%</span>
+            <span :style="winrateColor(m.winRate)">{{ m.winRate }}%</span>
          </div>
          <div class="mythic-fraction">
-            ({{ v.win }}/{{ v.totalGames }})
+            ({{ m.wins }}/{{ m.totalGames }})
          </div>
       </div>
    </div>
 </template>
 
 <style scoped>
-.mythic-style-0 {
+   .mythic-style-0 {
       background: var(--rune-mythic-0);;
    }
 
