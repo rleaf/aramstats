@@ -1,12 +1,18 @@
 <script>
-
 export default {
-   components: {
-
-   },
    data() {
       return {
 
+      }
+   }, 
+
+   mounted() {
+      console.log('datu', this.data)
+   },
+
+   methods: {
+      Barplot(data) {
+         
       }
    },
 
@@ -17,7 +23,7 @@ export default {
 </script>
 
 <template>
-   <div class="wip">soon.tm</div>
+   
 </template>
 
 <style scoped>

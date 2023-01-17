@@ -1,7 +1,9 @@
 <script>
+import Barplot from '../Barplot.vue'
+
 export default {
    components: {
-
+      Barplot
    },
    data() {
       return {
@@ -10,18 +12,43 @@ export default {
       }
    },
 
-   created() {
-      this.data.slice(1).forEach((champ) => {
-         this.totalMatches += champ.totalGames
-         this.totalWins += champ.wins
-      })
+   mounted() {
+
+      this.winrate()
+
+      /* 
+         Querying each game for class played
+            1. import aram classBook
+            2. forEach match, let x = classBook.match['championName']
+            2.5 if match.championName is Xerath, x should return 'Artillery' and 'Mage'
+            3. 
+
+            Need data to look like:
+               groups: ['controller', 'fighter', 'mage', 'marksman', 'tank', 'specialist']
+               subgroups: [ [3, 1], [8, 14], [8, 3], [8, 3], [8, 3], [8, 3] ]
+               subgroups: [ ['ench', 'catch'], ['jugg', 'dive'], [...], [...], [...], [...] ]
+      */
+      
+      /* 
+         Get class playrate
+            1. For each champion in response, find:
+               - Class (https://leagueoflegends.fandom.com/wiki/Champion_classes)
+               - Total games played
+         
+         Then
+            1. Organize class playrate by frequency (pickrate)
+            2. Organize class playrate by winrate 
+      */
    },
 
-   // mounted() {
-   //    console.log(this.data)
-
-   // },
-
+   methods: {
+      winrate() {
+         this.data.slice(1).forEach((champ) => {
+            this.totalMatches += champ.totalGames
+            this.totalWins += champ.wins
+         })
+      }
+   },
 
    props: {
       data: null
@@ -43,6 +70,7 @@ export default {
       </div>
       <div class="summoner-stats">
          <div class="summ-wr">
+            <Barplot :data="this.data"/>
             <div style="color: var(--color-font); padding-left: 20px;">wip</div>
             
          </div>
