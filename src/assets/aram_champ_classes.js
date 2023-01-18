@@ -1,4 +1,6 @@
 /* 
+   owl#4626
+
    LINKS
    1. https://leagueoflegends.fandom.com/wiki/Champion_classes
    2. https://web.archive.org/web/20170527192754/http://euw.leagueoflegends.com/en/news/game-updates/gameplay/taking-another-look-subclasses
@@ -10,8 +12,8 @@
    1. Try to stay true to the class definitions in [1]
    2. There's going to be a lot of intersection to account for champ versatility
 	   (galio & tk are both wardens and vanguards, when really a champ should fit to one subclass per class)
-   3. Because of above, some class representations will be more inaccurate. Ie: If someone likes *only* playing poke ashe,
-	   they will have high representation for 'Marksman' games because ashe is ['Mage', 'Marksman'].
+   3. Because of above, some class representations will be more inaccurate. Ie: If someone likes *only* playing poke Ashe,
+	   they will have high representation for 'Marksman' games because Ashe is ['Mage', 'Marksman'].
 	   Rn I think versatility > "small" loss of accuracy.
    4. Everywhere there is a comment signifies a change catering to aram meta.
 */
@@ -32,7 +34,7 @@ export const classBook = {
    bard: ['Catcher'],
    belveth: ['Skirmisher'],
    blitzcrank: ['Catcher'],
-   brand: ['Mage'], /* aram, Burst -> Mage */
+   brand: ['Mage'], /* Burst -> Mage */
    braum: ['Warden'],
    caitlyn: ['Marksman'],
    camille: ['Diver'],

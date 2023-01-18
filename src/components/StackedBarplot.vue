@@ -29,7 +29,7 @@ export default {
          // ['Controller', 'Fighter', 'Mage', 'Marksman']
          const groups = data.map(d => (d.class))
          
-         this.svg  = d3.select(".barplot-main")
+         this.svg  = d3.select(".barplot-svg")
             .append("svg")
                .attr("width", this.width + this.margin.left + this.margin.right)
                .attr("height", this.height + this.margin.top + this.margin.bottom)
@@ -41,6 +41,7 @@ export default {
             .domain(groups)
             .range([0, this.width])
             .padding([0.2])
+
 
          this.svg.append("g")
             .attr("transform", `translate(0, ${this.height})`)
@@ -56,7 +57,6 @@ export default {
                .text("Class"))
 
          this.y = d3.scaleLinear()
-            // .domain([0, 50])
             .domain([0, d3.max(data, d => Object.values(d).slice(1).reduce((a, b) => a + b))])
             .range([this.height, 0])
 
@@ -65,17 +65,16 @@ export default {
 
          const yAxis = d3.axisLeft(this.y)
             .tickValues(yAxisTicks)
-            .tickFormat(d3.format('d'))
+            .tickFormat(d => d + "%")
 
          this.svg.append("g")
             .classed('y-axis', true)
-            // .call(d3.axisLeft(this.y))
             .call(yAxis)
                .attr("font-size", "0.7rem")
                .attr("color", "var(--color-font)")
             .call(g => g.append("text")
                .attr("x", 0)
-               .attr("y", -10)
+               .attr("y", -8)
                .attr("fill", "var(--color-font)")
                .attr("font-size", "0.8rem")
                .attr("text-anchor", "end")
@@ -91,7 +90,7 @@ export default {
                'var(--bar2)', /* mage */
                'var(--bar3)', /* burst */
                'var(--bar4)', /* battlemage */
-               'var(--bar1)', /* artillery */
+               'var(--bar5)', /* artillery */
                'var(--bar2)', /* marksman */
                'var(--bar2)', /* assassin */
                'var(--bar3)', /* skirmisher */
@@ -100,11 +99,10 @@ export default {
                'var(--bar2)'  /* specialist */
             ])
 
-         const tooltip = d3.select(".barplot-main")
+         const tooltip = d3.select(".barplot-svg")
             .append("div")
             .attr("class", "barplot-tooltip")
 
-         // Three function that change the tooltip when user hover / move / leave a cell
          const mouseover = function (_, d) {
             const totalClass = Object.values(d.data).slice(1).reduce((a, b) => a + b)
             const subgroupName = d3.select(this.parentNode).datum().key;
@@ -143,6 +141,13 @@ export default {
             .on("mouseover", mouseover)
             .on("mousemove", mousemove)
             .on("mouseleave", mouseleave)
+
+         // this.svg.append("g")
+         //    .classed("asterisk", true)
+         //    .append("text")
+         //       .text("*")
+         //       .attr("x", `${this.width - 30}`)
+         //       .attr("y", 16)
       }
    },
 
@@ -154,12 +159,19 @@ export default {
 
 <template>
    <div class="barplot-main">
-
+      <div class="barplot-svg"></div>
    </div>
 </template>
 
 <style>
-.barplot-main {
+/* .asterisk {
+   font-style: oblique;
+   fill: var(--color-font);
+   font-size: 1.8rem;
+} */
+
+.barplot-svg {
+   padding: 10px;
    padding-top: 30px;
 }
 
@@ -168,7 +180,7 @@ export default {
    border-radius: .1rem;
    color: var(--color-font);
    display: block;
-   font-size: 14px;
+   font-size: .85rem;
    max-width: 320px;
    padding: .2rem .4rem;
    position: absolute;

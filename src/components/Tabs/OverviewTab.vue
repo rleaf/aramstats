@@ -128,14 +128,6 @@ export default {
       height: 51px;
    }
 
-   /* .summ-wr {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
-      padding-top: 50px;
-      width: 240px;
-   } */
    .overview-body {
       display: flex;
       height: 298px;

@@ -127,7 +127,7 @@ export default {
             .attr("cx", `${this.width - 132}`)
             .attr("cy", -12)
             .attr("r", 6)
-            .style("fill", "var(--bar1)")
+            .style("fill", "var(--bar2)")
 
          this.blueLegend
             .append("text")
@@ -139,7 +139,13 @@ export default {
             .attr("font-size", "0.8rem")
             .text(`mean: ${this.avgDPM}, std: ${this.getStdDev(this.initChampion, this.avgDPM)}`)
 
-         this.svg.selectAll("rect")
+         // Put comparison higher in DOM
+         this.svg.append("g")
+            .classed("comparison", true)
+
+         this.svg.append("g")
+            .classed("base", true)
+            .selectAll("rect")
             .data(this.bins)
             .join("rect")
             .attr("x", 1)
@@ -152,7 +158,7 @@ export default {
             })
             .attr("height", (d) => this.height - this.y(d.length))
             // .attr("fill", d => `hsl(221, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 10) + 50)}%, 50%)`)
-            .attr("fill", 'var(--bar1)')
+            .attr("fill", 'var(--bar2)')
             .style("opacity", 0.7)
             .on('mouseover', function(_, d) {
                // need function declaration format to pass 'this'.
@@ -161,7 +167,7 @@ export default {
                   .attr('stroke', 'var(--color-font)')
                tooltip
                   .style("visibility", "visible")
-                  .text(`games: ${d.length}\nx0: ${d.x0}\nx1: ${d.x1}`)
+                  .text(`Games: ${d.length}\nx0: ${d.x0}\nx1: ${d.x1}`)
             })
             .on("mousemove", function (e) {
                tooltip
@@ -201,14 +207,14 @@ export default {
          this.blueLegend.selectAll("text.stats")
             .text(`mean: ${this.avgDPM}, std: ${this.getStdDev(this.championData, this.avgDPM)}`)
 
-         this.svg.selectAll("rect")
+         this.svg.select("g.base")
+            .selectAll("rect")
             .data(this.bins)
             .transition()
             .duration(1000)
             .attr("transform", d => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
             .attr("height", d => this.height - this.y(d.length))
             // .attr("fill", d => `hsl(221, ${Math.round(60 - (((this.maxBin - d.length) / this.maxBin) * 40))}%, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 8) + 50)}%)`)
-            .attr("fill", 'var(--bar1)')
 
          if(this.comparisonData) {
             this.svg.select("g.comparison").selectAll("rect")
@@ -218,7 +224,6 @@ export default {
                .attr("transform", (d) => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
                .attr("height", (d) => this.height - this.y(d.length))
                // .attr("fill", d => `hsl(9, ${Math.round(90 - (((this.maxBin2 - d.length) / this.maxBin2) * 40))}%, 64%)`)
-               .attr("fill", 'var(--bar2)')
          }
       },
 
@@ -260,7 +265,6 @@ export default {
                .attr("transform", (d) => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
                .attr("height", (d) => this.height - this.y(d.length))
                // .attr("fill", d => `hsl(9, ${Math.round(90 - (((this.maxBin2 - d.length) / this.maxBin2) * 40))}%, 64%)`)
-               .attr("fill", 'var(--bar2)')
 
             this.redLegend.selectAll("text.stats")
                .text(`mean: ${Math.round(ensembleDPM)}, std: ${this.getStdDev(this.comparisonData, ensembleDPM, true)}`)
@@ -273,8 +277,7 @@ export default {
                .style("position", "absolute")
                .style("visibility", "hidden");
 
-            this.svg.append("g")
-               .classed("comparison", true)
+            this.svg.select("g.comparison")
                .selectAll("rect")
                .data(this.bins2)
                .join("rect")
@@ -288,7 +291,8 @@ export default {
                })
                .attr("height", (d) => this.height - this.y(d.length))
                // .attr("fill", d => `hsl(9, ${Math.round(80 - (((this.maxBin2 - d.length) / this.maxBin2) * 40) )}%, 64%)`)
-               .attr("fill", 'var(--bar2)')
+               .attr("fill", 'var(--bar1)')
+               .attr("z-index", -20)
                .style("opacity", 0.6)
                .on('mouseover', function (_, d) {
                   // need function declaration format to pass 'this'.
@@ -297,7 +301,7 @@ export default {
                      .attr('stroke', 'var(--color-font)')
                   tooltip
                      .style("visibility", "visible")
-                     .text(`games: ${d.length}\nx0: ${d.x0}\nx1: ${d.x1}`)
+                     .text(`Games: ${d.length}\nx0: ${d.x0}\nx1: ${d.x1}`)
                })
                .on("mousemove", function (e) {
                   tooltip
@@ -319,7 +323,7 @@ export default {
                .attr("cx", `${this.width - 132}`)
                .attr("cy", 11)
                .attr("r", 6)
-               .style("fill", "var(--bar2)")
+               .style("fill", "var(--bar1)")
 
             this.redLegend
                .append("text")
@@ -342,15 +346,14 @@ export default {
             //    .text(`mean: ${Math.round(ensembleDPM)}`)
          }
 
-
-         this.svg.selectAll("rect")
+         this.svg.select("g.base")
+            .selectAll("rect")
             .data(this.bins)
             .transition()
             .duration(1000)
             .attr("transform", d => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
             .attr("height", d => this.height - this.y(d.length))
             // .attr("fill", d => `hsl(221, ${Math.round(60 - (((this.maxBin - d.length) / this.maxBin) * 40))}%, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 8) + 50)}%)`)
-            .attr("fill", 'var(--bar1)')
       },
 
       getStdDev(data, mean, comparison=false) {
@@ -402,11 +405,11 @@ export default {
    }
 
    .svg-tooltip {
-      background: var(--panel1);
+      background: var(--panel2);
       border-radius: .1rem;
       color: var(--color-font);
       display: block;
-      font-size: 14px;
+      font-size: .85rem;
       max-width: 320px;
       padding: .2rem .4rem;
       position: absolute;
@@ -417,11 +420,11 @@ export default {
    }
 
    .svg-tooltip-red {
-      background: var(--panel2);
+      background: var(--panel1);
       border-radius: .1rem;
       color: var(--color-font);
       display: block;
-      font-size: 14px;
+      font-size: .85rem;
       max-width: 320px;
       padding: .2rem .4rem;
       position: absolute;
