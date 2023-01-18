@@ -184,7 +184,7 @@ export default {
                   </a>
                </div>
             </div>
-            <div class="danger-zone">
+            <!-- <div class="danger-zone">
                <span style="color: var(--color-font); padding-right: 15px; font-size: 0.9rem;">hmm? -></span> 
                <a class="purge" @mouseover="hover = true" @mouseleave="hover = false" @click="deleteSummoner()" >
                   Delete
@@ -204,7 +204,7 @@ export default {
                   <br><br>
                   Confirmation will appear after clicking.
                </span>
-            </div>
+            </div> -->
          </div>
          <div class="profile-wrapper">
             <div class="profile-sections">
@@ -218,11 +218,6 @@ export default {
                   @click="this.profileSection = 1">
                   Compare
                </div>
-               <!-- <div :class="{ 'active-tab': this.profileSection == 2 }" class="summoner-profile-tab" 
-                  
-                  @click="this.profileSection = 2">
-                  Defensive
-               </div> -->
             </div>
             <div class="profile" v-show="this.profileSection == 0">
                <OverviewTab :data="this.championInfo" />
@@ -230,9 +225,6 @@ export default {
             <div class="profile" v-show="this.profileSection == 1">
                <ComparisonTab :data="this.championInfo"/>
             </div>
-            <!-- <div class="profile" v-show="this.profileSection == 2">
-               <Defensive :data="this.championInfo"/>
-            </div> -->
          </div>
       </div>
       <div class="stats-main">

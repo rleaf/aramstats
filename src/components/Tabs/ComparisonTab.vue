@@ -120,7 +120,7 @@ export default {
       },
 
       ensembleWinRateFraction() {
-         if (this.comparisonWins != 0) return `(${this.comparisonWins}/${this.comparisonData.length}) W/L`
+         if (this.comparisonWins != 0) return `(${this.comparisonWins}/${this.comparisonData.length}) WR`
       },
 
       ensembleKDR() {
@@ -155,7 +155,7 @@ export default {
                      {{ winrate }}%
                   </div>
                   <div class="wr-fraction">
-                     ({{ this.championData.wins }}/{{ this.championData.matches.length }}) W/L
+                     ({{ this.championData.wins }}/{{ this.championData.matches.length }}) WR
                   </div>
                </div>
                <div>

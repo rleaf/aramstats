@@ -132,6 +132,9 @@
     --parse50: var(--parseDark4);
     --bar1: var(--light100);
     --bar2: #75a6e7;
+    --bar3: #b3d4ff;
+    --bar4: #d7e9ff;
+    --bar5: #96b9e7;
     --header-stats: #61edff; 
 
     --panel1: rgba(110, 110, 110, 0.9);
