@@ -13,7 +13,7 @@
    2. There's going to be a lot of intersection to account for champ versatility
 	   (galio & tk are both wardens and vanguards, when really a champ should fit to one subclass per class)
    3. Because of above, some class representations will be more inaccurate. Ie: If someone likes *only* playing poke Ashe,
-	   they will have high representation for 'Marksman' games because Ashe is ['Mage', 'Marksman'].
+	   they will have high representation for 'Marksman' games because Ashe is ['Artillery', 'Marksman'].
 	   Rn I think versatility > "small" loss of accuracy.
    4. Everywhere there is a comment signifies a change catering to aram meta.
 */
@@ -28,7 +28,7 @@ export const classBook = {
    anivia: ['Battlemage'],
    annie: ['Burst'],
    aphelios: ['Marksman'],
-   ashe: ['Mage', 'Marksman'], /* Marksman -> Mage */
+   ashe: ['Artillery', 'Marksman'], /* +Artillery */
    aurelionsol: ['Battlemage'],
    azir: ['Specialist'],
    bard: ['Catcher'],
