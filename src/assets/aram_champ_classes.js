@@ -1,36 +1,24 @@
-/* Affiliated links to this topic. 
+/* 
+   LINKS
    1. https://leagueoflegends.fandom.com/wiki/Champion_classes
    2. https://web.archive.org/web/20170527192754/http://euw.leagueoflegends.com/en/news/game-updates/gameplay/taking-another-look-subclasses
    3. https://discord.com/channels/187652476080488449/379429593829867521/857402334316724265
    4. https://www.reddit.com/r/summonerschool/comments/8ao9vg/champion_subclasses_and_understanding_their/
-
-
    
-   CLASSES
 
-   controller
-      Enchanter
-      Catcher
-   fighter
-      Juggernaut
-      Diver
-   Mage
-      Burst
-      Battlemage
-      Artillery
-   Marksman
-   slayer
-      Assassin
-      Skirmisher
-   tank
-      Vanguard
-      Warden
-   Specialist
+   INFO
+   1. Try to stay true to the class definitions in [1]
+   2. There's going to be a lot of intersection to account for champ versatility
+	   (galio & tk are both wardens and vanguards, when really a champ should fit to one subclass per class)
+   3. Because of above, some class representations will be more inaccurate. Ie: If someone likes *only* playing poke ashe,
+	   they will have high representation for 'Marksman' games because ashe is ['Mage', 'Marksman'].
+	   Rn I think versatility > "small" loss of accuracy.
+   4. Everywhere there is a comment signifies a change catering to aram meta.
 */
 
 export const classBook = {
    aatrox: ['Juggernaut'],
-   ahri: ['Burst'],
+   ahri: ['Battlemage'], /* Burst -> Battlemage */
    akali: ['Assassin'],
    akshan: ['Marksman', 'Assassin'],
    alistar: ['Vanguard', 'Warden'],
@@ -38,7 +26,7 @@ export const classBook = {
    anivia: ['Battlemage'],
    annie: ['Burst'],
    aphelios: ['Marksman'],
-   ashe: ['Mage'], /* aram. Marksman -> Mage */
+   ashe: ['Mage', 'Marksman'], /* Marksman -> Mage */
    aurelionsol: ['Battlemage'],
    azir: ['Specialist'],
    bard: ['Catcher'],
@@ -49,171 +37,147 @@ export const classBook = {
    caitlyn: ['Marksman'],
    camille: ['Diver'],
    cassiopeia: ['Battlemage'],
-   chogath: ['Warden'], /* aram. Specialist -> Warden */
-   corki: ['Artillery'], /* aram. Marksman -> Artillery */
+   chogath: ['Warden'], /* Specialist -> Warden */
+   corki: ['Artillery'], /* Marksman -> Artillery */
    darius: ['Juggernaut'],
    diana: ['Assassin', 'Diver'],
    drmundo: ['Juggernaut'],
    draven: ['Marksman'],
-   ekko: ['Assassin'],
-   elise: ['Diver', 'Mage'], /* aram. +Mage */
+   ekko: ['Diver'], /* Assassin -> Diver */
+   elise: ['Diver', 'Mage'], /* +Mage */
    evelynn: ['Assassin'],
    ezreal: ['Marksman'],
    fiddlesticks: ['Specialist'],
    fiora: ['Skirmisher'],
    fizz: ['Assassin'],
-   galio: ['Warden'],
+   galio: ['Warden', 'Vanguard'], /* +Vanguard */
    gangplank: ['Specialist'],
    garen: ['Juggernaut'],
-   gnar: ['Specialist', 'Vanguard'], /* aram. +Vanguard*/
+   gnar: ['Specialist', 'Vanguard'], /* +Vanguard*/
    gragas: ['Vanguard'],
-   graves: ['Specialist', 'Marksman'], /* aram. +Marksman */
+   graves: ['Specialist', 'Marksman'], /* +Marksman */
    gwen: ['Skirmisher'],
    hecarim: ['Diver', 'Vanguard'],
-   heimerdinger: ['Mage'], /* aram. Specialist -> Mage */
+   heimerdinger: ['Mage'], /* Specialist -> Mage */
    illaoi: ['Juggernaut'],
    irelia: ['Diver'],
-   ivern: ['Catcher'],
+   ivern: ['Catcher', 'Enchanter'], /* +Enchanter */
    janna: ['Enchanter'],
-   jarvaniv: ['Diver', 'Vanguard'], /* aram. +Vanguard */
+   jarvaniv: ['Diver', 'Vanguard'], /* +Vanguard */
    jax: ['Skirmisher'],
    jayce: ['Artillery'],
    jhin: ['Marksman', 'Catcher'],
    jinx: ['Marksman'],
    ksante: ['Warden', 'Skirmisher'],
-   kaisa: ['Marksman', 'Artillery'], /* aram. +Artillery */
+   kaisa: ['Marksman', 'Artillery'], /* +Artillery */
    kalista: ['Marksman'],
-   karma: ['Mage', 'Enchanter'], /* aram. Burst -> Mage */
+   karma: ['Mage', 'Enchanter'], /* Burst -> Mage */
    karthus: ['Battlemage'],
    kassadin: ['Assassin'],
-   katarina: ['Assassin', 'Specialist'], /* aram. ???????????????? +Specialist */ 
-   kayle: ['Marksman', 'Enchanter'], /* aram. Specialist -> (Marksman, Enchanter) */
+   katarina: ['Assassin', 'Specialist'], /*  +Specialist */ 
+   kayle: ['Marksman', 'Enchanter'], /* Specialist -> (Marksman, Enchanter) */
    kayn: ['Skirmisher'],
-   kennen: ['Specialist'],
-   khazix: ['Mage', 'Specialist'], /* aram. +Mage */
+   kennen: ['Specialist', 'Burst'], /* +Burst */
+   khazix: ['Assassin'],
    kindred: ['Marksman'],
-   kled: ['Skirmisher', 'Vanguard'], /* aram. +Vanguard */
-   kogmaw: ['Marksman', 'Artillery'], /* aram. +Artillery */
+   kled: ['Skirmisher', 'Vanguard'], /* +Vanguard */
+   kogmaw: ['Marksman', 'Artillery'], /* +Artillery */
    leblanc: ['Burst'],
-   leesin: ['Diver'],
+   leesin: ['Diver', 'Skirmisher'], /* +Skirmisher */
    leona: ['Vanguard'],
    lillia: ['Skirmisher'],
    lissandra: ['Mage'],
    lucian: ['Marksman'],
    lulu: ['Enchanter'],
    lux: ['Burst', 'Artillery'],
-   malphite: ['Vanguard', 'Burst'], /* aram. ....+Burst */
+   malphite: ['Vanguard', 'Burst'], /* +Burst */
    malzahar: ['Battlemage'],
    maokai: ['Vanguard'],
-   masteryi: ['Skirmisher', 'Assassin'], /* aram. +Assassin */
-   missfortune: ['Artillery', 'Marksman'], /* aram. +Artillery */
+   masteryi: ['Skirmisher', 'Assassin'], /* +Assassin */
+   missfortune: ['Artillery', 'Marksman'], /* +Artillery */
    monkeyking: ['Diver'],
    mordekaiser: ['Juggernaut'],
-   morgana: ['Catcher', 'Mage'], /* aram. +Mage */
+   morgana: ['Catcher', 'Mage'], /* +Mage */
    nami: ['Enchanter'],
-   nasus: ['Juggernaut', 'Mage'], /* aram. +Mage */
-   nautilus: ['Vanguard', 'Warden'], /* aram. +Warden */
+   nasus: ['Juggernaut', 'Mage'], /* +Mage */
+   nautilus: ['Vanguard', 'Warden'], /* +Warden */
    neeko: ['Burst', 'Catcher'],
-   nidalee: ['Specialist'],
+   nidalee: ['Artillery'], /* Specialist -> Artillery */
    nilah: ['Skirmisher'],
-   nocturne: ['Assassin', 'Diver'], /* aram. +Diver */
-   nunu: ['Vanguard', 'Burst'], /* aram. ...+Burst */
-   olaf: ['Diver'],
-   orianna: ['Mage'], /* aram. Burst -> Mage */
+   nocturne: ['Assassin', 'Diver'], /* +Diver */
+   nunu: ['Vanguard', 'Burst'], /* +Burst */
+   olaf: ['Juggernaut'], /* Diver -> Juggernaut */
+   orianna: ['Mage'], /* Burst -> Mage */
    ornn: ['Vanguard'],
    pantheon: ['Diver'],
    poppy: ['Warden'],
    pyke: ['Assassin', 'Catcher'],
    qiyana: ['Assassin'],
-   quinn: ['Marksman'], /* aram. Specialist -> Marksman */
+   quinn: ['Marksman'], /* Specialist -> Marksman */
    rakan: ['Catcher'],
    rammus: ['Vanguard'],
-   reksai: ['Diver', 'Assassin'], /* aram. +Assassin */
+   reksai: ['Diver', 'Assassin'], /* +Assassin */
    rell: ['Vanguard'],
    renata: ['Enchanter'],
    renekton: ['Diver'],
    rengar: ['Assassin', 'Diver'],
-   riven: ['Skirmisher'],
+   riven: ['Skirmisher', 'Diver'], /* +Diver */
    rumble: ['Battlemage'],
    ryze: ['Battlemage'],
-   samira: ['Marksman', 'Specialist'], /* aram. +Specialist */
+   samira: ['Marksman', 'Specialist'], /* +Specialist */
    sejuani: ['Vanguard'],
    senna: ['Marksman', 'Enchanter'],
-   seraphine: ['Mage', 'Enchanter'], /* aram. +Mage */
+   seraphine: ['Mage', 'Enchanter'], /* +Mage */
    sett: ['Juggernaut'],
-   shaco: ['Assassin', 'Mage'], /* aram. +Mage */
-   shen: ['Vanguard', 'Warden'], /* aram. +Vanguard */
-   shyvana: ['Juggernaut', 'Burst'], /* aram. +Burst */
-   singed: ['Specialist', 'Battlemage'], /* aram. +Battlemage */
+   shaco: ['Assassin', 'Mage'], /* +Mage */
+   shen: ['Vanguard', 'Warden'], /* +Vanguard */
+   shyvana: ['Juggernaut', 'Burst'], /* +Burst */
+   singed: ['Specialist', 'Battlemage'], /* +Battlemage */
    sion: ['Vanguard'],
    sivir: ['Marksman'],
-   skarner: ['Diver', 'Warden'], /* aram. +Warden */
+   skarner: ['Diver', 'Warden'], /* +Warden */
    sona: ['Enchanter'],
    soraka: ['Enchanter'],
    swain: ['Battlemage'],
-   sylas: ['Skirmisher', 'Diver'], /* aram. +Diver */
-   syndra: ['Burst'],
-   tahmkench: ['Warden', 'Vanguard'], /* aram. +Vanguard */
-   taliyah: ['Mage'], /* aram. Battlemage -> Mage */
+   sylas: ['Skirmisher', 'Diver'], /* +Diver */
+   syndra: ['Burst', 'Catcher'], /* +Catcher */
+   tahmkench: ['Warden', 'Vanguard'], /* +Vanguard */
+   taliyah: ['Mage'], /* Battlemage -> Mage */
    talon: ['Assassin'],
    taric: ['Enchanter', 'Warden'],
    teemo: ['Specialist'],
-   thresh: ['Catcher', 'Warden'], /* aram. +Warden */
+   thresh: ['Catcher', 'Warden'], /* +Warden */
    tristana: ['Marksman'],
-   trundle: ['Juggernaut', 'Catcher'], /* aram. +Catcher */
-   tryndamere: ['Skirmisher', 'Diver'], /* aram. +Diver */
-   twistedfate: ['Mage'],
+   trundle: ['Juggernaut', 'Catcher'], /* +Catcher */
+   tryndamere: ['Skirmisher', 'Diver'], /* +Diver */
+   twistedfate: ['Artillery'], /* Burst -> Artillery */
    twitch: ['Marksman'],
    udyr: ['Juggernaut'],
    urgot: ['Juggernaut'],
    varus: ['Marksman', 'Artillery'],
    vayne: ['Marksman'],
-   veigar: ['Burst', 'Catcher'], /* aram. +Catcher */
+   veigar: ['Burst', 'Catcher'], /* +Catcher */
    velkoz: ['Artillery'],
    vex: ['Burst'],
    vi: ['Diver'],
    viego: ['Skirmisher'],
-   viktor: ['Mage'], /* aram. Battlemage -> Mage */
+   viktor: ['Mage'], /* Battlemage -> Mage */
    vladimir: ['Battlemage'],
    volibear: ['Juggernaut'],
-   warwick: ['Diver'],
-   wukong: ['Diver'],
+   warwick: ['Diver', 'Skirmisher'], /* +Skirmisher */
+   wukong: ['Diver', 'Skirmisher'], /* +Skirmisher */
    xayah: ['Marksman'],
    xerath: ['Artillery'],
    xinzhao: ['Diver'],
    yasuo: ['Skirmisher'],
-   yone: ['Skirmisher'], /* aram. -Assassin */
+   yone: ['Skirmisher'], /* -Assassin */
    yorick: ['Juggernaut'],
-   yuumi: ['Enchanter', 'Mage'], /* aram. +Mage (Artillery?) */
+   yuumi: ['Enchanter', 'Mage'], /* +Mage (Artillery?) */
    zac: ['Vanguard'],
    zed: ['Assassin'],
    zeri: ['Marksman'],
    ziggs: ['Artillery'],
-   zilean: ['Specialist'],
+   zilean: ['Burst', 'Enchanter'], /* Specialist -> (Burst, Enchanter) */
    zoe: ['Burst'],
-   zyra: ['Catcher', 'Mage'], /* aram. +Mage */
+   zyra: ['Catcher', 'Mage'], /* +Mage */
 }
-// 'controller': {
-//    'Enchanter': [],
-//    'Catcher': []
-// },
-// 'fighter': {
-//    'Juggernaut': [],
-//    'Diver': []
-// },
-// 'Mage': {
-//    'vanilla': [],
-//    'Burst': [],
-//    'Battlemage': [],
-//    'Artillery': []
-// },
-// 'Marksman': [],
-// 'slayer': {
-//    'Assassin': [],
-//    'Skirmisher': []
-// },
-// 'tank': {
-//    'Vanguard': [],
-//    'Warden': []
-// },
-// 'Specialist': []

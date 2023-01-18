@@ -103,17 +103,12 @@ export default {
          const tooltip = d3.select(".barplot-main")
             .append("div")
             .attr("class", "barplot-tooltip")
-            // .style("position", "absolute")
-            // .style("visibility", "hidden");
 
          // Three function that change the tooltip when user hover / move / leave a cell
          const mouseover = function (_, d) {
-            // console.log(d3.select(this.parentNode).datum())
-            // console.log(d.data)
             const totalClass = Object.values(d.data).slice(1).reduce((a, b) => a + b)
             const subgroupName = d3.select(this.parentNode).datum().key;
             const subgroupValue = d.data[subgroupName];
-            // console.log('tc', totalClass)
             tooltip
                .text(`Mainclass: ${d.data.class} (${Math.round(totalClass * 10)/10}%)\nSubclass: ${subgroupName} (${Math.round(subgroupValue * 10) / 10}%)`)
                .style("visibility", 'visible')
