@@ -82,18 +82,28 @@ export default {
 
 <style scoped>
    
+   .champion-search {
+      width: 100%;
+   }
    .champion-search input {
-      background: var(--champion-search-bar);
+      /* background: var(--champion-search-bar); */
+      background: var(--blue500s);
       color: var(--color-font);
+      margin: 8px 8px 0 8px;
       padding: 0.5rem 0.8rem;
       border: none;
+      /* border-radius: 10px 10px 0 0; */
       border-radius: 5px;
-      width: 190px;
+      width: calc(100% - 16px);
+      /* width: calc(100% - 1.0rem); */
+      box-sizing: border-box;
+      /* width: calc(100% - 30px); */
    }
 
    .champion-search input:focus {
       outline: none;
-      background: var(--champion-search-bar);
+      /* background: var(--champion-search-bar); */
+      background: var(--blue600s);
    }
 
    .champion-search-select {
@@ -102,7 +112,8 @@ export default {
       gap: 10px;
       align-items: center;
       padding: 5px 10px;
-      width: 180px;
+      /* width: 180px; */
+      width: 200px;
       font-size: 0.9rem;
    }
 
@@ -112,7 +123,8 @@ export default {
 
    .champion-search-list {
       position: absolute;
-      margin-top: 2px;
+      /* margin-top: 2px; */
+      margin-left: 8px;
       z-index: 2;
       background: var(--champion-filter-list);
       color: var(--color-font);
@@ -135,7 +147,7 @@ export default {
    .champion-search-list::-webkit-scrollbar-thumb {
       border-radius: 2px;
       /* box-shadow: inset 0 0 6px rgba(0, 0, 0, .3); */
-      background-color: var(--light3);
+      background-color: var(--blue100t);
    }
 
    .outside-search {

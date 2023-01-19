@@ -141,6 +141,7 @@ export default {
       align-items: center;
       gap: 5px;
       padding: 2px 5px;
+      padding-right: 15px;
       margin-bottom: 3px;
       border-radius: 5px;
    }
@@ -151,12 +152,19 @@ export default {
 
    .mythic-main {
       /* height: calc(100% - 10px); */
-      height: 250px;
+      /* height: 250px; */
+      height: 210px;
       margin-top: 10px;
       overflow-y: scroll;
+      overflow-x: hidden;
    }
 
    .mythic-main::-webkit-scrollbar {
-      display: none;
+      width: 3px;
+      /* display: none; */
+   }
+
+   .mythic-main::-webkit-scrollbar-thumb {
+      background-color: var(--blue000);
    }
 </style>

@@ -16,7 +16,7 @@ export default {
          histogram: null,
          blueLegend: null,
          redLegend: null,
-         margin: { top: 20, right: 20, bottom: 40, left: 45 },
+         margin: { top: 40, right: 40, bottom: 40, left: 60 },
          width: null,
          height: null,
          std: null,
@@ -26,8 +26,8 @@ export default {
    },
 
    mounted() {
-      this.width = 600 - this.margin.left - this.margin.right
-      this.height = 250 - this.margin.top - this.margin.bottom
+      this.width = 550 - this.margin.left - this.margin.right
+      this.height = 298 - this.margin.top - this.margin.bottom
 
       this.avgDPM = this.initChampion.averageDamagePerMinute
       this.Histogram(this.initChampion.matches)
@@ -47,7 +47,7 @@ export default {
 
    methods: {
       Histogram(data) {
-         this.svg = d3.select(".histogram-main")
+         this.svg = d3.select(".histogram-svg")
             .append("svg")
                .attr("width", this.width + this.margin.left + this.margin.right)
                .attr("height", this.height + this.margin.top + this.margin.bottom)
@@ -112,7 +112,7 @@ export default {
          });
 
          const tooltip = d3
-            .select(".histogram-main")
+            .select(".histogram-svg")
             .append("div")
             .attr("class", "svg-tooltip")
             .style("position", "absolute")
@@ -271,7 +271,7 @@ export default {
          } else {
 
             const tooltip = d3
-               .select(".histogram-main")
+               .select(".histogram-svg")
                .append("div")
                .attr("class", "svg-tooltip-red")
                .style("position", "absolute")
@@ -392,16 +392,22 @@ export default {
 
 <template>
    <div class="histogram-main">
-
+      <div class="histogram-svg"></div>
    </div>
 </template>
 
 <style>
-.histogram-main {
-      padding: 10px;
-      padding-top: 30px;
-      border-left: 2px solid var(--color-background);
-      border-right: 2px solid var(--color-background);
+.histogram-svg {
+      /* margin: 10px; */
+      /* padding: 10px;
+      padding-top: 30px; */
+      height: 100%;
+      border-radius: 10px;
+      margin-left: 20px;
+      margin-right: 20px;
+      background: var(--blue300s);
+      /* border-left: 2px solid var(--color-background);
+      border-right: 2px solid var(--color-background); */
    }
 
    .svg-tooltip {

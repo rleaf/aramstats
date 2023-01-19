@@ -139,16 +139,17 @@ export default {
 </script>
 
 <template>
-   <div class="champion-main" :style="background">
-      <div class="champion-header">
+   <!-- <div class="champion-main" :style="background"> -->
+   <div class="champion-main">
+      <!-- <div class="champion-header">
          <ChampSearch :data="this.data" @championFocus="champion => championFilter = champion" />
-         <input class="comparison-input" type="text" spellcheck="false"
-            v-model="comparison" v-on:keyup.enter="champComparison"
+         <input class="comparison-input" type="text" spellcheck="false" v-model="comparison" v-on:keyup.enter="champComparison"
             placeholder="kogmaw, drmundo, renata, ksante, jarvaniv, nunu, xinzhao...">
-      </div>
+      </div> -->
       
       <div class="champion-body">
-         <div style="width: 100%;">
+         <div class="misc-wrapper">
+            <ChampSearch :data="this.data" @championFocus="champion => championFilter = champion" />
             <div class="wr-kda">
                <div>
                   <div style="color: var(--header-stats);" class="champ-wr">
@@ -181,7 +182,9 @@ export default {
             :comparisonData="this.comparisonData"
             :initChampion="this.data[this.nunuIndex]"/>
          <!-- <div style="background: var(--profile-panel); width: 100%;"> -->
-         <div style="width: 100%;">
+         <div class="misc-wrapper">
+            <input class="comparison-input" type="text" spellcheck="false" v-model="comparison" v-on:keyup.enter="champComparison"
+               placeholder="kogmaw, drmundo, renata, ksante, jarvaniv, nunu, xinzhao...">
             <div class="wr-kda">
                <div>
                   <div style="color: var(--header-stats);" class="champ-wr">
@@ -235,26 +238,32 @@ export default {
 }
 
 .comparison-input {
-   margin-left: auto;
-   background: var(--champion-search-bar);
+   /* margin-left: auto; */
+   /* background: var(--champion-search-bar); */
+   background: var(--blue500s);
    color: var(--color-font);
    font-style: oblique;
    padding: 0.5rem 0.8rem;
+   margin: 8px 8px 0 8px;
    border: none;
    border-radius: 5px;
-   width: 500px;
+   /* width: 200px; */
+   width: calc(100% - 16px);
+   /* width: 100%; */
+   box-sizing: border-box;
    margin-right: 10px;
 }
 
 .comparison-input:focus {
    outline: none;
-   background: var(--champion-search-bar);
+   /* background: var(--champion-search-bar); */
+   background: var(--blue600s);
 }
 .champion-header {
    display: flex;
    align-items: center;
    font-size: 0.9rem;
-   border-bottom: 1px solid var(--color-font);
+   /* border-bottom: 1px solid var(--color-font); */
    padding-top: 10px;
    padding-bottom: 10px;
    padding-left: 10px;
@@ -272,6 +281,13 @@ export default {
    font-size: 0.9rem;
 }
 
+.misc-wrapper {
+   width: 100%;
+   /* margin: 10px; */
+   border-radius: 10px;
+   background: var(--blue300s);
+}
+
 .wr-kda {
    display: flex;
    align-items: center;
@@ -280,19 +296,20 @@ export default {
    gap: 5px;
    /* padding: 5px 0; */
    padding-top: 10px;
+   padding-bottom: 5px;
 }
 
 .champion-body {
    display: flex;
-   height: 298px;
+   height: 310px;
    flex-direction: row;
    justify-content: space-evenly;
 }
 
 .champion-main {
    /* background: var(--profile-panel); */
-   background: linear-gradient(to left, rgba(var(--profile-panel-dec-rgb), 0.9) 50%, rgba(var(--profile-panel-dec-rgb), 0.75)),
-   no-repeat url('../../assets/champion_images/Nunu.webp');
+   /* background: linear-gradient(to left, rgba(var(--profile-panel-dec-rgb), 0.9) 50%, rgba(var(--profile-panel-dec-rgb), 0.75)),
+   no-repeat url('../../assets/champion_images/Nunu.webp'); */
    /* background-position-y: center; */
    border-radius: 5px;
 }
