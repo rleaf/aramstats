@@ -271,7 +271,7 @@ export default {
 
 .profile-sections div {
    display: inline-block;
-   color: var(--color-font);
+   color: var(--color-font-fade);
    margin-right: 10px;
    margin-bottom: 10px;
    padding: 0.5rem 0.8rem;
@@ -285,6 +285,7 @@ export default {
 
 .profile-sections .active-tab {
    background: var(--profile-tab-active);
+   color: var(--color-font);
 }
 
 .profile-wrapper {

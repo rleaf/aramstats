@@ -62,6 +62,7 @@ export default {
          comparisons.forEach((comparison) => {
             let index = this.data.findIndex((e) => {
                if (e.championName === undefined) return
+               if (comparison == 'wukong') comparison = 'monkeyking'
                return e.championName.toLowerCase() == comparison.toLowerCase()
             })
 
@@ -177,7 +178,7 @@ export default {
       <!-- <div style="background: var(--profile-panel); width: 100%;"> -->
       <div class="misc-wrapper">
          <input class="comparison-input" type="text" spellcheck="false" v-model="comparison" v-on:keyup.enter="champComparison"
-            placeholder="kogmaw, drmundo, renata, ksante, jarvaniv, nunu, xinzhao...">
+            placeholder="kogmaw, drmundo, renata, nunu, jarvaniv...">
          <div class="wr-kda">
             <div>
                <div style="color: var(--header-stats);" class="champ-wr">
@@ -188,7 +189,7 @@ export default {
                </div>
             </div>
             <div class="comparison-guide" v-show="this.comparison == null">
-               Enter any combination of champions you've played where each champion is: lowercase, has no spaces,
+               Enter any combination of champions you've played where each champion name: is lowercase, has no spaces,
                and apostrophes are removed and then hit enter. Example in placeholder text in input above.
             </div>
             <div>

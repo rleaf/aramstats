@@ -10,14 +10,23 @@ export default {
       return {
          totalMatches: 0,
          totalWins: 0,
+         // classProfile: [
+         //    { class: 'Controller', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0},
+         //    { class: 'Fighter', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0},
+         //    { class: 'Mage', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0},
+         //    { class: 'Marksman', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0},
+         //    { class: 'Slayer', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0},
+         //    { class: 'Tank', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0},
+         //    { class: 'Specialist', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0}
+         // ],
          classProfile: [
-            { class: 'Controller', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0},
-            { class: 'Fighter', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0},
-            { class: 'Mage', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0},
-            { class: 'Marksman', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0},
-            { class: 'Slayer', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0},
-            { class: 'Tank', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0},
-            { class: 'Specialist', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0}
+            { class: 'Controller', Total: 0, Enchanter: 0, Catcher: 0},
+            { class: 'Fighter', Total: 0, Juggernaut: 0, Diver: 0},
+            { class: 'Mage', Total: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0},
+            { class: 'Marksman', Total: 0, Marksman: 0},
+            { class: 'Slayer', Total: 0, Assassin: 0, Skirmisher: 0},
+            { class: 'Tank', Total: 0, Vanguard: 0, Warden: 0},
+            { class: 'Specialist', Total: 0, Specialist: 0}
          ],
 
          classIndexTable: {
@@ -57,16 +66,20 @@ export default {
          // Iterate through champions
          for(const champion of this.data) {
             let gameCount = champion.matches.length
-            let x = classBook[champion.championName.toLowerCase()]
+            let championClass = classBook[champion.championName.toLowerCase()]
 
             // Iterate through subclasses
-            for(const subclass of x) {
-               let classIndex = this.classIndexTable[subclass]
-               this.classProfile[classIndex][subclass] += (gameCount / this.totalMatches) * 100 // % based off total games 
-               // this.classProfile[classIndex][subclass] += gameCount // games for that class
-            }  
+            for(const subClass of championClass) {
+               let classIndex = this.classIndexTable[subClass]
+               this.classProfile[classIndex][subClass] += (gameCount / this.totalMatches) * 100 // % based off total games 
+            }
+
+            // Calculate class.Total %
+            for(const mainClass of this.classProfile) {
+               mainClass.Total = Object.values(mainClass).slice(2).reduce((a, b) => a + b)
+            }
          }
-            
+         
       }
    },
 

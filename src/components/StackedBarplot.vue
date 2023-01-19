@@ -7,7 +7,7 @@ export default {
          svg: null,
          x: null,
          y: null,
-         margin: { top: 40, right: 40, bottom: 40, left: 65 },
+         margin: { top: 20, right: 40, bottom: 40, left: 65 },
          width: null,
          height: null,
       }
@@ -15,7 +15,7 @@ export default {
 
    mounted() {
       this.width = 550 - this.margin.left - this.margin.right
-      this.height = 278 - this.margin.top - this.margin.bottom
+      this.height = 258 - this.margin.top - this.margin.bottom
 
       this.Barplot(this.data)
    },
@@ -24,7 +24,7 @@ export default {
       Barplot(data) {
 
          // ['Enchanter', 'Controller', 'Juggernaut', 'Diver', 'Mage', 'Burst', 'Artillery', 'Marksman']
-         const subgroups = Object.keys(data[0]).slice(1)
+         // const subgroups = Object.keys(data[0]).slice(1)
          
          // ['Controller', 'Fighter', 'Mage', 'Marksman']
          const groups = data.map(d => (d.class))
@@ -57,7 +57,8 @@ export default {
                .text("Class"))
 
          this.y = d3.scaleLinear()
-            .domain([0, d3.max(data, d => Object.values(d).slice(1).reduce((a, b) => a + b))])
+            // .domain([0, d3.max(data, d => Object.values(d).slice(1).reduce((a, b) => a + b))])
+            .domain([0, d3.max(data, d => d.Total)])
             .range([this.height, 0])
 
          const yAxisTicks = this.y.ticks()
@@ -80,38 +81,49 @@ export default {
                .attr("text-anchor", "end")
                .text("Frequency"))
 
-         const color = d3.scaleOrdinal()
-            .domain(subgroups)
-            .range([
-               'var(--bar2)', /* enchanter */
-               'var(--bar3)', /* catcher */
-               'var(--bar2)', /* juggernaut */
-               'var(--bar3)', /* diver */
-               'var(--bar2)', /* mage */
-               'var(--bar3)', /* burst */
-               'var(--bar4)', /* battlemage */
-               'var(--bar5)', /* artillery */
-               'var(--bar2)', /* marksman */
-               'var(--bar2)', /* assassin */
-               'var(--bar3)', /* skirmisher */
-               'var(--bar2)', /* vanguard */
-               'var(--bar3)', /* warden */
-               'var(--bar2)'  /* specialist */
-            ])
+         // const color = d3.scaleOrdinal()
+         //    .domain(subgroups)
+         //    .range([
+         //       'var(--bar2)', /* enchanter */
+         //       // 'var(--bar3)', /* catcher */
+         //       // 'var(--bar2)', /* juggernaut */
+         //       // 'var(--bar3)', /* diver */
+         //       // 'var(--bar2)', /* mage */
+         //       // 'var(--bar3)', /* burst */
+         //       // 'var(--bar4)', /* battlemage */
+         //       // 'var(--bar5)', /* artillery */
+         //       // 'var(--bar2)', /* marksman */
+         //       // 'var(--bar2)', /* assassin */
+         //       // 'var(--bar3)', /* skirmisher */
+         //       // 'var(--bar2)', /* vanguard */
+         //       // 'var(--bar3)', /* warden */
+         //       // 'var(--bar2)'  /* specialist */
+         //    ])
 
          const tooltip = d3.select(".barplot-svg")
             .append("div")
             .attr("class", "barplot-tooltip")
 
-         const mouseover = function (_, d) {
-            const totalClass = Object.values(d.data).slice(1).reduce((a, b) => a + b)
-            const subgroupName = d3.select(this.parentNode).datum().key;
-            const subgroupValue = d.data[subgroupName];
-            tooltip
-               .text(`Mainclass: ${d.data.class} (${Math.round(totalClass * 10)/10}%)\nSubclass: ${subgroupName} (${Math.round(subgroupValue * 10) / 10}%)`)
-               .style("visibility", 'visible')
+         // const mouseoverText = (data, totalClass) => { 
+         //    let string = `${data.class} (${Math.round(totalClass * 10) / 10}%)\n`
+         //    for (const [k, v] of Object.entries(data).slice(1)) {
+         //       if (v != 0) string = string.concat('    ', `${k} (${Math.round(v * 10) / 10}%)\n`)
+         //    }
 
+         //    return string
+         // }
+
+         const mouseover = function (_, d) {
+            let string = `${d.class} (${Math.round(d.Total * 10) / 10}%)\n`
+            for (const [k, v] of Object.entries(d).slice(2)) {
+               string = string.concat('    ', `${k} (${Math.round(v * 10) / 10}%)\n`)
+            }
+
+            tooltip
+               .text(string)
+               .style("visibility", 'visible')
          }
+
          const mousemove = (e) => {
             tooltip
                .style("top", `${e.pageY + -20}px`)
@@ -121,33 +133,42 @@ export default {
             tooltip
                .style("visibility", 'hidden')
          }
-
-         const stackedData = d3.stack()
-            .keys(subgroups)(data)
-            
+         
          this.svg.append("g")
             .selectAll("g")
-            .data(stackedData)
-            .join("g")
-               .attr("fill", d => color(d.key))
-               // .attr("fill", 'var(--bar2)')
-            .selectAll("rect")
-            .data(d => d)
+            .data(data)
             .join("rect")
-               .attr("x", d => this.x(d.data.class))
-               .attr("y", d => this.y(d[1]))
-               .attr("height", d => this.y(d[0]) - this.y(d[1]))
+               .attr("fill", "var(--bar2)")
+               .attr("x", d => this.x(d.class))
+               .attr("y", d => this.y(d.Total))
+               .attr("height", d => this.height - this.y(d.Total))
                .attr("width", this.x.bandwidth())
             .on("mouseover", mouseover)
             .on("mousemove", mousemove)
             .on("mouseleave", mouseleave)
 
+
+         /*
+             Stacked Barchart
+         */
+         // const stackedData = d3.stack()
+         //    .keys(subgroups)(data)
+         // 
          // this.svg.append("g")
-         //    .classed("asterisk", true)
-         //    .append("text")
-         //       .text("*")
-         //       .attr("x", `${this.width - 30}`)
-         //       .attr("y", 16)
+         //    .selectAll("g")
+         //    .data(stackedData)
+         //    .join("g")
+         //       .attr("fill", d => color(d.key))
+         //    .selectAll("rect")
+         //    .data(d => d)
+         //    .join("rect")
+         //       .attr("x", d => this.x(d.data.class))
+         //       .attr("y", d => this.y(d[1]))
+         //       .attr("height", d => this.y(d[0]) - this.y(d[1]))
+         //       .attr("width", this.x.bandwidth())
+         //    .on("mouseover", mouseover)
+         //    .on("mousemove", mousemove)
+         //    .on("mouseleave", mouseleave)
       }
    },
 
@@ -159,18 +180,33 @@ export default {
 
 <template>
    <div class="barplot-main">
+      <div class="barplot-asterisk">* <a href="https://pastebin.com/cH6tpmUT" target="_blank">Champion classes</a>.</div>
       <div class="barplot-svg"></div>
    </div>
 </template>
 
 <style>
-/* .asterisk {
+.barplot-asterisk {
    font-style: oblique;
-   fill: var(--color-font);
-   font-size: 1.8rem;
-} */
+   padding: 10px 0;
+   padding-right: 20px;
+   /* margin-bottom: -30px; */
+   text-align: end;
+   color: var(--color-font-fade);
+   font-size: 0.8rem;
+}
 
-.barplot-svg {
+.barplot-asterisk a {
+   color: var(--color-font-fade);
+}
+
+.barplot-asterisk a:hover {
+   color: var(--color-font);
+}
+
+.barplot-main {
+   /* display: flex;
+   flex-direction: column; */
    height: 100%;
    border-radius: 10px;
    margin: 0 20px;
@@ -179,6 +215,7 @@ export default {
 
 .barplot-tooltip {
    background: var(--panel2);
+   /* background: var(--blue600s); */
    border-radius: .1rem;
    color: var(--color-font);
    display: block;
