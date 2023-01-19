@@ -52,7 +52,7 @@
   --blue300s_o: rgba(22, 30, 46, 0.35);
 
   /* Parses */
-  --parseLight1: #B76E00;
+  --parseLight1: #db8d17;
   --parseDark1: #fabb1c;
   --parseLight2: #A645E1;
   --parseDark2: #C76BFF;
@@ -79,15 +79,18 @@
   --champion-1: var(--light100);
   --secondary-tree: var(--dark400);
   --champion-search-bar: var(--light200);
+  --champion-search-bar-focus: var(--light100);
   --champion-filter-list: var(--light200);
   --champion-filter-list-hover: var(--light400);
-  --champion-filter-scroll-track: var(--light300);
+  --champion-filter-scroll-track: var(--light400);
+  --scroll-thumb: var(--light600);
   --win: var(--lightWin);
   --loss: var(--lightLoss);
   --profile-panel: var(--light300);
   --profile-panel-dec-rgb: var(--light300RGB);
   --rune-mythic-0: var(--light200_o);
   --rune-mythic-1: var(--light300_o);
+  --scroll-track: var(--light500);
   --parse100: var(--parseLight1);
   --parse85: var(--parseLight2);
   --parse75: var(--parseLight3);
@@ -119,16 +122,19 @@
     --champion-0: var(--dark100_o);
     --champion-1: var(--dark100_o2);
     --secondary-tree: var(--dark200);
-    --champion-search-bar: var(--blue400s);
+    --champion-search-bar: var(--blue500s);
+    --champion-search-bar-focus: var(--blue600s);
     --champion-filter-list: var(--blue400s);
     --champion-filter-list-hover: var(--blue100t);
     --champion-filter-scroll-track: var(--blue600s);
     --win: var(--darkWin);
     --loss: var(--darkLoss);
-    --profile-panel: var(--blue100t);
+    --profile-panel: var(--blue300s);
     --profile-panel-dec-rgb: var(--blue100tRGB);
-    --rune-mythic-0: var(--blue400s_o);
-    --rune-mythic-1: var(--blue300s_o);
+    --rune-mythic-0: var(--blue400s);
+    --rune-mythic-1: var(--blue300s);
+    --scroll-track: var(--blue000);
+    --scroll-thumb: var(--blue100t);
     --parse100: var(--parseDark1);
     --parse85: var(--parseDark2);
     --parse75: var(--parseDark3);

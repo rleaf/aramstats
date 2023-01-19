@@ -119,20 +119,17 @@ export default {
    }
 
    .rune-main {
-      /* height: calc(100% - 10px); */
-      /* height: 250px; */
       height: 210px;
       margin-top: 10px;
       overflow-y: scroll;
    }
 
-      .rune-main::-webkit-scrollbar {
-         width: 3px;
-         /* display: none; */
-      }
-   
-      .rune-main::-webkit-scrollbar-thumb {
-         background-color: var(--blue100t);
-         border-radius: 3px;
-      }
+   .rune-main::-webkit-scrollbar {
+      width: 3px;
+   }
+
+   .rune-main::-webkit-scrollbar-thumb {
+      background-color: var(--scroll-track);
+      border-radius: 3px;
+   }
 </style>

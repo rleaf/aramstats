@@ -141,75 +141,71 @@ export default {
 <template>
    <!-- <div class="champion-main" :style="background"> -->
    <div class="champion-main">
-      <!-- <div class="champion-header">
+      <div class="misc-wrapper">
          <ChampSearch :data="this.data" @championFocus="champion => championFilter = champion" />
-         <input class="comparison-input" type="text" spellcheck="false" v-model="comparison" v-on:keyup.enter="champComparison"
-            placeholder="kogmaw, drmundo, renata, ksante, jarvaniv, nunu, xinzhao...">
-      </div> -->
-      
-      <div class="champion-body">
-         <div class="misc-wrapper">
-            <ChampSearch :data="this.data" @championFocus="champion => championFilter = champion" />
-            <div class="wr-kda">
-               <div>
-                  <div style="color: var(--header-stats);" class="champ-wr">
-                     {{ winrate }}%
-                  </div>
-                  <div class="wr-fraction">
-                     ({{ this.championData.wins }}/{{ this.championData.matches.length }}) WR
-                  </div>
+         <div class="wr-kda">
+            <div>
+               <div style="color: var(--header-stats);" class="champ-wr">
+                  {{ winrate }}%
                </div>
-               <div>
-                  <div style="color: var(--header-stats);" class="champ-wr">
-                     {{ kdr }}
-                  </div>
-                  <div class="wr-fraction">
-                     ({{ this.championData.averageKDA }}) KDA
-                  </div>
+               <div class="wr-fraction">
+                  ({{ this.championData.wins }}/{{ this.championData.matches.length }}) WR
                </div>
             </div>
-            <div class="runes-mythic-wrapper">
-               <div class="runes-mythic-wr">
-                  <RuneWinrate :data="this.championData"/>
+            <div>
+               <div style="color: var(--header-stats);" class="champ-wr">
+                  {{ kdr }}
                </div>
-               <div class="runes-mythic-wr">
-                  <MythicWinrate :data="this.championData"/>
+               <div class="wr-fraction">
+                  ({{ this.championData.averageKDA }}) KDA
                </div>
             </div>
          </div>
-         <Histogram
-            :championData="this.championData"
-            :comparisonData="this.comparisonData"
-            :initChampion="this.data[this.nunuIndex]"/>
-         <!-- <div style="background: var(--profile-panel); width: 100%;"> -->
-         <div class="misc-wrapper">
-            <input class="comparison-input" type="text" spellcheck="false" v-model="comparison" v-on:keyup.enter="champComparison"
-               placeholder="kogmaw, drmundo, renata, ksante, jarvaniv, nunu, xinzhao...">
-            <div class="wr-kda">
-               <div>
-                  <div style="color: var(--header-stats);" class="champ-wr">
-                     {{ ensembleWinRate }}
-                  </div>
-                  <div class="wr-fraction">
-                     {{ ensembleWinRateFraction }}
-                  </div>
+         <div class="runes-mythic-wrapper">
+            <div class="runes-mythic-wr">
+               <RuneWinrate :data="this.championData"/>
+            </div>
+            <div class="runes-mythic-wr">
+               <MythicWinrate :data="this.championData"/>
+            </div>
+         </div>
+      </div>
+      <Histogram
+         :championData="this.championData"
+         :comparisonData="this.comparisonData"
+         :initChampion="this.data[this.nunuIndex]"/>
+      <!-- <div style="background: var(--profile-panel); width: 100%;"> -->
+      <div class="misc-wrapper">
+         <input class="comparison-input" type="text" spellcheck="false" v-model="comparison" v-on:keyup.enter="champComparison"
+            placeholder="kogmaw, drmundo, renata, ksante, jarvaniv, nunu, xinzhao...">
+         <div class="wr-kda">
+            <div>
+               <div style="color: var(--header-stats);" class="champ-wr">
+                  {{ ensembleWinRate }}
                </div>
-               <div>
-                  <div style="color: var(--header-stats);" class="champ-wr">
-                     {{ ensembleKDR }}
-                  </div>
-                  <div class="wr-fraction">
-                     {{ ensembleKDA }}
-                  </div>
+               <div class="wr-fraction">
+                  {{ ensembleWinRateFraction }}
                </div>
             </div>
-            <div class="runes-mythic-wrapper">
-               <div class="runes-mythic-wr">
-                  <RuneWinrate v-if="this.comparisonData" :data="this.comparisonData" :comparison="true" />
+            <div class="comparison-guide" v-show="this.comparison == null">
+               Enter any combination of champions you've played where each champion is: lowercase, has no spaces,
+               and apostrophes are removed and then hit enter. Example in placeholder text in input above.
+            </div>
+            <div>
+               <div style="color: var(--header-stats);" class="champ-wr">
+                  {{ ensembleKDR }}
                </div>
-               <div class="runes-mythic-wr">
-                  <MythicWinrate v-if="this.comparisonData" :data="this.comparisonData" :comparison="true" />
+               <div class="wr-fraction">
+                  {{ ensembleKDA }}
                </div>
+            </div>
+         </div>
+         <div class="runes-mythic-wrapper">
+            <div class="runes-mythic-wr">
+               <RuneWinrate v-if="this.comparisonData" :data="this.comparisonData" :comparison="true" />
+            </div>
+            <div class="runes-mythic-wr">
+               <MythicWinrate v-if="this.comparisonData" :data="this.comparisonData" :comparison="true" />
             </div>
          </div>
       </div>
@@ -217,6 +213,15 @@ export default {
 </template>
 
 <style scoped>
+
+.comparison-guide {
+   padding-top: 50px;
+   color: var(--color-font-fade);
+   font-size: 0.8rem;
+   font-style: oblique;
+   width: 250px;
+   line-height: 1.5;
+}
 .temp {
    margin-left: auto;
    margin-right: auto;
@@ -227,43 +232,35 @@ export default {
    width: 300px;
 }
 
-
 .runes-mythic-wrapper {
    display: flex;
    justify-content: space-evenly;
    color: var(--color-font);
    padding: 0 10px;
    gap: 10px;
-   /* width: 100%; */
 }
 
 .comparison-input {
-   /* margin-left: auto; */
-   /* background: var(--champion-search-bar); */
-   background: var(--blue500s);
+   background: var(--champion-search-bar);
    color: var(--color-font);
    font-style: oblique;
    padding: 0.5rem 0.8rem;
    margin: 8px 8px 0 8px;
    border: none;
    border-radius: 5px;
-   /* width: 200px; */
    width: calc(100% - 16px);
-   /* width: 100%; */
    box-sizing: border-box;
    margin-right: 10px;
 }
 
 .comparison-input:focus {
    outline: none;
-   /* background: var(--champion-search-bar); */
-   background: var(--blue600s);
+   background: var(--champion-search-bar-focus);
 }
 .champion-header {
    display: flex;
    align-items: center;
    font-size: 0.9rem;
-   /* border-bottom: 1px solid var(--color-font); */
    padding-top: 10px;
    padding-bottom: 10px;
    padding-left: 10px;
@@ -285,7 +282,7 @@ export default {
    width: 100%;
    /* margin: 10px; */
    border-radius: 10px;
-   background: var(--blue300s);
+   background: var(--profile-panel);
 }
 
 .wr-kda {
@@ -299,18 +296,15 @@ export default {
    padding-bottom: 5px;
 }
 
-.champion-body {
+.champion-main {
    display: flex;
    height: 310px;
    flex-direction: row;
    justify-content: space-evenly;
-}
-
-.champion-main {
+   border-radius: 5px;
    /* background: var(--profile-panel); */
    /* background: linear-gradient(to left, rgba(var(--profile-panel-dec-rgb), 0.9) 50%, rgba(var(--profile-panel-dec-rgb), 0.75)),
    no-repeat url('../../assets/champion_images/Nunu.webp'); */
    /* background-position-y: center; */
-   border-radius: 5px;
 }
 </style>

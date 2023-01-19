@@ -7,15 +7,15 @@ export default {
          svg: null,
          x: null,
          y: null,
-         margin: { top: 20, right: 20, bottom: 40, left: 75 },
+         margin: { top: 40, right: 40, bottom: 40, left: 65 },
          width: null,
          height: null,
       }
    }, 
 
    mounted() {
-      this.width = 500 - this.margin.left - this.margin.right
-      this.height = 250 - this.margin.top - this.margin.bottom
+      this.width = 550 - this.margin.left - this.margin.right
+      this.height = 278 - this.margin.top - this.margin.bottom
 
       this.Barplot(this.data)
    },
@@ -73,7 +73,7 @@ export default {
                .attr("font-size", "0.7rem")
                .attr("color", "var(--color-font)")
             .call(g => g.append("text")
-               .attr("x", 0)
+               .attr("x", 15)
                .attr("y", -8)
                .attr("fill", "var(--color-font)")
                .attr("font-size", "0.8rem")
@@ -171,8 +171,10 @@ export default {
 } */
 
 .barplot-svg {
-   padding: 10px;
-   padding-top: 30px;
+   height: 100%;
+   border-radius: 10px;
+   margin: 0 20px;
+   background: var(--profile-panel);
 }
 
 .barplot-tooltip {

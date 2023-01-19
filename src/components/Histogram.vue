@@ -397,17 +397,11 @@ export default {
 </template>
 
 <style>
-.histogram-svg {
-      /* margin: 10px; */
-      /* padding: 10px;
-      padding-top: 30px; */
+   .histogram-svg {
       height: 100%;
       border-radius: 10px;
-      margin-left: 20px;
-      margin-right: 20px;
-      background: var(--blue300s);
-      /* border-left: 2px solid var(--color-background);
-      border-right: 2px solid var(--color-background); */
+      margin: 0 20px;
+      background: var(--profile-panel);
    }
 
    .svg-tooltip {

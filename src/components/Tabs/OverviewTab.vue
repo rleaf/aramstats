@@ -84,30 +84,31 @@ export default {
 
 <template>
    <div class="overview-main">
-      <div class="overview-header">
-         <div class="wr-percent">
-            {{ Math.round((this.totalWins / this.totalMatches) * 1000) / 10 }}%
+      <div class="overview-stats">
+         <div class="percent-frac">
+            <div class="wr-percent">
+               {{ Math.round((this.totalWins / this.totalMatches) * 1000) / 10 }}%
+            </div>
+            <div class="wr-frac">
+               ({{ this.totalWins }}/{{ this.totalMatches }}) WR
+            </div>
          </div>
-         <div class="wr-frac">
-            ({{ this.totalWins }}/{{ this.totalMatches }}) WR
+         <div style="padding-top: 80px; color: var(--color-font); font-size: 0.6rem;">
+            what do i put here
          </div>
-         
-         
       </div>
-      <div class="overview-body">
-         <StackedBarplot :data="classData"/>
-         <!-- <div style="color: var(--color-font); padding-left: 20px;">wip</div> -->
-            
-      </div>
-      <!-- <div class="overview-body">
-         stats
-      </div> -->
+      <StackedBarplot :data="classData"/>
 
    </div>
 </template>
 
 <style scoped>
-.wr-frac {
+.percent-frac {
+      display: flex;
+      align-items: center;
+      padding-top: 15px;
+   }
+   .wr-frac {
       color: var(--color-font-fade);
       padding-left: 10px;
       font-size: 0.9rem;
@@ -119,6 +120,14 @@ export default {
       color: var(--header-stats);
    }
 
+   .overview-stats {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 305px;
+      border-radius: 10px;
+      background: var(--profile-panel);
+   }
    .overview-header {
       display: flex;
       flex-direction: row;
@@ -128,23 +137,10 @@ export default {
       height: 51px;
    }
 
-   .overview-body {
-      display: flex;
-      height: 298px;
-      flex-direction: row;
-      /* justify-content: space-evenly; */
-   }
    .overview-main {
-      /* display: flex;
-      flex-direction: row; */
-      background: var(--profile-panel);
-      height: 350px;
+      display: flex;
+      height: 310px;
+      flex-direction: row;
       border-radius: 5px;
-   }
-
-   .wip {
-      text-align: center;
-      padding-top: 150px;
-      color: var(--color-font);
    }
 </style>

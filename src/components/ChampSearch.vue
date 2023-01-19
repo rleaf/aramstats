@@ -81,13 +81,12 @@ export default {
 </template>
 
 <style scoped>
-   
-   .champion-search {
+.champion-search {
       width: 100%;
    }
    .champion-search input {
       /* background: var(--champion-search-bar); */
-      background: var(--blue500s);
+      background: var(--champion-search-bar);
       color: var(--color-font);
       margin: 8px 8px 0 8px;
       padding: 0.5rem 0.8rem;
@@ -102,8 +101,8 @@ export default {
 
    .champion-search input:focus {
       outline: none;
-      /* background: var(--champion-search-bar); */
-      background: var(--blue600s);
+      background: var(--champion-search-bar-focus);
+      /* background: var(--blue600s); */
    }
 
    .champion-search-select {
@@ -146,8 +145,7 @@ export default {
 
    .champion-search-list::-webkit-scrollbar-thumb {
       border-radius: 2px;
-      /* box-shadow: inset 0 0 6px rgba(0, 0, 0, .3); */
-      background-color: var(--blue100t);
+      background-color: var(--scroll-thumb);
    }
 
    .outside-search {

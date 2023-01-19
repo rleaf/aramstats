@@ -151,8 +151,6 @@ export default {
    }
 
    .mythic-main {
-      /* height: calc(100% - 10px); */
-      /* height: 250px; */
       height: 210px;
       margin-top: 10px;
       overflow-y: scroll;
@@ -161,10 +159,9 @@ export default {
 
    .mythic-main::-webkit-scrollbar {
       width: 3px;
-      /* display: none; */
    }
 
    .mythic-main::-webkit-scrollbar-thumb {
-      background-color: var(--blue000);
+      background-color: var(--scroll-track);
    }
 </style>
