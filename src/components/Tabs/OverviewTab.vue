@@ -55,10 +55,10 @@ export default {
 
    methods: {
       winrate() {
-         this.data.slice(1).forEach((champ) => {
+         for (const champ of this.data) {
             this.totalMatches += champ.totalGames
             this.totalWins += champ.wins
-         })
+         }
       },
 
       classProfiler() {
@@ -91,6 +91,7 @@ export default {
       classData() {
          return this.classProfile
       }
+
    }
 }
 </script>

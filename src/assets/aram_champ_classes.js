@@ -16,6 +16,8 @@
 	   they will have high representation for 'Marksman' games because Ashe is ['Artillery', 'Marksman'].
 	   Rn I think versatility > "small" loss of accuracy.
    4. Everywhere there is a comment signifies a change catering to aram meta.
+   5. I added a 'Mage' subclass. I'm having trouble classifying some champs, who I believe *are* mages (morgana, heimer),
+      into the classic three categories: Burst, Battlemage, and Artillery.
 */
 
 export const classBook = {
