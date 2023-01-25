@@ -107,9 +107,6 @@ export default {
                ({{ this.totalWins }}/{{ this.totalMatches }}) WR
             </div>
          </div>
-         <div style="padding-top: 80px; color: var(--color-font); font-size: 0.6rem;">
-            what do i put here
-         </div>
       </div>
       <StackedBarplot :data="classData"/>
 
