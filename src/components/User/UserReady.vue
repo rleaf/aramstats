@@ -1,7 +1,7 @@
 <script>
 import Champion from '../Champion.vue'
 import OverviewTab from '../Tabs/OverviewTab.vue'
-import ComparisonTab from '../Tabs/ComparisonTab.vue'
+import ChampionTab from '../Tabs/ChampionTab.vue'
 import Histogram from '../Histogram.vue'
 import ChampSearch from '../ChampSearch.vue'
 import axios from 'axios'
@@ -12,7 +12,7 @@ export default {
       Histogram,
       ChampSearch,
       OverviewTab,
-      ComparisonTab,
+      ChampionTab,
    },
    data() {
       return {
@@ -216,14 +216,14 @@ export default {
                <div class="summoner-profile-tab"
                   :class="{ 'active-tab': this.profileSection == 1 }"
                   @click="this.profileSection = 1">
-                  Compare
+                  Champion
                </div>
             </div>
             <div class="profile" v-show="this.profileSection == 0">
                <OverviewTab :data="this.championInfo" />
             </div>
             <div class="profile" v-show="this.profileSection == 1">
-               <ComparisonTab :data="this.championInfo"/>
+               <ChampionTab :data="this.championInfo"/>
             </div>
          </div>
       </div>

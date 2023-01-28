@@ -87,17 +87,27 @@ export default {
             </div>
          </div>
       </div>
-         <div class="matches" v-show="this.expand">
-            <Match v-for="match in this.champion.matches"
-            :key="match.matchId"
-            :match="match"
-            :class="winOrLoss(match)"/>
-         </div>
+      <div class="matches" v-show="this.expand">
+         <Match v-for="match in this.champion.matches"
+         :key="match.matchId"
+         :match="match"
+         :class="winOrLoss(match)"/>
+      </div>
+      <!-- <Transition name="slide">
+      </Transition> -->
    </div>
 </template>
 
 <style scoped>
 @import url('../assets/stats.css');
+
+/* .slide-enter-from {
+   transform: translateY(-100%) scaleY(0);
+}
+.slide-leave-to {
+   transform: translateY(-100%);
+   transform: scaleY(0);
+} */
 
 .sub-cell {
    font-size: 0.7rem;
@@ -107,6 +117,7 @@ export default {
 
 .matches {
    border-top: 1px solid var(--border-top);
+   /* transition: transform .5s ease-in-out; */
 }
 
 .row-container {
@@ -134,6 +145,4 @@ img {
    padding-left: 2px;
    padding-right: 8px;
 }
-
-
 </style>
