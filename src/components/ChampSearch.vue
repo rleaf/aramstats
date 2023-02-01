@@ -67,7 +67,7 @@ export default {
 
 <template>
    <div class="champion-search">
-      <input type="text" placeholder="Search champion..." v-model="championFilter" @click="championSearch"
+      <input type="text" placeholder="Nunu & Willump" v-model="championFilter" @click="championSearch"
          @keyup.esc="champSearchFocus = false">
       <div class="champion-search-list" v-show="champSearchFocus">
          <div class="champion-search-select" v-for="champ in champSearchList" :key="champ.championName"

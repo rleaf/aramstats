@@ -3,13 +3,15 @@ function scribe(puuid, game) {
    let champion = {}
    let participantIndex = game.metadata.participants.findIndex((x) => x == puuid)
    
-   // Error handling for alien matches. 
-   // Example: Midbeast (OCE) on match OC1_502838822
+   // Error handling for alien matches. Ex: Midbeast (OCE) @ OC1_502838822
    if (participantIndex == -1) {
       return
    } 
    
    let player = game.info.participants[participantIndex]
+
+   // Error handling for dead matches. Ex: Anojen (EUW) @ EUW1_6133461911
+   if (!player) return
 
    // Meta 
    champion['matchId'] = game.metadata.matchId
