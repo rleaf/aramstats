@@ -59,7 +59,7 @@ router
          } 
 
          // Create summoner collection and pull all matchIds
-         let matchlist = await summonerCheckInitialMatchPullv2(summonerCollection, summoner, req.params.region)
+         let matchlist = await populateSummoner(summonerCollection, summoner, req.params.region)
                   
          // Parse & scribe individual matches
          await matchParserV2(summonerCollection, matchlist, summoner, req.params.region)
@@ -237,7 +237,7 @@ async function loadSummonerCollection() {
    return client.db('summoners')
 }
 
-async function summonerCheckInitialMatchPullv2(collection, summoner, region) {
+async function populateSummoner(collection, summoner, region) {
 
    // Add new summoner to database
    await collection.insertOne(summoner)

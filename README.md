@@ -5,6 +5,7 @@ insightful statistics.
 
 ### todo / ideas
 <ul>
+   <li>**Add KP & DS**</li>
    <li>Add challenge tokens</li>
    <li>Line plot showing playrate</li>
    <li>UI overhaul on champions table</li>

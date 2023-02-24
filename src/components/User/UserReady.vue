@@ -1,7 +1,8 @@
 <script>
 import Champion from '../Champion.vue'
-import OverviewTab from '../Tabs/OverviewTab.vue'
-import ChampionTab from '../Tabs/ChampionTab.vue'
+import OverviewPanel from '../Panels/OverviewPanel.vue'
+import ChampionPanel from '../Panels/ChampionPanel.vue'
+import ChallengePanel from '../Panels/ChallengePanel.vue'
 import Histogram from '../Histogram.vue'
 import ChampSearch from '../ChampSearch.vue'
 import axios from 'axios'
@@ -11,8 +12,9 @@ export default {
       Champion,
       Histogram,
       ChampSearch,
-      OverviewTab,
-      ChampionTab,
+      OverviewPanel,
+      ChampionPanel,
+      ChallengePanel,
    },
    data() {
       return {
@@ -184,7 +186,7 @@ export default {
                   </a>
                </div>
             </div>
-            <!-- <div class="danger-zone">
+            <div class="danger-zone">
                <span style="color: var(--color-font); padding-right: 15px; font-size: 0.9rem;">hmm? -></span> 
                <a class="purge" @mouseover="hover = true" @mouseleave="hover = false" @click="deleteSummoner()" >
                   Delete
@@ -204,7 +206,7 @@ export default {
                   <br><br>
                   Confirmation will appear after clicking.
                </span>
-            </div> -->
+            </div>
          </div>
          <div class="profile-wrapper">
             <div class="profile-sections">
@@ -218,12 +220,20 @@ export default {
                   @click="this.profileSection = 1">
                   Champion
                </div>
+               <div class="summoner-profile-tab"
+                  :class="{ 'active-tab': this.profileSection == 2 }"
+                  @click="this.profileSection = 2">
+                  Challenges
+               </div>
             </div>
             <div class="profile" v-show="this.profileSection == 0">
-               <OverviewTab :data="this.championInfo" />
+               <OverviewPanel :data="this.championInfo" />
             </div>
             <div class="profile" v-show="this.profileSection == 1">
-               <ChampionTab :data="this.championInfo"/>
+               <ChampionPanel :data="this.championInfo"/>
+            </div>
+            <div class="profile" v-show="this.profileSection == 2">
+               <ChallengePanel :data="this.championInfo"/>
             </div>
          </div>
       </div>
