@@ -186,7 +186,7 @@ export default {
                   </a>
                </div>
             </div>
-            <div class="danger-zone">
+            <!-- <div class="danger-zone">
                <span style="color: var(--color-font); padding-right: 15px; font-size: 0.9rem;">hmm? -></span> 
                <a class="purge" @mouseover="hover = true" @mouseleave="hover = false" @click="deleteSummoner()" >
                   Delete
@@ -206,7 +206,7 @@ export default {
                   <br><br>
                   Confirmation will appear after clicking.
                </span>
-            </div>
+            </div> -->
          </div>
          <div class="profile-wrapper">
             <div class="profile-sections">

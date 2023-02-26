@@ -151,6 +151,7 @@ export default {
    }
 
    .mythic-main {
+      width: 106px;
       height: 210px;
       margin-top: 10px;
       overflow-y: scroll;

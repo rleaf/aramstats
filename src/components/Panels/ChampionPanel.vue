@@ -189,8 +189,7 @@ export default {
                </div>
             </div>
             <div class="comparison-guide" v-show="this.comparison == null">
-               Enter any combination of champions you've played where each champion name: is lowercase, has no spaces,
-               and apostrophes are removed and then hit enter. Example in placeholder text in input above.
+               Enter any combination of champions and hit enter. Example in placeholder text above.
             </div>
             <div>
                <div style="color: var(--header-stats);" class="champ-wr">
