@@ -47,6 +47,8 @@
   --blue600t: #8D9AB4;
   --blue700t: #A7B1C6;
 
+  --blue600t_test: rgba(70, 92, 129, 0.7);
+
   --blue100tRGB: 45, 57, 85;
   --blue400s_o: rgba(19, 25, 40, 0.6);
   --blue300s_o: rgba(22, 30, 46, 0.35);

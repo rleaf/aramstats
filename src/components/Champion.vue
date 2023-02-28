@@ -26,6 +26,17 @@ export default {
    computed: {
       trueChampionName() {
          return (this.champion.trueChampionName) ? this.champion.trueChampionName : this.champion.championName
+      },
+      winPercent() {
+         return Math.round((this.champion.wins / this.champion.totalGames) * 100)
+      },
+      computeKDA() {
+         const stringValues = this.champion.averageKDA.split('/')
+         const numberValues = []
+
+         stringValues.forEach((x) => numberValues.push(parseInt(x)))
+
+         return Math.round((numberValues[0] + numberValues[2]) / numberValues[1] * 100) / 100
       }
    },
 
@@ -37,61 +48,87 @@ export default {
 
 <template>
    <div class="row-container" @click="toggle()">
-      <div class="row-stats">
-         <img :src="(this.champion.championName == 'FiddleSticks') ? this.fid : championIcon" alt="">
-         <div class="champ-name cell">
-            {{ trueChampionName }}
-         </div>
-         <div class="total-games cell">
-            {{ this.champion.totalGames }}
-         </div>
-         <div class="wins cell">
-            {{ this.champion.wins }}
-         </div>
-         <div class="avg-dmg cell">
-            {{ this.champion.averageTotalDamageDealt }}
-            <div class="sub-cell">
-               {{ this.champion.averageDamagePerMinute }} DPM
+      <div class="stats">
+         <div class="left-stats">
+            <div class="tab"></div>
+            <img :src="(this.champion.championName == 'FiddleSticks') ? this.fid : championIcon" alt="">
+            <div class="champ-name cell">
+               {{ trueChampionName }}
+            </div>
+            <div class="games cell">
+               <p class="main">
+                  {{ winPercent }}% <span class="unit">winrate</span>
+               </p>
+               {{ this.champion.wins }} / {{ this.champion.totalGames }} <span class="unit">wins / total</span>
+            </div>
+            <div class="avg-kda cell">
+               <p class="main">
+                  {{ this.champion.averageKDA }} <span class="unit">KDA</span>
+               </p>
+               {{ computeKDA }}, {{ this.champion.kp || '-' }}% <span class="unit">KP</span>
+            </div>
+            <div class="tqp-wrapper cell">
+               <div class="tqp-1">
+                  <span class="unit">Triple</span> {{ this.champion.totalTripleKills }} 
+               </div>
+               <div class="tqp-1">
+                  <span class="unit">Quadra</span> {{ this.champion.totalQuadraKills }}
+               </div>
+               <div class="tqp-1">
+                  <span class="unit">Penta</span> {{ this.champion.totalPentaKills }}
+               </div>
             </div>
          </div>
-         <div class="avg-healing cell">
-            {{ this.champion.averageTotalHeal || '-' }}
-         </div>
-         <div class="avg-healing cell">
-            {{ this.champion.averageHealingOnTeammates }}
-         </div>
-         <div class="avg-dmg-taken cell">
-            {{ this.champion.averageTotalDamageTaken }}
-         </div>
-         <div class="avg-mitigated-dmg cell">
-            {{ this.champion.averageTotalSelfMitigated || '-' }}
-         </div>
-         <div class="avg-kda cell">
-            {{ this.champion.averageKDA }}
-         </div>
-         <div class="avg-gold cell">
-            {{ this.champion.averageGoldEarned }}
-            <div class="sub-cell">
-               {{ this.champion.averageGoldPerMinute }} GPM
+         <div class="right-stats">
+            <div class="avg-dmg cell">
+               <p>Damage</p>
+               {{ this.champion.averageTotalDamageDealt }}, {{ this.champion.damageShare || '-' }}% <span class="unit">DS</span>
+               <div class="per-minute">
+                  {{ this.champion.averageDamagePerMinute }} <span class="unit">/ m</span>
+               </div>
             </div>
-         </div>
-         <div class="tqp-wrapper cell">
-            <div class="tqp-1">
-               {{ this.champion.totalTripleKills }}
+            <div class="avg-healing cell">
+               <p>Healing</p>
+               {{ this.champion.averageTotalHeal || '-' }}
+               <div class="per-minute">
+                  {{ this.champion.averageHealPerMinute || '-'}} <span class="unit">/ m</span>
+               </div>
             </div>
-            <div class="tqp-1">
-               {{ this.champion.totalQuadraKills }}
+            <div class="avg-ally-healing cell">
+               <p>Ally Healing</p>
+               {{ this.champion.averageHealingOnTeammates }}
+               <div class="per-minute">
+                  {{ this.champion.averageAllyHealPerMinute || '-' }} <span class="unit">/ m</span>
+               </div>
             </div>
-            <div class="tqp-1">
-               {{ this.champion.totalPentaKills }}
+            <div class="avg-dmg-taken cell">
+               <p>Damage Taken</p>
+               {{ this.champion.averageTotalDamageTaken }}
+               <div class="per-minute">
+                  {{ this.champion.averageHealPerMinute || '-' }} <span class="unit">/ m</span>
+               </div>
+            </div>
+            <div class="avg-mitigated-dmg cell">
+               <p>Damage Mitigated</p>
+               {{ this.champion.averageTotalSelfMitigated || '-' }}
+               <div class="per-minute">
+                  {{ this.champion.averageDamageMitigated || '-' }} <span class="unit">/ m</span>
+               </div>
+            </div>
+            <div class="avg-gold cell">
+               <p>Gold</p>
+               {{ this.champion.averageGoldEarned }}
+               <div class="per-minute">
+                  {{ this.champion.averageGoldPerMinute }} <span class="unit">/ m</span>
+               </div>
             </div>
          </div>
       </div>
       <div class="matches" v-show="this.expand">
          <Match v-for="match in this.champion.matches"
          :key="match.matchId"
-         :match="match"
-         :class="winOrLoss(match)"/>
+         :match="match" />
+         <!-- :class="winOrLoss(match)"/> -->
       </div>
       <!-- <Transition name="slide">
       </Transition> -->
@@ -109,7 +146,7 @@ export default {
    transform: scaleY(0);
 } */
 
-.sub-cell {
+.per-minute {
    font-size: 0.7rem;
    font-style: oblique;
    color: var(--color-font);
@@ -123,6 +160,7 @@ export default {
 .row-container {
    max-width: 1200px;
    margin-bottom: 2px;
+   /* -- */
 }
 
 .style-0 {
@@ -133,16 +171,106 @@ export default {
    background-color: var(--champion-1);
 }
 
-.row-stats {
+.stats {
    display: flex;
-   align-items: center;
-   height: 40px;
+   justify-content: space-between;
+   flex-direction: row;
    color: var(--color-font);
 }
 
-img {
-   height: 36px;
-   padding-left: 2px;
-   padding-right: 8px;
+.right-stats {
+   display: flex;
+   /* gap: 30px; */
+   flex-direction: row;
+   align-items: center;
+   height: 70px;
 }
+
+.right-stats p {
+   color: var(--light900);
+   font-size: 13px;
+   margin: 0;
+}
+
+.avg-dmg {
+   width: 120px; 
+}
+
+.avg-healing {
+   width: 75px;
+}
+
+.avg-ally-healing {
+   width: 90px;
+}
+
+.avg-dmg-taken {
+   width: 110px;
+}
+
+.avg-mitigated-dmg {
+   width: 130px;
+}
+
+.avg-gold {
+   width: 70px;
+}
+
+.left-stats {
+   display: flex;
+   /* gap: 20px; */
+   width: 520px;
+   /* justify-content: space-between; */
+   flex-direction: row;
+   height: 70px;
+   align-items: center;
+}
+
+.tab {
+   width: 20px;
+   height: inherit;
+   background-color: var(--blue600t_test);
+}
+
+img {
+   height: 55px;
+   margin: 0 9px;
+}
+
+.champ-name {
+   width: 130px;
+   text-align: left;
+   font-size: 18px;
+   font-weight: 500;
+}
+
+.games {
+   width: 130px;
+   font-size: 14px;
+}
+
+.main {
+   font-size: 18px;
+   font-weight: 500;
+   margin: 0;
+   color: var(--color-font);
+}
+
+.unit {
+   font-size: 13px;
+   color: var(--light900);
+}
+
+.avg-kda {
+   width: 110px;
+   font-size: 13px;
+}
+
+.tqp-wrapper {
+   display: flex;
+   width: 55px;
+   font-size: 13px;
+   flex-direction: column;
+}
+
 </style>

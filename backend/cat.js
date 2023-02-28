@@ -4,9 +4,7 @@ function scribe(puuid, game) {
    let participantIndex = game.metadata.participants.findIndex((x) => x == puuid)
    
    // Error handling for alien matches. Ex: Midbeast (OCE) @ OC1_502838822
-   if (participantIndex == -1) {
-      return
-   } 
+   if (participantIndex == -1) return
    
    let player = game.info.participants[participantIndex]
 
@@ -65,6 +63,9 @@ function scribe(puuid, game) {
    champion['totalDamageTaken'] = player.totalDamageTaken
    champion['totalSelfMitigated'] = player.damageSelfMitigated
 
+   // Ally information
+   champion['Allies'] = allyStats(game.info.participants, player.teamId, participantIndex)
+
    // Heals
    champion['totalHeal'] = player.totalHeal
    champion['totalHealsOnTeammates'] = player.totalHealsOnTeammates
@@ -74,8 +75,28 @@ function scribe(puuid, game) {
    champion['quadraKills'] = player.quadraKills
    champion['pentaKills'] = player.pentaKills
 
+
    return champion
 }
+
+function allyStats(participants, teamId, rootPlayerIdx) {
+   let allyArray = []
+
+   participants.forEach((player, i) => {
+      if (player.teamId === teamId && rootPlayerIdx != i) {
+         let teammate = {}
+         teammate.summonerName = player.summonerName
+         /*
+         * Here
+         */
+
+         allyArray.push()
+      }
+   })
+   
+   console.log(teamId, 'team')
+}
+
 
 function averages(matches) {
 

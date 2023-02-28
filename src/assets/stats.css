@@ -18,32 +18,27 @@
    padding-left: 25px;
 }
 
-.cell {
+/* .cell {
    flex: 0 0 100px;
-}
+} */
 
 .tqp-1 {
-   display: inline-block;
-   width: 32px;
-   /* padding-right: 20px; */
+   display: flex;
+   gap: 5px;
+   justify-content: space-between;
+   align-items: baseline;
 }
 
 
 /* Match.vue */
-.match-cell {
+/* .match-cell {
    flex: 0 0 100px;
-}
+} */
 
 .tqp-match {
-   display: inline-block;
-   width: 32px;
-}
-
-.right-box {
    display: flex;
-   padding-right: 28px;
-   justify-content: flex-end;
-   align-items: center;
-   height: 40px;
-   color: var(--color-font);
+   justify-content: space-between;
+   align-items: baseline;
+   gap: 5px;
+   /* width: 32px; */
 }

@@ -1,5 +1,6 @@
 <script>
 import Champion from '../Champion.vue'
+import Dropdown from '../Dropdown.vue'
 import OverviewPanel from '../Panels/OverviewPanel.vue'
 import ChampionPanel from '../Panels/ChampionPanel.vue'
 import ChallengePanel from '../Panels/ChallengePanel.vue'
@@ -10,6 +11,7 @@ import axios from 'axios'
 export default {
    components: {
       Champion,
+      Dropdown,
       Histogram,
       ChampSearch,
       OverviewPanel,
@@ -186,7 +188,7 @@ export default {
                   </a>
                </div>
             </div>
-            <!-- <div class="danger-zone">
+            <div class="danger-zone">
                <span style="color: var(--color-font); padding-right: 15px; font-size: 0.9rem;">hmm? -></span> 
                <a class="purge" @mouseover="hover = true" @mouseleave="hover = false" @click="deleteSummoner()" >
                   Delete
@@ -206,7 +208,7 @@ export default {
                   <br><br>
                   Confirmation will appear after clicking.
                </span>
-            </div> -->
+            </div>
          </div>
          <div class="profile-wrapper">
             <div class="profile-sections">
@@ -239,9 +241,11 @@ export default {
       </div>
       <div class="stats-main">
          <div class="sorting-by">
-            Sorting by: {{ sortingBy() }}
+            <!-- Sorting by: {{ sortingBy() }} -->
+            Sort by
+         
          </div>
-         <div class="headers">
+         <!-- <div class="headers">
             <div class='champ-name header' @click="sortProc('Champion')">Champion</div>
             <div class='total-games header' @click="sortProc('Total Games')">Games</div>
             <div class='wins header' @click="sortProc('Wins')">Wins</div>
@@ -263,7 +267,7 @@ export default {
                   P
                </div>
             </div>
-         </div>
+         </div> -->
          <div :key="this.championKey">
             <Champion v-for="(champ, i) in sortedChamps"
             :key="champ.championName"
