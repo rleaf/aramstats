@@ -33,26 +33,28 @@ export default {
          isDisabled: false,
          hover: null,
          profileSection: 0,
-         championFilter: null
+         sortFocus: false,
+         // sort: '',
+         sortOptions: ['totalGames', 'champion', 'wins', 'dmg', 'heal', 'allyHeal', 'dmgTaken', 'dmgMit', 'gold'],
       }
    },
 
    computed: {
       sortedChamps() {
          switch (this.selected) {
-            case 'Champion':
+            case 'champion':
                return (this.order) ?
                   this.championInfo.sort((a, b) => a.championName.localeCompare(b.championName)):
                   this.championInfo.sort((a, b) => b.championName.localeCompare(a.championName))
-            case 'Total Games':
+            case 'totalGames':
                return (this.order) ?
                   this.championInfo.sort((a, b) => b.totalGames - a.totalGames):
                   this.championInfo.sort((a, b) => a.totalGames - b.totalGames)
-            case 'Wins':
+            case 'wins':
                return (this.order) ?
                   this.championInfo.sort((a, b) => b.wins - a.wins):
                   this.championInfo.sort((a, b) => a.wins - b.wins)
-            case 'Average Damage':
+            case 'dmg':
                if (this.dmgDpmState < 2) {
                   return (this.order) ?
                   this.championInfo.sort((a, b) => b.averageTotalDamageDealt - a.averageTotalDamageDealt):
@@ -62,23 +64,23 @@ export default {
                      this.championInfo.sort((a, b) => b.averageDamagePerMinute - a.averageDamagePerMinute) :
                      this.championInfo.sort((a, b) => a.averageDamagePerMinute - b.averageDamagePerMinute)
                }
-            case 'Average Healing':
+            case 'heal':
                return (this.order) ?
                   this.championInfo.sort((a, b) => b.averageTotalHeal - a.averageTotalHeal):
                   this.championInfo.sort((a, b) => a.averageTotalHeal - b.averageTotalHeal)
-            case 'Average Healing to Teammates':
+            case 'allyHeal':
                return (this.order) ?
                   this.championInfo.sort((a, b) => b.averageHealingOnTeammates - a.averageHealingOnTeammates):
                   this.championInfo.sort((a, b) => a.averageHealingOnTeammates - b.averageHealingOnTeammates)
-            case 'Average Damage Taken':
+            case 'dmgTaken':
                return (this.order) ?
                   this.championInfo.sort((a, b) => b.averageTotalDamageTaken - a.averageTotalDamageTaken):
                   this.championInfo.sort((a, b) => a.averageTotalDamageTaken - b.averageTotalDamageTaken)
-            case 'Average Self Mitigated Damage':
+            case 'dmgMit':
                return (this.order) ?
                   this.championInfo.sort((a, b) => b.averageTotalSelfMitigated - a.averageTotalSelfMitigated):
                   this.championInfo.sort((a, b) => a.averageTotalSelfMitigated - b.averageTotalSelfMitigated)
-            case 'Average Gold':
+            case 'gold':
                return (this.order) ?
                   this.championInfo.sort((a, b) => b.averageGoldEarned - a.averageGoldEarned):
                   this.championInfo.sort((a, b) => a.averageGoldEarned - b.averageGoldEarned)
@@ -109,14 +111,6 @@ export default {
          (x == this.selected) ? (this.order = !this.order):
          this.selected = x
       },
-
-      // sortDo(x) {
-      //    if (this.order) {
-      //       return this.championInfo.sort((a, b) => a.championName.localeCompare(b.championName))
-      //    } else {
-      //       return this.championInfo.sort((a, b) => b.championName.localeCompare(a.championName))
-      //    }
-      // },
 
       sortingBy() {
          if (this.selected == 'Average Damage') {
@@ -189,7 +183,7 @@ export default {
                </div>
             </div>
             <div class="danger-zone">
-               <span style="color: var(--color-font); padding-right: 15px; font-size: 0.9rem;">hmm? -></span> 
+               <span style="color: var(--color-font); padding-right: 15px; font-size: 0.9rem;">old data? -></span> 
                <a class="purge" @mouseover="hover = true" @mouseleave="hover = false" @click="deleteSummoner()" >
                   Delete
                </a>
@@ -204,7 +198,7 @@ export default {
                   Click this if you'd like to delete your summoner from the database.
                   You will have to search your profile again.
                   <br><br>
-                   For reference, you can check out <u>Night Owl</u> on NA which will always be UTD.
+                  <u>Night Owl</u> on NA will always be UTD for reference.
                   <br><br>
                   Confirmation will appear after clicking.
                </span>
@@ -242,8 +236,30 @@ export default {
       <div class="stats-main">
          <div class="sorting-by">
             <!-- Sorting by: {{ sortingBy() }} -->
-            Sort by
-         
+            <!-- <input type="text" placeholder="Sort by" v-model="sort" @click="sortProc(this.sort)"
+               @keyup.esc="sortFocus = false">
+            <div class="sort-list" v-show="sortFocus">
+               TOAD
+            </div> -->
+            <!-- <select default="Total Games" v-model="sort" @change="sortProc(this.sort)">
+               <option value="totalGames" selected>Total Games</option>
+               <option value="champion">Champion</option>
+               <option value="wins">Wins</option>
+               <option value="dmg">Damage</option>
+               <option value="heal">Healing</option>
+               <option value="allyHeal">Ally Healing</option>
+               <option value="dmgTaken">Damage Taken</option>
+               <option value="dmgMit">Damage Mitigated</option>
+               <option value="gold">Gold</option>
+            </select> -->
+            <button class="sort-button" @click="this.sortFocus = true" @blur="this.sortFocus = false">{{ this.selected || 'Total Games'}}</button>
+            <div class="sort-dropdown" v-show="this.sortFocus">
+               <div class="sort-item" @mousedown="sortProc(option)"
+               v-for="(option, i) in sortOptions" :key="i">
+                  {{ option || '-' }}
+               </div>
+            </div>
+
          </div>
          <!-- <div class="headers">
             <div class='champ-name header' @click="sortProc('Champion')">Champion</div>
@@ -282,6 +298,15 @@ export default {
 <style scoped>
 @import url('../../assets/stats.css');
 
+select {
+   background: transparent;
+}
+
+select option {
+   color: var(--color-font);
+   background: var(--blue300s);
+   margin: 0 5px;
+}
 
 .profile-sections div {
    display: inline-block;

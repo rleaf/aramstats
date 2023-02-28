@@ -53,12 +53,13 @@ function scribe(puuid, game) {
    champion['totalDamageDealtToChampions'] = player.totalDamageDealtToChampions
    champion['damagePerMinute'] = Math.round(player.totalDamageDealtToChampions / champion['gameDuration'])
 
-   // Challenge info
-   if (player.challenges) {
-      champion['damageShare'] = player.challenges.teamDamagePercentage
-      champion['killParticipation'] = player.challenges.killParticipation
-      champion['kda'] = Math.round(player.challenges.kda * 100) / 100
-   }
+   // Ally information
+   champion['allies'] = allyStats(game.info.participants, player.teamId, participantIndex)
+
+   // Misc (Damage share, KP, KDA)
+   champion['damageShare'] = getDamageShare(player, champion['allies'])
+   champion['killParticipation'] = getKillParticipation(player, champion['allies'])
+   champion['kda'] = getKDA(player)
 
    // Magic, physical, true,total damage taken
    champion['magicDamageTaken'] = player.magicDamageTaken
@@ -69,8 +70,6 @@ function scribe(puuid, game) {
    champion['totalSelfMitigated'] = player.damageSelfMitigated
    champion['selfMitigatedPerMinute'] = Math.round(player.damageSelfMitigated / champion['gameDuration'])
 
-   // Ally information
-   champion['allies'] = allyStats(game.info.participants, player.teamId, participantIndex)
 
    // Heals
    champion['totalHeal'] = player.totalHeal
@@ -86,8 +85,28 @@ function scribe(puuid, game) {
    return champion
 }
 
+function getDamageShare(player, allies) {
+   let totalDamage = allies.map(ally => ally.totalDamageDealtToChampions).reduce((a, b) => a + b, 0) + player.totalDamageDealtToChampions
+   let ds = Math.round(player.totalDamageDealtToChampions / totalDamage * 100) / 100
+
+   return ds
+}
+
+function getKillParticipation(player, allies) {
+   let totalKills = allies.map(ally => ally.kills).reduce((a, b) => a + b, 0) + player.kills
+   let kp = Math.round((player.kills + player.assists) / totalKills * 100) / 100
+
+   return kp
+}
+
+function getKDA(player) {
+   // Math.round(player.challenges.kda * 100) / 100
+   const kda = Math.round(((player.kills + player.assists) / player.deaths) * 100) / 100
+   return kda
+}
+
 function allyStats(participants, teamId, rootPlayerIdx) {
-   let allyArray = []
+   let allies = []
 
    participants.forEach((participant, i) => {
       if (participant.teamId === teamId && rootPlayerIdx != i) {
@@ -109,11 +128,11 @@ function allyStats(participants, teamId, rootPlayerIdx) {
          // Damage
          ally.totalDamageDealtToChampions = participant.totalDamageDealtToChampions
 
-         allyArray.push(ally)
+         allies.push(ally)
       }
    })
    
-   return allyArray
+   return allies
 }
 
 function getItems(player) {
@@ -125,7 +144,6 @@ function getItems(player) {
    
    return items
 }
-
 
 function averages(matches) {
 
@@ -190,10 +208,8 @@ function averages(matches) {
       avg.deaths += matches[i].deaths
       avg.assists += matches[i].assists
 
-      if (matches[i].killParticipation) {
-         avg.killParticipation += matches[i].killParticipation * 100
-         avg.damageShare += matches[i].damageShare * 100
-      }
+      avg.killParticipation += matches[i].killParticipation * 100
+      avg.damageShare += matches[i].damageShare * 100
 
       // Gold earned
       avg.gold += matches[i].goldEarned

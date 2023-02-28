@@ -113,33 +113,33 @@ export default {
       </div>
       <div class="right-box">
          <div class="total-dmg">
-            {{ this.match.totalDamageDealtToChampions }}, {{ damageShare || '-' }}% <span class="unit">/ DS</span>
+            {{ this.match.totalDamageDealtToChampions }}, {{ damageShare || '-' }}% <span class="unit"> DS</span>
             <div class="per-minute">
                {{ this.match.damagePerMinute }} <span class="unit">/ m</span>
             </div>
          </div>
          <div class="total-heal">
-            {{ this.match.totalHeal || '-'}}
+            {{ this.match.totalHeal }}
             <div class="per-minute">
-               {{ this.match.healPerMinute || '-'  }} <span class="unit">/ m</span>
+               {{ this.match.healPerMinute }} <span class="unit">/ m</span>
             </div>
          </div>
          <div class="total-ally-healing">
             {{ this.match.totalHealsOnTeammates }}
             <div class="per-minute">
-               {{ this.match.allyHealPerMinute || '-' }} <span class="unit">/ m</span>
+               {{ this.match.allyHealPerMinute }} <span class="unit">/ m</span>
             </div>
          </div>
          <div class="total-dmg-taken">
             {{ this.match.totalDamageTaken }}
             <div class="per-minute">
-               {{ this.match.damageTakenPerMinute || '-' }} <span class="unit">/ m</span>
+               {{ this.match.damageTakenPerMinute }} <span class="unit">/ m</span>
             </div>
          </div>
          <div class="total-mitigated-dmg">
-            {{ this.match.totalSelfMitigated || '-' }}
+            {{ this.match.totalSelfMitigated }}
             <div class="per-minute">
-               {{ this.match.selfMitigatedPerMinute || '-' }} <span class="unit">/ m</span>
+               {{ this.match.selfMitigatedPerMinute }} <span class="unit">/ m</span>
             </div>
          </div>
          <div class="gold-earned">
@@ -158,23 +158,23 @@ export default {
 
 .runes {
    display: flex;
-   width: 65px;
+   width: 70px;
    align-items: center;
    /* gap: 2px; */
 }
 
 .primaryRune {
-   width: 26px;
+   width: 28px;
 }
 .secondaryTree {
-   width: 20px;
+   width: 16px;
    background: var(--secondary-tree);
    padding: 4px;
    border-radius: 100%;
    
 }
 .per-minute {
-   font-size: 0.7rem;
+   font-size: 12px;
    font-style: oblique;
    color: var(--color-font);
 }
@@ -185,12 +185,13 @@ export default {
 
 p.kda {
    margin: 0;
+   /* font-weight: 500; */
 }
 
 .match-items {
    display: flex;
    align-items: center;
-   width: 180px;
+   width: 195px;
 }
 
 .match-items img {
@@ -200,7 +201,7 @@ p.kda {
 
 .time {
    color: var(--light900);
-   width: 110px;
+   width: 115px;
    padding-left: 10px;
 }
 
@@ -223,9 +224,9 @@ p.kda {
 .tqp-match-wrapper {
    display: flex;
    /* width: 55px; */
-   flex-direction: row;
-   gap: 9px;
-   /* font-size: 12px; */
+   flex-direction: column;
+   /* gap: 9px; */
+   font-size: 13px;
    line-height: 1;
 
 }
@@ -287,7 +288,7 @@ p.kda {
 }
 
 .win-loss {
-   width: 20px;
+   width: 22px;
    height: inherit;
 }
 

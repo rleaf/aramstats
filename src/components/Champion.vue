@@ -37,6 +37,9 @@ export default {
          stringValues.forEach((x) => numberValues.push(parseInt(x)))
 
          return Math.round((numberValues[0] + numberValues[2]) / numberValues[1] * 100) / 100
+      },
+      arrow() {
+         return new URL(`../assets/arrow.svg`, import.meta.url).href
       }
    },
 
@@ -47,11 +50,13 @@ export default {
 </script>
 
 <template>
-   <div class="row-container" @click="toggle()">
+   <div class="row-container">
       <div class="stats">
          <div class="left-stats">
-            <div class="tab"></div>
-            <img :src="(this.champion.championName == 'FiddleSticks') ? this.fid : championIcon" alt="">
+            <div class="tab" @click="toggle()">
+               <img :src="arrow" :class="{flip: this.expand}" alt="">
+            </div>
+            <img class="champion-image" :src="(this.champion.championName == 'FiddleSticks') ? this.fid : championIcon" alt="">
             <div class="champ-name cell">
                {{ trueChampionName }}
             </div>
@@ -146,21 +151,21 @@ export default {
    transform: scaleY(0);
 } */
 
+
+
 .per-minute {
-   font-size: 0.7rem;
+   font-size: 12px;
    font-style: oblique;
    color: var(--color-font);
 }
 
 .matches {
    border-top: 1px solid var(--border-top);
-   /* transition: transform .5s ease-in-out; */
 }
 
 .row-container {
    max-width: 1200px;
    margin-bottom: 2px;
-   /* -- */
 }
 
 .style-0 {
@@ -219,7 +224,7 @@ export default {
 .left-stats {
    display: flex;
    /* gap: 20px; */
-   width: 520px;
+   /* width: 525px; */
    /* justify-content: space-between; */
    flex-direction: row;
    height: 70px;
@@ -227,12 +232,34 @@ export default {
 }
 
 .tab {
-   width: 20px;
+   transition: 0.25s;
+   width: 22px;
    height: inherit;
    background-color: var(--blue600t_test);
+   /* background: linear-gradient(180deg, var(--blue600t_test), var(--blue300t)); */
 }
 
-img {
+.tab:hover {
+   cursor: pointer;
+   background: var(--blue300t);
+}
+
+.tab img {
+   position: relative;
+   top: 70%;
+   left: 50%;
+   transform: translateX(-50%);
+   filter: invert(10%) sepia(14%) saturate(1667%) hue-rotate(182deg) brightness(98%) contrast(97%);
+   margin: 0;
+   width: 15px;
+   height: 15px;
+}
+
+img.flip {
+   transform: translateX(-50%) rotate(180deg);
+}
+
+img.champion-image {
    height: 55px;
    margin: 0 9px;
 }
@@ -245,7 +272,7 @@ img {
 }
 
 .games {
-   width: 130px;
+   width: 140px;
    font-size: 14px;
 }
 
@@ -262,13 +289,13 @@ img {
 }
 
 .avg-kda {
-   width: 110px;
+   width: 120px;
    font-size: 13px;
 }
 
 .tqp-wrapper {
    display: flex;
-   width: 55px;
+   width: 56px;
    font-size: 13px;
    flex-direction: column;
 }
