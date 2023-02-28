@@ -61,7 +61,13 @@ export default {
       },
       matchWinLoss() {
          return (this.match.win) ? 'win' : 'loss'
-      }
+      },
+      damageShare() {
+         return Math.round(this.match.damageShare * 100)
+      },
+      killParticipation() {
+         return Math.round(this.match.killParticipation * 100)
+      },
    },
 
 }
@@ -85,8 +91,8 @@ export default {
             <p class="kda">
                {{ this.kda }} <span class="unit">KDA</span>
             </p>
-            {{ this.match.kda || '-' }}
-            {{ this.match.madeupprop || '-' }}% <span class="unit">KP</span>
+            {{ this.match.kda || '-' }},
+            {{ killParticipation || '-' }}% <span class="unit">KP</span>
          </div>
          <div class="match-items">
             <img v-for="item in this.items"
@@ -107,7 +113,7 @@ export default {
       </div>
       <div class="right-box">
          <div class="total-dmg">
-            {{ this.match.totalDamageDealtToChampions }}, {{ this.match.madeupprop || '-' }}% <span class="unit">/ DS</span>
+            {{ this.match.totalDamageDealtToChampions }}, {{ damageShare || '-' }}% <span class="unit">/ DS</span>
             <div class="per-minute">
                {{ this.match.damagePerMinute }} <span class="unit">/ m</span>
             </div>
@@ -115,25 +121,25 @@ export default {
          <div class="total-heal">
             {{ this.match.totalHeal || '-'}}
             <div class="per-minute">
-               {{ this.match.madeupprop || '-'  }} <span class="unit">/ m</span>
+               {{ this.match.healPerMinute || '-'  }} <span class="unit">/ m</span>
             </div>
          </div>
          <div class="total-ally-healing">
             {{ this.match.totalHealsOnTeammates }}
             <div class="per-minute">
-               {{ this.match.madeupprop || '-' }} <span class="unit">/ m</span>
+               {{ this.match.allyHealPerMinute || '-' }} <span class="unit">/ m</span>
             </div>
          </div>
          <div class="total-dmg-taken">
             {{ this.match.totalDamageTaken }}
             <div class="per-minute">
-               {{ this.match.madeupprop || '-' }} <span class="unit">/ m</span>
+               {{ this.match.damageTakenPerMinute || '-' }} <span class="unit">/ m</span>
             </div>
          </div>
          <div class="total-mitigated-dmg">
             {{ this.match.totalSelfMitigated || '-' }}
             <div class="per-minute">
-               {{ this.match.madeupprop || '-' }} <span class="unit">/ m</span>
+               {{ this.match.selfMitigatedPerMinute || '-' }} <span class="unit">/ m</span>
             </div>
          </div>
          <div class="gold-earned">

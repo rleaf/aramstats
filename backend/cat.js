@@ -1,3 +1,4 @@
+const championNameBook = require('./constants/championNames')
 
 function scribe(puuid, game) {
    let champion = {}
@@ -39,11 +40,7 @@ function scribe(puuid, game) {
    champion['secondaryTree'] = player.perks.styles[1].style
 
    // Items
-   let items = []
-   for(let i = 0; i < 7; i++) {
-      items.push(player[`item${i}`])
-   }
-   champion['items'] = items
+   champion['items'] = getItems(player)
 
    // Summoner spells
    champion['summoner1Id'] = player.summoner1Id
@@ -56,25 +53,35 @@ function scribe(puuid, game) {
    champion['totalDamageDealtToChampions'] = player.totalDamageDealtToChampions
    champion['damagePerMinute'] = Math.round(player.totalDamageDealtToChampions / champion['gameDuration'])
 
+   // Challenge info
+   if (player.challenges) {
+      champion['damageShare'] = player.challenges.teamDamagePercentage
+      champion['killParticipation'] = player.challenges.killParticipation
+      champion['kda'] = Math.round(player.challenges.kda * 100) / 100
+   }
+
    // Magic, physical, true,total damage taken
    champion['magicDamageTaken'] = player.magicDamageTaken
    champion['physicalDamageTaken'] = player.physicalDamageTaken
    champion['trueDamageTaken'] = player.trueDamageTaken
    champion['totalDamageTaken'] = player.totalDamageTaken
+   champion['damageTakenPerMinute'] = Math.round(player.totalDamageTaken / champion['gameDuration'])
    champion['totalSelfMitigated'] = player.damageSelfMitigated
+   champion['selfMitigatedPerMinute'] = Math.round(player.damageSelfMitigated / champion['gameDuration'])
 
    // Ally information
-   champion['Allies'] = allyStats(game.info.participants, player.teamId, participantIndex)
+   champion['allies'] = allyStats(game.info.participants, player.teamId, participantIndex)
 
    // Heals
    champion['totalHeal'] = player.totalHeal
+   champion['healPerMinute'] = Math.round(player.totalHeal / champion['gameDuration'])
    champion['totalHealsOnTeammates'] = player.totalHealsOnTeammates
+   champion['allyHealPerMinute'] = Math.round(player.totalHealsOnTeammates / champion['gameDuration'])
 
    // 4fun
    champion['tripleKills'] = player.tripleKills
    champion['quadraKills'] = player.quadraKills
    champion['pentaKills'] = player.pentaKills
-
 
    return champion
 }
@@ -82,19 +89,41 @@ function scribe(puuid, game) {
 function allyStats(participants, teamId, rootPlayerIdx) {
    let allyArray = []
 
-   participants.forEach((player, i) => {
-      if (player.teamId === teamId && rootPlayerIdx != i) {
-         let teammate = {}
-         teammate.summonerName = player.summonerName
-         /*
-         * Here
-         */
+   participants.forEach((participant, i) => {
+      if (participant.teamId === teamId && rootPlayerIdx != i) {
+         let ally = {}
 
-         allyArray.push()
+         // Meta
+         ally.summonerName = participant.summonerName
+         
+         // Primary
+         ally.championName = participant.championName
+         ally.trueChampionName = championNameBook[participant.championName]
+         ally.kills = participant.kills
+         ally.deaths = participant.deaths
+         ally.assists = participant.assists
+
+         // Items
+         ally.items = getItems(participant)
+
+         // Damage
+         ally.totalDamageDealtToChampions = participant.totalDamageDealtToChampions
+
+         allyArray.push(ally)
       }
    })
    
-   console.log(teamId, 'team')
+   return allyArray
+}
+
+function getItems(player) {
+   let items = []
+
+   for(let i = 0; i < 6; i++) {
+      items.push(player[`item${i}`])
+   }
+   
+   return items
 }
 
 
@@ -111,13 +140,19 @@ function averages(matches) {
    let avg = {
       'dmgDealt': 0,
       'damagePerMinute': 0,
+      'healPerMinute': 0,
       'heal': 0,
       'healingOnTeam': 0,
+      'allyHealPerMinute': 0,
       'tank': 0,
+      'damageTakenPerMinute': 0,
       'mitigated': 0,
+      'selfMitigatedPerMinute': 0,
       'kills': 0,
       'deaths': 0,
       'assists': 0,
+      'killParticipation': 0,
+      'damageShare': 0,
       'gold': 0,
       'goldPerMinute': 0
    }
@@ -137,15 +172,28 @@ function averages(matches) {
       // Damage, DPM, healing, tanking
       avg.dmgDealt += matches[i].totalDamageDealtToChampions
       avg.damagePerMinute += matches[i].damagePerMinute
+
       avg.heal += matches[i].totalHeal
+      avg.healPerMinute += matches[i].healPerMinute
+
       avg.healingOnTeam += matches[i].totalHealsOnTeammates
+      avg.allyHealPerMinute += matches[i].allyHealPerMinute
+
       avg.tank += matches[i].totalDamageTaken
+      avg.damageTakenPerMinute += matches[i].damageTakenPerMinute
+      
       avg.mitigated += matches[i].totalSelfMitigated
+      avg.selfMitigatedPerMinute += matches[i].selfMitigatedPerMinute
 
       // Kills, deaths, assists
       avg.kills += matches[i].kills
       avg.deaths += matches[i].deaths
       avg.assists += matches[i].assists
+
+      if (matches[i].killParticipation) {
+         avg.killParticipation += matches[i].killParticipation * 100
+         avg.damageShare += matches[i].damageShare * 100
+      }
 
       // Gold earned
       avg.gold += matches[i].goldEarned

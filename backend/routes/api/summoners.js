@@ -3,6 +3,7 @@ const mongodb = require('mongodb')
 const dotenv = require('dotenv')
 const twisted = require('../../twisted_calls')
 const cat = require('../../cat')
+const championNameBook = require('../../constants/championNames')
 
 dotenv.config()
 
@@ -106,10 +107,17 @@ async function totalMatches(collection) {
             'averageTotalDamageDealt': stats.avg.dmgDealt,
             'averageDamagePerMinute': stats.avg.damagePerMinute,
             'averageTotalHeal': stats.avg.heal,
+            'averageHealPerMinute': stats.avg.healPerMinute,
+            'averageHealingPerMinute': stats.avg.heal,
             'averageHealingOnTeammates': stats.avg.healingOnTeam,
+            'averageAllyHealPerMinute': stats.avg.allyHealPerMinute,
             'averageTotalDamageTaken': stats.avg.tank,
+            'averageDamageTakenPerMinute': stats.avg.damageTakenPerMinute,
             'averageTotalSelfMitigated': stats.avg.mitigated,
+            'averageSelfMitigatedPerMinute': stats.avg.selfMitigatedPerMinute,
             'averageKDA': `${stats.avg.kills}/${stats.avg.deaths}/${stats.avg.assists}`,
+            'averageKillParticipation': stats.avg.killParticipation,
+            'averageDamageShare': stats.avg.damageShare,
             'averageGoldEarned': stats.avg.gold,
             'averageGoldPerMinute': stats.avg.goldPerMinute,
             'totalTripleKills': stats.tripleKills,
@@ -335,33 +343,7 @@ async function removeParse(client, summoner, matchEndIndex) {
 async function createChampionDocument(collection, champion) {
    const food = await collection.findOne({ championName: champion})
 
-   if (food == undefined) {
-
-      const championNameBook = {
-         'AurelionSol' : 'Aurelion Sol',
-         'Belveth' : "Bel'Veth",
-         'Chogath' : "Cho'Gath",
-         'DrMundo' : 'Dr. Mundo',
-         'FiddleSticks' : 'Fiddlesticks',
-         'JarvanIV' : 'Jarvan IV',
-         "KSante" : "K'Sante",
-         "Kaisa" : "Kai'Sa",
-         'Khazix' : "Kha'Zix",
-         'KogMaw' : "Kog'Maw",
-         'Leblanc' : 'LeBlanc',
-         'LeeSin' : 'Lee Sin',
-         'MasterYi' : 'Master Yi',
-         'MissFortune' : 'Miss Fortune',
-         'MonkeyKing' : 'Wukong',
-         'Nunu' : 'Nunu & Willump',
-         'RekSai' : "Rek'Sai",
-         'Renata' : 'Renata Glasc',
-         'TahmKench' : 'Tahm Kench',
-         'TwistedFate' : 'Twisted Fate',
-         'Velkoz' : "Vel'Koz",
-         'XinZhao' : 'Xin Zhao'
-      }
-      
+   if (!food) {
       await collection.insertOne(
          { 
             championName: champion,
@@ -370,11 +352,24 @@ async function createChampionDocument(collection, champion) {
             wins: 0,
             averageTotalDamageDealt: 0,
             averageDamagePerMinute: 0,
+
             averageTotalHeal: 0,
+            averageHealPerMinute: 0,
+
             averageHealingOnTeammates: 0,
+            averageAllyHealPerMinute: 0,
+
             averageTotalDamageTaken: 0,
+            averageDamageTakenPerMinute: 0,
+
             averageTotalSelfMitigated: 0,
+            averageSelfMitigatedPerMinute: 0,
+
             averageKDA: '',
+
+            averageKillParticipation: 0,
+            averageDamageShare: 0,
+
             averageGoldEarned: 0,
             averageGoldPerMinute: 0,
             totalTripleKills: 0,

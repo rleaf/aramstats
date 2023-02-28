@@ -65,7 +65,7 @@ export default {
                <p class="main">
                   {{ this.champion.averageKDA }} <span class="unit">KDA</span>
                </p>
-               {{ computeKDA }}, {{ this.champion.kp || '-' }}% <span class="unit">KP</span>
+               {{ computeKDA }}, {{ this.champion.averageKillParticipation || '-' }}% <span class="unit">KP</span>
             </div>
             <div class="tqp-wrapper cell">
                <div class="tqp-1">
@@ -82,7 +82,7 @@ export default {
          <div class="right-stats">
             <div class="avg-dmg cell">
                <p>Damage</p>
-               {{ this.champion.averageTotalDamageDealt }}, {{ this.champion.damageShare || '-' }}% <span class="unit">DS</span>
+               {{ this.champion.averageTotalDamageDealt }}, {{ this.champion.averageDamageShare || '-' }}% <span class="unit">DS</span>
                <div class="per-minute">
                   {{ this.champion.averageDamagePerMinute }} <span class="unit">/ m</span>
                </div>
@@ -98,21 +98,21 @@ export default {
                <p>Ally Healing</p>
                {{ this.champion.averageHealingOnTeammates }}
                <div class="per-minute">
-                  {{ this.champion.averageAllyHealPerMinute || '-' }} <span class="unit">/ m</span>
+                  {{ this.champion.averageAllyHealPerMinute }} <span class="unit">/ m</span>
                </div>
             </div>
             <div class="avg-dmg-taken cell">
                <p>Damage Taken</p>
                {{ this.champion.averageTotalDamageTaken }}
                <div class="per-minute">
-                  {{ this.champion.averageHealPerMinute || '-' }} <span class="unit">/ m</span>
+                  {{ this.champion.averageDamageTakenPerMinute || '-' }} <span class="unit">/ m</span>
                </div>
             </div>
             <div class="avg-mitigated-dmg cell">
                <p>Damage Mitigated</p>
                {{ this.champion.averageTotalSelfMitigated || '-' }}
                <div class="per-minute">
-                  {{ this.champion.averageDamageMitigated || '-' }} <span class="unit">/ m</span>
+                  {{ this.champion.averageSelfMitigatedPerMinute || '-' }} <span class="unit">/ m</span>
                </div>
             </div>
             <div class="avg-gold cell">
