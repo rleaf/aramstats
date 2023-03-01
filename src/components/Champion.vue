@@ -7,8 +7,7 @@ export default {
    },
    data() {
       return {
-         championIcon: `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/champion/${this.champion.championName}.png`,
-         fid: `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/champion/Fiddlesticks.png`,
+         championIcon: new URL(`../assets/champion_icons/${this.champion.championName.toLowerCase()}.png`, import.meta.url).href,
          expand: false,
       }
    },
@@ -31,7 +30,6 @@ export default {
          return Math.round((this.champion.wins / this.champion.totalGames) * 100)
       },
       computeKDA() {
-         // console.log(this.champion)
          const stringValues = this.champion.averageKDA.split('/')
          const numberValues = []
 
@@ -57,7 +55,7 @@ export default {
             <div class="tab" @click="toggle()">
                <img :src="arrow" :class="{flip: this.expand}" alt="">
             </div>
-            <img class="champion-image" :src="(this.champion.championName == 'FiddleSticks') ? this.fid : championIcon" alt="">
+            <img class="champion-image" :src="this.championIcon" alt="">
             <div class="champ-name cell">
                {{ trueChampionName }}
             </div>

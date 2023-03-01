@@ -6,6 +6,7 @@ import ChampionPanel from '../Panels/ChampionPanel.vue'
 import ChallengePanel from '../Panels/ChallengePanel.vue'
 import Histogram from '../Histogram.vue'
 import ChampSearch from '../ChampSearch.vue'
+import Danger from '../Danger.vue'
 import axios from 'axios'
 
 export default {
@@ -17,6 +18,7 @@ export default {
       OverviewPanel,
       ChampionPanel,
       ChallengePanel,
+      Danger
    },
    data() {
       return {
@@ -31,7 +33,6 @@ export default {
          dmgDpmState: 0,
          championKey: 0,
          isDisabled: false,
-         hover: null,
          profileSection: 0,
          sortFocus: false,
          sortOptions: [
@@ -192,23 +193,6 @@ export default {
          // Set button back to 'update'
          this.refresh = 'Update'
       },
-
-      async deleteSummoner() {
-         const url = `/api/summoners/delete/${this.$route.params.region}/${this.$route.params.username}`
-         const text =  `
-         Remove summoner from database?
-         `
-
-         if (confirm(text)) {
-            try {
-               await axios.get(url)
-            } catch (e) {
-               console.log('delete', e)
-            }
-            this.$router.push({name: `home`})
-         }
-         
-      }
    }
 
 }
@@ -228,7 +212,8 @@ export default {
                   </a>
                </div>
             </div>
-            <div class="danger-zone">
+            <Danger />
+            <!-- <div class="danger-zone">
                <span style="color: var(--color-font); padding-right: 15px; font-size: 0.9rem;">old data? -></span> 
                <a class="purge" @mouseover="hover = true" @mouseleave="hover = false" @click="deleteSummoner()" >
                   Delete
@@ -248,7 +233,7 @@ export default {
                   <br><br>
                   Confirmation will appear after clicking.
                </span>
-            </div>
+            </div> -->
          </div>
          <div class="profile-wrapper">
             <div class="profile-sections">
@@ -450,35 +435,9 @@ button.order-button {
    font-size: 1.5rem;
    color: var(--color-font);
 }
-.danger-zone {
-   position: relative;
-   display: flex;
-   margin-left: auto;
-   align-items: center;
-   padding-top: 38px;
-}
 
-.danger-zone a {
-   font-size: 1rem;
-   color: var(--color-font);
-   border: 1px solid var(--color-font);
-   border-radius: 5px;
-   cursor: pointer;
-   padding: 4px 9px;
-}
 
-.purge-tooltip {
-   position: absolute;
-   top: 75px;
-   right: 0;
-   padding: 0.5rem .7rem;
-   border-radius: 5px;
-   width: 500px;
-   font-size: 0.9rem;
-   background: var(--profile-panel);
-   box-shadow: 3px 3px 5px 2px var(--profile-tab);
-   color: var(--color-font);
-}
+
 
 .pfp {
    border-radius: 100%;

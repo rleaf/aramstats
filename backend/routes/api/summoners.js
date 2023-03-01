@@ -65,7 +65,7 @@ router
          await matchParser(summonerCollection, matchlist, summoner, req.params.region)
 
          // Average all matches
-         await totalMatches(summonerCollection)
+         await championParser(summonerCollection)
 
          console.log(`Finished parsing ${summoner.name} (${req.params.region})`)
          result = (await client.collection(summoner.name).find({}).toArray())
@@ -87,12 +87,12 @@ router
       }
    })
 
-async function totalMatches(collection) {
+async function championParser(collection) {
 
    const allChamps = await collection.find(
       {'championName': {$exists: true}}
    ).toArray()
-
+   
    // Parse average stats of all games
    allChamps.forEach(async x => {
 
@@ -209,7 +209,7 @@ router.get('/update/:region/:summonerURI', async (req, res) => {
    }
    
    // Get new averages
-   await totalMatches(summonerCollection)
+   await championParser(summonerCollection)
 
    await summonerCollection.updateOne(
       {'name': summoner.name},

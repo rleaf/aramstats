@@ -13,14 +13,15 @@ export default {
    <div class="loading-main">
       <div>
          <div>
-
             <h2>
                Parsing summoner...
             </h2>
          </div>
          <p>
-            This will take a bit when parsing a new summoner. Feel free to close this page and check back later
-            otherwise this page will refresh automatically.
+            This will take a bit when parsing a new summoner.
+         </p>
+         <p>
+            Ballpark 5-20 min.
          </p>
       </div>
    </div>

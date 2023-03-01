@@ -17,13 +17,7 @@ export default {
             }
 
             champ.championName = this.data[i].championName
-
-            if (champ.championName == 'FiddleSticks') {
-               champ.image = `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/champion/Fiddlesticks.png`
-            } else {
-               champ.image = `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/champion/${champ.championName}.png`
-            }
-
+            champ.image = new URL(`../assets/champion_icons/${champ.championName.toLowerCase()}.png`, import.meta.url).href
             this.championBook.push(champ)
          }
       }
