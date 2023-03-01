@@ -48,19 +48,19 @@ import axios from 'axios'
          async lookup() {
             const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
 
-            await axios.get(url)
-               .then(res => {
-                  this.summonerInfo = res.data
-                  if (res.data === 'pulling') {
-                     return
-                  } else {
-                     this.userReadyRender = true
-                  }
-               })
-               .catch(e => {
-                  this.errorStatusParent = e.response.status
-                  this.userErrorRender = true
-               })
+            try {
+               let res = await axios.get(url)
+               this.summonerInfo = res.data
+               if (res.data === 'pulling') {
+                  return
+               } else {
+                  this.userReadyRender = true
+               }
+            } catch (e) {
+               this.errorStatusParent = e.response.status
+               this.userErrorRender = true
+            }
+
          },
       }
    }

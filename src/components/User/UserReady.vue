@@ -34,56 +34,94 @@ export default {
          hover: null,
          profileSection: 0,
          sortFocus: false,
-         // sort: '',
-         sortOptions: ['totalGames', 'champion', 'wins', 'dmg', 'heal', 'allyHeal', 'dmgTaken', 'dmgMit', 'gold'],
+         sortOptions: [
+            {
+               key: 'Main',
+               values: ['Total Games', 'Champion', 'Wins']
+            },
+            {
+               key: 'Damage',
+               values: ['Damage', 'DPM']
+            },
+            {
+               key: 'Heal',
+               values: ['Healing', 'HPM', 'Ally Healing', 'Ally HPM']
+            },
+            {
+               key: 'Tank',
+               values: ['Damage Taken', 'DTPM', 'Damage Mitigated', 'DMPM']
+            },
+            {
+               key: 'Multikills',
+               values: ['Triple kills', 'Quadra kills', 'Penta kills']
+            },
+            {
+               key: 'Misc',
+               values: ['Gold', 'GPM']
+            },
+            
+         ]
       }
    },
 
    computed: {
       sortedChamps() {
+         /* 
+         * Please figure out a better way to deal with this.
+         */
          switch (this.selected) {
-            case 'champion':
+            case 'Champion':
                return (this.order) ?
                   this.championInfo.sort((a, b) => a.championName.localeCompare(b.championName)):
                   this.championInfo.sort((a, b) => b.championName.localeCompare(a.championName))
-            case 'totalGames':
+            case 'Total Games':
                return (this.order) ?
                   this.championInfo.sort((a, b) => b.totalGames - a.totalGames):
                   this.championInfo.sort((a, b) => a.totalGames - b.totalGames)
-            case 'wins':
+            case 'Wins':
                return (this.order) ?
                   this.championInfo.sort((a, b) => b.wins - a.wins):
                   this.championInfo.sort((a, b) => a.wins - b.wins)
-            case 'dmg':
-               if (this.dmgDpmState < 2) {
-                  return (this.order) ?
+            case 'Damage':
+               return (this.order) ?
                   this.championInfo.sort((a, b) => b.averageTotalDamageDealt - a.averageTotalDamageDealt):
                   this.championInfo.sort((a, b) => a.averageTotalDamageDealt - b.averageTotalDamageDealt)
-               } else {
-                  return (this.order) ?
-                     this.championInfo.sort((a, b) => b.averageDamagePerMinute - a.averageDamagePerMinute) :
-                     this.championInfo.sort((a, b) => a.averageDamagePerMinute - b.averageDamagePerMinute)
-               }
-            case 'heal':
+            case 'DPM':
+               return (this.order) ?
+                  this.championInfo.sort((a, b) => b.averageDamagePerMinute - a.averageDamagePerMinute) :
+                  this.championInfo.sort((a, b) => a.averageDamagePerMinute - b.averageDamagePerMinute)
+            case 'Healing':
                return (this.order) ?
                   this.championInfo.sort((a, b) => b.averageTotalHeal - a.averageTotalHeal):
                   this.championInfo.sort((a, b) => a.averageTotalHeal - b.averageTotalHeal)
-            case 'allyHeal':
+            case 'HPM':
+               return (this.order) ?
+                  this.championInfo.sort((a, b) => b.averageHealingPerMinute - a.averageHealingPerMinute):
+                  this.championInfo.sort((a, b) => a.averageHealingPerMinute - b.averageHealingPerMinute)
+            case 'Ally Healing':
                return (this.order) ?
                   this.championInfo.sort((a, b) => b.averageHealingOnTeammates - a.averageHealingOnTeammates):
                   this.championInfo.sort((a, b) => a.averageHealingOnTeammates - b.averageHealingOnTeammates)
-            case 'dmgTaken':
+            case 'Ally HPM':
+               return (this.order) ?
+                  this.championInfo.sort((a, b) => b.averageAllyHealPerMinute - a.averageAllyHealPerMinute):
+                  this.championInfo.sort((a, b) => a.averageAllyHealPerMinute - b.averageAllyHealPerMinute)
+            case 'Damage Taken':
                return (this.order) ?
                   this.championInfo.sort((a, b) => b.averageTotalDamageTaken - a.averageTotalDamageTaken):
                   this.championInfo.sort((a, b) => a.averageTotalDamageTaken - b.averageTotalDamageTaken)
-            case 'dmgMit':
+            case 'Damage Mitigated':
                return (this.order) ?
                   this.championInfo.sort((a, b) => b.averageTotalSelfMitigated - a.averageTotalSelfMitigated):
                   this.championInfo.sort((a, b) => a.averageTotalSelfMitigated - b.averageTotalSelfMitigated)
-            case 'gold':
+            case 'Gold':
                return (this.order) ?
                   this.championInfo.sort((a, b) => b.averageGoldEarned - a.averageGoldEarned):
                   this.championInfo.sort((a, b) => a.averageGoldEarned - b.averageGoldEarned)
+            case 'GPM':
+               return (this.order) ?
+                  this.championInfo.sort((a, b) => b.averageGoldPerMinute - a.averageGoldPerMinute):
+                  this.championInfo.sort((a, b) => a.averageGoldPerMinute - b.averageGoldPerMinute)
             case 'Triple kills':
                return (this.order) ?
                   this.championInfo.sort((a, b) => b.totalTripleKills - a.totalTripleKills):
@@ -99,7 +137,7 @@ export default {
             default:
                return this.championInfo.sort((a, b) => b.totalGames - a.totalGames)
          }
-      },
+      }
    },
 
    props: {
@@ -108,8 +146,16 @@ export default {
 
    methods: {
       sortProc(x) {
-         (x == this.selected) ? (this.order = !this.order):
+         // (x == this.selected) ? (this.order = !this.order):
          this.selected = x
+      },
+
+      sortOrder() {
+         this.order = !this.order
+      },
+
+      sortSection(x) {
+         if (x === 'test') return true
       },
 
       sortingBy() {
@@ -134,17 +180,17 @@ export default {
          const url = `/api/summoners/update/${this.$route.params.region}/${this.$route.params.username}`
 
          this.refresh = 'Updating...'
-         await axios.get(url)
-            .then((res) => {
-               this.championInfo = res.data
-            })
-            .then(() => {
-               this.championKey += 1
-            })
-            .then(() => {
-               this.isDisabled = false
-               this.refresh = 'Update'
-            })
+         let res = await axios.get(url)
+         this.championInfo = res.data.slice(1)
+
+         // Rerender champ list
+         this.championKey += 1
+
+         // Re-enable button
+         this.isDisabled = false
+
+         // Set button back to 'update'
+         this.refresh = 'Update'
       },
 
       async deleteSummoner() {
@@ -234,56 +280,25 @@ export default {
          </div>
       </div>
       <div class="stats-main">
-         <div class="sorting-by">
-            <!-- Sorting by: {{ sortingBy() }} -->
-            <!-- <input type="text" placeholder="Sort by" v-model="sort" @click="sortProc(this.sort)"
-               @keyup.esc="sortFocus = false">
-            <div class="sort-list" v-show="sortFocus">
-               TOAD
-            </div> -->
-            <!-- <select default="Total Games" v-model="sort" @change="sortProc(this.sort)">
-               <option value="totalGames" selected>Total Games</option>
-               <option value="champion">Champion</option>
-               <option value="wins">Wins</option>
-               <option value="dmg">Damage</option>
-               <option value="heal">Healing</option>
-               <option value="allyHeal">Ally Healing</option>
-               <option value="dmgTaken">Damage Taken</option>
-               <option value="dmgMit">Damage Mitigated</option>
-               <option value="gold">Gold</option>
-            </select> -->
-            <button class="sort-button" @click="this.sortFocus = true" @blur="this.sortFocus = false">{{ this.selected || 'Total Games'}}</button>
+         <div class="sort">
+            <button class="sort-button" @click="this.sortFocus = true" @blur="this.sortFocus = false">Sort by: {{ this.selected || 'Total Games'}}</button>
+            <button class="order-button" @click="sortOrder()">{{ this.order ? ('Descending') : ('Ascending') }}</button>
+
             <div class="sort-dropdown" v-show="this.sortFocus">
-               <div class="sort-item" @mousedown="sortProc(option)"
+               <!-- <div :class="{ section: sortSection(option)}" class="sort-item" @mousedown="sortProc(option)"
                v-for="(option, i) in sortOptions" :key="i">
                   {{ option || '-' }}
+               </div> -->
+               <div v-for="(option, i) in sortOptions" :key="i">
+                  <div class="sort-key">
+                     {{ option.key || '-' }}
+                  </div>
+                  <div class="sort-item" v-for="value in option.values" :key="value" @mousedown="sortProc(value)">
+                     {{ value }}
+                  </div>
                </div>
             </div>
-
          </div>
-         <!-- <div class="headers">
-            <div class='champ-name header' @click="sortProc('Champion')">Champion</div>
-            <div class='total-games header' @click="sortProc('Total Games')">Games</div>
-            <div class='wins header' @click="sortProc('Wins')">Wins</div>
-            <div class='avg-dmg header' @click="avgDmgDpm('Average Damage')">Damage</div>
-            <div class='avg-healing header' @click="sortProc('Average Healing')">Healing</div>
-            <div class='avg-healing-to-teammates header' @click="sortProc('Average Healing to Teammates')">Team <br>Healing</div>
-            <div class='avg-dt header' @click="sortProc('Average Damage Taken')">Dmg Taken</div>
-            <div class='avg-mit header' @click="sortProc('Average Self Mitigated Damage')">Dmg Mit</div>
-            <div class='avg-kda header'>KDA</div>
-            <div class='avg-gold header' @click="sortProc('Average Gold')">Gold</div>
-            <div>
-               <div class="tqp header" @click="sortProc('Triple kills')">
-                  T
-               </div>
-               <div class="tqp header" @click="sortProc('Quadra kills')">
-                  Q
-               </div>
-               <div class="tqp header" @click="sortProc('Penta kills')">
-                  P
-               </div>
-            </div>
-         </div> -->
          <div :key="this.championKey">
             <Champion v-for="(champ, i) in sortedChamps"
             :key="champ.championName"
@@ -298,14 +313,58 @@ export default {
 <style scoped>
 @import url('../../assets/stats.css');
 
-select {
+.sort button {
+   border: 1px solid var(--champion-filter-list-hover);
+   border-radius: 4px;
+   font-size: 15px;
    background: transparent;
+   color: var(--color-font);
+   padding: 5px;
+   cursor: pointer;
 }
 
-select option {
+.sort button:hover {
+   background: var(--champion-filter-list-hover);
+}
+
+button.order-button {
+   margin-left: 10px;
+}
+.sort-button:focus {
+   background: var(--champion-filter-list-hover);
+   outline: none;
+}
+
+.sort-dropdown {
+   position: absolute;
+   /* width: 200px; */
+   background: var(--champion-filter-list);
+   z-index: 5;
+   margin-bottom: 50px;
+}
+
+.sort-key {
+   padding-left: 15px;
+   text-decoration: underline;
+   font-weight: 500;
+   padding-top: 5px;
+   color: var(--blue600t);
+}
+.sort-item {
+   transition: 0.1s;
    color: var(--color-font);
-   background: var(--blue300s);
-   margin: 0 5px;
+   font-size: 14px;
+   padding: 8px 12px;
+   cursor: pointer;
+}
+
+.sort-item:hover {
+   background: var(--champion-filter-list-hover);
+}
+
+.sort {
+   color: var(--color-font);
+   padding-bottom: 10px;
 }
 
 .profile-sections div {
@@ -339,10 +398,7 @@ select option {
 .disable {
    pointer-events: none;
 }
-.sorting-by {
-   color: var(--color-font);
-   padding-bottom: 1rem;
-}
+
 
 
 .headers {

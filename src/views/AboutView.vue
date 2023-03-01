@@ -3,10 +3,10 @@
     <div>
       <h2>About</h2>
       <p>
-        <u>aramstats.lol</u> parses all of a summoner's ARAM games available in the Riot API.
+        <u>aramstats.lol</u> parses all of a summoner's ARAM games available in the Riot API to display insightful statistics.
       </p>
       <p>
-        Feel free to @owl#4626 in the <a href="https://discord.gg/MydvqhqWmM">aram academy</a> discord
+        @owl#4626 in the <a href="https://discord.gg/MydvqhqWmM">aram academy</a> discord
         if you have any neat ideas.
       </p>
     </div>

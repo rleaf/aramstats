@@ -17,7 +17,7 @@ export default {
    },
 
    methods: {
-      async onEnter() {
+      onEnter() {
          if (this.region == '' || this.input == '') {
             this.alertMessage = 'Enter a summoner name and/or region.'
             this.inputAlert = true

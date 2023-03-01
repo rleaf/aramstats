@@ -31,6 +31,7 @@ export default {
          return Math.round((this.champion.wins / this.champion.totalGames) * 100)
       },
       computeKDA() {
+         // console.log(this.champion)
          const stringValues = this.champion.averageKDA.split('/')
          const numberValues = []
 

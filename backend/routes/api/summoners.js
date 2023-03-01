@@ -124,7 +124,7 @@ async function totalMatches(collection) {
             'totalQuadraKills': stats.quadraKills,
             'totalPentaKills': stats.pentaKills,
             }
-         }
+         },
       )
    })
 }
@@ -317,7 +317,7 @@ async function matchParser(collection, matchlist, summoner, region) {
             await createChampionDocument(collection, match.championName)
             await collection.updateOne(
                {'championName': match.championName},
-               {$push: {'matches': {$each: [match], $position: 0}}}
+               {$push: {'matches': {$each: [match], $position: 0}}},
             )
          }
       }
