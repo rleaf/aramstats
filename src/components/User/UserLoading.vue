@@ -21,7 +21,7 @@ export default {
             This will take a bit when parsing a new summoner.
          </p>
          <p>
-            Ballpark 5-20 min.
+            Around 5-20 min.
          </p>
       </div>
    </div>

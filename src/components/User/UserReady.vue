@@ -24,7 +24,7 @@ export default {
       return {
          championInfo: this.userInfo.slice(1),
          profile: {
-            IconId: `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/profileicon/${this.userInfo[0].profileIconId}.png`,
+            IconId: `http://ddragon.leagueoflegends.com/cdn/13.4.1/img/profileicon/${this.userInfo[0].profileIconId}.png`,
             name: this.userInfo[0].name
          },
          selected: 'Total Games',
@@ -146,34 +146,8 @@ export default {
    },
 
    methods: {
-      sortProc(x) {
-         // (x == this.selected) ? (this.order = !this.order):
-         this.selected = x
-      },
-
       sortOrder() {
          this.order = !this.order
-      },
-
-      sortSection(x) {
-         if (x === 'test') return true
-      },
-
-      sortingBy() {
-         if (this.selected == 'Average Damage') {
-            if (this.dmgDpmState == 2 || this.dmgDpmState == 1) {
-               return 'Average Damage'
-            } else {
-               return 'Damage per minute'
-            }
-         }
-
-         return this.selected
-      },
-
-      avgDmgDpm(x) {
-         (this.dmgDpmState == 3) ? this.dmgDpmState = 0 : this.dmgDpmState++
-         this.sortProc(x)
       },
 
       async refreshSummoner() {
@@ -194,7 +168,6 @@ export default {
          this.refresh = 'Update'
       },
    }
-
 }
 </script>
 
@@ -213,27 +186,6 @@ export default {
                </div>
             </div>
             <Danger />
-            <!-- <div class="danger-zone">
-               <span style="color: var(--color-font); padding-right: 15px; font-size: 0.9rem;">old data? -></span> 
-               <a class="purge" @mouseover="hover = true" @mouseleave="hover = false" @click="deleteSummoner()" >
-                  Delete
-               </a>
-               <div class="purge-wrapper" >
-               </div>
-               <span v-if="hover" class="purge-tooltip">
-                  If you're seeing missing information, it is hopefully only because I made changes since the
-                  last time you parsed your summoner.
-                  <br><br>
-                  Older parses in the database may not store recently added stats and/or the 
-                  frontend may not be able to properly read recent variations made to the API.
-                  Click this if you'd like to delete your summoner from the database.
-                  You will have to search your profile again.
-                  <br><br>
-                  <u>Night Owl</u> on NA will always be UTD for reference.
-                  <br><br>
-                  Confirmation will appear after clicking.
-               </span>
-            </div> -->
          </div>
          <div class="profile-wrapper">
             <div class="profile-sections">
@@ -270,15 +222,11 @@ export default {
             <button class="order-button" @click="sortOrder()">{{ this.order ? ('Descending') : ('Ascending') }}</button>
 
             <div class="sort-dropdown" v-show="this.sortFocus">
-               <!-- <div :class="{ section: sortSection(option)}" class="sort-item" @mousedown="sortProc(option)"
-               v-for="(option, i) in sortOptions" :key="i">
-                  {{ option || '-' }}
-               </div> -->
                <div v-for="(option, i) in sortOptions" :key="i">
                   <div class="sort-key">
                      {{ option.key || '-' }}
                   </div>
-                  <div class="sort-item" v-for="value in option.values" :key="value" @mousedown="sortProc(value)">
+                  <div class="sort-item" v-for="value in option.values" :key="value" @mousedown="this.selected = value">
                      {{ value }}
                   </div>
                </div>
@@ -322,7 +270,6 @@ button.order-button {
 
 .sort-dropdown {
    position: absolute;
-   /* width: 200px; */
    background: var(--champion-filter-list);
    z-index: 5;
    margin-bottom: 50px;
@@ -372,7 +319,6 @@ button.order-button {
 }
 
 .profile-wrapper {
-   /* padding-left: 45px; */
    padding-top: 45px;
 }
 
@@ -383,8 +329,6 @@ button.order-button {
 .disable {
    pointer-events: none;
 }
-
-
 
 .headers {
    padding-left: 46px;

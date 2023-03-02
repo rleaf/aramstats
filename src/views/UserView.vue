@@ -12,50 +12,25 @@ import axios from 'axios'
       },
       data() {
          return {
-            userInfo: this.$route.params,
-            summonerInfo: null,
+            response: null,
             userReadyRender: false,
             userErrorRender: false,
-            activePull: false,
             errorStatusParent: Number,
          }
       },
-      // beforeRouteEnter(to, from, next) {
-      //    if (from.name == 'home') {
-      //       next(x => {
-      //          x.proc = true
-      //       })
-      //    } else {
-      //       next()
-      //    }
-      // },
       
       created() {
          this.lookup()
       },
 
-      // watch: {
-      //    summonerInfo(curr, prev) {
-      //       if (this.summonerInfo === 'pulling') {
-      //          return
-      //       } else {
-      //          // this.userReadyRender = true
-      //       }
-      //    }
-      // },
-      
       methods: {
          async lookup() {
             const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
 
             try {
-               let res = await axios.get(url)
-               this.summonerInfo = res.data
-               if (res.data === 'pulling') {
-                  return
-               } else {
-                  this.userReadyRender = true
-               }
+               const res = await axios.get(url)
+               this.response = res.data
+               this.userReadyRender = true
             } catch (e) {
                this.errorStatusParent = e.response.status
                this.userErrorRender = true
@@ -72,7 +47,7 @@ import axios from 'axios'
          v-if="!userReadyRender && !userErrorRender"/>
       <UserReady
          v-if="userReadyRender"
-         :userInfo="this.summonerInfo"/>
+         :userInfo="this.response"/>
       <UserError
          v-if="userErrorRender"
          :user="this.$route.params.username"
