@@ -16,5 +16,5 @@ insightful statistics.
 - [ ] Sort histogram by other stats aside from DPM
 - [ ] Site colors
 #### small
-- [ ] General "Summoner stats" to overview panel (average game length, average kda, kp, ds, etc...)
+- [x] General "Summoner stats" to overview panel (average game length, average kda, kp, ds, etc...)
 
