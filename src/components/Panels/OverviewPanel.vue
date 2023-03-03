@@ -10,15 +10,9 @@ export default {
       return {
          totalMatches: 0,
          totalWins: 0,
-         // classProfile: [
-         //    { class: 'Controller', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0},
-         //    { class: 'Fighter', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0},
-         //    { class: 'Mage', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0},
-         //    { class: 'Marksman', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0},
-         //    { class: 'Slayer', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0},
-         //    { class: 'Tank', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0},
-         //    { class: 'Specialist', Enchanter: 0, Catcher: 0, Juggernaut: 0, Diver: 0, Mage: 0, Burst: 0, Battlemage: 0, Artillery: 0, Marksman: 0, Assassin: 0, Skirmisher: 0, Vanguard: 0, Warden: 0, Specialist: 0}
-         // ],
+         totalKP: 0,
+         totalKDA: [0, 0, 0], // [kills, deaths, assists]
+         totalMultikills: [0, 0, 0], // [trip, quad, pen]
          classProfile: [
             { class: 'Controller', Total: 0, Enchanter: 0, Catcher: 0},
             { class: 'Fighter', Total: 0, Juggernaut: 0, Diver: 0},
@@ -28,7 +22,6 @@ export default {
             { class: 'Tank', Total: 0, Vanguard: 0, Warden: 0},
             { class: 'Specialist', Total: 0, Specialist: 0}
          ],
-
          classIndexTable: {
             Enchanter: 0,
             Catcher: 0,
@@ -49,20 +42,29 @@ export default {
    },
 
    created(){ 
-      this.winrate()
+      this.iterate()
       this.classProfiler()
    },
 
    methods: {
-      winrate() {
+      iterate() {
          for (const champ of this.data) {
             this.totalMatches += champ.totalGames
             this.totalWins += champ.wins
+
+            this.totalKDA[0] += champ.averageKills
+            this.totalKDA[1] += champ.averageDeaths
+            this.totalKDA[2] += champ.averageAssists
+
+            this.totalKP += champ.averageKillParticipation
+
+            this.totalMultikills[0] += champ.totalTripleKills
+            this.totalMultikills[1] += champ.totalQuadraKills
+            this.totalMultikills[2] += champ.totalPentaKills
          }
       },
 
       classProfiler() {
-
          // Iterate through champions
          for(const champion of this.data) {
             let gameCount = champion.matches.length
@@ -78,8 +80,7 @@ export default {
             for(const mainClass of this.classProfile) {
                mainClass.Total = Object.values(mainClass).slice(2).reduce((a, b) => a + b)
             }
-         }
-         
+         } 
       }
    },
 
@@ -90,34 +91,86 @@ export default {
    computed: {
       classData() {
          return this.classProfile
-      }
+      },
 
+      kdr() {
+         return `${Math.round(((this.totalKDA[0] + this.totalKDA[2]) / this.totalKDA[1]) * 100) / 100}`
+      },
+
+      kp() {
+         return `${Math.round(this.totalKP / this.data.length)}`
+      },
    }
 }
 </script>
 
 <template>
    <div class="overview-main">
-      <div class="overview-stats">
-         <div class="percent-frac">
+      <div class="tile-grid">
+         
+         <div class="tile i1">
+            <p>Winrate</p>
             <div class="wr-percent">
                {{ Math.round((this.totalWins / this.totalMatches) * 1000) / 10 }}%
             </div>
-            <div class="wr-frac">
-               ({{ this.totalWins }}/{{ this.totalMatches }}) WR
+         </div>
+         <div class="tile i2">
+            <p>Win / Loss</p>
+            <div class="wr-percent">
+               {{ this.totalWins }} / {{ this.totalMatches }}
             </div>
          </div>
+         <div class="tile i3">
+            <p>Kill Participation</p>
+            <div class="wr-percent">
+               {{ kp }}%
+            </div>
+         </div>
+         <div class="tile i4">
+            <p>KDA Ratio</p>
+            <div class="wr-percent">
+               {{ kdr }}
+            </div>
+         </div>
+         <div class="tile footer">
+            <div>
+               <p>Triples</p>
+               <div class="wr-percent">
+                  {{ this.totalMultikills[0] }}
+               </div>
+            </div>
+            <div>
+               <p>Quads</p>
+               <div class="wr-percent">
+                  {{ this.totalMultikills[1] }}
+               </div>
+            </div>
+            <div>
+               <p>Pentas</p>
+               <div class="wr-percent">
+                  {{ this.totalMultikills[2] }}
+               </div>
+            </div>
+         </div>
+         
       </div>
-      <StackedBarplot :data="classData"/>
+      <StackedBarplot :data="this.classProfile"/>
 
    </div>
 </template>
 
 <style scoped>
-.percent-frac {
-      display: flex;
-      align-items: center;
-      padding-top: 15px;
+   .tile p {
+      margin: 0;
+   }
+   h3 {
+      margin: 0;
+   }
+   .tile {
+      background: var(--champion-search-bar);
+      padding: 10px;
+      margin: 10px;
+      border-radius: 10px;;
    }
    .wr-frac {
       color: var(--color-font-fade);
@@ -127,25 +180,39 @@ export default {
 
    .wr-percent {
       font-weight: bold;
-      font-size: 1.5rem;
-      color: var(--header-stats);
+      font-size: 20px;
+      /* color: var(--header-stats); */
+   }
+   .i1 {
+      grid-area: i1;
+   }
+   .i2 {
+      grid-area: i2;
+   }
+   .i3 {
+      grid-area: i3;
+   }
+   .i4 {
+      grid-area: i4;
    }
 
-   .overview-stats {
+   .footer {
+      grid-area: footer;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 305px;
+      justify-content: space-around;
+   }
+
+   .tile-grid {
+      display: grid;
+      grid-template-areas: 
+      'i1 i2'
+      'i3 i4'
+      'footer footer';
+      /* align-items: center; */
+      height: 310px;
       border-radius: 10px;
       background: var(--profile-panel);
-   }
-   .overview-header {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      padding-left: 30px;
-      border-bottom: 1px solid var(--color-font);
-      height: 51px;
+      color: var(--color-font);
    }
 
    .overview-main {

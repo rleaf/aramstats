@@ -26,17 +26,21 @@ export default {
       trueChampionName() {
          return (this.champion.trueChampionName) ? this.champion.trueChampionName : this.champion.championName
       },
+
       winPercent() {
          return Math.round((this.champion.wins / this.champion.totalGames) * 100)
       },
-      computeKDA() {
-         const stringValues = this.champion.averageKDA.split('/')
-         const numberValues = []
 
-         stringValues.forEach((x) => numberValues.push(parseInt(x)))
-
-         return Math.round((numberValues[0] + numberValues[2]) / numberValues[1] * 100) / 100
+      kda() {
+         if (!this.champion.averageKills) return '-'
+         return `${this.champion.averageKills}/${this.champion.averageDeaths}/${this.champion.averageAssists}`
       },
+
+      kdr() {
+         if (!this.champion.averageKills) return '-'
+         return `${Math.round(((this.champion.averageKills + this.champion.averageAssists) / this.champion.averageDeaths) * 100) / 100}`
+      },
+
       arrow() {
          return new URL(`../assets/arrow.svg`, import.meta.url).href
       }
@@ -67,9 +71,9 @@ export default {
             </div>
             <div class="avg-kda cell">
                <p class="main">
-                  {{ this.champion.averageKDA }} <span class="unit">KDA</span>
+                  {{ kda }} <span class="unit">KDA</span>
                </p>
-               {{ computeKDA }}, {{ this.champion.averageKillParticipation || '-' }}% <span class="unit">KP</span>
+               {{ kdr || '-' }}, {{ this.champion.averageKillParticipation || '-' }}% <span class="unit">KP</span>
             </div>
             <div class="tqp-wrapper cell">
                <div class="tqp-1">

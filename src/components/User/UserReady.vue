@@ -30,10 +30,9 @@ export default {
          selected: 'Total Games',
          refresh: 'Update',
          order: true,
-         dmgDpmState: 0,
          championKey: 0,
          isDisabled: false,
-         profileSection: 0,
+         panel: 0,
          sortFocus: false,
          sortOptions: [
             {
@@ -42,7 +41,7 @@ export default {
             },
             {
                key: 'Damage',
-               values: ['Damage', 'DPM']
+               values: ['Damage', 'DPM', 'Damage Share']
             },
             {
                key: 'Heal',
@@ -58,86 +57,47 @@ export default {
             },
             {
                key: 'Misc',
-               values: ['Gold', 'GPM']
+               values: ['Kill Participation', 'Gold', 'GPM']
             },
-            
          ]
       }
    },
 
    computed: {
       sortedChamps() {
-         /* 
-         * Please figure out a better way to deal with this.
-         */
-         switch (this.selected) {
-            case 'Champion':
-               return (this.order) ?
-                  this.championInfo.sort((a, b) => a.championName.localeCompare(b.championName)):
-                  this.championInfo.sort((a, b) => b.championName.localeCompare(a.championName))
-            case 'Total Games':
-               return (this.order) ?
-                  this.championInfo.sort((a, b) => b.totalGames - a.totalGames):
-                  this.championInfo.sort((a, b) => a.totalGames - b.totalGames)
-            case 'Wins':
-               return (this.order) ?
-                  this.championInfo.sort((a, b) => b.wins - a.wins):
-                  this.championInfo.sort((a, b) => a.wins - b.wins)
-            case 'Damage':
-               return (this.order) ?
-                  this.championInfo.sort((a, b) => b.averageTotalDamageDealt - a.averageTotalDamageDealt):
-                  this.championInfo.sort((a, b) => a.averageTotalDamageDealt - b.averageTotalDamageDealt)
-            case 'DPM':
-               return (this.order) ?
-                  this.championInfo.sort((a, b) => b.averageDamagePerMinute - a.averageDamagePerMinute) :
-                  this.championInfo.sort((a, b) => a.averageDamagePerMinute - b.averageDamagePerMinute)
-            case 'Healing':
-               return (this.order) ?
-                  this.championInfo.sort((a, b) => b.averageTotalHeal - a.averageTotalHeal):
-                  this.championInfo.sort((a, b) => a.averageTotalHeal - b.averageTotalHeal)
-            case 'HPM':
-               return (this.order) ?
-                  this.championInfo.sort((a, b) => b.averageHealingPerMinute - a.averageHealingPerMinute):
-                  this.championInfo.sort((a, b) => a.averageHealingPerMinute - b.averageHealingPerMinute)
-            case 'Ally Healing':
-               return (this.order) ?
-                  this.championInfo.sort((a, b) => b.averageHealingOnTeammates - a.averageHealingOnTeammates):
-                  this.championInfo.sort((a, b) => a.averageHealingOnTeammates - b.averageHealingOnTeammates)
-            case 'Ally HPM':
-               return (this.order) ?
-                  this.championInfo.sort((a, b) => b.averageAllyHealPerMinute - a.averageAllyHealPerMinute):
-                  this.championInfo.sort((a, b) => a.averageAllyHealPerMinute - b.averageAllyHealPerMinute)
-            case 'Damage Taken':
-               return (this.order) ?
-                  this.championInfo.sort((a, b) => b.averageTotalDamageTaken - a.averageTotalDamageTaken):
-                  this.championInfo.sort((a, b) => a.averageTotalDamageTaken - b.averageTotalDamageTaken)
-            case 'Damage Mitigated':
-               return (this.order) ?
-                  this.championInfo.sort((a, b) => b.averageTotalSelfMitigated - a.averageTotalSelfMitigated):
-                  this.championInfo.sort((a, b) => a.averageTotalSelfMitigated - b.averageTotalSelfMitigated)
-            case 'Gold':
-               return (this.order) ?
-                  this.championInfo.sort((a, b) => b.averageGoldEarned - a.averageGoldEarned):
-                  this.championInfo.sort((a, b) => a.averageGoldEarned - b.averageGoldEarned)
-            case 'GPM':
-               return (this.order) ?
-                  this.championInfo.sort((a, b) => b.averageGoldPerMinute - a.averageGoldPerMinute):
-                  this.championInfo.sort((a, b) => a.averageGoldPerMinute - b.averageGoldPerMinute)
-            case 'Triple kills':
-               return (this.order) ?
-                  this.championInfo.sort((a, b) => b.totalTripleKills - a.totalTripleKills):
-                  this.championInfo.sort((a, b) => a.totalTripleKills - b.totalTripleKills)
-            case 'Quadra kills':
-               return (this.order) ?
-                  this.championInfo.sort((a, b) => b.totalQuadraKills - a.totalQuadraKills):
-                  this.championInfo.sort((a, b) => a.totalQuadraKills - b.totalQuadraKills)
-            case 'Penta kills':
-               return (this.order) ?
-                  this.championInfo.sort((a, b) => b.totalPentaKills - a.totalPentaKills):
-                  this.championInfo.sort((a, b) => a.totalPentaKills - b.totalPentaKills)
-            default:
-               return this.championInfo.sort((a, b) => b.totalGames - a.totalGames)
+         const table = {
+            'Champion': 'championName',
+            'Total Games': 'totalGames',
+            'Wins': 'wins',
+            'Damage': 'averageTotalDamageDealt',
+            'DPM': 'averageDamagePerMinute',
+            'Healing': 'averageTotalHeal',
+            'HPM': 'averageHealPerMinute',
+            'Ally Healing': 'averageHealingOnTeammates',
+            'Ally HPM': 'averageAllyHealPerMinute',
+            'Damage Taken': 'averageTotalDamageTaken',
+            'DTPM': 'averageDamageTakenPerMinute',
+            'Damage Mitigated': 'averageTotalSelfMitigated',
+            'DMPM': 'averageSelfMitigatedPerMinute',
+            'Gold': 'averageGoldEarned',
+            'GPM': 'averageGoldPerMinute',
+            'Kill Participation': 'averageKillParticipation',
+            'Damage Share': 'averageDamageShare',
+            'Triple kills': 'totalTripleKills',
+            'Quadra kills': 'totalQuadraKills',
+            'Penta kills': 'totalPentaKills',
          }
+         if (this.selected === 'Champion') {
+            return (this.order) ?
+            this.championInfo.sort((a, b) => a.championName.localeCompare(b.championName)) :
+            this.championInfo.sort((a, b) => b.championName.localeCompare(a.championName))
+         }
+         
+         const value = table[this.selected]
+
+         return (this.order) ?
+            this.championInfo.sort((a, b) => b[value] - a[value]) :
+            this.championInfo.sort((a, b) => a[value] - b[value])
       }
    },
 
@@ -146,10 +106,6 @@ export default {
    },
 
    methods: {
-      sortOrder() {
-         this.order = !this.order
-      },
-
       async refreshSummoner() {
          this.isDisabled = true
          const url = `/api/summoners/update/${this.$route.params.region}/${this.$route.params.username}`
@@ -190,28 +146,28 @@ export default {
          <div class="profile-wrapper">
             <div class="profile-sections">
                <div class="summoner-profile-tab"
-                  :class="{ 'active-tab': this.profileSection == 0 }"
-                  @click="this.profileSection = 0">
+                  :class="{ 'active-tab': this.panel == 0 }"
+                  @click="this.panel = 0">
                   Overview
                </div>
                <div class="summoner-profile-tab"
-                  :class="{ 'active-tab': this.profileSection == 1 }"
-                  @click="this.profileSection = 1">
+                  :class="{ 'active-tab': this.panel == 1 }"
+                  @click="this.panel = 1">
                   Champion
                </div>
                <div class="summoner-profile-tab"
-                  :class="{ 'active-tab': this.profileSection == 2 }"
-                  @click="this.profileSection = 2">
+                  :class="{ 'active-tab': this.panel == 2 }"
+                  @click="this.panel = 2">
                   Challenges
                </div>
             </div>
-            <div class="profile" v-show="this.profileSection == 0">
+            <div class="profile" v-show="this.panel == 0">
                <OverviewPanel :data="this.championInfo" />
             </div>
-            <div class="profile" v-show="this.profileSection == 1">
+            <div class="profile" v-show="this.panel == 1">
                <ChampionPanel :data="this.championInfo"/>
             </div>
-            <div class="profile" v-show="this.profileSection == 2">
+            <div class="profile" v-show="this.panel == 2">
                <ChallengePanel :data="this.championInfo"/>
             </div>
          </div>
@@ -219,9 +175,10 @@ export default {
       <div class="stats-main">
          <div class="sort">
             <button class="sort-button" @click="this.sortFocus = true" @blur="this.sortFocus = false">Sort by: {{ this.selected || 'Total Games'}}</button>
-            <button class="order-button" @click="sortOrder()">{{ this.order ? ('Descending') : ('Ascending') }}</button>
+            <button class="order-button" @click="this.order = !this.order">{{ this.order ? ('Descending') : ('Ascending') }}</button>
 
             <div class="sort-dropdown" v-show="this.sortFocus">
+            <!-- <div class="sort-dropdown"> -->
                <div v-for="(option, i) in sortOptions" :key="i">
                   <div class="sort-key">
                      {{ option.key || '-' }}
@@ -270,28 +227,31 @@ button.order-button {
 
 .sort-dropdown {
    position: absolute;
+   display: flex;
+   width: 700px;
+   justify-content: space-around;
    background: var(--champion-filter-list);
    z-index: 5;
-   margin-bottom: 50px;
+   padding: 10px 0;
 }
 
 .sort-key {
-   padding-left: 15px;
    text-decoration: underline;
+   padding-bottom: 5px;
    font-weight: 500;
-   padding-top: 5px;
+   /* padding-top: 20px; */
    color: var(--blue600t);
 }
 .sort-item {
    transition: 0.1s;
-   color: var(--color-font);
+   color: var(--light700);
    font-size: 14px;
-   padding: 8px 12px;
+   padding: 2px 0;
    cursor: pointer;
 }
 
 .sort-item:hover {
-   background: var(--champion-filter-list-hover);
+   color: var(--color-font);
 }
 
 .sort {

@@ -26,9 +26,7 @@ export default {
    },
 
    created() {
-      this.nunuIndex = this.data.findIndex((e) => {
-         return e.championName == 'Nunu'
-      })
+      this.nunuIndex = this.data.findIndex(e => e.championName == 'Nunu')
 
       // no...nunu...games...?
       if (this.nunuIndex == -1) this.nunuIndex = 3
@@ -103,9 +101,12 @@ export default {
          return Math.round((this.championData.wins / this.championData.matches.length) * 100)
       },
 
+      kda() {
+         return `${this.championData.averageKills}/${this.championData.averageDeaths}/${this.championData.averageAssists}`
+      },
+
       kdr() {
-         let x = this.championData.averageKDA.split('/').map(x => parseInt(x))
-         return `${Math.round(( (x[0]+x[2]) / x[1] ) * 100) / 100}`
+         return `${Math.round(((this.championData.averageKills + this.championData.averageAssists) / this.championData.averageDeaths) * 100) / 100}`
       },
 
       background() {
@@ -158,7 +159,7 @@ export default {
                   {{ kdr }}
                </div>
                <div class="wr-fraction">
-                  ({{ this.championData.averageKDA }}) KDA
+                  ({{ kda }}) KDA
                </div>
             </div>
          </div>

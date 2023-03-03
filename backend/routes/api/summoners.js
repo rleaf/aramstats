@@ -67,9 +67,11 @@ router
          // Average all matches
          await championParser(summonerCollection)
 
+
          console.log(`Finished parsing ${summoner.name} (${req.params.region})`)
          result = (await client.collection(summoner.name).find({}).toArray())
          res.send(result)
+
       } else {
 
          res.sendStatus(504)
@@ -87,20 +89,52 @@ router
       }
    })
 
-async function championParser(collection) {
+async function championParser(collection, callback) {
 
    const allChamps = await collection.find(
       {'championName': {$exists: true}}
    ).toArray()
    
    // Parse average stats of all games
-   allChamps.forEach(async x => {
+   // allChamps.forEach(async x => {
 
-      let stats = cat.averages(x.matches)
+   //    let stats = cat.averages(x.matches)
+
+   //    // Pushing data
+   //    await collection.updateOne(
+   //       {'championName': x.championName},
+   //       {$set: {
+   //          'totalGames': stats.totalGames,
+   //          'wins': stats.wins,
+   //          'averageTotalDamageDealt': stats.avg.dmgDealt,
+   //          'averageDamagePerMinute': stats.avg.damagePerMinute,
+   //          'averageTotalHeal': stats.avg.heal,
+   //          'averageHealPerMinute': stats.avg.healPerMinute,
+   //          'averageHealingOnTeammates': stats.avg.healingOnTeam,
+   //          'averageAllyHealPerMinute': stats.avg.allyHealPerMinute,
+   //          'averageTotalDamageTaken': stats.avg.tank,
+   //          'averageDamageTakenPerMinute': stats.avg.damageTakenPerMinute,
+   //          'averageTotalSelfMitigated': stats.avg.mitigated,
+   //          'averageSelfMitigatedPerMinute': stats.avg.selfMitigatedPerMinute,
+   //          'averageKDA': `${stats.avg.kills}/${stats.avg.deaths}/${stats.avg.assists}`,
+   //          'averageKillParticipation': stats.avg.killParticipation,
+   //          'averageDamageShare': stats.avg.damageShare,
+   //          'averageGoldEarned': stats.avg.gold,
+   //          'averageGoldPerMinute': stats.avg.goldPerMinute,
+   //          'totalTripleKills': stats.tripleKills,
+   //          'totalQuadraKills': stats.quadraKills,
+   //          'totalPentaKills': stats.pentaKills,
+   //          }
+   //       },
+   //    )
+   // })
+
+   for (let i = 0; i < allChamps.length; i++) {
+      let stats = cat.averages(allChamps[i].matches)
 
       // Pushing data
       await collection.updateOne(
-         {'championName': x.championName},
+         {'championName': allChamps[i].championName},
          {$set: {
             'totalGames': stats.totalGames,
             'wins': stats.wins,
@@ -108,14 +142,16 @@ async function championParser(collection) {
             'averageDamagePerMinute': stats.avg.damagePerMinute,
             'averageTotalHeal': stats.avg.heal,
             'averageHealPerMinute': stats.avg.healPerMinute,
-            'averageHealingPerMinute': stats.avg.heal,
             'averageHealingOnTeammates': stats.avg.healingOnTeam,
             'averageAllyHealPerMinute': stats.avg.allyHealPerMinute,
             'averageTotalDamageTaken': stats.avg.tank,
             'averageDamageTakenPerMinute': stats.avg.damageTakenPerMinute,
             'averageTotalSelfMitigated': stats.avg.mitigated,
             'averageSelfMitigatedPerMinute': stats.avg.selfMitigatedPerMinute,
-            'averageKDA': `${stats.avg.kills}/${stats.avg.deaths}/${stats.avg.assists}`,
+            // 'averageKDA': `${stats.avg.kills}/${stats.avg.deaths}/${stats.avg.assists}`,
+            'averageKills': stats.avg.kills,
+            'averageDeaths': stats.avg.deaths,
+            'averageAssists': stats.avg.assists,
             'averageKillParticipation': stats.avg.killParticipation,
             'averageDamageShare': stats.avg.damageShare,
             'averageGoldEarned': stats.avg.gold,
@@ -125,8 +161,8 @@ async function championParser(collection) {
             'totalPentaKills': stats.pentaKills,
             }
          },
-      )
-   })
+      )   
+   }
 }
 
 router.get('/update/:region/:summonerURI', async (req, res) => {
@@ -348,33 +384,33 @@ async function createChampionDocument(collection, champion) {
          { 
             championName: champion,
             trueChampionName: championNameBook[champion],
-            totalGames: 0,
-            wins: 0,
-            averageTotalDamageDealt: 0,
-            averageDamagePerMinute: 0,
+            // totalGames: 0,
+            // wins: 0,
+            // averageTotalDamageDealt: 0,
+            // averageDamagePerMinute: 0,
 
-            averageTotalHeal: 0,
-            averageHealPerMinute: 0,
+            // averageTotalHeal: 0,
+            // averageHealPerMinute: 0,
 
-            averageHealingOnTeammates: 0,
-            averageAllyHealPerMinute: 0,
+            // averageHealingOnTeammates: 0,
+            // averageAllyHealPerMinute: 0,
 
-            averageTotalDamageTaken: 0,
-            averageDamageTakenPerMinute: 0,
+            // averageTotalDamageTaken: 0,
+            // averageDamageTakenPerMinute: 0,
 
-            averageTotalSelfMitigated: 0,
-            averageSelfMitigatedPerMinute: 0,
+            // averageTotalSelfMitigated: 0,
+            // averageSelfMitigatedPerMinute: 0,
 
-            averageKDA: '',
+            // averageKDA: '',
 
-            averageKillParticipation: 0,
-            averageDamageShare: 0,
+            // averageKillParticipation: 0,
+            // averageDamageShare: 0,
 
-            averageGoldEarned: 0,
-            averageGoldPerMinute: 0,
-            totalTripleKills: 0,
-            totalQuadraKills: 0,
-            totalPentaKills: 0,
+            // averageGoldEarned: 0,
+            // averageGoldPerMinute: 0,
+            // totalTripleKills: 0,
+            // totalQuadraKills: 0,
+            // totalPentaKills: 0,
             matches: []
          }
       )
