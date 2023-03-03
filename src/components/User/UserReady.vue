@@ -227,12 +227,13 @@ button.order-button {
 
 .sort-dropdown {
    position: absolute;
+   border-radius: 5px;
    display: flex;
    width: 700px;
    justify-content: space-around;
    background: var(--champion-filter-list);
    z-index: 5;
-   padding: 10px 0;
+   padding: 15px 10px;
 }
 
 .sort-key {
@@ -246,7 +247,7 @@ button.order-button {
    transition: 0.1s;
    color: var(--light700);
    font-size: 14px;
-   padding: 2px 0;
+   line-height: 2;
    cursor: pointer;
 }
 

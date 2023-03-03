@@ -115,7 +115,7 @@ export default {
             </div>
          </div>
          <div class="tile i2">
-            <p>Win / Loss</p>
+            <p>Wins / Total</p>
             <div class="wr-percent">
                {{ this.totalWins }} / {{ this.totalMatches }}
             </div>
@@ -168,7 +168,7 @@ export default {
    }
    .tile {
       background: var(--champion-search-bar);
-      padding: 10px;
+      padding: 12px;
       margin: 10px;
       border-radius: 10px;;
    }
@@ -181,8 +181,8 @@ export default {
    .wr-percent {
       font-weight: bold;
       font-size: 20px;
-      /* color: var(--header-stats); */
    }
+
    .i1 {
       grid-area: i1;
    }
@@ -208,7 +208,6 @@ export default {
       'i1 i2'
       'i3 i4'
       'footer footer';
-      /* align-items: center; */
       height: 310px;
       border-radius: 10px;
       background: var(--profile-panel);

@@ -148,7 +148,6 @@ async function championParser(collection, callback) {
             'averageDamageTakenPerMinute': stats.avg.damageTakenPerMinute,
             'averageTotalSelfMitigated': stats.avg.mitigated,
             'averageSelfMitigatedPerMinute': stats.avg.selfMitigatedPerMinute,
-            // 'averageKDA': `${stats.avg.kills}/${stats.avg.deaths}/${stats.avg.assists}`,
             'averageKills': stats.avg.kills,
             'averageDeaths': stats.avg.deaths,
             'averageAssists': stats.avg.assists,
