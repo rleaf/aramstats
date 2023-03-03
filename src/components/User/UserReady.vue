@@ -99,6 +99,10 @@ export default {
          return (this.order) ?
             this.championInfo.sort((a, b) => b[value] - a[value]) :
             this.championInfo.sort((a, b) => a[value] - b[value])
+      },
+
+      bongocat() {
+         return new URL(`../../assets/bongo-cat.gif`, import.meta.url).href
       }
    },
 
@@ -107,7 +111,7 @@ export default {
    },
 
    methods: {
-      async refreshSummoner() {
+      async updateSummoner() {
          this.isDisabled = true
          const url = `/api/summoners/update/${this.$route.params.region}/${this.$route.params.username}`
 
@@ -138,11 +142,13 @@ export default {
                {{ this.profile.name }}
 
                <div class="refresh-button">
-                  <a :class="{ disable: this.isDisabled }" @click="refreshSummoner()">
+                  <a :class="{ disable: this.isDisabled }" @click="updateSummoner()">
                      {{ this.refresh }}
                   </a>
                </div>
             </div>
+            <img class="bongo-cat" :src="bongocat" v-show="this.isDisabled">
+            <!-- <img class="bongo-cat" :src="bongocat"> -->
             <Danger />
          </div>
          <div class="profile-wrapper">
@@ -208,6 +214,11 @@ export default {
 
 <style scoped>
 @import url('../../assets/stats.css');
+
+.bongo-cat {
+   padding-left: 50px;
+   height: 90px;
+}
 
 .sort button {
    border: 1px solid var(--champion-filter-list-hover);

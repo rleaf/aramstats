@@ -8,7 +8,7 @@ insightful statistics.
 #### Ideas, organized by amount of work.
 
 #### big
-- [ ] Add challenge tokens
+- [x] Add challenge tokens
 - [ ] Store match data (Click on individual matches to see team/enemy comp, etc...)
 #### med
 - [x] Add KP & DS
