@@ -23,6 +23,7 @@ export default {
    data() {
       return {
          championInfo: this.userInfo.slice(1),
+         challengeInfo: this.userInfo[0].challenges,
          profile: {
             IconId: `http://ddragon.leagueoflegends.com/cdn/13.4.1/img/profileicon/${this.userInfo[0].profileIconId}.png`,
             name: this.userInfo[0].name
@@ -30,7 +31,7 @@ export default {
          selected: 'Total Games',
          refresh: 'Update',
          order: true,
-         championKey: 0,
+         updateKey: 0,
          isDisabled: false,
          panel: 0,
          sortFocus: false,
@@ -113,9 +114,10 @@ export default {
          this.refresh = 'Updating...'
          let res = await axios.get(url)
          this.championInfo = res.data.slice(1)
+         this.challengeInfo = res.data[0].challenges
 
          // Rerender champ list
-         this.championKey += 1
+         this.updateKey += 1
 
          // Re-enable button
          this.isDisabled = false
@@ -167,15 +169,19 @@ export default {
             <div class="profile" v-show="this.panel == 1">
                <ChampionPanel :data="this.championInfo"/>
             </div>
-            <div class="profile" v-show="this.panel == 2">
-               <ChallengePanel :data="this.championInfo"/>
+            <div class="profile" v-show="this.panel == 2" >
+               <ChallengePanel :data="this.challengeInfo" :key="this.updateKey"/>
             </div>
          </div>
       </div>
       <div class="stats-main">
          <div class="sort">
-            <button class="sort-button" @click="this.sortFocus = true" @blur="this.sortFocus = false">Sort by: {{ this.selected || 'Total Games'}}</button>
-            <button class="order-button" @click="this.order = !this.order">{{ this.order ? ('Descending') : ('Ascending') }}</button>
+            <button class="sort-button" @click="this.sortFocus = true" @blur="this.sortFocus = false">
+               Sort by: {{ this.selected || 'Total Games'}}
+            </button>
+            <button class="order-button" @click="this.order = !this.order">
+               {{ this.order ? ('Descending') : ('Ascending') }}
+            </button>
 
             <div class="sort-dropdown" v-show="this.sortFocus">
             <!-- <div class="sort-dropdown"> -->
@@ -189,7 +195,7 @@ export default {
                </div>
             </div>
          </div>
-         <div :key="this.championKey">
+         <div :key="this.updateKey">
             <Champion v-for="(champ, i) in sortedChamps"
             :key="champ.championName"
             :champion=champ

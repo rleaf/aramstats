@@ -36,18 +36,24 @@ const REGION_GROUPS = {
    br: RegionGroups.AMERICAS,
 }
 
-// Get Summoner info
+/* 
+* Summoner info.
+*/
 async function getSummoner(summoner, region) {
    return (await api.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
 }
 
-// Get variable match history of ARAM games. Primarily used for utility.
+/* 
+* Variable match history for ARAM (450). Used for utility.
+*/
 async function getSummonerMatches(summoner, region) {
    const summonerGet = (await api.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
    return (await api.MatchV5.list(summonerGet.puuid, REGION_GROUPS[region], { queue: 450, start: 0, count: 5 })).response
 }
 
-// Get total match history of ARAM games
+/* 
+* Total match history for ARAM (450).
+*/
 async function getAllSummonerMatches(summoner, region) {
    const summonerGet = (await api.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
    let matchList = []
@@ -64,32 +70,25 @@ async function getAllSummonerMatches(summoner, region) {
    return matchList.flat()
 }
 
-// Get Match Info
+/* 
+* Match info.
+*/
 async function getMatchInfo(matchId, region) {
    return (await api.MatchV5.get(matchId, REGION_GROUPS[region])).response  
 }
 
-
-// async function matchV5TimelineLatestMatchExample(summoner, region) {
-
-//   const summonerGet = (await api.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
-// //   console.log("Found summoner:", summonerGet.puuid)
-
-//   const matchlist = (await api.MatchV5.list(summonerGet.puuid, RegionGroups.AMERICAS, { queue: 450 })).response
-// //   console.log("Matchlist length:", matchlist.length)
-
-//   const matchId = matchlist[0]
-//   const match = (await api.MatchV5.get(matchId, RegionGroups.AMERICAS)).response
-// //   console.log("Found match with id:", match.metadata.matchId)
-
-//   const timeline = (await api.MatchV5.timeline(matchId, RegionGroups.AMERICAS)).response
-// //   console.log("Timeline length:", timeline.info.frames.length)
-// }
+/* 
+* Player Challenges.
+*/
+async function playerChallenges(puuid, region) {
+   return (await api.Challenges.PlayerChallenges(puuid, REGION_CONSTANTS[region])).response
+}
 
 
 module.exports = {
    getSummoner,
    getSummonerMatches,
    getAllSummonerMatches,
-   getMatchInfo
+   getMatchInfo,
+   playerChallenges
 }

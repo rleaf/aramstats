@@ -4,6 +4,7 @@ const dotenv = require('dotenv')
 const twisted = require('../../twisted_calls')
 const cat = require('../../cat')
 const championNameBook = require('../../constants/championNames')
+const challengeIds = require('../../constants/challengesIds')
 
 dotenv.config()
 
@@ -67,6 +68,8 @@ router
          // Average all matches
          await championParser(summonerCollection)
 
+         await challengeScribe(summoner, summonerCollection, req.params.region)
+
 
          console.log(`Finished parsing ${summoner.name} (${req.params.region})`)
          result = (await client.collection(summoner.name).find({}).toArray())
@@ -89,46 +92,24 @@ router
       }
    })
 
-async function championParser(collection, callback) {
+async function challengeScribe(summoner, collection, region) {
+   const challengesDto = await twisted.playerChallenges(summoner.puuid, region)
+   const challenges = challengesDto.challenges.filter(el => challengeIds.includes(el.challengeId))
+   
+   collection.updateOne(
+      {'name': summoner.name},
+      {$set: {'challenges': challenges}},
+      {upsert: true}
+   )
+}
+
+async function championParser(collection) {
 
    const allChamps = await collection.find(
       {'championName': {$exists: true}}
    ).toArray()
    
    // Parse average stats of all games
-   // allChamps.forEach(async x => {
-
-   //    let stats = cat.averages(x.matches)
-
-   //    // Pushing data
-   //    await collection.updateOne(
-   //       {'championName': x.championName},
-   //       {$set: {
-   //          'totalGames': stats.totalGames,
-   //          'wins': stats.wins,
-   //          'averageTotalDamageDealt': stats.avg.dmgDealt,
-   //          'averageDamagePerMinute': stats.avg.damagePerMinute,
-   //          'averageTotalHeal': stats.avg.heal,
-   //          'averageHealPerMinute': stats.avg.healPerMinute,
-   //          'averageHealingOnTeammates': stats.avg.healingOnTeam,
-   //          'averageAllyHealPerMinute': stats.avg.allyHealPerMinute,
-   //          'averageTotalDamageTaken': stats.avg.tank,
-   //          'averageDamageTakenPerMinute': stats.avg.damageTakenPerMinute,
-   //          'averageTotalSelfMitigated': stats.avg.mitigated,
-   //          'averageSelfMitigatedPerMinute': stats.avg.selfMitigatedPerMinute,
-   //          'averageKDA': `${stats.avg.kills}/${stats.avg.deaths}/${stats.avg.assists}`,
-   //          'averageKillParticipation': stats.avg.killParticipation,
-   //          'averageDamageShare': stats.avg.damageShare,
-   //          'averageGoldEarned': stats.avg.gold,
-   //          'averageGoldPerMinute': stats.avg.goldPerMinute,
-   //          'totalTripleKills': stats.tripleKills,
-   //          'totalQuadraKills': stats.quadraKills,
-   //          'totalPentaKills': stats.pentaKills,
-   //          }
-   //       },
-   //    )
-   // })
-
    for (let i = 0; i < allChamps.length; i++) {
       let stats = cat.averages(allChamps[i].matches)
 
@@ -177,6 +158,8 @@ router.get('/update/:region/:summonerURI', async (req, res) => {
    check = await summonerCollection.findOne(
       {'activePull': {$exists: true}}
    )
+
+   await challengeScribe(summoner, summonerCollection, req.params.region)
 
    if(check && check.activePull == true) {
       console.log(`Already updating ${summoner.name} (${req.params.region})`)
