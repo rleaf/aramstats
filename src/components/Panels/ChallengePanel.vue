@@ -10,9 +10,9 @@ export default {
             101300: 'Aram Champion',
             101103: 'Aram Legend',
             101106: 'ARAM Eradication',
-            101301: 'All Random All Champions',
+            101301: `All Random\nAll Champions`,
             101305: 'Active Participant',
-            101302: 'All Random All Flawless',
+            101302: 'All Random\nAll Flawless',
             101303: 'Rapid Demolition',
             101101: 'DPS Threat',
             101304: 'Lightning Round',
@@ -29,6 +29,7 @@ export default {
       },
 
       challengeName(id) {
+         console.log(this.book[id])
          return this.book[id]
       }
    },
@@ -57,7 +58,7 @@ export default {
          <div class="img-wrapper">
             <img :src="img(el.challengeId, el.level)" />
          </div>
-         <p>
+         <p class="challenge-title">
             {{ challengeName(el.challengeId) }}
          </p>
          <p class="percentile">
@@ -71,6 +72,10 @@ export default {
 </template>
 
 <style scoped>
+   .challenge-title {
+      white-space: pre;
+      text-align: center;
+   }
    .challenge img {
       width: 70px;
    }
@@ -83,7 +88,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 171px;
+      width: 115px;
       color: var(--color-font);
       font-size: 14px;
    }
@@ -99,8 +104,10 @@ export default {
    .challenge-main {
       display: flex;
       flex-wrap: wrap;
-      align-content: space-around;
-      height: 390px;
+      align-content: center;
+      justify-content: center;
+      gap: 30px;
+      height: 310px;
       border-radius: 10px;
       background: var(--profile-panel);
    }

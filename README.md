@@ -1,6 +1,6 @@
-# lol-aram
+# aramstats
 
-aramstats.lol parses all of a summoner's ARAM games available in the Riot API to provide
+[aramstats.lol](http://aramstats.lol/) parses all of a summoner's ARAM games available in the Riot API to provide
 insightful statistics.
 
 <hr>
@@ -8,13 +8,16 @@ insightful statistics.
 #### Ideas, organized by amount of work.
 
 #### big
-- [x] Add challenge tokens
-- [ ] Store match data (Click on individual matches to see team/enemy comp, etc...)
+- [ ] Show match data (Click on individual matches to see team/enemy comp, etc...)
 #### med
-- [x] Add KP & DS
-- [x] UI overhaul on champions table
 - [ ] Sort histogram by other stats aside from DPM
 - [ ] Site colors
+- [ ] Add small match history tile to Overview Panel
 #### small
-- [x] General "Summoner stats" to overview panel (average game length, average kda, kp, ds, etc...)
+<i>none</i>
 
+#### fin
+- [x] Add challenge tokens
+- [x] Add KP & DS
+- [x] UI overhaul on champions table
+- [x] General "Summoner stats" to overview panel (average game length, average kda, kp, ds, etc...)

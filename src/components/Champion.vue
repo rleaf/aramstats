@@ -226,9 +226,6 @@ export default {
 
 .left-stats {
    display: flex;
-   /* gap: 20px; */
-   /* width: 525px; */
-   /* justify-content: space-between; */
    flex-direction: row;
    height: 70px;
    align-items: center;
@@ -238,13 +235,12 @@ export default {
    transition: 0.25s;
    width: 22px;
    height: inherit;
-   background-color: var(--blue600t_test);
-   /* background: linear-gradient(180deg, var(--blue600t_test), var(--blue300t)); */
+   background-color: var(--championDropdown);
 }
 
 .tab:hover {
    cursor: pointer;
-   background: var(--blue300t);
+   background: var(--championDropdownHover);
 }
 
 .tab img {
