@@ -48,7 +48,8 @@ export default {
 
 <template>
    <div class="search">
-      <h1>ARAM Stats</h1>
+      <!-- <h1>ARAM Stats</h1> -->
+      <img src="../assets/logo.svg" class="logo" alt="">
       <div class="container">
          <input type="text" v-on:keyup.enter="onEnter" placeholder="Summoner Name" v-model="input">
          <!-- <button>Search</button> -->
@@ -74,6 +75,10 @@ export default {
 </template>
 
 <style scoped>
+img.logo {
+   width: 250px;
+   padding-bottom: 2rem;
+}
 .search {
    display: flex;
    flex-direction: column;

@@ -6,8 +6,7 @@
         <u>aramstats.lol</u> parses all of a summoner's ARAM games available in the Riot API to display insightful statistics.
       </p>
       <p>
-        @owl#4626 in the <a href="https://discord.gg/MydvqhqWmM">aram academy</a> discord
-        if you have any neat ideas.
+        Get in touch: @owl#4626 in the <a href="https://discord.gg/MydvqhqWmM">aram academy</a> discord.
       </p>
     </div>
   </div>

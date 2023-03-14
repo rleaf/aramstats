@@ -35,7 +35,7 @@ export default {
 
 <template>
    <div class="dropdown-container">
-      <button class="drop" @focus="showOptions()" @blur="exit()">{{ `${this.placeholder}` }}</button>
+      <button class="drop" @click="showOptions()" @blur="exit()">{{ `${this.placeholder}` }}</button>
       <div class="dropdown-content" v-show="optionsShown">
          <div class="dropdown-item" @mousedown="selectOption(option)"
          v-for="(option, index) in options" :key="index">

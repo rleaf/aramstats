@@ -62,12 +62,18 @@ export default {
 }
 
 .danger-zone a {
+   transition: 0.1s;
    font-size: 1rem;
    color: var(--color-font);
    border: 1px solid var(--color-font);
    border-radius: 5px;
    cursor: pointer;
    padding: 4px 9px;
+}
+
+a.purge:hover {
+   color: #ec3838;
+   border-color: #ec3838;
 }
 
 .purge-tooltip {

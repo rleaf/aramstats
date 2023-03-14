@@ -7,6 +7,7 @@
     "nodemon": "nodemon backend/index.js",
     "dev": "vite",
     "build": "vite build",
+    "host": "vite --host",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },

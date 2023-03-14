@@ -29,7 +29,6 @@ export default {
       },
 
       challengeName(id) {
-         console.log(this.book[id])
          return this.book[id]
       }
    },

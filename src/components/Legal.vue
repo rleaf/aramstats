@@ -26,5 +26,6 @@ export default {
    max-width: 800px;
    font-size: 0.9rem;
    bottom: 3rem;
+   z-index: -10;
 }
 </style>
