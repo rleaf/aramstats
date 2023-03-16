@@ -118,7 +118,7 @@
   --championDropdownHover: var(--light500);
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
     --main-scroll-track: var(--blue300s);
     --main-scroll-thumb: var(--blue200t);
