@@ -15,6 +15,7 @@ export default {
    methods: {
       toggle() {
          this.expand = !this.expand
+         this.expand ? this.$refs.tabby.style.borderRadius = '5px 0 0 0' : this.$refs.tabby.style.borderRadius = '5px 0 0 5px'
       },
 
       winOrLoss(x) {
@@ -56,7 +57,7 @@ export default {
    <div class="row-container">
       <div class="stats">
          <div class="left-stats">
-            <div class="tab" @click="toggle()">
+            <div class="tab" ref="tabby" @click="toggle()">
                <img :src="arrow" :class="{flip: this.expand}" alt="">
             </div>
             <img class="champion-image" :src="this.championIcon" alt="">
@@ -159,7 +160,7 @@ export default {
 .per-minute {
    font-size: 12px;
    font-style: oblique;
-   color: var(--color-font);
+   color: var(--light900);
 }
 
 .matches {
@@ -168,7 +169,8 @@ export default {
 
 .row-container {
    max-width: 1200px;
-   margin-bottom: 2px;
+   border-radius: 5px;
+   margin-bottom: 7px;
 }
 
 .style-0 {
@@ -181,6 +183,8 @@ export default {
 
 .stats {
    display: flex;
+   height: 80px;
+   align-items: center;
    justify-content: space-between;
    flex-direction: row;
    color: var(--color-font);
@@ -198,6 +202,10 @@ export default {
    color: var(--light900);
    font-size: 13px;
    margin: 0;
+}
+
+.right-stats .cell > p {
+   padding-bottom: 3px;
 }
 
 .avg-dmg {
@@ -227,14 +235,15 @@ export default {
 .left-stats {
    display: flex;
    flex-direction: row;
-   height: 70px;
+   height: inherit;
    align-items: center;
 }
 
 .tab {
-   transition: 0.25s;
+   transition: 0.25s background;
    width: 22px;
    height: inherit;
+   border-radius: 5px 0 0 5px;
    background-color: var(--championDropdown);
 }
 
@@ -252,6 +261,10 @@ export default {
    margin: 0;
    width: 15px;
    height: 15px;
+   user-select: none;
+   -moz-user-select: none;
+   -webkit-user-select: none;
+   -ms-user-select: none;
 }
 
 img.flip {

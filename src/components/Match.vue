@@ -176,7 +176,7 @@ export default {
 .per-minute {
    font-size: 12px;
    font-style: oblique;
-   color: var(--color-font);
+   color: var(--light900);
 }
 
 .kda {
