@@ -6,6 +6,6 @@ import Nav from './components/Nav.vue'
     <Nav />
 </template>
 
-<style scoped>
+<style>
 
 </style>

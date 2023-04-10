@@ -1,5 +1,27 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
+<script>
+   import { RouterLink, RouterView } from 'vue-router'
+
+   export default {
+      inheritAttrs: false,
+      data() {
+         return {
+            day: false
+         }
+      },
+
+      mounted() {
+         if (JSON.parse(localStorage.getItem('theme'))) this.theme()
+      },
+
+      methods: {
+         theme() {
+            this.day = !this.day
+            document.querySelector('body').classList.toggle('day')
+            localStorage.setItem('theme', JSON.stringify(this.day))
+         }
+      }
+   }
+
 </script>
 
 <template>
@@ -8,7 +30,10 @@ import { RouterLink, RouterView } from 'vue-router'
          <RouterLink to="/">Home</RouterLink>
       </div>
       <div class="right">
-         <RouterLink to="/about">About</RouterLink>
+         <button @click="this.theme()" :class="{day: this.day}">
+            <div class="theme"></div>
+         </button>
+         <RouterLink class="text" to="/about">About</RouterLink>
       </div>
    </nav>
    <RouterView />
@@ -24,12 +49,18 @@ nav {
    align-items: center;
 }
 
+
 nav .left {
    padding-left: 2rem;
 }
 
 nav .right {
    padding-right: 2rem;
+}
+
+.text, .theme {
+   display: inline-block;
+   vertical-align: middle;
 }
 
 a {
@@ -44,5 +75,30 @@ a {
 a:hover {
    color: var(--color-font-hover);
 }
+
+button {
+   background: none;
+   outline: none;
+   border: none;
+   cursor: pointer;
+   padding: 0;
+   margin-right: 1.5rem;
+}
+
+.theme {
+      background-color: var(--color-font);
+      width: 1.5rem;
+      height: 1.5rem;
+      /* mask-image: var(--themeSVG); */
+      mask-image: var(--themeIcon);
+      mask-position: center;
+      mask-size: 60%;
+      mask-repeat: no-repeat;
+      /* -webkit-mask-image: var(--themeSVG); */
+      -webkit-mask-image: var(--themeIcon);
+      -webkit-mask-position: center;
+      -webkit-mask-size: 85%;
+      -webkit-mask-repeat: no-repeat;
+   }
 
 </style>

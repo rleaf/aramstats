@@ -70,7 +70,60 @@
 
   }
 
+  /* Default  Night Mode */
 :root {
+  --main-scroll-track: var(--blue300s);
+  --main-scroll-thumb: var(--blue200t);
+  --main-scroll-hover: var(--blue400t);
+  --color-background: var(--blue000);
+  --color-font: var(--light200);
+  --color-font-fade: var(--light500);
+  --color-font-search: var(--dark100);
+  --color-font-hover: var(--light100);
+  --search-bar: var(--light300);
+  --search-bar-hover: var(--light400);
+  --search-bar-dropdown-hover: var(--light600);
+  --champion-0: var(--dark100_o);
+  --champion-1: var(--dark100_o2);
+  --secondary-tree: var(--dark200);
+  --champion-search-bar: var(--blue500s);
+  --champion-search-bar-focus: var(--blue600s);
+  --champion-filter-list: var(--blue400s);
+  --champion-filter-list-hover: var(--blue100t);
+  --champion-filter-scroll-track: var(--blue600s);
+  --win: var(--darkWin);
+  --loss: var(--darkLoss);
+  --profile-panel: var(--blue300s);
+  --profile-panel-dec-rgb: var(--blue100tRGB);
+  --rune-mythic-0: var(--blue400s);
+  --rune-mythic-1: var(--blue300s);
+  --scroll-track: var(--blue000);
+  --scroll-thumb: var(--blue100t);
+  --parse100: var(--parseDark1);
+  --parse85: var(--parseDark2);
+  --parse75: var(--parseDark3);
+  --parse50: var(--parseDark4);
+  --bar1: var(--light100);
+  --bar2: #75a6e7;
+  --bar3: #9ec1ee;
+  --bar4: #d6e4f8;
+  --bar5: #fff;
+  --header-stats: #61edff; 
+
+  --panel1: rgba(110, 110, 110, 0.9);
+  --panel2: rgba(81, 101, 131, 0.9);
+  --profile-tab: var(--blue400s);
+  --profile-tab-active: var(--blue200t);
+  
+  --matches-border-top: var(--dark500);
+  --border-top: var(--light800);
+  --championDropdown: rgba(70, 92, 129, 0.7);
+  --championDropdownHover: var(--blue400t);
+  --themeIcon: url('./sun.svg')
+}
+
+/* Day mode */
+.day {
   --main-scroll-track: var(--light300);
   --main-scroll-thumb: var(--light600);
   --main-scroll-hover: var(--light500);
@@ -116,81 +169,31 @@
   --border-top: var(--light800);
   --championDropdown: var(--light300);
   --championDropdownHover: var(--light500);
+  --themeIcon: url('./moon.svg')
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --main-scroll-track: var(--blue300s);
-    --main-scroll-thumb: var(--blue200t);
-    --main-scroll-hover: var(--blue400t);
-    --color-background: var(--blue000);
-    --color-font: var(--light200);
-    --color-font-fade: var(--light500);
-    --color-font-search: var(--dark100);
-    --color-font-hover: var(--light100);
-    --search-bar: var(--light300);
-    --search-bar-hover: var(--light400);
-    --search-bar-dropdown-hover: var(--light600);
-    --champion-0: var(--dark100_o);
-    --champion-1: var(--dark100_o2);
-    --secondary-tree: var(--dark200);
-    --champion-search-bar: var(--blue500s);
-    --champion-search-bar-focus: var(--blue600s);
-    --champion-filter-list: var(--blue400s);
-    --champion-filter-list-hover: var(--blue100t);
-    --champion-filter-scroll-track: var(--blue600s);
-    --win: var(--darkWin);
-    --loss: var(--darkLoss);
-    --profile-panel: var(--blue300s);
-    --profile-panel-dec-rgb: var(--blue100tRGB);
-    --rune-mythic-0: var(--blue400s);
-    --rune-mythic-1: var(--blue300s);
-    --scroll-track: var(--blue000);
-    --scroll-thumb: var(--blue100t);
-    --parse100: var(--parseDark1);
-    --parse85: var(--parseDark2);
-    --parse75: var(--parseDark3);
-    --parse50: var(--parseDark4);
-    --bar1: var(--light100);
-    --bar2: #75a6e7;
-    --bar3: #9ec1ee;
-    --bar4: #d6e4f8;
-    --bar5: #fff;
-    --header-stats: #61edff; 
-
-    --panel1: rgba(110, 110, 110, 0.9);
-    --panel2: rgba(81, 101, 131, 0.9);
-    --profile-tab: var(--blue400s);
-    --profile-tab-active: var(--blue200t);
-    
-    --matches-border-top: var(--dark500);
-    --border-top: var(--light800);
-    --championDropdown: rgba(70, 92, 129, 0.7);
-    --championDropdownHover: var(--blue400t);
-  }
-}
-
-html::-webkit-scrollbar {
+/* html::-webkit-scrollbar {
     width: 15px;
-}
+} */
 
 /* Track */
-html::-webkit-scrollbar-track {
+/* html::-webkit-scrollbar-track {
     background: var(--main-scroll-track);
-}
+} */
 
 /* Handle */
-html::-webkit-scrollbar-thumb {
+/* html::-webkit-scrollbar-thumb {
     background: var(--main-scroll-thumb);
-}
+} */
 
 /* Handle on hover */
-html::-webkit-scrollbar-thumb:hover {
+/* html::-webkit-scrollbar-thumb:hover {
     background: var(--main-scroll-hover);
-}
+} */
 
 body {
   background: var(--color-background);
+  transition: 0.5s;
   min-height: 100vh;
   margin: 0;
   font-family: var(--font-main);

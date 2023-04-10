@@ -78,6 +78,7 @@ export default {
 img.logo {
    width: 250px;
    padding-bottom: 2rem;
+   filter: drop-shadow(3px 5px 2px rgba(0, 0, 0, 0.4));
 }
 
 @media (prefers-color-scheme: light) {
