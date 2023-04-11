@@ -5,8 +5,8 @@ insightful statistics.
 
 <hr>
 
-<img src ="https://user-images.githubusercontent.com/1999954/231257454-36f2b722-2c9e-476e-8412-c4d30368f0b2.png" width="70%" />
-<img src="https://user-images.githubusercontent.com/1999954/231257609-d87c6c63-570a-461d-95ce-c6ca27cccfd5.png" width="70%" />
+<img src ="https://user-images.githubusercontent.com/1999954/231257454-36f2b722-2c9e-476e-8412-c4d30368f0b2.png" width="100%" />
+<img src="https://user-images.githubusercontent.com/1999954/231257609-d87c6c63-570a-461d-95ce-c6ca27cccfd5.png" width="100%" />
 
 <hr>
 
