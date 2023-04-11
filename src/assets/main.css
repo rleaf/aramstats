@@ -193,7 +193,7 @@
 
 body {
   background: var(--color-background);
-  transition: 0.5s;
+  transition: background 0.25s;
   min-height: 100vh;
   margin: 0;
   font-family: var(--font-main);

@@ -1,5 +1,5 @@
 /* 
-   owl#4626
+   Discord: owl#4626
 
    LINKS
    1. https://leagueoflegends.fandom.com/wiki/Champion_classes
@@ -9,15 +9,14 @@
    
 
    INFO
-   1. Try to stay true to the class definitions in [1]
-   2. There's going to be a lot of intersection to account for champ versatility
-	   (galio & tk are both wardens and vanguards, when really a champ should fit to one subclass per class)
-   3. Because of above, some class representations will be more inaccurate. Ie: If someone likes *only* playing poke Ashe,
+   1. Everywhere there is a comment signifies a change catering to aram meta.
+   2. Try to stay true to the class definitions in link 1.
+   3. There's a lot of intersection to account for champ versatility
+	   (galio & tk are both wardens and vanguards, when really a champ should fit to one subclass per class).
+   4. Because of above, some class representations will be more inaccurate. Ie: If someone likes *only* playing poke Ashe,
 	   they will have high representation for 'Marksman' games because Ashe is ['Artillery', 'Marksman'].
 	   Rn I think versatility > "small" loss of accuracy.
-   4. Everywhere there is a comment signifies a change catering to aram meta.
-   5. I added a 'Mage' subclass. I'm having trouble classifying some champs, who I believe *are* mages (morgana, heimer),
-      into the classic three categories: Burst, Battlemage, and Artillery.
+   5. Added 'Mage' subclass.
 */
 
 export const classBook = {

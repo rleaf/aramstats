@@ -10,7 +10,6 @@ insightful statistics.
 #### big
 - [ ] Show match data (Click on individual matches to see team/enemy comp, etc...)
 #### med
-- [ ] Better day/night mode
 - [ ] Sort histogram by other stats aside from DPM
 - [ ] Site colors
 - [ ] Add small match history tile to Overview Panel
@@ -18,6 +17,7 @@ insightful statistics.
 <i>none</i>
 
 #### fin
+- [x] Better day/night mode
 - [x] Add challenge tokens
 - [x] Add KP & DS
 - [x] UI overhaul on champions table
