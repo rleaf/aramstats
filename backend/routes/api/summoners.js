@@ -317,7 +317,7 @@ async function matchParser(collection, matchlist, summoner, region) {
 
    for (let i = 0; i < matches.length; i++) {
       
-      if (i % 10 == 0) console.log(`Parsing ${summoner.name} (${region}), match ${i}`)
+      if (i % 25 == 0) console.log(`Parsing ${summoner.name} (${region}), match ${i}`)
 
       const game = await twisted.getMatchInfo(matches[i], region)
          .catch((e) => {
