@@ -116,7 +116,7 @@ export default {
          const url = `/api/summoners/update/${this.$route.params.region}/${this.$route.params.username}`
 
          this.refresh = 'Updating...'
-         let res = await axios.get(url)
+         let res = await axios.put(url)
          this.championInfo = res.data.slice(1)
          this.challengeInfo = res.data[0].challenges
 

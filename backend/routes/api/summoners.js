@@ -145,7 +145,7 @@ async function championParser(collection) {
    }
 }
 
-router.get('/update/:region/:summonerURI', async (req, res) => {
+router.put('/update/:region/:summonerURI', async (req, res) => {
    
    const summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
       // .catch((e) => {
@@ -245,14 +245,13 @@ router.get('/update/:region/:summonerURI', async (req, res) => {
 })
 
 
-router.get('/delete/:region/:summonerURI', async (req, res) => {
-
+router.delete('/delete/:region/:summonerURI', async (req, res) => {
    const summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
    const client = await loadSummonerCollection()
    
    client.collection(summoner.name).drop()
    console.log(`${summoner.name} (${req.params.region}) deleted`)
-   res.send('deleted')
+   res.sendStatus(200)
 })
 
 

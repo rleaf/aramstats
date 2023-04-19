@@ -17,7 +17,7 @@ export default {
 
          if (confirm(text)) {
             try {
-               await axios.get(url)
+               await axios.delete(url)
             } catch (e) {
                console.log('delete', e)
             }
