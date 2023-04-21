@@ -22,32 +22,29 @@ export default {
    },
 
    methods: {
-      async findMythic(items) {
+      async findMythic(items, book) {
          /* 
             Iterate over the items in each game and then check if they're mythic
          */
-         const url = 'http://ddragon.leagueoflegends.com/cdn/12.23.1/data/en_US/item.json'
          let mythic
 
-         await axios.get(url)
-            .then((res) => {
-               items.forEach((item) => {
-                  if (item != 0 && res.data.data[item].description.includes('rarityMythic')) {
-                     
-                     // masterwork check.
-                     if (res.data.data[item].into == undefined) {
-                        mythic = res.data.data[item].from + '.png'
-                        return
-                     }
+         items.forEach((item) => {
+            if (item != 0 && book[item].description.includes('rarityMythic')) {
 
-                     mythic = res.data.data[item].image.full
+               // If masterwork, revert back to mythic.
+               if (book[item].into == undefined) {
+                  mythic = book[item].from + '.png'
+                  return
+               }
 
-                  }
-               })
-            })
+               mythic = book[item].image.full
+
+            }
+         })
 
          return mythic
       },
+
       mythicImage(Id) {
          return `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/item/${Id}`
       },
@@ -57,14 +54,19 @@ export default {
          let matches
          (this.comparison) ? matches = this.data : matches = this.data.matches
 
+         let _res
+         const url = 'http://ddragon.leagueoflegends.com/cdn/12.23.1/data/en_US/item.json'
+         await axios.get(url)
+            .then((res) => _res = res.data.data)
+
          for(const match of matches) {
-            let mythic = await this.findMythic(match.items)
+            let mythic = await this.findMythic(match.items, _res)
 
             if (mythic != undefined) {
-               let mythicIdx = this.mythic.findIndex(el => el.name == mythic)
+               let mythicIdx = this.mythic.findIndex(el => el.id == mythic)
 
                if (mythicIdx == -1) {
-                  this.mythic.push({ 'name': mythic, 'wins': 0, 'totalGames': 1, 'winRate': 0})
+                  this.mythic.push({ 'id': mythic, 'wins': 0, 'totalGames': 1, 'winRate': 0})
                   if (match.win) this.mythic[this.mythic.length - 1].wins++
                } else {
                   if (match.win) this.mythic[mythicIdx].wins++
@@ -96,7 +98,7 @@ export default {
 
    props: {
       data: null,
-      comparison: false
+      comparison: false,
    }
 }
 </script>
@@ -104,9 +106,9 @@ export default {
 <template>
    <div class="mythic-main">
       <div class="mythic-wr" v-for="(m, i) in mythicSort"
-         :key="m.name"
+         :key="m.id"
          :class="i % 2 == 0 ? `mythic-style-0` : `mythic-style-1`">
-         <img :src="mythicImage(m.name)" alt="">
+         <img :src="mythicImage(m.id)" alt="">
          <div class="mythic-percent">
             <span :style="winrateColor(m.winRate)">{{ m.winRate }}%</span>
          </div>
