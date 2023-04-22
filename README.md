@@ -14,11 +14,13 @@ insightful statistics.
 
 #### big
 - [ ] Show match data (Click on individual matches to see team/enemy comp, etc...)
+- [ ] Compare champ performance to db.
 #### med
 - [ ] Sort histogram by other stats aside from DPM
 - [ ] Site colors
 - [ ] Add small match history tile to Overview Panel
 #### small
+- [ ] I'm feeling lucky
 <i>none</i>
 
 #### fin
