@@ -29,7 +29,6 @@ import axios from 'axios'
 
             try {
                const res = await axios.get(url)
-               console.log('toad')
                this.response = res.data
                this.userReadyRender = true
             } catch (e) {

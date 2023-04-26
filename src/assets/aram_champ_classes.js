@@ -97,7 +97,7 @@ export const classBook = {
    malzahar: ['Battlemage'],
    maokai: ['Vanguard'],
    masteryi: ['Skirmisher', 'Assassin'], /* +Assassin */
-   milio: ['enchanter'],
+   milio: ['Enchanter'],
    missfortune: ['Artillery', 'Marksman'], /* +Artillery */
    monkeyking: ['Diver'],
    mordekaiser: ['Juggernaut'],

@@ -34,7 +34,7 @@ router
 
 
       // start here
-      console.log(await client.listCollections().toArray())
+      // console.log(await client.listCollections().toArray())
       
       // Check if summoner is in database
       if (summoner) {
