@@ -149,7 +149,7 @@ export default {
             </div>
             <img class="bongo-cat" :src="bongocat" v-show="this.isDisabled">
             <!-- <img class="bongo-cat" :src="bongocat"> -->
-            <Danger />
+            <!-- <Danger /> -->
          </div>
          <div class="profile-wrapper">
             <div class="profile-sections">
