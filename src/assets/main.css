@@ -31,7 +31,17 @@
   /* --darkLoss: rgba(255, 0, 0, 0.075); */
   --darkLoss: rgba(255, 0, 0, 0.123);
 
-  /* Bloo (shade & tint)*/
+  /* Core */
+  --blueN: hsl(223, 35%, 8%);
+  --lightN100: rgba(255, 255, 255, 0.1);
+  --light1000: #262933;
+  --h4color: #818181;
+  --sortValue: #d6d6d6;
+  --triple: rgba(38, 171, 180, 0.75);
+  --quadra: rgba(154, 37, 175, 0.75);
+  --penta: rgba(212, 123, 40, 0.75);
+
+  /* OLD Bloo (shade & tint)*/
   --blue000: #1f2a42;
   --blue100s: #1C263C;
   --blue200s: #1c263c;
@@ -75,7 +85,7 @@
   --main-scroll-track: var(--blue300s);
   --main-scroll-thumb: var(--blue200t);
   --main-scroll-hover: var(--blue400t);
-  --color-background: var(--blue000);
+  --color-background: var(--blueN);
   --color-font: var(--light200);
   --color-font-fade: var(--light500);
   --color-font-search: var(--dark100);
@@ -127,7 +137,7 @@
   --main-scroll-track: var(--light300);
   --main-scroll-thumb: var(--light600);
   --main-scroll-hover: var(--light500);
-  --color-background: var(--light100);
+  --color-background: var(--blueN);
   --color-font: var(--dark100);
   --color-font-fade: var(--dark600);
   --color-font-search: var(--dark100);

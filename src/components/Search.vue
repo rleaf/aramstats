@@ -17,6 +17,11 @@ export default {
    },
 
    methods: {
+      getRegion() {
+         // If there is a region stored for session, use it
+         // push value to dropdown
+      },
+
       onEnter() {
          if (this.region == '' || this.input == '') {
             this.alertMessage = 'Enter a summoner name and/or region.'
@@ -36,6 +41,9 @@ export default {
          }})
 
          this.callProc = true
+
+         // push region into localstorage
+         // localStorage.setItem('region', this.region)
       },
 
       regionSelect(region) {
@@ -96,24 +104,25 @@ img.logo {
 
 .container {
    /* display: inline-block; */
-   background-color: var(--search-bar);
-   border-radius: 5px;
+   /* background-color: var(--search-bar); */
+   border: 2px solid var(--lightN100);
+   border-radius: 50px;
 }
 
 input {
    display: inline-block;
-   background-color: var(--search-bar);
+   background: transparent;
    border: none;
-   border-radius: 5px;
-   padding: 1rem;
+   padding: 1rem 4rem;
    font-size: 1rem;
-   color: var(--color-font-search);
+   /* color: var(--color-font-search); */
    /* width: 300px; */
 }
 
 input:focus {
    outline: none;
-   background-color: var(--search-bar);
+   /* background-color: var(--search-bar); */
+   color: var(--color-font);
    transition: 0.4s;
 }
 

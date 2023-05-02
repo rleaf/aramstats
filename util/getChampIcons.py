@@ -23,7 +23,8 @@ def _buildList():
 
 
 def _getImages(champ):
-   image_url = f'https://ddragon.leagueoflegends.com/cdn/13.4.1/img/champion/{champ}.png'
+   # image_url = f'https://ddragon.leagueoflegends.com/cdn/13.4.1/img/champion/{champ}.png'
+   image_url = f'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/{champ}_0.jpg'
    r = requests.get(image_url, stream=True)
 
    if r.status_code == 200:
@@ -76,7 +77,7 @@ def main():
    if not os.path.exists(directory):
       os.mkdir(directory)
 
-   # getChampionAssets()
+   getChampionAssets()
    # getChallengeIcons()
 
 

@@ -55,6 +55,7 @@ export default {
 button {
    width: 100%;
    font-family: var(--font-main);
+   color: var(--color-font);
    background: transparent;
    font-size: 1rem;
    border-radius: 5px;
@@ -64,7 +65,8 @@ button {
 
 .dropdown-content {
    position: absolute;
-   background: var(--search-bar);
+   background: var(--lightN100);
+   margin-top: 2px;
    border-radius: 5px;
    width: inherit;
    display: block;
@@ -72,14 +74,17 @@ button {
 
 .dropdown-item {
    padding: 0.5rem 1rem 0.5rem 1rem;
+   color: var(--color-font);
 }
 
 .dropdown-container button:hover {
-   background: var(--search-bar-hover);
-   border-radius: 5px;
+   /* background: var(--search-bar-hover); */
+   /* border-radius: 5px; */
+   cursor: pointer;
 }
 .dropdown-item:hover {
    background: var(--search-bar-dropdown-hover);
    border-radius: 5px;
+   
 }
 </style>

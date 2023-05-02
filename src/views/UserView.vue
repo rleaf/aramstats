@@ -1,7 +1,7 @@
 <script>
 import UserLoading from '../components/User/UserLoading.vue'
 import UserError from '../components/User/UserError.vue'
-import UserReady from '../components/User/UserReady.vue'
+import UserReady from '../components/User/UserReadyN.vue'
 import axios from 'axios'
 
    export default {
