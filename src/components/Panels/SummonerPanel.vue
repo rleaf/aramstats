@@ -1,6 +1,6 @@
 <script>
-import StackedBarplot from '../StackedBarplotN.vue'
-import Challenges from '../ChallengesN.vue'
+import StackedBarplot from '../StackedBarplot.vue'
+import Challenges from '../Challenges.vue'
 import { classBook } from '../../assets/aram_champ_classes'
 
 export default {

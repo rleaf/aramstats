@@ -5,6 +5,7 @@ export default {
    components: {
       Match,
    },
+
    data() {
       return {
          championIcon: new URL(`../assets/champion_icons/${this.champion.championName.toLowerCase()}.png`, import.meta.url).href,
@@ -12,304 +13,274 @@ export default {
       }
    },
 
-   methods: {
-      toggle() {
-         this.expand = !this.expand
-         this.expand ? this.$refs.tabby.style.borderRadius = '5px 0 0 0' : this.$refs.tabby.style.borderRadius = '5px 0 0 5px'
-      },
-
-      winOrLoss(x) {
-         return (x.win) ? 'win': 'loss'
-      }
-   },
-
    computed: {
-      trueChampionName() {
-         return (this.champion.trueChampionName) ? this.champion.trueChampionName : this.champion.championName
+      background() {
+         const img = new URL(`../assets/champion_splash/${this.champion.championName.toLowerCase()}.png`, import.meta.url).href
+         return `background: linear-gradient(to right, rgba(38, 41, 51, 0.8), rgba(38, 41, 51, 0.85) 10%, rgba(38, 41, 51, 1.0) 60%), no-repeat -110% 20%/80% url('${img}')`
+      },
+      winrate() {
+         return Math.round((this.champion.wins / this.champion.totalGames) * 100)
       },
 
-      winPercent() {
-         return Math.round((this.champion.wins / this.champion.totalGames) * 100)
+      size() {
+         return `(${this.champion.wins}/${this.champion.totalGames})`
       },
 
       kda() {
          if (!this.champion.averageKills) return '-'
          return `${this.champion.averageKills}/${this.champion.averageDeaths}/${this.champion.averageAssists}`
       },
-
-      kdr() {
-         if (!this.champion.averageKills) return '-'
-         return `${Math.round(((this.champion.averageKills + this.champion.averageAssists) / this.champion.averageDeaths) * 100) / 100}`
-      },
-
-      arrow() {
-         return new URL(`../assets/arrow.svg`, import.meta.url).href
-      }
    },
 
    props: {
       champion: Object
-   },
+   }
 }
 </script>
 
 <template>
-   <div class="row-container">
-      <div class="stats">
-         <div class="left-stats">
-            <div class="tab" ref="tabby" @click="toggle()">
-               <img :src="arrow" :class="{flip: this.expand}" alt="">
-            </div>
-            <img class="champion-image" :src="this.championIcon" alt="">
-            <div class="champ-name cell">
-               {{ trueChampionName }}
-            </div>
-            <div class="games cell">
-               <p class="main">
-                  {{ winPercent }}% <span class="unit">winrate</span>
-               </p>
-               {{ this.champion.wins }} / {{ this.champion.totalGames }} <span class="unit">wins / total</span>
-            </div>
-            <div class="avg-kda cell">
-               <p class="main">
-                  {{ kda }} <span class="unit">KDA</span>
-               </p>
-               {{ kdr || '-' }}, {{ this.champion.averageKillParticipation || '-' }}% <span class="unit">KP</span>
-            </div>
-            <div class="tqp-wrapper cell">
-               <div class="tqp-1">
-                  <span class="unit">Triple</span> {{ this.champion.totalTripleKills }} 
+   <div>
+
+      <div class="champion-main" :style="background">
+         <button class="dropdown" @click="this.expand =! this.expand">
+            <img src="../assets/arrow2.svg" alt="" :class="{ expand: this.expand }">
+         </button>
+         <div class="lhs">
+            <h2>{{ this.champion.championName }}</h2>
+            <div class="lhs-stats">
+               <img :src="this.championIcon" :alt="this.champion.championName">
+               <div class="champ-winrate">
+                  <div class="title">
+                     Winrate
+                  </div>
+                  <div class="body">
+                     {{ winrate }}%
+                  </div>
+                  <div class="sub">
+                     {{ size }}
+                  </div>
                </div>
-               <div class="tqp-1">
-                  <span class="unit">Quadra</span> {{ this.champion.totalQuadraKills }}
-               </div>
-               <div class="tqp-1">
-                  <span class="unit">Penta</span> {{ this.champion.totalPentaKills }}
+               <div class="champ-kda">
+                  <div class="title">
+                     KDA
+                  </div>
+                  <div class="body">
+                     {{ kda}}
+                  </div>
+                  <div class="sub">
+                     {{ this.champion.averageKillParticipation }}% KP
+                  </div>
                </div>
             </div>
          </div>
-         <div class="right-stats">
-            <div class="avg-dmg cell">
-               <p>Damage</p>
-               {{ this.champion.averageTotalDamageDealt }}, {{ this.champion.averageDamageShare || '-' }}% <span class="unit">DS</span>
-               <div class="per-minute">
-                  {{ this.champion.averageDamagePerMinute }} <span class="unit">/ m</span>
+         <div class="multi-kills">
+            <div class="triple">{{ this.champion.totalTripleKills }}</div>
+            <div class="quadra">{{ this.champion.totalQuadraKills }}</div>
+            <div class="penta">{{ this.champion.totalPentaKills }}</div>
+         </div>
+         <div class="secondary-stats">
+            <div>
+               <div class="title">
+                  Damage
+               </div>
+               <div class="secondary-body">
+                  {{ this.champion.averageTotalDamageDealt }}, {{ this.champion.averageDamageShare || '-' }}%
+               </div>
+               <div class="secondary-sub">
+                  {{ this.champion.averageDamagePerMinute }}/m
                </div>
             </div>
-            <div class="avg-healing cell">
-               <p>Healing</p>
-               {{ this.champion.averageTotalHeal || '-' }}
-               <div class="per-minute">
-                  {{ this.champion.averageHealPerMinute || '-'}} <span class="unit">/ m</span>
+            <div>
+               <div class="title">
+                  Healing
+               </div>
+               <div class="secondary-body">
+                  {{ this.champion.averageTotalHeal }}
+               </div>
+               <div class="secondary-sub">
+                  {{ this.champion.averageHealPerMinute || '-' }}/m
                </div>
             </div>
-            <div class="avg-ally-healing cell">
-               <p>Ally Healing</p>
-               {{ this.champion.averageHealingOnTeammates }}
-               <div class="per-minute">
-                  {{ this.champion.averageAllyHealPerMinute }} <span class="unit">/ m</span>
+            <div>
+               <div class="title">
+                  Ally Heals
+               </div>
+               <div class="secondary-body">
+                  {{ this.champion.averageHealingOnTeammates }}
+               </div>
+               <div class="secondary-sub">
+                  {{ this.champion.averageAllyHealPerMinute }}/m
                </div>
             </div>
-            <div class="avg-dmg-taken cell">
-               <p>Damage Taken</p>
-               {{ this.champion.averageTotalDamageTaken }}
-               <div class="per-minute">
-                  {{ this.champion.averageDamageTakenPerMinute || '-' }} <span class="unit">/ m</span>
+            <div>
+               <div class="title">
+                  Taken
+               </div>
+               <div class="secondary-body">
+                  {{ this.champion.averageTotalDamageTaken }}
+               </div>
+               <div class="secondary-sub">
+                  {{ this.champion.averageDamageTakenPerMinute || '-'  }}/m
                </div>
             </div>
-            <div class="avg-mitigated-dmg cell">
-               <p>Damage Mitigated</p>
-               {{ this.champion.averageTotalSelfMitigated || '-' }}
-               <div class="per-minute">
-                  {{ this.champion.averageSelfMitigatedPerMinute || '-' }} <span class="unit">/ m</span>
+            <div>
+               <div class="title">
+                  Mitigated
+               </div>
+               <div class="secondary-body">
+                  {{ this.champion.averageTotalSelfMitigated || '-'  }}
+               </div>
+               <div class="secondary-sub">
+                  {{ this.champion.averageSelfMitigatedPerMinute || '-'  }}/m
                </div>
             </div>
-            <div class="avg-gold cell">
-               <p>Gold</p>
-               {{ this.champion.averageGoldEarned }}
-               <div class="per-minute">
-                  {{ this.champion.averageGoldPerMinute }} <span class="unit">/ m</span>
+            <div>
+               <div class="title">
+                  Gold
+               </div>
+               <div class="secondary-body">
+                  {{ this.champion.averageGoldEarned }}
+               </div>
+               <div class="secondary-sub">
+                  {{ this.champion.averageGoldPerMinute }}/m
                </div>
             </div>
          </div>
       </div>
-      <div class="matches" v-show="this.expand">
+      <div class="match" v-show="this.expand">
          <Match v-for="match in this.champion.matches"
-         :key="match.matchId"
-         :match="match" />
-         <!-- :class="winOrLoss(match)"/> -->
+            :key="match.matchId"
+            :match="match"/>
       </div>
-      <!-- <Transition name="slide">
-      </Transition> -->
    </div>
 </template>
 
 <style scoped>
-@import url('../assets/stats.css');
+   .champion-main {
+      width: 100%;
+      background-color: var(--light1000);
+      margin: 20px 0;
+      height: 120px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+   }
 
-/* .slide-enter-from {
-   transform: translateY(-100%) scaleY(0);
-}
-.slide-leave-to {
-   transform: translateY(-100%);
-   transform: scaleY(0);
-} */
+   .dropdown {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      background: none;
+      border: none;
+      transition: 0.25s;
+      border-radius: 15px 0 0 15px;
+      margin-right: 5px;
+      cursor: pointer;
+   }
 
+   button.dropdown:hover {
+      background: var(--lightN100);
+   }
 
+   /* .dropdown img {
+      transition: 0.25s;
+   } */
 
-.per-minute {
-   font-size: 12px;
-   font-style: oblique;
-   color: var(--light900);
-}
+   .expand {
+      transform: rotate(180deg);
+      /* transform: translateY(40px) rotate(180deg); */
+   }
 
-.matches {
-   border-top: 1px solid var(--border-top);
-}
+   .lhs {
+      display: flex;
+      justify-content: center;
+      /* gap: 10px; */
+      flex-direction: column;
+      width: max-content;
+   }
 
-.row-container {
-   max-width: 1200px;
-   border-radius: 5px;
-   margin-bottom: 7px;
-}
+   .lhs h2 {
+      font-size: 1.25rem;
+      margin-top: -5px;
+      margin-bottom: 10px;
+   }
+   .lhs img {
+      width: 65px;
+      height: 65px;
+      border-radius: 3px;
+   }
 
-.style-0 {
-   background-color: var(--champion-0);
-}
+   .lhs-stats {
+      display: flex;
+      align-items: center;
+      min-width: 200px;
+      gap: 15px;
+   }
 
-.style-1 {
-   background-color: var(--champion-1);
-}
+   .body {
+      font-size: 1.5rem;
+      font-weight: bold;
+      line-height: 1;
+   }
 
-.stats {
-   display: flex;
-   height: 80px;
-   align-items: center;
-   justify-content: space-between;
-   flex-direction: row;
-   color: var(--color-font);
-}
+   .title {
+      display: block;
+      color: var(--h4color);
+      font-size: 0.9rem;
+      line-height: 0.9;
+      font-weight: normal;
+   }
 
-.right-stats {
-   display: flex;
-   /* gap: 30px; */
-   flex-direction: row;
-   align-items: center;
-   height: 70px;
-}
+   .sub {
+      display: block;
+      color: var(--h4color);
+      font-size: 0.9rem;
+      font-weight: normal;
+   }
 
-.right-stats p {
-   color: var(--light900);
-   font-size: 13px;
-   margin: 0;
-}
+   .multi-kills div{
+      padding: 5px 15px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 60%;
+      text-align: center;
+   }
 
-.right-stats .cell > p {
-   padding-bottom: 3px;
-}
+   .triple {
+      background-image: url('../assets/triple_small.svg');
+      /* filter: drop-shadow(0 0 1px var(--triple)); */
+   }
 
-.avg-dmg {
-   width: 120px; 
-}
+   .quadra {
+      background-image: url('../assets/diamond_small.svg');
+      /* filter: drop-shadow(0 0 1px var(--quadra)); */
+   }
 
-.avg-healing {
-   width: 75px;
-}
+   .penta {
+      background-image: url('../assets/penta_small.svg');
+      /* filter: drop-shadow(0 0 1px var(--penta)); */
+   }
 
-.avg-ally-healing {
-   width: 90px;
-}
+   .secondary-stats {
+      display: flex;
+      width: 100%;
+      justify-content: space-around;
+   }
 
-.avg-dmg-taken {
-   width: 110px;
-}
+   .secondary-stats div {
+      width: max-content;
+   }
 
-.avg-mitigated-dmg {
-   width: 130px;
-}
+   .secondary-body {
+      /* font-size: 0.9rem; */
+      line-height: 1.5;
+   }
 
-.avg-gold {
-   width: 70px;
-}
-
-.left-stats {
-   display: flex;
-   flex-direction: row;
-   height: inherit;
-   align-items: center;
-}
-
-.tab {
-   transition: 0.25s background;
-   width: 22px;
-   height: inherit;
-   border-radius: 5px 0 0 5px;
-   background-color: var(--championDropdown);
-}
-
-.tab:hover {
-   cursor: pointer;
-   background: var(--championDropdownHover);
-}
-
-.tab img {
-   position: relative;
-   top: 70%;
-   left: 50%;
-   transform: translateX(-50%);
-   filter: invert(10%) sepia(14%) saturate(1667%) hue-rotate(182deg) brightness(98%) contrast(97%);
-   margin: 0;
-   width: 15px;
-   height: 15px;
-   user-select: none;
-   -moz-user-select: none;
-   -webkit-user-select: none;
-   -ms-user-select: none;
-}
-
-img.flip {
-   transform: translateX(-50%) rotate(180deg);
-}
-
-img.champion-image {
-   height: 55px;
-   margin: 0 9px;
-}
-
-.champ-name {
-   width: 130px;
-   text-align: left;
-   font-size: 18px;
-   font-weight: 500;
-}
-
-.games {
-   width: 140px;
-   font-size: 14px;
-}
-
-.main {
-   font-size: 18px;
-   font-weight: 500;
-   margin: 0;
-   color: var(--color-font);
-}
-
-.unit {
-   font-size: 13px;
-   color: var(--light900);
-}
-
-.avg-kda {
-   width: 120px;
-   font-size: 13px;
-}
-
-.tqp-wrapper {
-   display: flex;
-   width: 56px;
-   font-size: 13px;
-   flex-direction: column;
-}
-
+   .secondary-sub {
+      color: var(--h4color);
+      font-size: 0.8rem;
+      /* font-style: italic; */
+      line-height: 0.9;
+   }
 </style>

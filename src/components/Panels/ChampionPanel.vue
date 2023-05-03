@@ -22,6 +22,9 @@ export default {
          comparisonData: null,
          comparisonWins: 0,
          comparisonKDA: null,
+         statFilter: 'DPM',
+         statBook: ['DPM', 'HPM', 'Toad'], // DPM ?
+         statDrop: false
       }
    },
 
@@ -35,7 +38,7 @@ export default {
    },
 
    watch: {
-      championFilter() {
+      championFilter(c, p) {
          this.getChampionIndex()
          this.championData = this.data[this.championIndex]
       }
@@ -56,7 +59,7 @@ export default {
       champComparison() {
          let comparisons = this.comparison.split(', ')
          let ensembleMatches = []
-         
+
          comparisons.forEach((comparison) => {
             let index = this.data.findIndex((e) => {
                if (e.championName === undefined) return
@@ -77,13 +80,13 @@ export default {
       comparisonWinRateKDA() {
          this.comparisonKDA = null
          this.comparisonWins = 0
-         
+
          if (this.comparisonData.length != 0) {
 
             let totalKDA = [0, 0, 0]
-            
+
             this.comparisonData.forEach((match) => {
-               if (match.win) this.comparisonWins ++
+               if (match.win) this.comparisonWins++
                totalKDA[0] += match.kills
                totalKDA[1] += match.deaths
                totalKDA[2] += match.assists
@@ -91,7 +94,7 @@ export default {
 
             this.comparisonKDA = totalKDA.map((x) => Math.round(x / this.comparisonData.length))
          }
-         
+
       }
 
    },
@@ -126,13 +129,13 @@ export default {
       },
 
       ensembleKDR() {
-         if (this.comparisonKDA) return `${Math.round(((this.comparisonKDA[0] + this.comparisonKDA[2]) / this.comparisonKDA[1]) * 100) / 100}`   
+         if (this.comparisonKDA) return `${Math.round(((this.comparisonKDA[0] + this.comparisonKDA[2]) / this.comparisonKDA[1]) * 100) / 100}`
       },
 
       ensembleKDA() {
          if (this.comparisonKDA) return `(${this.comparisonKDA[0]}/${this.comparisonKDA[1]}/${this.comparisonKDA[2]}) KDA`
       },
-   }, 
+   },
 
    props: {
       data: null
@@ -141,171 +144,130 @@ export default {
 </script>
 
 <template>
-   <!-- <div class="champion-main" :style="background"> -->
    <div class="champion-main">
-      <div class="misc-wrapper">
-         <ChampSearch :data="this.data" @championFocus="champion => championFilter = champion" />
-         <div class="wr-kda">
-            <div>
-               <div style="color: var(--header-stats);" class="champ-wr">
-                  {{ winrate }}%
-               </div>
-               <div class="wr-fraction">
-                  ({{ this.championData.wins }}/{{ this.championData.matches.length }}) WR
-               </div>
+      <div class="head">
+         <ChampSearch :data="this.data" @championFocus="champion => championFilter = champion"/>
+         <div class="champion-stats">
+            <div class="winrate">
+               {{ winrate }}% <span class="unit">winrate</span>
             </div>
-            <div>
-               <div style="color: var(--header-stats);" class="champ-wr">
-                  {{ kdr }}
-               </div>
-               <div class="wr-fraction">
-                  ({{ kda }}) KDA
-               </div>
+            <div class="kda">
+               {{ kda }} <span class="unit">KDA</span>
             </div>
          </div>
-         <div class="runes-mythic-wrapper">
-            <div class="runes-mythic-wr">
-               <RuneWinrate :data="this.championData"/>
+
+         <!-- toads -->
+
+         <!-- <div class="stat-dropdown">
+            <button @click="this.statDrop =! this.statDrop">
+               {{ this.statFilter }}
+               <img src="../../assets/arrow3.svg" alt="" :class="{ down: this.statDrop }">
+            </button>
+            <div class="stat-drop" v-if="this.statDrop">
+               <div class="stat" v-for="stat in statBook" :key="stat" @click="() => {
+                  this.statFilter = stat
+                  this.statDrop = false
+               }">
+                  {{ stat }}
+               </div>
             </div>
-            <div class="runes-mythic-wr">
-               <MythicWinrate :data="this.championData"/>
-            </div>
-         </div>
+            <div class="stat-modal" v-show="this.statDrop" @click="this.statDrop = false"></div>
+         </div> -->
       </div>
-      <Histogram
+      <div class="body">
+         <div class="rune-mythic">
+            <RuneWinrate :data="this.championData"/>
+            <MythicWinrate :data="this.championData"/>
+         </div>
+         <Histogram
          :championData="this.championData"
          :comparisonData="this.comparisonData"
          :initChampion="this.data[this.nunuIndex]"/>
-      <!-- <div style="background: var(--profile-panel); width: 100%;"> -->
-      <div class="misc-wrapper">
-         <input class="comparison-input" type="text" spellcheck="false" v-model="comparison" v-on:keyup.enter="champComparison"
-            placeholder="kogmaw, drmundo, renata, nunu, jarvaniv...">
-         <div class="wr-kda">
-            <div>
-               <div style="color: var(--header-stats);" class="champ-wr">
-                  {{ ensembleWinRate }}
-               </div>
-               <div class="wr-fraction">
-                  {{ ensembleWinRateFraction }}
-               </div>
-            </div>
-            <div class="comparison-guide" v-show="this.comparison == null">
-               Enter any combination of champions and hit enter. Example in placeholder text above.
-            </div>
-            <div>
-               <div style="color: var(--header-stats);" class="champ-wr">
-                  {{ ensembleKDR }}
-               </div>
-               <div class="wr-fraction">
-                  {{ ensembleKDA }}
-               </div>
-            </div>
-         </div>
-         <div class="runes-mythic-wrapper">
-            <div class="runes-mythic-wr">
-               <RuneWinrate v-if="this.comparisonData" :data="this.comparisonData" :comparison="true" />
-            </div>
-            <div class="runes-mythic-wr">
-               <MythicWinrate v-if="this.comparisonData" :data="this.comparisonData" :comparison="true" />
-            </div>
-         </div>
       </div>
    </div>
 </template>
 
 <style scoped>
 
-.comparison-guide {
-   padding-top: 50px;
-   color: var(--color-font-fade);
-   font-size: 0.8rem;
-   font-style: oblique;
-   width: 250px;
-   line-height: 1.5;
-}
-.temp {
-   margin-left: auto;
-   margin-right: auto;
-   color: var(--color-font);
-   font-size: 0.9rem;
-   text-align: center;
-   padding-top: 2rem;
-   width: 300px;
-}
-
-.runes-mythic-wrapper {
-   display: flex;
-   justify-content: space-evenly;
-   color: var(--color-font);
-   padding: 0 10px;
-   gap: 10px;
-}
-
-.comparison-input {
-   background: var(--champion-search-bar);
-   color: var(--color-font);
-   font-style: oblique;
-   padding: 0.5rem 0.8rem;
-   margin: 8px 8px 0 8px;
-   border: none;
-   border-radius: 5px;
-   width: calc(100% - 16px);
-   box-sizing: border-box;
-   margin-right: 10px;
-}
-
-.comparison-input:focus {
-   outline: none;
-   background: var(--champion-search-bar-focus);
-}
-.champion-header {
-   display: flex;
-   align-items: center;
-   font-size: 0.9rem;
-   padding-top: 10px;
-   padding-bottom: 10px;
-   padding-left: 10px;
-}
-.champ-wr {
-   display: inline-block;
-   font-weight: bold;
-   padding-right: 4px;
-   color: var(--color-font);
-   font-size: 1.1rem;
-}
-.wr-fraction {
-   display: inline-block;
-   color: var(--color-font-fade);
-   font-size: 0.9rem;
-}
-
-.misc-wrapper {
-   width: 100%;
-   /* margin: 10px; */
-   border-radius: 10px;
-   background: var(--profile-panel);
-}
-
-.wr-kda {
-   display: flex;
-   align-items: center;
-   justify-content: space-evenly;
-   text-align: center;
-   gap: 5px;
-   /* padding: 5px 0; */
-   padding-top: 10px;
-   padding-bottom: 5px;
-}
-
 .champion-main {
    display: flex;
-   height: 310px;
-   flex-direction: row;
+   flex-direction: column;
+   width: 100%;
+   background-color: var(--light1000);
+   margin-top: 20px;
+   border-radius: 15px;
+   /* height: 100px; */
+}
+
+.head {
+   display: flex;
+   height: 50px;
+   padding: 0 15px;
+   align-items: center;
+   justify-content: space-between;
+}
+
+.rune-mythic {
+   display: flex;
+   min-width: 255px;
+}
+
+.body {
+   display: flex;
    justify-content: space-evenly;
-   border-radius: 5px;
-   /* background: var(--profile-panel); */
-   /* background: linear-gradient(to left, rgba(var(--profile-panel-dec-rgb), 0.9) 50%, rgba(var(--profile-panel-dec-rgb), 0.75)),
-   no-repeat url('../../assets/champion_images/Nunu.webp'); */
-   /* background-position-y: center; */
+}
+
+.stat-dropdown button {
+   background: none;
+   border: none;
+   padding: 10px 13px;
+   color: var(--color-font);
+   font-size: 0.9rem;
+   font-weight: bold;
+   /* change color ? */
+   border-radius: 9px;
+   cursor: pointer;
+}
+button:hover {
+   background: var(--lightN100);
+}
+
+.stat-drop {
+   position: absolute;
+   background: var(--light1000);
+   padding: 5px;
+   z-index: 5;
+   border-radius: 8px;
+}
+
+.stat {
+   padding: 5px 10px;
+   cursor: pointer;
+}
+
+.down {
+   transform: rotate(180deg);
+}
+
+.stat-modal {
+   position: fixed;
+   z-index: 1;
+   top: 0;
+   left: 0;
+   width: 100vw;
+   height: 100vh;
+}
+
+.champion-stats div {
+   display: inline-block;
+   font-size: 1.2rem;
+   font-weight: bold;
+   margin: 0 20px;
+}
+
+.unit {
+   font-size: 0.9rem;
+   font-weight: normal;
+   color: var(--h4color);
 }
 </style>

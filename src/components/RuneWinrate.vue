@@ -76,7 +76,7 @@ export default {
    <div class="rune-main">
       <div class="rune-wr" v-for="(r, i) in runeSort"
          :key="r.name"
-         :class="i % 2 == 0 ? `rune-style-0` : `rune-style-1`">
+         :class="i % 2 == 0 ? `rune-0` : ``">
          <img :src="runeImage(r.name)" alt="">
          <div class="runes-percent" >
             <span :style="winrateColor(r.winRate)">{{ r.winRate }}%</span>
@@ -89,15 +89,12 @@ export default {
 </template>
 
 <style scoped>
-.rune-style-0 {
-      background: var(--rune-mythic-0);
-   }
-   .rune-style-1 {
-      background: var(--rune-mythic-1);
+.rune-0 {
+      background: var(--blueN2);
    }
 
    .runes-fraction {
-      margin-left: auto;
+      /* margin-left: auto; */
       margin-top: -1px;
       color: var(--color-font-fade);
    }
@@ -108,8 +105,9 @@ export default {
       font-size: 0.8rem;
       display: flex;
       align-items: center;
+      justify-content: space-evenly;
       gap: 5px;
-      padding: 2px 5px;
+      padding: 3px 0;
       padding-right: 15px;
       margin-bottom: 3px;
       border-radius: 5px;
@@ -120,6 +118,7 @@ export default {
 
    .rune-main {
       height: 210px;
+      min-width: 120px;
       margin-top: 10px;
       overflow-y: scroll;
    }

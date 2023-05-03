@@ -107,7 +107,7 @@ export default {
    <div class="mythic-main">
       <div class="mythic-wr" v-for="(m, i) in mythicSort"
          :key="m.id"
-         :class="i % 2 == 0 ? `mythic-style-0` : `mythic-style-1`">
+         :class="i % 2 == 0 ? `mythic-0` : ``">
          <img :src="mythicImage(m.id)" alt="">
          <div class="mythic-percent">
             <span :style="winrateColor(m.winRate)">{{ m.winRate }}%</span>
@@ -120,16 +120,16 @@ export default {
 </template>
 
 <style scoped>
-   .mythic-style-0 {
-      background: var(--rune-mythic-0);;
+   .mythic-0 {
+      background: var(--blueN2);
    }
 
-   .mythic-style-1 {
+   /* .mythic-style-1 {
       background: var(--rune-mythic-1);;
-   }
+   } */
 
    .mythic-fraction {
-      margin-left: auto;
+      /* margin-left: auto; */
       margin-top: -1px;
       color: var(--color-font-fade);
    }
@@ -141,8 +141,9 @@ export default {
       display: flex;
       font-size: 0.8rem;
       align-items: center;
+      justify-content: space-evenly;
       gap: 5px;
-      padding: 2px 5px;
+      padding: 3px 0;
       padding-right: 15px;
       margin-bottom: 3px;
       border-radius: 5px;
@@ -150,10 +151,12 @@ export default {
 
    .mythic-wr img {
       width: 28px;
+      border-radius: 3px;
    }
 
    .mythic-main {
       height: 210px;
+      min-width: 120px;
       margin-top: 10px;
       overflow-y: scroll;
       overflow-x: hidden;

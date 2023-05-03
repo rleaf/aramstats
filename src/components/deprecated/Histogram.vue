@@ -16,7 +16,7 @@ export default {
          histogram: null,
          blueLegend: null,
          redLegend: null,
-         margin: { top: 40, right: 20, bottom: 50, left: 40 },
+         margin: { top: 40, right: 40, bottom: 40, left: 60 },
          width: null,
          height: null,
          std: null,
@@ -26,7 +26,7 @@ export default {
    },
 
    mounted() {
-      this.width = 450 - this.margin.left - this.margin.right
+      this.width = 550 - this.margin.left - this.margin.right
       this.height = 298 - this.margin.top - this.margin.bottom
 
       this.avgDPM = this.initChampion.averageDamagePerMinute
@@ -38,7 +38,7 @@ export default {
          this.avgDPM = this.championData.averageDamagePerMinute
          this.updateHistogram(this.championData.matches)
       },
-
+      
       comparisonData(_, prev) {
          (prev) ? this.comparisonUpdate(this.comparisonData, true) :
             this.comparisonUpdate(this.comparisonData)
@@ -49,10 +49,10 @@ export default {
       Histogram(data) {
          this.svg = d3.select(".histogram-svg")
             .append("svg")
-            .attr("width", this.width + this.margin.left + this.margin.right)
-            .attr("height", this.height + this.margin.top + this.margin.bottom)
+               .attr("width", this.width + this.margin.left + this.margin.right)
+               .attr("height", this.height + this.margin.top + this.margin.bottom)
             .append("g")
-            .attr("transform",
+               .attr("transform",
                `translate(${this.margin.left},${this.margin.top})`);
 
          // X Axis
@@ -63,8 +63,8 @@ export default {
          this.svg.append("g")
             .attr("transform", `translate(0, ${this.height})`)
             .call(d3.axisBottom(this.x))
-            .attr("font-size", "0.7rem")
-            .attr("color", "var(--color-font)")
+               .attr("font-size", "0.7rem")
+               .attr("color", "var(--color-font)")
             .call(g => g.append("text")
                .attr("x", this.width + 15)
                .attr("y", 35)
@@ -96,8 +96,8 @@ export default {
          this.svg.append("g")
             .classed('y-axis', true)
             .call(yAxis)
-            .attr("font-size", "0.7rem")
-            .attr("color", "var(--color-font)")
+               .attr("font-size", "0.7rem")
+               .attr("color", "var(--color-font)")
             .call(g => g.append("text")
                .attr("x", 0)
                .attr("y", -10)
@@ -105,7 +105,7 @@ export default {
                .attr("font-size", "0.8rem")
                .attr("text-anchor", "end")
                .text("Games"))
-
+         
          // append the bar rectangles to the svg element
          this.bins.forEach(bin => {
             if (bin.length > this.maxBin) this.maxBin = bin.length
@@ -120,7 +120,7 @@ export default {
 
          this.blueLegend = this.svg.append("g")
             .classed("blue-legend", true)
-
+            
 
          this.blueLegend
             .append("circle")
@@ -153,14 +153,14 @@ export default {
             .attr("width", d => {
                if (this.x(d.x1) - this.x(d.x0) == 0) {
                   return 0
-               }
+               } 
                return this.x(d.x1) - this.x(d.x0) - 1
             })
             .attr("height", (d) => this.height - this.y(d.length))
             // .attr("fill", d => `hsl(221, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 10) + 50)}%, 50%)`)
             .attr("fill", 'var(--bar2)')
             .style("opacity", 0.7)
-            .on('mouseover', function (_, d) {
+            .on('mouseover', function(_, d) {
                // need function declaration format to pass 'this'.
                d3.select(this)
                   .attr('stroke-width', 1)
@@ -180,9 +180,9 @@ export default {
 
                tooltip.style("visibility", "hidden");
             });
-
+         
       },
-
+      
       updateHistogram(data) {
          this.bins = this.histogram(data)
          if (this.comparisonData) this.binDomain = [this.bins, this.bins2].flat()
@@ -214,20 +214,20 @@ export default {
             .duration(1000)
             .attr("transform", d => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
             .attr("height", d => this.height - this.y(d.length))
-         // .attr("fill", d => `hsl(221, ${Math.round(60 - (((this.maxBin - d.length) / this.maxBin) * 40))}%, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 8) + 50)}%)`)
+            // .attr("fill", d => `hsl(221, ${Math.round(60 - (((this.maxBin - d.length) / this.maxBin) * 40))}%, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 8) + 50)}%)`)
 
-         if (this.comparisonData) {
+         if(this.comparisonData) {
             this.svg.select("g.comparison").selectAll("rect")
                .data(this.bins2)
                .transition()
                .duration(1000)
                .attr("transform", (d) => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
                .attr("height", (d) => this.height - this.y(d.length))
-            // .attr("fill", d => `hsl(9, ${Math.round(90 - (((this.maxBin2 - d.length) / this.maxBin2) * 40))}%, 64%)`)
+               // .attr("fill", d => `hsl(9, ${Math.round(90 - (((this.maxBin2 - d.length) / this.maxBin2) * 40))}%, 64%)`)
          }
       },
 
-      comparisonUpdate(data, update = false) {
+      comparisonUpdate(data, update=false) {
          this.bins2 = this.histogram(data)
          this.binDomain = [this.bins, this.bins2].flat()
 
@@ -249,7 +249,7 @@ export default {
          this.bins2.forEach(bin => {
             if (bin.length > this.maxBin2) this.maxBin2 = bin.length
          });
-
+         
          let ensembleDPM = 0
          data.forEach((match) => {
             ensembleDPM += match.damagePerMinute
@@ -264,7 +264,7 @@ export default {
                .duration(1000)
                .attr("transform", (d) => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
                .attr("height", (d) => this.height - this.y(d.length))
-            // .attr("fill", d => `hsl(9, ${Math.round(90 - (((this.maxBin2 - d.length) / this.maxBin2) * 40))}%, 64%)`)
+               // .attr("fill", d => `hsl(9, ${Math.round(90 - (((this.maxBin2 - d.length) / this.maxBin2) * 40))}%, 64%)`)
 
             this.redLegend.selectAll("text.stats")
                .text(`mean: ${Math.round(ensembleDPM)}, std: ${this.getStdDev(this.comparisonData, ensembleDPM, true)}`)
@@ -333,7 +333,7 @@ export default {
                .attr("text-align", "right")
                .attr("fill", "var(--color-font)")
                .attr("font-size", "0.8rem")
-               .text(`mean: ${Math.round(ensembleDPM)}, std: ${this.getStdDev(this.comparisonData, ensembleDPM, true)}`)
+               .text(`mean: ${Math.round(ensembleDPM)}, std: ${this.getStdDev(this.comparisonData, ensembleDPM,  true)}`)
 
             // this.redLegend
             //    .append("text")
@@ -353,12 +353,12 @@ export default {
             .duration(1000)
             .attr("transform", d => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
             .attr("height", d => this.height - this.y(d.length))
-         // .attr("fill", d => `hsl(221, ${Math.round(60 - (((this.maxBin - d.length) / this.maxBin) * 40))}%, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 8) + 50)}%)`)
+            // .attr("fill", d => `hsl(221, ${Math.round(60 - (((this.maxBin - d.length) / this.maxBin) * 40))}%, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 8) + 50)}%)`)
       },
 
-      getStdDev(data, mean, comparison = false) {
+      getStdDev(data, mean, comparison=false) {
          let arr = []
-
+         
          if (comparison == false) {
             data.matches.forEach((match) => {
                arr.push(match.damagePerMinute)
@@ -376,7 +376,7 @@ export default {
             std += (value - mean) ** 2
          })
          std /= num
-         std = Math.round(std ** (1 / 2))
+         std = Math.round(std ** (1/2))
          return std
 
       },
@@ -397,34 +397,40 @@ export default {
 </template>
 
 <style>
+   .histogram-svg {
+      height: 100%;
+      border-radius: 10px;
+      margin: 0 20px;
+      background: var(--profile-panel);
+   }
 
-.svg-tooltip {
-   background: var(--panel2);
-   border-radius: .1rem;
-   color: var(--color-font);
-   display: block;
-   font-size: .85rem;
-   max-width: 320px;
-   padding: .2rem .4rem;
-   position: absolute;
-   text-overflow: ellipsis;
-   white-space: pre;
-   z-index: 300;
-   visibility: hidden;
-}
+   .svg-tooltip {
+      background: var(--panel2);
+      border-radius: .1rem;
+      color: var(--color-font);
+      display: block;
+      font-size: .85rem;
+      max-width: 320px;
+      padding: .2rem .4rem;
+      position: absolute;
+      text-overflow: ellipsis;
+      white-space: pre;
+      z-index: 300;
+      visibility: hidden;
+   }
 
-.svg-tooltip-red {
-   background: var(--panel1);
-   border-radius: .1rem;
-   color: var(--color-font);
-   display: block;
-   font-size: .85rem;
-   max-width: 320px;
-   padding: .2rem .4rem;
-   position: absolute;
-   text-overflow: ellipsis;
-   white-space: pre;
-   z-index: 300;
-   visibility: hidden;
-}
+   .svg-tooltip-red {
+      background: var(--panel1);
+      border-radius: .1rem;
+      color: var(--color-font);
+      display: block;
+      font-size: .85rem;
+      max-width: 320px;
+      padding: .2rem .4rem;
+      position: absolute;
+      text-overflow: ellipsis;
+      white-space: pre;
+      z-index: 300;
+      visibility: hidden;
+   }
 </style>

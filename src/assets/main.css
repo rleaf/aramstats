@@ -33,7 +33,10 @@
 
   /* Core */
   --blueN: hsl(223, 35%, 8%);
+  --blueN2: rgba(13, 17, 28, 0.4);
   --lightN100: rgba(255, 255, 255, 0.1);
+  --darkN100: rgba(0, 0, 0, 0.2);
+  --lightFocus: rgba(255, 255, 255, 0.15);  
   --light1000: #262933;
   --h4color: #818181;
   --sortValue: #d6d6d6;

@@ -1,9 +1,9 @@
 <script>
-import ChampionN from '../ChampionN.vue'
+import Champion from '../Champion.vue'
 
 export default {
    components: {
-      ChampionN
+      Champion
    },
 
    data() {
@@ -101,7 +101,7 @@ export default {
             <input type="text" placeholder="Search Champion" v-model="this.search">
          </div>
       </div>
-      <ChampionN v-for="(champ, i) in sortedChamps" 
+      <Champion v-for="(champ, i) in sortedChamps" 
       :key="champ.championName"
       :champion="champ"
       />
