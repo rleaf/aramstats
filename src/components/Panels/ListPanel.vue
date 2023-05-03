@@ -135,11 +135,11 @@ export default {
 }
 .sort-button:hover {
    cursor: pointer;
-   background: var(--light1000);
+   background: var(--tint100);
 }
 
 .sort-button:focus {
-   background: var(--light1000);
+   background: var(--tint100);
 }
 
 .order-button {
@@ -153,7 +153,7 @@ export default {
 }
 
 button.order-button:hover {
-   background: var(--light1000);
+   background: var(--tint100);
 }
 
 .order-button img {
@@ -178,6 +178,7 @@ button.order-button:hover {
    width: 650px;
    font-size: 1rem;
    margin-top: 5px;
+   z-index: 5;
 }
 
 .sort-key {
@@ -190,7 +191,7 @@ button.order-button:hover {
    font-size: 0.9rem;
    padding: 0.1rem 0;
    transition: 0.25s;
-   color: var(--sortValue);
+   color: var(--light300);
    cursor: pointer;
 }
 
@@ -204,7 +205,7 @@ button.order-button:hover {
 
 .search input {
    background: none;
-   border: 1px solid var(--light1000);
+   border: 1px solid var(--tint100);
    color: var(--color-font);
    padding: 0.5rem 1rem;
    border-radius: 15px;

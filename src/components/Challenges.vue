@@ -112,7 +112,7 @@ p.percentile {
    border-radius: 15px;
    padding: 20px 0;
    margin: 20px 0;
-   background: var(--light1000);
+   background: var(--tint100);
 }
 
 .challenge-scroll {

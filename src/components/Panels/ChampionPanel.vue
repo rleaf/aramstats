@@ -193,7 +193,7 @@ export default {
    display: flex;
    flex-direction: column;
    width: 100%;
-   background-color: var(--light1000);
+   background-color: var(--tint100);
    margin-top: 20px;
    border-radius: 15px;
    /* height: 100px; */
@@ -229,12 +229,12 @@ export default {
    cursor: pointer;
 }
 button:hover {
-   background: var(--lightN100);
+   background: var(--tint100);
 }
 
 .stat-drop {
    position: absolute;
-   background: var(--light1000);
+   background: var(--tint100);
    padding: 5px;
    z-index: 5;
    border-radius: 8px;
@@ -268,6 +268,6 @@ button:hover {
 .unit {
    font-size: 0.9rem;
    font-weight: normal;
-   color: var(--h4color);
+   color: var(--tint400);
 }
 </style>

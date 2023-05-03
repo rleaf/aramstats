@@ -105,7 +105,7 @@ img.logo {
 .container {
    /* display: inline-block; */
    /* background-color: var(--search-bar); */
-   border: 2px solid var(--lightN100);
+   border: 2px solid var(--tint100);
    border-radius: 50px;
 }
 
@@ -115,6 +115,7 @@ input {
    border: none;
    padding: 1rem 4rem;
    font-size: 1rem;
+   color: var(--color-font);
    /* color: var(--color-font-search); */
    /* width: 300px; */
 }

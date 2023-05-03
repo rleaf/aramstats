@@ -168,7 +168,7 @@ export default {
    display: flex;
    width: 745px;
    height: 65px;
-   background: var(--light1000);
+   background: var(--tint100);
    margin-bottom: 10px;
    margin-left: auto;
    border-radius: 15px;
@@ -177,11 +177,11 @@ export default {
 }
 
 .win {
-   background: linear-gradient(to right, rgba(21, 106, 128, 0.2) 0%, var(--light1000));
+   background: linear-gradient(to right, var(--win) 0%, var(--tint100));
 }
 
 .loss {
-   background: linear-gradient(to right, rgba(150, 33, 33, 0.2) 0%, var(--light1000));
+   background: linear-gradient(to right, var(--loss) 0%, var(--tint100));
 }
 
 .match-left {
@@ -207,14 +207,12 @@ export default {
    border: none;
    height: 100%;
    transition: 0.25s;
-   /* width: 20px; */
-   /* padding: 0 3px; */
    cursor: pointer;
    border-radius: 15px 0 0 15px;
 }
 
 .match-left button:hover {
-   background: var(--lightN100);
+   background: var(--hoverButton);
 }
 
 .match-date {
@@ -228,7 +226,7 @@ export default {
 }
 
 .date-minor {
-   color: var(--h4color);
+   color: var(--tint400);
    font-size: 0.7rem;
 }
 
@@ -260,7 +258,7 @@ export default {
 
 .unit {
    font-size: 0.75rem;
-   color: var(--h4color);
+   color: var(--tint400);
 }
 
 .match-items img {
@@ -300,13 +298,13 @@ export default {
 
 h5 {
    margin: 0;
-   color: var(--h4color);
+   color: var(--tint400);
    font-weight: normal;
    font-size: 0.75rem;
 }
 
 .per-minute {
-   color: var(--h4color);
+   color: var(--tint400);
    font-size: 0.75rem;
 }
 </style>

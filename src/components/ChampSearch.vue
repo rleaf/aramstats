@@ -80,7 +80,7 @@ export default {
 }
 
 .champion-search input {
-   background: var(--lightN100);
+   background: var(--tint200);
    color: var(--color-font);
    padding: 0.5rem 0.8rem;
    border: none;
@@ -90,16 +90,15 @@ export default {
 }
 
 .champion-search input:hover {
-   background: var(--lightFocus);
+   background: var(--tint301);
 }
 
 .champion-search input:focus {
    outline: none;
-   background: var(--lightFocus);
+   background: var(--tint301);
 }
 
 .champion-search-select {
-   /* padding-bottom: 5px; */
    display: flex;
    gap: 10px;
    align-items: center;
@@ -113,11 +112,9 @@ export default {
 
 .champion-search-list {
    position: absolute;
-   /* margin-top: 2px; */
    margin-left: 8px;
    z-index: 2;
-   background: var(--light1000);
-   /* border-radius: 15px; */
+   background: var(--tint200);
    color: var(--color-font);
    height: 300px;
    width: 250px;
@@ -125,11 +122,11 @@ export default {
 }
 
 .champion-search-select:hover {
-   background: var(--lightFocus);
+   background: var(--tint300);
 }
 
 .champion-search-list::-webkit-scrollbar-track {
-   background-color: var(--lightFocus);
+   background-color: var(--tint300);
 }
 
 .champion-search-list::-webkit-scrollbar {

@@ -90,7 +90,7 @@ export default {
 
 <style scoped>
 .rune-0 {
-      background: var(--blueN2);
+      background: var(--runeMythic);
    }
 
    .runes-fraction {

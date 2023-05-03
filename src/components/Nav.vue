@@ -72,9 +72,6 @@ a {
    transition: 0.4s;
 }
 
-a:hover {
-   color: var(--color-font-hover);
-}
 
 button {
    background: none;
@@ -89,7 +86,6 @@ button {
       background-color: var(--color-font);
       width: 1.5rem;
       height: 1.5rem;
-      /* mask-image: var(--themeSVG); */
       mask-image: var(--themeIcon);
       mask-position: center;
       mask-size: 60%;

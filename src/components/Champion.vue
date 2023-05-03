@@ -16,7 +16,7 @@ export default {
    computed: {
       background() {
          const img = new URL(`../assets/champion_splash/${this.champion.championName.toLowerCase()}.png`, import.meta.url).href
-         return `background: linear-gradient(to right, rgba(38, 41, 51, 0.8), rgba(38, 41, 51, 0.85) 10%, rgba(38, 41, 51, 1.0) 60%), no-repeat -110% 20%/80% url('${img}')`
+         return `background: linear-gradient(to right, rgba(var(--tint100RGB), 0.8), rgba(var(--tint100RGB), 0.85) 10%, rgba(var(--tint100RGB), 1.0) 60%), no-repeat -110% 20%/80% url('${img}')`
       },
       winrate() {
          return Math.round((this.champion.wins / this.champion.totalGames) * 100)
@@ -158,7 +158,7 @@ export default {
 <style scoped>
    .champion-main {
       width: 100%;
-      background-color: var(--light1000);
+      background-color: var(--tint100);
       margin: 20px 0;
       height: 120px;
       border-radius: 15px;
@@ -180,7 +180,7 @@ export default {
    }
 
    button.dropdown:hover {
-      background: var(--lightN100);
+      background: var(--tint200);
    }
 
    /* .dropdown img {
@@ -226,7 +226,7 @@ export default {
 
    .title {
       display: block;
-      color: var(--h4color);
+      color: var(--tint400);
       font-size: 0.9rem;
       line-height: 0.9;
       font-weight: normal;
@@ -234,7 +234,7 @@ export default {
 
    .sub {
       display: block;
-      color: var(--h4color);
+      color: var(--tint400);
       font-size: 0.9rem;
       font-weight: normal;
    }
@@ -249,17 +249,14 @@ export default {
 
    .triple {
       background-image: url('../assets/triple_small.svg');
-      /* filter: drop-shadow(0 0 1px var(--triple)); */
    }
 
    .quadra {
       background-image: url('../assets/diamond_small.svg');
-      /* filter: drop-shadow(0 0 1px var(--quadra)); */
    }
 
    .penta {
       background-image: url('../assets/penta_small.svg');
-      /* filter: drop-shadow(0 0 1px var(--penta)); */
    }
 
    .secondary-stats {
@@ -278,7 +275,7 @@ export default {
    }
 
    .secondary-sub {
-      color: var(--h4color);
+      color: var(--tint400);
       font-size: 0.8rem;
       /* font-style: italic; */
       line-height: 0.9;

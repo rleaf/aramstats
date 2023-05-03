@@ -153,7 +153,7 @@ export default {
 }
 
 .barplot-main {
-   background: var(--light1000);
+   background: var(--tint100);
    margin-top: 20px;
    border-radius: 15px;
    height: 300px;

@@ -29,6 +29,18 @@ export default {
       ChampionPanel,
       Danger
    },
+
+   // ????
+   // head: {
+   //    title: {
+   //       inner: 'toad'
+   //    },
+
+   //    script: [
+   //       { type: 'text/javascript', src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3046400863804606', async: true, crossorigin: true }
+   //    ]
+   // },
+
    data() {
       return {
          championInfo: this.userInfo.slice(1),
@@ -163,7 +175,7 @@ export default {
       },
 
       background() {
-         return `background: radial-gradient(circle at 50% -110%, transparent, #262933 90%), no-repeat center 70% url('${this.profile.IconId}');
+         return `background: radial-gradient(circle at 50% -110%, transparent, rgb(var(--tint100RGB)) 90%), no-repeat center 70% url('${this.profile.IconId}');
                  background-size: 380px;`
       },
    },
@@ -277,7 +289,6 @@ export default {
 .rhs {
    display: flex;
    flex-direction: column;
-   /* background: var(--lightN100); */
    width: 760px;
 }
 
@@ -291,7 +302,7 @@ export default {
 }
 
 .active {
-   background: var(--light1000);
+   background: var(--tint100);
 }
 
 .section-tab {
@@ -308,7 +319,7 @@ export default {
 }
 
 .profile {
-   background: var(--lightN100);
+   background: var(--tint100);
    border-radius: 15px;
 }
 
@@ -351,7 +362,6 @@ img.bongo-cat {
    border-radius: 20px;
    margin-top: 10px;
    font-size: 1.05rem;
-   /* transition: 0.25s; */
 }
 
 .name-wrapper button:hover {
@@ -359,8 +369,7 @@ img.bongo-cat {
 }
 
 .name-wrapper button[disabled] {
-   background: var(--lightN100);
-   /* filter: saturate(0.1); */
+   background: var(--hoverButton);
    cursor: wait;
 }
 
@@ -422,7 +431,7 @@ img.bongo-cat {
 .history {
    display: flex;
    justify-content: center;
-   background: var(--lightN100);
+   background: var(--tint100);
    border-radius: 15px;
 }
 

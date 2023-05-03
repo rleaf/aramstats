@@ -22,6 +22,7 @@
     "twisted": "github:rleaf/twisted",
     "vue": "^3.2.45",
     "vue-gtag": "^2.0.1",
+    "vue-head": "github:MKGaru/vue-head#vue3",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {

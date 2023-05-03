@@ -65,7 +65,7 @@ button {
 
 .dropdown-content {
    position: absolute;
-   background: var(--lightN100);
+   background: var(--tint200);
    margin-top: 2px;
    border-radius: 5px;
    width: inherit;
@@ -78,12 +78,10 @@ button {
 }
 
 .dropdown-container button:hover {
-   /* background: var(--search-bar-hover); */
-   /* border-radius: 5px; */
    cursor: pointer;
 }
 .dropdown-item:hover {
-   background: var(--search-bar-dropdown-hover);
+   background: var(--tint300);
    border-radius: 5px;
    
 }
