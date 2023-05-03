@@ -7,15 +7,24 @@ export default {
          svg: null,
          x: null,
          y: null,
-         margin: { top: 0, right: 40, bottom: 30, left: 115 },
+         margin: { top: 0, right: 30, bottom: 60, left: 85 },
          width: null,
          height: null,
+         classes: [
+            new URL('../assets/class_images/Controller_icon.webp', import.meta.url).href,
+            new URL('../assets/class_images/Fighter_icon.webp', import.meta.url).href,
+            new URL('../assets/class_images/Mage_icon.webp', import.meta.url).href,
+            new URL('../assets/class_images/Marksman_icon.webp', import.meta.url).href,
+            new URL('../assets/class_images/Slayer_icon.webp', import.meta.url).href,
+            new URL('../assets/class_images/Tank_icon.webp', import.meta.url).href,
+            new URL('../assets/class_images/Specialist_icon.webp', import.meta.url).href,
+         ]
       }
    },
 
    mounted() {
       this.width = 700 - this.margin.left - this.margin.right
-      this.height = 258 - this.margin.top - this.margin.bottom
+      this.height = 268 - this.margin.top - this.margin.bottom
 
       this.Barplot(this.data)
    },
@@ -23,10 +32,6 @@ export default {
    methods: {
       Barplot(data) {
 
-         // ['Enchanter', 'Controller', 'Juggernaut', 'Diver', 'Mage', 'Burst', 'Artillery', 'Marksman']
-         // const subgroups = Object.keys(data[0]).slice(1)
-
-         // ['Controller', 'Fighter', 'Mage', 'Marksman']
          const groups = data.map(d => (d.class))
 
          this.svg = d3.select(".barplot-svg")
@@ -46,20 +51,20 @@ export default {
          this.svg.append("g")
             .attr("transform", `translate(0, ${this.height})`)
             .call(d3.axisBottom(this.x))
-            .call(g => g.select(".domain").remove())
-            .call(g => g.selectAll("line").remove())
+            .call(g => {
+               g.select(".domain").remove()
+               g.selectAll("line").remove()
+               g.selectAll("g.tick text").remove()
+               g.selectAll("g.tick").each((_, i, n) => {
+                  d3.select(n[i])
+                     .append('image')
+                     .classed('class-image', true)
+                     .attr('href', this.classes[i])
+               })
+            })
             .attr("font-size", "0.75rem")
-            // .attr("color", "tomato")
-            // .call(g => g.append("text")
-            //    .attr("x", this.width + 15)
-            //    .attr("y", 35)
-            //    .attr("fill", "var(--color-font)")
-            //    .attr("font-size", "0.8rem")
-            //    .attr("text-anchor", "end")
-            //    .text("Class"))
 
          this.y = d3.scaleLinear()
-            // .domain([0, d3.max(data, d => Object.values(d).slice(1).reduce((a, b) => a + b))])
             .domain([0, d3.max(data, d => d.Total)])
             .range([this.height, 0])
 
@@ -76,56 +81,21 @@ export default {
             .call(g => g.select(".domain").remove())
             .call(g => g.selectAll("line").remove())
             .attr("font-size", "0.7rem")
-            // .attr("color", "var(--color-font)")
-            // .call(g => g.append("text")
-            //    .attr("x", 15)
-            //    .attr("y", -8)
-            //    .attr("fill", "var(--color-font)")
-            //    .attr("font-size", "0.8rem")
-            //    .attr("text-anchor", "end")
-            //    .text("Frequency"))
-
-         // const color = d3.scaleOrdinal()
-         //    .domain(subgroups)
-         //    .range([
-         //       'var(--bar2)', /* enchanter */
-         //       // 'var(--bar3)', /* catcher */
-         //       // 'var(--bar2)', /* juggernaut */
-         //       // 'var(--bar3)', /* diver */
-         //       // 'var(--bar2)', /* mage */
-         //       // 'var(--bar3)', /* burst */
-         //       // 'var(--bar4)', /* battlemage */
-         //       // 'var(--bar5)', /* artillery */
-         //       // 'var(--bar2)', /* marksman */
-         //       // 'var(--bar2)', /* assassin */
-         //       // 'var(--bar3)', /* skirmisher */
-         //       // 'var(--bar2)', /* vanguard */
-         //       // 'var(--bar3)', /* warden */
-         //       // 'var(--bar2)'  /* specialist */
-         //    ])
 
          const tooltip = d3.select(".barplot-svg")
             .append("div")
             .attr("class", "barplot-tooltip")
 
-         // const mouseoverText = (data, totalClass) => { 
-         //    let string = `${data.class} (${Math.round(totalClass * 10) / 10}%)\n`
-         //    for (const [k, v] of Object.entries(data).slice(1)) {
-         //       if (v != 0) string = string.concat('    ', `${k} (${Math.round(v * 10) / 10}%)\n`)
-         //    }
-
-         //    return string
-         // }
-
          const mouseover = function (_, d) {
-            let string = `${d.class} (${Math.round(d.Total * 10) / 10}%)\n`
+            let string = `<b>${d.class}</b>: (${Math.round(d.Total * 10) / 10}%)\n`
             for (const [k, v] of Object.entries(d).slice(2)) {
-               string = string.concat('    ', `${k} (${Math.round(v * 10) / 10}%)\n`)
+               string = string.concat('   &#x2022; ', `${k}: (${Math.round(v * 10) / 10}%)\n`)
             }
 
             tooltip
-               .text(string)
+               .html(string)
                .style("visibility", 'visible')
+               .style("opacity", "1")
          }
 
          const mousemove = (e) => {
@@ -136,6 +106,7 @@ export default {
          const mouseleave = () => {
             tooltip
                .style("visibility", 'hidden')
+               .style("opacity", "0")
          }
 
          this.svg.append("g")
@@ -150,29 +121,6 @@ export default {
             .on("mouseover", mouseover)
             .on("mousemove", mousemove)
             .on("mouseleave", mouseleave)
-
-
-         /*
-             Stacked Barchart
-         */
-         // const stackedData = d3.stack()
-         //    .keys(subgroups)(data)
-         // 
-         // this.svg.append("g")
-         //    .selectAll("g")
-         //    .data(stackedData)
-         //    .join("g")
-         //       .attr("fill", d => color(d.key))
-         //    .selectAll("rect")
-         //    .data(d => d)
-         //    .join("rect")
-         //       .attr("x", d => this.x(d.data.class))
-         //       .attr("y", d => this.y(d[1]))
-         //       .attr("height", d => this.y(d[0]) - this.y(d[1]))
-         //       .attr("width", this.x.bandwidth())
-         //    .on("mouseover", mouseover)
-         //    .on("mousemove", mousemove)
-         //    .on("mouseleave", mouseleave)
       }
    },
 
@@ -184,56 +132,59 @@ export default {
 
 <template>
    <div class="barplot-main">
-      <div class="barplot-asterisk">*<a href="https://pastebin.com/cH6tpmUT" target="_blank">classes</a>.</div>
+      <div class="barplot-asterisk"><a href="https://pastebin.com/cH6tpmUT" target="_blank">Champion classes</a></div>
       <div class="barplot-svg"></div>
    </div>
 </template>
 
 <style>
+
 .barplot-asterisk {
-   font-style: oblique;
-   /* padding: 10px 0; */
-   /* padding-right: 20px; */
-   /* margin-bottom: -30px; */
+   padding: 10px 0;
    text-align: end;
-   color: var(--color-font-fade);
-   font-size: 0.8rem;
+   padding-right: 20px;
 }
-
 .barplot-asterisk a {
-   color: var(--color-font-fade);
+   font-style: italic;
+   text-align: end;
+   color: var(--color-font);
+   transition: color 0.15s;
+   font-size: 0.85rem;
 }
 
-.barplot-asterisk a:hover {
-   color: var(--color-font);
-}
+/* .barplot-asterisk a:hover {
+   color: tomato;
+} */
 
 .barplot-main {
-   /* height: 100%; */
-   /* width: 100%; */
-   /* border-radius: 10px; */
-   /* margin: 0 20px; */
    background: var(--light1000);
    margin-top: 20px;
+   border-radius: 15px;
+   height: 300px;
 }
 
+
 .barplot-tooltip {
-   background: var(--panel2);
-   /* background: var(--blue600s); */
-   border-radius: .1rem;
+   backdrop-filter: blur(13px) saturate(120%);
+   -webkit-backdrop-filter: blur(13px) saturate(120%);
+   background-color: rgba(39, 42, 68, 0.65);
+   border-radius: 5px;
+   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.85);
    color: var(--color-font);
-   display: block;
-   font-size: .85rem;
+   font-size: .9rem;
    max-width: 320px;
    padding: .2rem .4rem;
    position: absolute;
    text-overflow: ellipsis;
    white-space: pre;
    z-index: 300;
+   transition: opacity 0.25s;
    visibility: hidden;
+   opacity: 1;
 }
 
-.tick line {
-   /* visibility: hidden; */
+image.class-image {
+   transform: translate(-13px, 7px);
+   width: 26px;
 }
 </style>

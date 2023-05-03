@@ -185,7 +185,7 @@ export default {
    </div>
 </template>
 
-<style>
+<style scoped>
 .barplot-asterisk {
    font-style: oblique;
    padding: 10px 0;

@@ -199,6 +199,7 @@ export default {
    width: 100%;
    padding-right: 10px;
    justify-content: space-evenly;
+   font-size: 0.9rem;
 }
 
 .match-left button {
@@ -252,7 +253,7 @@ export default {
 
 .kda {
    display: block;
-   font-size: 0.9rem;
+   font-size: 1rem;
    margin-bottom: 2px;
    /* font-weight: bold; */
 }

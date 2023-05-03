@@ -51,7 +51,7 @@ export default {
                <img :src="this.championIcon" :alt="this.champion.championName">
                <div class="champ-winrate">
                   <div class="title">
-                     winrate
+                     Winrate
                   </div>
                   <div class="body">
                      {{ winrate }}%

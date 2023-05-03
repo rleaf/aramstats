@@ -1,10 +1,12 @@
 <script>
 import StackedBarplot from '../StackedBarplotN.vue'
+import Challenges from '../ChallengesN.vue'
 import { classBook } from '../../assets/aram_champ_classes'
 
 export default {
    components: {
-      StackedBarplot
+      StackedBarplot,
+      Challenges
    },
 
    data() {
@@ -74,12 +76,8 @@ export default {
 
 <template>
    <div class="summoner-main">
-      <div class="class-distribution">
-         <StackedBarplot :data="this.classProfile"/>
-      </div>
-      <div class="challenges">
-
-      </div>
+      <StackedBarplot :data="this.classProfile"/>
+      <Challenges :data="this.challengeData"/> 
    </div>
 </template>
 
