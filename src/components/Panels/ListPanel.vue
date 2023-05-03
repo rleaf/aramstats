@@ -100,13 +100,10 @@ export default {
          <div class="search">
             <input type="text" placeholder="Search Champion" v-model="this.search">
          </div>
-         <!-- Sort by -->
-         <!-- Search Champion -->
       </div>
       <ChampionN v-for="(champ, i) in sortedChamps" 
       :key="champ.championName"
       :champion="champ"
-      :class="(i % 2 == 0) ? `0` : `1`"
       />
 
    </div>
@@ -146,16 +143,21 @@ export default {
 }
 
 .order-button {
-   font-size: 0.9rem;
    background: none;
    border: none;
    color: var(--color-font);
    cursor: pointer;
-   padding: 0 1rem;
+   padding: 0.5rem 1rem;
+   border-radius: 15px;
+   margin-left: 1rem;
+}
+
+button.order-button:hover {
+   background: var(--light1000);
 }
 
 .order-button img {
-   width: 20px;
+   width: 15px;
 }
 
 .up {

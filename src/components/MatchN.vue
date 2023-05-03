@@ -52,6 +52,10 @@ export default {
             }
          }
       },
+
+      matchDetail() {
+         console.log('soon.tm')
+      }
    },
 
    computed: {
@@ -78,8 +82,8 @@ export default {
 <template>
    <div class="match-container" :class="(this.match.win) ? 'win' : 'loss'">
       <div class="match-left">
-         <button>
-            <img src="../assets/arrow3.svg" alt="">
+         <button @click="matchDetail">
+            <!-- <img src="../assets/arrow3.svg" alt=""/> -->
          </button>
          <div class="match-date">
             <span class="date-minor">{{ this.daysSince }} days ago</span>
@@ -210,11 +214,6 @@ export default {
 
 .match-left button:hover {
    background: var(--lightN100);
-}
-
-.match-left > img {
-   /* width: 11px;
-   padding: 0 5px; */
 }
 
 .match-date {

@@ -6,7 +6,8 @@ import OverviewPanel from '../Panels/OverviewPanel.vue'
 import ChampionPanel from '../Panels/ChampionPanel.vue'
 import ChallengePanel from '../Panels/ChallengePanel.vue'
 
-import ChampionsList from '../Panels/ChampionsList.vue'
+import ListPanel from '../Panels/ListPanel.vue'
+import SummonerPanel from '../Panels/SummonerPanel.vue'
 
 import Histogram from '../Histogram.vue'
 import ChampSearch from '../ChampSearch.vue'
@@ -22,7 +23,8 @@ export default {
       OverviewPanel,
       ChampionPanel,
       ChallengePanel,
-      ChampionsList,
+      ListPanel,
+      SummonerPanel,
       Danger
    },
    data() {
@@ -51,32 +53,6 @@ export default {
                penta: 0
             },
          },
-         sortOptions: [
-            {
-               key: 'Main',
-               values: ['Total Games', 'Champion', 'Wins']
-            },
-            {
-               key: 'Damage',
-               values: ['Damage', 'DPM', 'Damage Share']
-            },
-            {
-               key: 'Heal',
-               values: ['Healing', 'HPM', 'Ally Healing', 'Ally HPM']
-            },
-            {
-               key: 'Tank',
-               values: ['Damage Taken', 'DTPM', 'Damage Mitigated', 'DMPM']
-            },
-            {
-               key: 'Multikills',
-               values: ['Triple kills', 'Quadra kills', 'Penta kills']
-            },
-            {
-               key: 'Misc',
-               values: ['Kill Participation', 'Gold', 'GPM']
-            },
-         ]
       }
    },
 
@@ -262,9 +238,14 @@ export default {
             </div>
          </div>
          <div class="list" v-show="this.panel === 0">
-            <ChampionsList :info="this.championInfo" />
+            <ListPanel :info="this.championInfo" />
          </div>
-         <div class="list" v-show="this.panel === 1"></div>
+         <div class="list" v-show="this.panel === 1">
+            <SummonerPanel 
+               :championData="this.championInfo"
+               :challengeData="this.challengeInfo" 
+               :totalMatches="this.summonerStats.totalMatches" />
+         </div>
          <div class="list" v-show="this.panel === 2"></div>
       </div>
    </div>

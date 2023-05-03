@@ -153,7 +153,6 @@ export default {
             :match="match"/>
       </div>
    </div>
-   <!--  -->
 </template>
 
 <style scoped>
