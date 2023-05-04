@@ -1,1 +1,0 @@
-ttps://ddragon.leagueoflegends.com/cdn/img/champion/splash/{champ}_

@@ -5,8 +5,11 @@
       <hr>
       <p>
         <RouterLink to="/">aramstats.lol</RouterLink> parses all of a summoner's ARAM games available in the Riot API to display insightful statistics.
-        <br><br>
         Get in touch: @owl#4626 in the <a href="https://discord.gg/MydvqhqWmM">aram academy</a> discord.
+      </p>
+      <p>
+        * I'm rolling out a big UI update. Its incomplete, but good enough to the point I think it's nicer to interact with than the prior UI. All base functionality
+        that the prior UI had should be here. Hmu if you find any weird interactions.
       </p>
     </div>
     <div class="about-block">
@@ -20,8 +23,7 @@
       <h2>Site longevity (ads)</h2>
       <hr>
       <p>
-        I am going to start running ads to help offset backend costs; I only intended to host this site for a couple of months. I'm happy that there are daily
-        users, but I can't guarantee this site to be up long-term.
+        I am going to start running ads to help offset backend costs. I'm happy that there's daily activity, but I can't guarantee this site to be up long-term.
       </p>
     </div>
     <div class="about-block">
@@ -32,15 +34,6 @@
         and older parses won't have pulled the required information from Riot to show it.
       </p>
     </div>
-    <!-- <div>
-      <h2>About</h2>
-      <p>
-        <u>aramstats.lol</u> parses all of a summoner's ARAM games available in the Riot API to display insightful statistics.
-      </p>
-      <p>
-        Get in touch: @owl#4626 in the <a href="https://discord.gg/MydvqhqWmM">aram academy</a> discord.
-      </p>
-    </div> -->
   </div>
 </template>
 
@@ -55,7 +48,7 @@
 }
 
 .about-block {
-  width: 550px;
+  width: 800px;
   margin-bottom: 3vh;
 }
 
@@ -64,7 +57,8 @@ a {
 }
 
 h2 {
-  /* font-weight: normal; */
+  font-weight: normal;
+  line-height: 1;
   text-align: left;
   color: var(--color-font);
   margin-bottom: 0;
@@ -74,5 +68,6 @@ p {
   color: var(--color-font);
   line-height: 1.4;
   text-align: left;
+  margin-top: 0.5rem;
 }
 </style>

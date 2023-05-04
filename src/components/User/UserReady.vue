@@ -21,9 +21,6 @@ export default {
       Dropdown,
       Histogram,
       ChampSearch,
-      // OverviewPanel,
-      // ChampionPanel,
-      // ChallengePanel,
       ListPanel,
       SummonerPanel,
       ChampionPanel,
@@ -194,11 +191,13 @@ export default {
                <img class="pfp" :src=profile.IconId  alt="">
                <div>
                   {{ this.profile.name }}
-                  <button :disabled="isDisabled" @click="updateSummoner()">
-                     {{ this.refresh }}
-                  </button>
+                  <div>
+                     <button :disabled="isDisabled" @click="updateSummoner()">
+                        {{ this.refresh }}
+                     </button>
+                     <img class="bongo-cat" :src="bongocat" v-show="this.isDisabled">
+                  </div>
                </div>
-               <img class="bongo-cat" :src="bongocat" v-show="this.isDisabled">
             </div>
             <div class="summ-stats">
                <div class="1">
@@ -342,7 +341,9 @@ img.pfp {
 img.bongo-cat {
    position: absolute;
    width: 110px;
-   transform: rotate(-15deg) translate(65px, 26px);
+   /* left: 0; */
+   /* transform: rotate(-14deg)  translate(115px, 15px); */
+   transform: rotate(-14deg)  translate(17px, -91px);
 }
 
 .img-bg {
@@ -435,9 +436,4 @@ img.bongo-cat {
    border-radius: 15px;
 }
 
-
-.bongo-cat {
-   padding-left: 50px;
-   height: 90px;
-}
 </style>

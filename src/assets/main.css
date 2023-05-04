@@ -53,7 +53,7 @@
   --color-background: #fff;
   --color-font: #000;
   --runeMythic: var(--light400);
-  --hoverButton: rgba(255, 255, 255, 0.1);
+  --hoverButton: rgba(0, 0, 0, 0.1);
 
   --win: rgba(66, 168, 194, 0.4);
   --loss: rgba(226, 72, 72, 0.4);

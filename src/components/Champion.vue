@@ -15,7 +15,7 @@ export default {
 
    computed: {
       background() {
-         const img = new URL(`../assets/champion_splash/${this.champion.championName.toLowerCase()}.png`, import.meta.url).href
+         const img = new URL(`../assets/champion_splash/${this.champion.championName.toLowerCase()}.webp`, import.meta.url).href
          return `background: linear-gradient(to right, rgba(var(--tint100RGB), 0.8), rgba(var(--tint100RGB), 0.85) 10%, rgba(var(--tint100RGB), 1.0) 60%), no-repeat -110% 20%/80% url('${img}')`
       },
       winrate() {
