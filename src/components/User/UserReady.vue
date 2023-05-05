@@ -2,10 +2,6 @@
 import Champion from '../Champion.vue'
 import Dropdown from '../Dropdown.vue'
 
-// import OverviewPanel from '../Panels/OverviewPanel.vue'
-// import ChampionPanel from '../Panels/ChampionPanel.vue'
-// import ChallengePanel from '../Panels/ChallengePanel.vue'
-
 import ListPanel from '../Panels/ListPanel.vue'
 import SummonerPanel from '../Panels/SummonerPanel.vue'
 import ChampionPanel from '../Panels/ChampionPanel.vue'
@@ -30,9 +26,8 @@ export default {
    head: {
       script: [
          {
-            type: 'text/javascript',
+            async: '',
             src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3046400863804606',
-            async: true,
             crossorigin: 'anonymous'
          }
       ]
