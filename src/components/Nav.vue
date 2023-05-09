@@ -34,6 +34,7 @@
             <div class="theme"></div>
          </button>
          <RouterLink class="text" to="/about">About</RouterLink>
+         <RouterLink class="text" to="/updates">Updates</RouterLink>
       </div>
    </nav>
    <RouterView />
@@ -64,8 +65,7 @@ nav .right {
 }
 
 a {
-   padding-left: 0.5rem;
-   padding-right: 0.5rem;
+   padding: 0 1rem;
    font-size: 1.1rem;
    text-decoration: none;
    color: var(--color-font);
@@ -79,7 +79,7 @@ button {
    border: none;
    cursor: pointer;
    padding: 0;
-   margin-right: 1.5rem;
+   margin-right: 0.5rem;
 }
 
 .theme {

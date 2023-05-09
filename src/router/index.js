@@ -15,15 +15,15 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
+      path: '/updates',
+      name: 'updates',
+      component: () => import('../views/UpdatesView.vue')
+    },
+    {
       path: '/:region/:username',
       name: 'user',
       component: () => import('../views/UserView.vue')
     },
-    // {
-    //   path: '/:region/username',
-    //   name: 'userCall',
-    //   component: () => import('../components/User/UserCall.vue')
-    // }
   ]
 })
 

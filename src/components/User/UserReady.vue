@@ -23,22 +23,22 @@ export default {
       Danger
    },
 
-   head: {
-      script: [
-         {
-            async: '',
-            src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3046400863804606',
-            crossorigin: 'anonymous'
-         }
-      ]
-   },
+   // head: {
+   //    script: [
+   //       {
+   //          async: '',
+   //          src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3046400863804606',
+   //          crossorigin: 'anonymous'
+   //       }
+   //    ]
+   // },
 
    data() {
       return {
          championInfo: this.userInfo.slice(1),
          challengeInfo: this.userInfo[0].challenges,
          profile: {
-            IconId: `http://ddragon.leagueoflegends.com/cdn/13.4.1/img/profileicon/${this.userInfo[0].profileIconId}.png`,
+            IconId: `http://ddragon.leagueoflegends.com/cdn/13.9.1/img/profileicon/${this.userInfo[0].profileIconId}.png`,
             name: this.userInfo[0].name
          },
          selected: 'Total Games',
@@ -224,9 +224,9 @@ export default {
                </div>
             </div>
          </div>
-         <div class="history">
+         <!-- <div class="history">
             <h4>.</h4>
-         </div>
+         </div> -->
       </div>
       <div class="rhs">
          <div class="sections">
@@ -284,7 +284,23 @@ export default {
    display: flex;
    flex-direction: column;
    width: 760px;
+   /* height: 100vh;
+   overflow-y: scroll;
+   padding-right: 5px; */
 }
+
+/* .rhs::-webkit-scrollbar {
+   width: 15px;
+}
+
+.rhs::-webkit-scrollbar-track {
+   background-color: rgba(0, 0, 0, 0.1);
+}
+
+.rhs::-webkit-scrollbar-thumb {
+   background-color: var(--tint100);
+   border-radius: 8px;
+} */
 
 .sections {
    display: flex;

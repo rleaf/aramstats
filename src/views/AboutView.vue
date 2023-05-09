@@ -5,7 +5,7 @@
       <hr>
       <p>
         <RouterLink to="/">aramstats.lol</RouterLink> parses all of a summoner's ARAM games available in the Riot API to display insightful statistics.
-        Get in touch: @owl#4626 in the <a href="https://discord.gg/MydvqhqWmM">aram academy</a> discord.
+        Get in touch with me @owl#4626 in the <a href="https://discord.gg/MydvqhqWmM">aram academy</a> discord.
       </p>
       <p>
         * I'm rolling out a big UI update. Its incomplete, but good enough to the point I think it's nicer to interact with than the prior UI. All base functionality
@@ -23,7 +23,7 @@
       <h2>Site longevity (ads)</h2>
       <hr>
       <p>
-        I am going to start running ads to help offset backend costs. I'm happy that there's daily activity, but I can't guarantee this site to be up long-term.
+        I am going to try and figure out how to run ads to help offset backend costs. I'm happy that there's daily activity but I can't guarantee this site to be up long-term.
       </p>
     </div>
     <div class="about-block">

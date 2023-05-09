@@ -4,7 +4,7 @@
 
 <template>
    <div class="header-main">
-      <RouterLink to="/about">Peep 'About' for UI update</RouterLink>
+      <RouterLink to="/updates">Moving database</RouterLink>
    </div>
 </template>
 
