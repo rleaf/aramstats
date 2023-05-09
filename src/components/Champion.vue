@@ -180,16 +180,11 @@ export default {
    }
 
    button.dropdown:hover {
-      background: var(--tint200);
+      background: var(--hoverButton);
    }
-
-   /* .dropdown img {
-      transition: 0.25s;
-   } */
 
    .expand {
       transform: rotate(180deg);
-      /* transform: translateY(40px) rotate(180deg); */
    }
 
    .lhs {
@@ -270,14 +265,12 @@ export default {
    }
 
    .secondary-body {
-      /* font-size: 0.9rem; */
       line-height: 1.5;
    }
 
    .secondary-sub {
       color: var(--tint400);
       font-size: 0.8rem;
-      /* font-style: italic; */
       line-height: 0.9;
    }
 </style>
