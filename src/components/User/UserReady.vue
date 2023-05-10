@@ -24,14 +24,24 @@ export default {
    },
 
    // head: {
-   //    script: [
-   //       {
-   //          async: '',
-   //          src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3046400863804606',
-   //          crossorigin: 'anonymous'
-   //       }
-   //    ]
+      // title: { outer: 'toad'}
+      // script: [
+      //    {
+      //       async: '',
+      //       src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3046400863804606',
+      //       crossorigin: 'anonymous'
+      //    }
+      // ]
    // },
+
+   watch: {
+      $route: {
+         immediate: true,
+         handler() {
+            document.title = `${this.userInfo[0].name} | ARAM Stats`
+         }
+      }
+   },
 
    data() {
       return {

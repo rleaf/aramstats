@@ -6,12 +6,14 @@
       <div class="update-block">
          <div class="header">
             <h2>Moving database</h2>
-            <h3>5/9/23</h3>
+            <h3>5/9/23 - 5/10/23</h3>
          </div>
          <hr>
          <p>
             The Aramstats DB is currently using 508.9 of the available 512.0 MB. I'm going to be migrating for more capacity however there may be random <i>long</i> downtimes.
-            This is just a test to see how things go.
+         </p>
+         <p>
+            <s><u>Update 5/10/23</u> <br> Disabling search & taking down database to move to, hopefully, a more permanent spot.</s>
          </p>
       </div>
       <div class="update-block">

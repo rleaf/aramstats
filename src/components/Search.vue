@@ -17,10 +17,6 @@ export default {
    },
 
    methods: {
-      getRegion() {
-         // If there is a region stored for session, use it
-         // push value to dropdown
-      },
 
       onEnter() {
          if (this.region == '' || this.input == '') {
@@ -33,8 +29,6 @@ export default {
             return
          }
 
-         // const inputURI = encodeURI(this.input)
-         // this.$router.push({path: `/${this.region.toLowerCase()}/${inputURI}`})
          this.$router.push({ name: `user`, params: {
             region: this.region.toLowerCase(),
             username: encodeURI(this.input),
@@ -60,7 +54,6 @@ export default {
       <img src="../assets/logo.svg" class="logo" alt="">
       <div class="container">
          <input type="text" v-on:keyup.enter="onEnter" placeholder="Summoner Name" v-model="input">
-         <!-- <button>Search</button> -->
          <Dropdown 
          :options="[
             {id: 1, region: 'NA'},
@@ -79,6 +72,10 @@ export default {
                {{ this.alertMessage }}
             </div>
          </Transition>
+
+         <!-- <div class="notif">
+            Search is down, working on database. <br> Hope to be up later today :). <br>- 5/10 (mm/dd)
+         </div> -->
    </div>
 </template>
 
@@ -130,6 +127,18 @@ input:focus {
 button {
    height: 3rem;
    margin: 2px;
+}
+
+.notif {
+   /* background: rgba(255, 255, 255, 0.308); */
+   color: var(--color-font);
+   text-align: center;
+   padding: 0.5rem 1rem;
+   border-radius: 5px;
+   margin-top: 2rem;
+   border: 1px var(--tint100) solid;
+   font-size: 0.9rem;
+   /* width: 30%; */
 }
 
 .region-alert {

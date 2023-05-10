@@ -4,12 +4,8 @@
       <h2>About</h2>
       <hr>
       <p>
-        <RouterLink to="/">aramstats.lol</RouterLink> parses all of a summoner's ARAM games available in the Riot API to display insightful statistics.
+        <RouterLink to="/">aramstats.lol</RouterLink> parses all of a summoner's available ARAM games available in the Riot API to display insightful statistics.
         Get in touch with me @owl#4626 in the <a href="https://discord.gg/MydvqhqWmM">aram academy</a> discord.
-      </p>
-      <p>
-        * I'm rolling out a big UI update. Its incomplete, but good enough to the point I think it's nicer to interact with than the prior UI. All base functionality
-        that the prior UI had should be here. Hmu if you find any weird interactions.
       </p>
     </div>
     <div class="about-block">
