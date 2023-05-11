@@ -7,17 +7,26 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      meta: {
+        title: 'ARAM Stats'
+      }
     },
     {
       path: '/about',
       name: 'about',
-      component: () => import('../views/AboutView.vue')
+      component: () => import('../views/AboutView.vue'),
+      meta: {
+        title: 'About - ARAM Stats'
+      }
     },
     {
       path: '/updates',
       name: 'updates',
-      component: () => import('../views/UpdatesView.vue')
+      component: () => import('../views/UpdatesView.vue'),
+      meta: {
+        title: 'Updates - ARAM Stats'
+      }
     },
     {
       path: '/:region/:username',
@@ -25,6 +34,11 @@ const router = createRouter({
       component: () => import('../views/UserView.vue')
     },
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.title)  document.title = to.meta.title
+  next()
 })
 
 export default router

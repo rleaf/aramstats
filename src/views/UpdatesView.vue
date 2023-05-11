@@ -1,8 +1,8 @@
 <template>
    <div class="update-main">
-      <div class="update-block">
+      <!-- <div class="update-block">
          <h2>Updates</h2>
-      </div>
+      </div> -->
       <div class="update-block">
          <div class="header">
             <h2>Moving database</h2>
@@ -10,10 +10,7 @@
          </div>
          <hr>
          <p>
-            The Aramstats DB is currently using 508.9 of the available 512.0 MB. I'm going to be migrating for more capacity however there may be random <i>long</i> downtimes.
-         </p>
-         <p>
-            <s><u>Update 5/10/23</u> <br> Disabling search & taking down database to move to, hopefully, a more permanent spot.</s>
+            The ARAM Stats DB is currently using 508.9 of the available 512.0 MB. I'm going to be migrating for more capacity so there may be random <i>long</i> downtimes.
          </p>
       </div>
       <div class="update-block">
