@@ -21,6 +21,7 @@ import axios from 'axios'
       
       created() {
          this.lookup()
+         this.matchHistory()
       },
 
       methods: {
@@ -37,6 +38,17 @@ import axios from 'axios'
             }
 
          },
+
+         async matchHistory() {
+            const url = `/api/history/${this.$route.params.region}/${this.$route.params.username}`
+            
+            try {
+               const res = await axios.get(url)
+               this.history = res.data
+            } catch (e) {
+               console.log('e', e)
+            }
+         }
       }
    }
 </script>

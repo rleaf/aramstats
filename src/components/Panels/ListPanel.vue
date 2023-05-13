@@ -101,10 +101,12 @@ export default {
             <input type="text" placeholder="Search Champion" v-model="this.search">
          </div>
       </div>
-      <Champion v-for="(champ, i) in sortedChamps" 
-      :key="champ.championName"
-      :champion="champ"
-      />
+      <div class="champion-container">
+         <Champion v-for="(champ, i) in sortedChamps" 
+         :key="champ.championName"
+         :champion="champ"
+         />
+      </div>
 
    </div>
 </template>
@@ -135,11 +137,11 @@ export default {
 }
 .sort-button:hover {
    cursor: pointer;
-   background: var(--tint100);
+   background: var(--hoverButton);
 }
 
 .sort-button:focus {
-   background: var(--tint100);
+   background: var(--hoverButton);
 }
 
 .order-button {
@@ -153,7 +155,7 @@ export default {
 }
 
 button.order-button:hover {
-   background: var(--tint100);
+   background: var(--hoverButton);
 }
 
 .order-button img {
@@ -211,6 +213,26 @@ button.order-button:hover {
    border-radius: 15px;
    font-size: 1rem;
    font-style: italic;
+}
+
+.champion-container {
+   overflow-y: scroll;
+   width: 780px;
+   height: 80vh; 
+   padding-right: 5px;
+   margin-bottom: 5vh;
+
+}
+
+.champion-container::-webkit-scrollbar {
+   width: 12px;
+   background: var(--hoverButton);
+   border-radius: 3px;
+}
+
+.champion-container::-webkit-scrollbar-thumb {
+   background-color: var(--hoverButton);
+   border-radius: 3px;
 }
 
 .search input:focus {

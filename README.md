@@ -17,13 +17,13 @@ insightful statistics.
 - [ ] Compare champ performance to db.
 #### med
 - [ ] Sort histogram by other stats aside from DPM
-- [ ] Site colors
 - [ ] Add small match history tile to Overview Panel
 #### small
 - [ ] I'm feeling lucky
 <i>none</i>
 
 #### fin
+- [x] Site colors
 - [x] Better day/night mode
 - [x] Add challenge tokens
 - [x] Add KP & DS

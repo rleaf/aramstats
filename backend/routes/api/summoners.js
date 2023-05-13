@@ -13,14 +13,14 @@ const router = express.Router()
 router
    .route('/:region/:summonerURI')
    .get(async (req, res) => {
-      // Check summoner existence.
-      console.log(`Searching for ${req.params.summonerURI} (${req.params.region})`)
-
+      
       let summoner
-
+      
       try {
+         console.log(`Searching for ${req.params.summonerURI} (${req.params.region})`)
          summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
-      } catch (e) {       
+      } catch (e) {
+         console.log(e)
          if (e.status == 429) {
             console.log(`Hit rate limit on getSummoner for ${req.params.summonerURI} (${req.params.region})`)
          }
@@ -29,16 +29,10 @@ router
             return
          }
       }
-
-      const client = await loadSummonerCollection()
-
-
-      // start here
-      // console.log(await client.listCollections().toArray())
       
-      // Check if summoner is in database
       if (summoner) {
-         
+         const client = await loadSummonerCollection()
+         // Check if summoner is in database
          const summonerCollection = client.collection(summoner.name)
          
          // Check if already pulling
@@ -73,27 +67,15 @@ router
 
          await challengeScribe(summoner, summonerCollection, req.params.region)
 
-
          console.log(`Finished parsing ${summoner.name} (${req.params.region})`)
          result = (await client.collection(summoner.name).find({}).toArray())
          res.send(result)
 
       } else {
-
          res.sendStatus(504)
-
-         // Potentially have it to send data for pre-parsed summoners still
-         // const dbSummonerCollection = client.collection(req.params.summonerURI)
-
-         // if (dbSummonerCollection) {
-         //    result = (await dbSummonerCollection.find({}).toArray())
-         //    console.log(result)
-         //    res.send(result)
-         // } else {
-         //    res.sendStatus(504)
-         // }
       }
    })
+
 
 async function challengeScribe(summoner, collection, region) {
    const challengesDto = await twisted.playerChallenges(summoner.puuid, region)

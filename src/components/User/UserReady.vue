@@ -1,6 +1,7 @@
 <script>
 import Champion from '../Champion.vue'
 import Dropdown from '../Dropdown.vue'
+import MatchHistory from '../MatchHistory.vue'
 
 import ListPanel from '../Panels/ListPanel.vue'
 import SummonerPanel from '../Panels/SummonerPanel.vue'
@@ -15,6 +16,7 @@ export default {
    components: {
       Champion,
       Dropdown,
+      MatchHistory,
       Histogram,
       ChampSearch,
       ListPanel,
@@ -234,9 +236,8 @@ export default {
                </div>
             </div>
          </div>
-         <!-- <div class="history">
-            <h4>.</h4>
-         </div> -->
+         
+         <MatchHistory />
       </div>
       <div class="rhs">
          <div class="sections">
@@ -293,6 +294,7 @@ export default {
 .rhs {
    display: flex;
    flex-direction: column;
+   min-width: 760px;
    width: 760px;
    /* height: 100vh;
    overflow-y: scroll;
@@ -319,15 +321,18 @@ export default {
 
 .section-tab:hover {
    cursor: pointer;
+   /* font-weight: bold; */
 }
 
 .active {
-   background: var(--tint100);
+   /* background: var(--tint100); */
+   background: var(--hoverButton);
+   font-weight: bold;
 }
 
 .section-tab {
    padding: 0.75rem 1rem;
-   font-weight: bold;
+   /* font-weight: bold; */
    border-radius: 15px;
    /* https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting */
    -webkit-touch-callout: none; /* iOS Safari */
@@ -424,21 +429,18 @@ img.bongo-cat {
    background-image: url('../../assets/triangle.svg');
    background-size: 85%;
    width: 60px;
-   filter: drop-shadow(0 0 3px rgba(2, 68, 80, 0.9));
 }
 
 .quadra {
    background-image: url('../../assets/diamond.svg');
    background-size: 75%;
    width: 60px;
-   filter: drop-shadow(0 0 3px rgba(80, 2, 76, 0.9));
 }
 
 .penta {
    background-image: url('../../assets/pentagon.svg');
    background-size: 80%;
    width: 55px;
-   filter: drop-shadow(0 0 3px rgba(80, 49, 2, 0.9));
 }
 
 .summ-mk {
@@ -448,13 +450,6 @@ img.bongo-cat {
    font-weight: medium;
    text-shadow: rgba(0, 0, 0, 0.5) 2px 2px 1px;
    justify-content: space-around;
-}
-
-.history {
-   display: flex;
-   justify-content: center;
-   background: var(--tint100);
-   border-radius: 15px;
 }
 
 </style>
