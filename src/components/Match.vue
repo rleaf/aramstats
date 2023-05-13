@@ -253,12 +253,15 @@ export default {
    display: block;
    font-size: 1rem;
    margin-bottom: 2px;
-   /* font-weight: bold; */
 }
 
 .unit {
    font-size: 0.75rem;
    color: var(--tint400);
+}
+
+.match-items {
+   min-width: 75px;
 }
 
 .match-items img {
@@ -273,7 +276,6 @@ export default {
    gap: 2px;
    flex-direction: column;
    justify-content: center;
-   /* padding: 5px 15px; */
 }
 
 .multikills span {

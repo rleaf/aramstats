@@ -22,11 +22,20 @@ export default {
          comparisonData: null,
          comparisonWins: 0,
          comparisonKDA: null,
-         statFilter: 'DPM',
-         statBook: ['DPM', 'HPM', 'Toad'], // DPM ?
+         statFilter: ['DPM', 'damagePerMinute'],
+         // statBook: ['DPM', 'HPM', 'AHPM', 'TPM', 'MPM', 'GPM'],
+         statBook: {
+            'DPM': 'damagePerMinute',
+            'HPM': 'healPerMinute',
+            'AHPM': 'allyHealPerMinute',
+            'DTPM': 'damageTakenPerMinute',
+            'DMPM': 'selfMitigatedPerMinute',
+            'GPM': 'goldPerMinute'
+         },
          statDrop: false
       }
    },
+
 
    created() {
       this.nunuIndex = this.data.findIndex(e => e.championName == 'Nunu')
@@ -45,6 +54,11 @@ export default {
    },
 
    methods: {
+      changeUnit() {
+         this.statDrop = !this.statDrop
+         // this.$emit('unit', this.statDrop)
+      },
+
       getChampionIndex() {
          this.championIndex = this.data.findIndex((e) => {
             if (e.trueChampionName) {
@@ -156,23 +170,22 @@ export default {
             </div>
          </div>
 
-         <!-- toads -->
-
-         <!-- <div class="stat-dropdown">
-            <button @click="this.statDrop =! this.statDrop">
-               {{ this.statFilter }}
+         <div class="stat-dropdown">
+            <button @click="changeUnit">
+               {{ this.statFilter[0] }}
                <img src="../../assets/arrow3.svg" alt="" :class="{ down: this.statDrop }">
             </button>
             <div class="stat-drop" v-if="this.statDrop">
-               <div class="stat" v-for="stat in statBook" :key="stat" @click="() => {
-                  this.statFilter = stat
+               <div class="stat" v-for="[k, v] of Object.entries(statBook)" :key="k" @click="() => {
+                  this.statFilter = [k, v]
                   this.statDrop = false
                }">
-                  {{ stat }}
+                  {{ k }}
                </div>
             </div>
             <div class="stat-modal" v-show="this.statDrop" @click="this.statDrop = false"></div>
-         </div> -->
+         </div>
+
       </div>
       <div class="body">
          <div class="rune-mythic">
@@ -181,6 +194,7 @@ export default {
          </div>
          <Histogram
          :championData="this.championData"
+         :stat="this.statFilter[1]"
          :comparisonData="this.comparisonData"
          :initChampion="this.data[this.nunuIndex]"/>
       </div>
@@ -220,16 +234,18 @@ export default {
 .stat-dropdown button {
    background: none;
    border: none;
-   padding: 10px 13px;
+   padding: 8px 11px;
    color: var(--color-font);
    font-size: 0.9rem;
    font-weight: bold;
    /* change color ? */
    border-radius: 9px;
    cursor: pointer;
+   background: var(--tint200);
 }
+
 button:hover {
-   background: var(--tint100);
+   background: var(--tint301);
 }
 
 .stat-drop {

@@ -21,7 +21,7 @@ import axios from 'axios'
       
       created() {
          this.lookup()
-         this.matchHistory()
+         // this.matchHistory()
       },
 
       methods: {

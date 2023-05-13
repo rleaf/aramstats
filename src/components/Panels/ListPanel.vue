@@ -234,6 +234,9 @@ button.order-button:hover {
    background-color: var(--hoverButton);
    border-radius: 3px;
 }
+.champion-container::-webkit-scrollbar-thumb:hover {
+   background-color: var(--light900);
+}
 
 .search input:focus {
    outline: none;

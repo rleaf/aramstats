@@ -368,6 +368,7 @@ export default {
 
    .secondary-body {
       line-height: 1.4;
+      font-weight: lighter;
    }
 
    .secondary-sub {

@@ -22,6 +22,22 @@ export default {
          std: null,
          mean: null,
          svg: null,
+         statDomain: {
+            'damagePerMinute': 'Damage / minute',
+            'healPerMinute': 'Healing / minute',
+            'allyHealPerMinute': 'Ally healing / minute',
+            'damageTakenPerMinute': 'Damage taken / minute',
+            'selfMitigatedPerMinute': 'Damage mitigated / minute',
+            'goldPerMinute': 'Ally healing / minute',
+         },
+         averageTable: {
+            'damagePerMinute': 'averageDamagePerMinute',
+            'healPerMinute': 'averageHealPerMinute',
+            'allyHealPerMinute': 'averageHealingOnTeammates' ,
+            'damageTakenPerMinute': 'averageDamageTakenPerMinute' ,
+            'selfMitigatedPerMinute': 'averageSelfMitigatedPerMinute' ,
+            'goldPerMinute': 'averageGoldPerMinute' ,
+         }
       }
    },
 
@@ -29,13 +45,18 @@ export default {
       this.width = 450 - this.margin.left - this.margin.right
       this.height = 298 - this.margin.top - this.margin.bottom
 
-      this.avgDPM = this.initChampion.averageDamagePerMinute
+      this.avgStat = this.initChampion.averageDamagePerMinute
       this.Histogram(this.initChampion.matches)
    },
 
    watch: {
       championData() {
-         this.avgDPM = this.championData.averageDamagePerMinute
+         this.avgStat = this.championData[this.averageTable[this.stat]]
+         this.updateHistogram(this.championData.matches)
+      },
+
+      stat() {
+         this.avgStat = this.championData[this.averageTable[this.stat]]
          this.updateHistogram(this.championData.matches)
       },
 
@@ -46,6 +67,31 @@ export default {
    },
 
    methods: {
+      getDomain() {
+         switch (this.stat) {
+            case 'damagePerMinute':
+               return 5000
+            
+            case 'healPerMinute':
+               return 2500
+
+            case 'allyHealPerMinute':
+               return 1000
+               
+            case 'damageTakenPerMinute':
+               return 5000
+
+            case 'selfMitigatedPerMinute':
+               return 10000
+
+            case 'goldPerMinute':
+               return 2000
+
+            default:
+               return 10000
+         }
+      },
+
       Histogram(data) {
          this.svg = d3.select(".histogram-svg")
             .append("svg")
@@ -57,25 +103,34 @@ export default {
 
          // X Axis
          this.x = d3.scaleLinear()
-            .domain([0, 5000])
+            .domain([0, this.getDomain()])
             .range([0, this.width])
 
+         const xAxisTicks = this.x.ticks()
+            .filter(tick => tick % 300 === 0)
+
+         const xAxis = d3.axisBottom(this.x)
+            .tickValues(xAxisTicks)
+
          this.svg.append("g")
+            .classed('x-axis', true)
             .attr("transform", `translate(0, ${this.height})`)
-            .call(d3.axisBottom(this.x))
+            .call(xAxis)
             .attr("font-size", "0.7rem")
             .attr("color", "var(--color-font)")
             .call(g => g.append("text")
-               .attr("x", this.width + 15)
-               .attr("y", 35)
-               .attr("fill", "var(--color-font)")
-               .attr("font-size", "0.8rem")
-               .attr("text-anchor", "end")
-               .text("DPM"))
+               .classed('stat', true)
+               .attr("x", this.width)
+               .attr("y", 40)
+               .style("fill", "var(--color-font)")
+               .style("font-size", "0.8rem")
+               .style("text-anchor", "middle")
+               .style("transform", "translateX(-40%)")
+               .text(`${this.statDomain[this.stat]}`))
 
          // Histogram
          this.histogram = d3.histogram()
-            .value(d => d.damagePerMinute)
+            .value(d => d[this.stat])
             .domain(this.x.domain())
             .thresholds(this.x.ticks(20))
 
@@ -137,7 +192,7 @@ export default {
             .attr("text-align", "right")
             .attr("fill", "var(--color-font)")
             .attr("font-size", "0.8rem")
-            .text(`mean: ${this.avgDPM}, std: ${this.getStdDev(this.initChampion, this.avgDPM)}`)
+            .text(`mean: ${this.avgStat}, std: ${this.getStdDev(this.initChampion, this.avgStat)}`)
 
          // Put comparison higher in DOM
          this.svg.append("g")
@@ -167,7 +222,8 @@ export default {
                   .attr('stroke', 'var(--color-font)')
                tooltip
                   .style("visibility", "visible")
-                  .text(`Games: ${d.length}\nx0: ${d.x0}\nx1: ${d.x1}`)
+                  .text(`${d.length} games in: \n ${d.x0} - ${d.x1}`)
+                  // .text(`Games: ${d.length}\nx0: ${d.x0}\nx1: ${d.x1}`)
             })
             .on("mousemove", function (e) {
                tooltip
@@ -184,15 +240,30 @@ export default {
       },
 
       updateHistogram(data) {
-         this.bins = this.histogram(data)
+
          if (this.comparisonData) this.binDomain = [this.bins, this.bins2].flat()
-         // let been
-         // (this.comparisonData) ? been = this.binDomain : been = this.bins
+
+         this.x = d3.scaleLinear()
+            .domain([0, this.getDomain()])
+            .range([0, this.width])
+
+         const xAxisTicks = this.x.ticks()
+            .filter(tick => tick % 300 === 0)
+
+         const xAxis = d3.axisBottom(this.x)
+            .tickValues(xAxisTicks)
+
+         this.histogram = d3.histogram()
+            .value(d => d[this.stat])
+            .domain(this.x.domain())
+            .thresholds(this.x.ticks(20))
+
+         if (data) this.bins = this.histogram(data)
 
          this.y = d3.scaleLinear()
             .domain([0, d3.max(this.binDomain || this.bins, d => d.length)])
             .range([this.height, 0])
-
+         
          const yAxisTicks = this.y.ticks()
             .filter(tick => Number.isInteger(tick))
 
@@ -203,9 +274,16 @@ export default {
          this.svg.select(".y-axis")
             .transition()
             .call(yAxis)
+            
+         this.svg.select(".x-axis")
+            .transition()
+            .call(xAxis)
+
+         this.svg.select('.stat')
+            .text(`${this.statDomain[this.stat]}`)
 
          this.blueLegend.selectAll("text.stats")
-            .text(`mean: ${this.avgDPM}, std: ${this.getStdDev(this.championData, this.avgDPM)}`)
+            .text(`mean: ${this.avgStat}, std: ${this.getStdDev(this.championData, this.avgStat)}`)
 
          this.svg.select("g.base")
             .selectAll("rect")
@@ -214,6 +292,12 @@ export default {
             .duration(1000)
             .attr("transform", d => `translate(${this.x(d.x0)} , ${this.y(d.length)})`)
             .attr("height", d => this.height - this.y(d.length))
+            .attr("width", d => {
+               if (this.x(d.x1) - this.x(d.x0) == 0) {
+                  return 0
+               }
+               return this.x(d.x1) - this.x(d.x0) - 1
+            })
          // .attr("fill", d => `hsl(221, ${Math.round(60 - (((this.maxBin - d.length) / this.maxBin) * 40))}%, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 8) + 50)}%)`)
 
          if (this.comparisonData) {
@@ -301,7 +385,8 @@ export default {
                      .attr('stroke', 'var(--color-font)')
                   tooltip
                      .style("visibility", "visible")
-                     .text(`Games: ${d.length}\nx0: ${d.x0}\nx1: ${d.x1}`)
+                     .text(`Games: ${d.length}\nbetween ${d.x0} - ${d.x1}`)
+                     // .text(`Games: ${d.length}\nx0: ${d.x0}\nx1: ${d.x1}`)
                })
                .on("mousemove", function (e) {
                   tooltip
@@ -384,6 +469,7 @@ export default {
 
    props: {
       championData: null,
+      stat: null,
       comparisonData: null,
       initChampion: null
    }
@@ -399,8 +485,11 @@ export default {
 <style>
 
 .svg-tooltip {
-   background: var(--panel2);
-   border-radius: .1rem;
+   backdrop-filter: blur(13px) saturate(120%);
+   -webkit-backdrop-filter: blur(13px) saturate(120%);
+   background-color: rgba(31, 36, 51, 0.5);
+   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.85);
+   border-radius: 3px;
    color: var(--color-font);
    display: block;
    font-size: .85rem;
