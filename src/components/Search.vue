@@ -119,7 +119,7 @@ input {
 
 input:focus {
    outline: none;
-   /* background-color: var(--search-bar); */
+   /* background-color: var(--tint100); */
    color: var(--color-font);
    transition: 0.4s;
 }

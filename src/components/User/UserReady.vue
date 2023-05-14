@@ -179,7 +179,7 @@ export default {
       },
 
       background() {
-         return `background: radial-gradient(circle at 50% -110%, transparent, rgb(var(--tint100RGB)) 90%), no-repeat center 70% url('${this.profile.IconId}');
+         return `background: radial-gradient(circle at 50% -160%, transparent 30%, var(--tint100) 77%), no-repeat center -330% url('${this.profile.IconId}');
                  background-size: 380px;`
       },
    },
@@ -193,8 +193,8 @@ export default {
 <template>
    <div class="user-ready-main">
       <div class="lhs">
-         <div class="profile">
-            <div class="name-wrapper" :style="background">
+         <div class="profile" :style="background">
+            <div class="name-wrapper">
                <img class="pfp" :src=profile.IconId  alt="">
                <div>
                   {{ this.profile.name }}
@@ -349,11 +349,13 @@ export default {
 }
 
 .name-wrapper {
-   padding: 30px;
+   padding: 30px 0;
    display: flex;
+   margin-left: 40px;
+   justify-content: left;
    align-items: center;
-   gap: 25px;
-   font-size: 1.8rem;
+   gap: 20px;
+   font-size: 1.5rem;
    font-weight: bold;
    border-radius: 15px;
 } 
@@ -367,14 +369,11 @@ img.pfp {
 img.bongo-cat {
    position: absolute;
    width: 110px;
-   /* left: 0; */
-   /* transform: rotate(-14deg)  translate(115px, 15px); */
    transform: rotate(-14deg)  translate(17px, -91px);
 }
 
 .img-bg {
    position: relative;
-   /* width: 100%; */
    height: 0;
    opacity: 0.3;
 }
@@ -389,10 +388,12 @@ img.bongo-cat {
    border-radius: 20px;
    margin-top: 10px;
    font-size: 1.05rem;
+   transition: 0.25s;
 }
 
 .name-wrapper button:hover {
    cursor: pointer;
+   background: var(--tint100);
 }
 
 .name-wrapper button[disabled] {
@@ -402,11 +403,12 @@ img.bongo-cat {
 
 .summ-stats {
    display: grid;
-   width: 300px;
+   width: 100%;
    grid-template-areas: 
    '1 2'
    '3 4';
-   gap: 40px;
+   row-gap: 40px;
+   justify-content: space-evenly;
    margin: 0 auto;
    font-size: 1.5rem;
    font-weight: lighter;
@@ -415,6 +417,8 @@ img.bongo-cat {
 
 .summ-stats h3 {
    font-size: 1rem;
+   font-weight: lighter;
+   color: var(--tint400);
    margin-top: 0;
    margin-bottom: 5px;
 }

@@ -19,12 +19,11 @@ export default {
    color: var(--color-font);
    left: 0;
    right: 0;
-   margin-left: auto;
-   margin-right: auto;
+   margin: 0 auto;
    text-align: center;
    position: absolute;
    max-width: 800px;
-   font-size: 0.9rem;
+   font-size: 0.8rem;
    bottom: 3rem;
    z-index: -10;
 }

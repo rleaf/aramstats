@@ -11,9 +11,10 @@
          <hr>
          <p>
             <!-- The ARAM Stats DB is currently using 508.9 of the available 512.0 MB. I'm going to be migrating for more capacity so there may be random <i>long</i> downtimes. -->
-            Migrating database for more capacity. This is...experimental so there are some lingering issues. Working on the issue where 
-            you're stuck on the the "parsing summoner" page for a unexpectedly long period of time.
-            
+            Migrating database for more capacity. This is...experimental so there are some lingering issues.
+         </p>
+         <p>
+               <s>Working on the issue where you're stuck on the the "parsing summoner" page for a unexpectedly long period of time.</s> e: I think this is fixed?
          </p>
       </div>
       <div class="update-block">

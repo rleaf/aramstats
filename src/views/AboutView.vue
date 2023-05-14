@@ -4,7 +4,9 @@
       <h2>About</h2>
       <hr>
       <p>
-        <RouterLink to="/">aramstats.lol</RouterLink> parses all of a summoner's available ARAM games available in the Riot API to display insightful statistics.
+        aramstats.lol parses all of a summoner's available ARAM games available in the Riot API to display insightful statistics.
+      </p>
+      <p>
         Get in touch with me @owl#4626 in the <a href="https://discord.gg/MydvqhqWmM">aram academy</a> discord.
       </p>
     </div>
@@ -26,7 +28,7 @@
       <h2>Some data is showing up weird.</h2>
       <hr>
       <p>
-        If you're seeing "-", "NaN", or nothing in a spot where there should be a number it's because that stat is a recent addition
+        If you're seeing "-", "NaN", a certainly incorrect value, or nothing in a spot where there should be a number it's because that stat is a recent addition
         and older parses won't have pulled the required information from Riot to show it.
       </p>
     </div>
@@ -50,6 +52,11 @@
 
 a {
   color: var(--color-font);
+  transition: background 0.25s;
+}
+
+a:hover {
+  background: var(--hoverButton);
 }
 
 h2 {
