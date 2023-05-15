@@ -28,7 +28,7 @@ export default {
             'allyHealPerMinute': 'Ally healing / minute',
             'damageTakenPerMinute': 'Damage taken / minute',
             'selfMitigatedPerMinute': 'Damage mitigated / minute',
-            'goldPerMinute': 'Ally healing / minute',
+            'goldPerMinute': 'Gold / minute',
          },
          averageTable: {
             'damagePerMinute': 'averageDamagePerMinute',
@@ -177,12 +177,12 @@ export default {
             .classed("blue-legend", true)
 
 
-         this.blueLegend
-            .append("circle")
-            .attr("cx", `${this.width - 132}`)
-            .attr("cy", -12)
-            .attr("r", 6)
-            .style("fill", "var(--bar2)")
+         // this.blueLegend
+         //    .append("circle")
+         //    .attr("cx", `${this.width - 132}`)
+         //    .attr("cy", -12)
+         //    .attr("r", 6)
+         //    .style("fill", "var(--bar2)")
 
          this.blueLegend
             .append("text")

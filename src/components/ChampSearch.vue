@@ -114,7 +114,12 @@ export default {
    position: absolute;
    margin-left: 8px;
    z-index: 2;
-   background: var(--tint200);
+   /* background: var(--tint200); */
+   backdrop-filter: blur(13px) saturate(120%);
+   -webkit-backdrop-filter: blur(13px) saturate(120%);
+   background-color: rgba(38, 41, 51, 0.2);
+   border-radius: 12px;
+   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.65);
    color: var(--color-font);
    height: 300px;
    width: 250px;
@@ -122,7 +127,7 @@ export default {
 }
 
 .champion-search-select:hover {
-   background: var(--tint300);
+   background: var(--hoverButton);
 }
 
 .champion-search-list::-webkit-scrollbar-track {

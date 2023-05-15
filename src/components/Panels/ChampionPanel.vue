@@ -250,10 +250,22 @@ button:hover {
 
 .stat-drop {
    position: absolute;
-   background: var(--tint100);
-   padding: 5px;
+   /* background: var(--tint200); */
+   backdrop-filter: blur(13px) saturate(120%);
+   -webkit-backdrop-filter: blur(13px) saturate(120%);
+   background-color: rgba(38, 41, 51, 0.2);
+   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.65);
    z-index: 5;
-   border-radius: 8px;
+   border-radius: 5px;
+   /* margin: 5px; */
+}
+
+.stat {
+   border-radius: 5px;
+   /* padding: 5px; */
+}
+.stat:hover {
+   background-color: var(--hoverButton);
 }
 
 .stat {
