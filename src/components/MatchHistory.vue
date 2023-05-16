@@ -10,7 +10,7 @@ export default {
    },
 
    created() {
-
+      // match history GET located in UserView.vue
    },
 
    methods: {

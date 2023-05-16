@@ -1,5 +1,11 @@
 <script>
+import MatchInfo from './MatchInfo.vue'
+
 export default {
+   components: {
+      MatchInfo
+   },
+
    data() {
       return {
          gamePlayed: Number,
@@ -10,13 +16,13 @@ export default {
          primaryRune: this.match.primaryRune,
          secondaryTree: this.match.secondaryTree,
          items: [[], []],
+         matchInfo: false,
       }
    },
 
    created() {
       this.timeSet()
       this.itemImages()
-
       // const url = `http://ddragon.leagueoflegends.com/cdn/12.23.1/data/en_US/runesReforged.json`
       // axios.get(url)
       //    .then((res) => {
@@ -54,7 +60,8 @@ export default {
       },
 
       matchDetail() {
-         console.log('soon.tm')
+         // console.log('soon.tm')
+         this.matchInfo =! this.matchInfo
       }
    },
 
@@ -83,7 +90,7 @@ export default {
    <div class="match-container" :class="(this.match.win) ? 'win' : 'loss'">
       <div class="match-left">
          <button @click="matchDetail">
-            <!-- <img src="../assets/arrow3.svg" alt=""/> -->
+            <img src="../assets/arrow3.svg" alt=""/>
          </button>
          <div class="match-date">
             <span class="date-minor">{{ this.daysSince }} days ago</span>
@@ -159,6 +166,13 @@ export default {
          </div>
       </div>
    </div>
+   <MatchInfo v-if="this.matchInfo" :matchId="this.match.matchId"/>
+   <!-- <div v-show="this.matchInfo">
+   </div> -->
+   
+   
+   <!-- <div class="match-info" v-show="this.matchInfo">
+   </div> -->
 </template>
 
 <style scoped>

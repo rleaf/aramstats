@@ -9,10 +9,12 @@ app.use(cors())
 
 
 const summoners = require('./routes/api/summoners')
-const history = require('./routes/api/matchHistory')
+const matchInfo = require('./routes/api/matchInfo')
+// const history = require('./routes/api/matchHistory')
 
 app.use('/api/summoners', summoners)
-app.get('/api/history', history)
+app.use('/api/matchInfo', matchInfo)
+// app.use('/api/history', history)
 
 // app.use(express.static(__dirname + '/public/'))
 // app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'))
