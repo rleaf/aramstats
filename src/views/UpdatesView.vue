@@ -1,8 +1,16 @@
 <template>
    <div class="update-main">
-      <!-- <div class="update-block">
-         <h2>Updates</h2>
-      </div> -->
+      <div class="update-block">
+         <div class="header">
+            <h2>Match-level data available</h2>
+            <h3>5/16/23</h3>
+         </div>
+         <hr>
+         <p>
+            Click on any champ then click on the dropdown arrow in a match container. Can see stats like CC, gold spent, dmg, time spent dead, etc... At the moment data is pulled directly
+            from Riot servers and is not stored in the Aramstats db. So old matches may not be viewable.  
+         </p>
+      </div>
       <div class="update-block">
          <div class="header">
             <h2>Moving database</h2>
@@ -10,7 +18,6 @@
          </div>
          <hr>
          <p>
-            <!-- The ARAM Stats DB is currently using 508.9 of the available 512.0 MB. I'm going to be migrating for more capacity so there may be random <i>long</i> downtimes. -->
             Migrating database for more capacity. This is...experimental so there are some lingering issues.
          </p>
          <p>

@@ -4,7 +4,7 @@
 
 <template>
    <div class="header-main">
-      <RouterLink to="/updates">Working on the issue where you're stuck on the the "parsing summoner" page for a unexpectedly long period of time.</RouterLink>
+      <RouterLink to="/updates">Match-level data available.</RouterLink>
    </div>
 </template>
 

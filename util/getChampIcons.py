@@ -53,6 +53,21 @@ def _getChallengeIcons(id, tier):
    else:
       print('nada on', f'{id}.png')
 
+def _getSpells(spell):
+   image_url = f'https://ddragon.leagueoflegends.com/cdn/13.9.1/img/spell/{spell}.png'
+   r = requests.get(image_url, stream=True)
+
+   if r.status_code == 200:
+      r.raw.decode_content = True
+
+      with open(os.path.join('./images', f'{spell}.png'), 'wb') as f:
+         f.write(r.content)
+
+      print('ye', f'{spell}.png')
+   else:
+      print('nada on', f'{spell}.png')
+
+
 # Wrapper functions
 
 
@@ -72,13 +87,22 @@ def getChallengeIcons():
       for tier in tiers:
          _getChallengeIcons(id, tier)
 
+def getSpells():
+   # Dont have either poro king Spell, Teleport, Urf Mark, or Ultbook spell
+   IDs = ['SummonerBarrier', 'SummonerBoost', 'SummonerDot', 'SummonerExhaust', 'SummonerFlash',
+         'SummonerHaste', 'SummonerHeal', 'SummonerMana', 'SummonerSmite', 'SummonerSnowball',
+         'SummonerTeleport']
+   
+   for id in IDs:
+      _getSpells(id)
 
 def main():
    if not os.path.exists(directory):
       os.mkdir(directory)
 
-   getChampionAssets()
+   # getChampionAssets()
    # getChallengeIcons()
+   getSpells()
 
 
 main()

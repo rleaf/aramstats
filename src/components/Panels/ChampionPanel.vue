@@ -238,7 +238,6 @@ export default {
    color: var(--color-font);
    font-size: 0.9rem;
    font-weight: bold;
-   /* change color ? */
    border-radius: 9px;
    cursor: pointer;
    background: var(--tint200);
@@ -250,19 +249,16 @@ button:hover {
 
 .stat-drop {
    position: absolute;
-   /* background: var(--tint200); */
    backdrop-filter: blur(13px) saturate(120%);
    -webkit-backdrop-filter: blur(13px) saturate(120%);
    background-color: rgba(38, 41, 51, 0.2);
    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.65);
    z-index: 5;
    border-radius: 5px;
-   /* margin: 5px; */
 }
 
 .stat {
    border-radius: 5px;
-   /* padding: 5px; */
 }
 .stat:hover {
    background-color: var(--hoverButton);
