@@ -48,7 +48,7 @@ export default {
          for (let i = 0; i < 6; i++) {
             if (this.match.items) {
                if (this.match.items[i] != 0) {
-                  let x = `http://ddragon.leagueoflegends.com/cdn/13.9.1/img/item/${this.match.items[i]}.png`
+                  let x = `http://ddragon.leagueoflegends.com/cdn/13.10.1/img/item/${this.match.items[i]}.png`
                   if (i < 3) {
                      this.items[0].push(x)
                   } else {

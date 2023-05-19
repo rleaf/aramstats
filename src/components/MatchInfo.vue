@@ -95,7 +95,7 @@ export default {
       },
 
       itemImg(player, i) {
-         return `http://ddragon.leagueoflegends.com/cdn/13.9.1/img/item/${player[`item${i}`]}.png`
+         return `http://ddragon.leagueoflegends.com/cdn/13.10.1/img/item/${player[`item${i}`]}.png`
       }
    },
 
@@ -115,12 +115,9 @@ export default {
 <template>
    <div class="match-info-main">
       <div class="match-info-header">
-         <h2>
+         <!-- <h2>
             {{ this.matchId }}
-         </h2>
-         <p class="temp">
-            **wip**
-         </p>
+         </h2> -->
          <div class="unit-dropdown">
             <button @click="button">
                {{ Object.keys(this.book)[this.unit] }}
@@ -216,9 +213,10 @@ export default {
    }
 
    .match-info-header {
+      width: inherit;
       display: flex;
       justify-content: space-between;
-      padding: 10px 20px;
+      padding: 10px 0;
       border-bottom: 1px solid var(--tint200);
    }
 
@@ -239,6 +237,7 @@ export default {
    }
 
    .unit-dropdown {
+      margin-left: auto;
       position: relative;
       /* width: 150px; */
       height: 100%;
@@ -246,7 +245,6 @@ export default {
 
    .unit-dropdown button {
       cursor: pointer;
-      margin-left: auto;
       background: none;
       border: none;
       color: var(--color-font);
@@ -255,6 +253,7 @@ export default {
       padding: 6px 10px;
       font-weight: bold;
       background: var(--tint200);
+      margin-right: 10px;
    }
 
    .unit-drop {
@@ -268,6 +267,7 @@ export default {
       box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.65);
       border-radius: 5px;
       z-index: 5;
+      margin-right: 10px;
    }
 
    .unit {
@@ -319,8 +319,8 @@ export default {
    .main {
       display: flex;
       flex-direction: column;
+      gap: 3px;
       font-size: 0.9rem;
-      font-weight: lighter;
       width: 130px;
       margin: 0;
       line-height: 0.9rem;
@@ -340,27 +340,22 @@ export default {
    
    .runes-spells {
       display: flex;
-      gap: 2px;
       align-items: center;
       height: 100%;
    }
 
    .spells {
       display: flex;
-      /* gap: 1px; */
-      height: 100%;
       flex-direction: column;
       justify-content: space-between;
    }
 
    .spells img {
-      /* width: 18px; */
       height: 17px;
       border-radius: 3px;
    }
 
    .runes {
-      height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -381,6 +376,7 @@ export default {
 
    .kda {
       font-size: 0.8rem;
+      /* color: var(--tint400); */
       color: var(--tint400);
    }
 
@@ -403,7 +399,7 @@ export default {
    .bar .value {
       margin-top: 3px;
       background-color: var(--bar2);
-      /* background: linear-gradient(to right, var(--bar2), var(--tint400)); */
+      /* background: linear-gradient(to right, var(--bar2), var(--win)); */
       height: inherit;
       /* width: 15px; */
       z-index: 5;
