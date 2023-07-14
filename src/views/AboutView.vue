@@ -7,7 +7,7 @@
         aramstats.lol parses all of a summoner's available ARAM games available in the Riot API to display insightful statistics.
       </p>
       <p>
-        Get in touch with me @owl#4626 in the <a href="https://discord.gg/MydvqhqWmM">aram academy</a> discord.
+        Get in touch with me @Owl (un: ryli.) in the <a href="https://discord.gg/MydvqhqWmM">aram academy</a> discord.
       </p>
     </div>
     <div class="about-block">
@@ -15,13 +15,6 @@
       <hr>
       <p>
         Riot only stores up to 1,000 games or 2 years old worth of data.
-      </p>
-    </div>
-    <div class="about-block">
-      <h2>Site longevity (ads)</h2>
-      <hr>
-      <p>
-        I am going to try and figure out how to run ads to help offset backend costs. I'm happy that there's daily activity but I can't guarantee this site to be up long-term.
       </p>
     </div>
     <div class="about-block">
