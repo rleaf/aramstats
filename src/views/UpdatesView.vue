@@ -2,6 +2,17 @@
    <div class="update-main">
       <div class="update-block">
          <div class="header">
+            <h2>Moving database...again.</h2>
+            <h3>7/22/23</h3>
+         </div>
+         <hr>
+         <p>
+            Moving database from an old laptop to a Raspberry Pi 4. Planned to do this a while ago as this was the original goal, but they've always been out of stock.
+         </p>
+         <img src="../assets/piserver.webp" height="400px" style="clear: both;" alt="">
+      </div>
+      <div class="update-block">
+         <div class="header">
             <h2>Match-level data available</h2>
             <h3>5/16/23</h3>
          </div>

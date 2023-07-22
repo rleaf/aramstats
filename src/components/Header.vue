@@ -4,7 +4,7 @@
 
 <template>
    <div class="header-main">
-      <RouterLink to="/updates">Match-level data available.</RouterLink>
+      <RouterLink to="/updates">Moving database...again. (May encounter some rollback 7/22/23)</RouterLink>
    </div>
 </template>
 
