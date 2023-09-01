@@ -66,7 +66,8 @@ nav .right {
 
 a {
    padding: 0 1rem;
-   font-size: 1.1rem;
+   font-weight: 500;
+   font-size: 1rem;
    text-decoration: none;
    color: var(--color-font);
    transition: 0.4s;

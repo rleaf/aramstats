@@ -63,6 +63,7 @@ export default {
             {id: 5, region: 'LAS'},
             {id: 6, region: 'OCE'},
             {id: 7, region: 'KR'},
+            {id: 8, region: 'TR'},
          ]"
             @region-emit="regionSelect" 
             />
