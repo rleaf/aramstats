@@ -50,7 +50,8 @@ export default {
          championInfo: this.userInfo.slice(1),
          challengeInfo: this.userInfo[0].challenges,
          profile: {
-            IconId: `http://ddragon.leagueoflegends.com/cdn/13.9.1/img/profileicon/${this.userInfo[0].profileIconId}.png`,
+            // IconId: `http://ddragon.leagueoflegends.com/cdn/13.9.1/img/profileicon/${this.userInfo[0].profileIconId}.png`,
+            IconId: `http://ddragon.leagueoflegends.com/cdn/13.17.1/img/profileicon/${this.userInfo[0].profileIconId}.png`,
             name: this.userInfo[0].name
          },
          selected: 'Total Games',

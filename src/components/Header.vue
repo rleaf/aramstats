@@ -4,7 +4,8 @@
 
 <template>
    <div class="header-main">
-      <RouterLink to="/updates">Moving database...again. (May encounter some rollback 7/22/23)</RouterLink>
+      <RouterLink to="/updates">Redesigning backend. Intending to wipe all data.</RouterLink>
+      <!-- <p>Working on fix for those stuck on the "Parsing summoner..." page.</p> -->
    </div>
 </template>
 
@@ -19,7 +20,7 @@
       transition: 0.25s;
    }
 
-   a {
+   a, p {
       color: var(--color-font);
       font-size: 0.85rem;
    }

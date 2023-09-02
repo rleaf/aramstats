@@ -27,7 +27,7 @@ export default {
 
 <template>
    <div class="history-main">
-      .
+      🥧
    </div>
 </template>
 

@@ -2,6 +2,35 @@
    <div class="update-main">
       <div class="update-block">
          <div class="header">
+            <h2>Redesigning backend. Intending to wipe all data.</h2>
+            <h3>9/2/23</h3>
+         </div>
+         <hr>
+         <p>
+            There are two main reasons for doing this:
+         </p>
+         <p>
+            The first is because I have more storage.
+            To reduce costs when this site began I opted for the free tier of MongoDB Atlas (~500MB storage). Because of the limited amount of storage, I designed the backend to
+            be "picky" when pulling game data from Riot's servers and only store specific information. It was a decent solution for the free tier, but since upgrading to the Pi
+            (pic below), I can be more liberal with hoarding data which in turn may allow me to provide more stats. 
+         </p>
+         <p>
+            The second is because there's some cleaning up to do. I never intended for this site to be up this long or to even open it up to multiple regions. This started because
+            I wanted to see my performance on certain champs and to try and convince some friends, using empirical data, that maybe Aurelion Sol is just not for them or taking
+            Glacial Augment on Azir deserves a ban. As more people use this site, I'd like to revamp the backend to ameliorate UX and try and make it more efficient so it crashes less. 
+         </p>
+         <p>
+            I'm using these two reasons as an excuse to start fresh on the database. I haven't actually started working on it yet, but just wanted to let those interested know. Hmu
+            @ <code style="background-color: var(--dark600); border-radius: 5px;">ryli.</code> on Discord for any questions.
+         </p>
+         <img src="../assets/leo.webp" width="80%" style="clear: both;" alt="">
+         <p class="sub">
+            "...guys listen to me...glacial Azir is OP - they're doing it everywhere in Korea."
+         </p>
+      </div>
+      <div class="update-block">
+         <div class="header">
             <h2>Moving database...again.</h2>
             <h3>7/22/23</h3>
          </div>
@@ -97,5 +126,12 @@ p {
    line-height: 1.4;
    text-align: left;
    margin-top: 0.5rem;
+}
+
+p.sub {
+   text-align: center;
+   font-size: 0.8rem;
+   font-style: italic;
+   margin-top: 0;
 }
 </style>

@@ -79,6 +79,7 @@ export default {
          return Math.round(this.match.damageShare * 100)
       },
       killParticipation() {
+         // return `${this.match.killParticipation}`
          return Math.round(this.match.killParticipation * 100)
       },
       rotateArrow() {
@@ -107,7 +108,7 @@ export default {
          <div class="match-kda">
             <!-- <span class="match-minor">KDA</span> -->
             <span class="kda">{{ this.kda }}</span>
-            {{ killParticipation || '-' }}% <span class="unit">KP</span>
+            {{ killParticipation || 0 }}% <span class="unit">KP</span>
          </div>
          <div class="match-items">
             <img v-for="(item, i) in this.items[0]"

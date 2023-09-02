@@ -34,27 +34,50 @@ router
          const client = await loadSummonerCollection()
          // Check if summoner is in database
          const summonerCollection = client.collection(summoner.name)
+
+
+         // console.log(client.findOne({'name': summoner.name, 'region': req.params.region}))
          
          // Check if already pulling
-         check = await summonerCollection.findOne(
-            {'activePull': {$exists: true}}
-         )
-   
+         check = await summonerCollection.findOne()
+
          if(check && check.activePull) {
             console.log(`already pulling ${summoner.name}`)
             return
          }
 
-         const summonerExist = (await summonerCollection.findOne({'name': summoner.name}))
+         /* 
+            1. User enters summoner & region
+            2. Backend checks first to see if there exists a collection with the summoner name
+               and region
+            3. If not, backend checks to see if there's a summoner with just the summoner name
+            4. If both checks fail, parse new summoner
+            5. If either check succeeds, respond with that collection
+         */
 
+         // 2.
+         let summonerExist = (await summonerCollection.findOne(
+            {
+               'name': summoner.name,
+               'region': req.params.region
+            })
+         )
+         
+         // console.log(summonerExist, 'frog')
+         // 3.
+         if (!summonerExist) {
+            summonerExist = (await summonerCollection.findOne({ 'name': summoner.name }))
+         }
+         
+         // 5.
          if(summonerExist) {
             console.log(`Summoner ${summoner.name} (${req.params.region}) already parsed.`)
-
-            result = (await client.collection(summoner.name).find({}).toArray())
+            result = (await summonerCollection.find({}).toArray())
             res.send(result)
 
             return
          } 
+
 
          // Create summoner collection and pull all matchIds
          const matchlist = await populateSummoner(summonerCollection, summoner, req.params.region)
@@ -68,7 +91,7 @@ router
          await challengeScribe(summoner, summonerCollection, req.params.region)
 
          console.log(`Finished parsing ${summoner.name} (${req.params.region})`)
-         result = (await client.collection(summoner.name).find({}).toArray())
+         result = (await summonerCollection.find({}).toArray())
          res.send(result)
 
       } else {
@@ -247,13 +270,21 @@ async function loadSummonerCollection() {
 
 async function populateSummoner(collection, summoner, region) {
 
-   // Add new summoner to database
+   // Add account info to summoner collection
    await collection.insertOne(summoner)
+
+   // Add region
+   // await collection.updateOne(
+   //    {'name': summoner.name}
+   // )
 
    // Live update flag
    await collection.updateOne(
       {'name': summoner.name},
-      {$set: {'activePull': true}}
+      {
+         $set: {'activePull': true},
+         $set: {'region': region}
+      }
    )
 
    // Pull all games into 'matchId'
@@ -302,6 +333,8 @@ async function matchParser(collection, matchlist, summoner, region) {
 
    for (let i = 0; i < matches.length; i++) {
       
+      // if (!collection) break
+
       if (i % 25 == 0) console.log(`Parsing ${summoner.name} (${region}), match ${i}`)
 
       const game = await twisted.getMatchInfo(matches[i], region)
@@ -312,7 +345,7 @@ async function matchParser(collection, matchlist, summoner, region) {
             }
          })
       
-      if (game) {
+      if (game && collection) {
          const match = cat.scribe(summoner.puuid, game)
 
          if (match) {

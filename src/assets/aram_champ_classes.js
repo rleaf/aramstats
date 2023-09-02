@@ -102,6 +102,7 @@ export const classBook = {
    monkeyking: ['Diver'],
    mordekaiser: ['Juggernaut'],
    morgana: ['Catcher', 'Mage'], /* +Mage */
+   naafiri: ['Assassin'], /* -Fighter */
    nami: ['Enchanter'],
    nasus: ['Juggernaut', 'Mage'], /* +Mage */
    nautilus: ['Vanguard', 'Warden'], /* +Warden */
