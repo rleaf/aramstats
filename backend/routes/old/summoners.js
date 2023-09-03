@@ -13,7 +13,7 @@ const router = express.Router()
 router
    .route('/:region/:summonerURI')
    .get(async (req, res) => {
-      
+      ``
       let summoner
       
       try {

@@ -8,9 +8,9 @@ app.use(bodyParser.json())
 app.use(cors())
 
 
-const summoners = require('./routes/api/summoners')
-const matchInfo = require('./routes/api/matchInfo')
-// const history = require('./routes/api/matchHistory')
+const summoners = require('./routes/old/summoners')
+const matchInfo = require('./routes/old/matchInfo')
+// const history = require('./routes/matchHistory')
 
 app.use('/api/summoners', summoners)
 app.use('/api/matchInfo', matchInfo)
