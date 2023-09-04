@@ -1,0 +1,84 @@
++ Pro
+- Con
+* Current Idea
+
+Database
+   Want to store match data for every game parsed from a summoner. A response from the match-v5 endpoint is 60.25KB.
+      + Future proof & robust. Can (probably) easily implement new stats since I'm storing all data and won't have to worry about "if I have it".
+      + Don't need to make requests to Riot API to get match data.
+      - Size. Only have 256GB. With currently 4437 summoners parsed, if each summoner had ~1000 games, that would be ~267GB.
+
+      * Trim the fat, store particular info.
+
+
+   Want to store all match data on current & prior patch. 
+
+
+
+****************************************************************************************
+
+"""
+Represent each summoner as a collection in the 'summoners' db.
+Aliquot champion unique statistics/information into their own documents.
+"""
+# DB (Current)
+{
+   # Summoner 1 Collection
+   {
+      # Account Info
+      {}
+      # Champ X Data
+      {}
+      # Champ Y Data
+      {}
+      # Champ Z Data
+      {}
+      ...
+   }
+   # Summoner 2 Collection
+   {
+      # Account Info
+      {}
+      # Champ X Data
+      {}
+      # Champ Y Data
+      {}
+      # Champ Z Data
+      {}
+      ...
+   }
+}
+
+
+"""
+Represent each summoner as a document in the 'summoners' collection.
+Aliquot champion unique statistics/information into their own nested objects.
+"""
+# DB
+{
+   # Summoner collection
+   {
+      # Summoner document
+      {
+         # Account Info
+         {}
+         # Champ X Data
+         {}
+         # Champ Y Data
+         {}
+         # Champ Z Data
+         {}
+      }
+      # Summoner document
+      {
+         # Account Info
+         {}
+         # Champ X Data
+         {}
+         # Champ Y Data
+         {}
+         # Champ Z Data
+         {}
+      }
+   }
+} 
