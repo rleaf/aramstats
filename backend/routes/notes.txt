@@ -39,18 +39,19 @@ https://www.mongodb.com/community/forums/t/any-case-where-collection-per-entity-
             matches: [
                ObjectID(AAAA),
                ObjectID(AAAB),
-               ObjectID(AAA),
+               ObjectID(AAAC),
             ]
          },
          {
+            champion: "Annie",
             averageStats: {
                kills: Number,
                ...
             },
             matches: [
-               ObjectID(AAAA),
-               ObjectID(AAAB),
-               ObjectID(AAA),
+               ObjectID(AAAD),
+               ObjectID(AAAE),
+               ObjectID(AAAF),
             ]
          },
       ]
@@ -70,6 +71,16 @@ https://www.mongodb.com/community/forums/t/any-case-where-collection-per-entity-
             ObjectID(AAAA),
             ObjectID(AAAB),
             ObjectID(AAAC),
+         ]
+      },
+      # Champion data
+      {
+         champion: "Annie",
+         averages: {...},
+         matches: [
+            ObjectID(AAAD),
+            ObjectID(AAAE),
+            ObjectID(AAAF),
          ]
       }
    }
