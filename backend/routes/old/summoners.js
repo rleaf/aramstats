@@ -35,7 +35,6 @@ router
          // Check if summoner is in database
          const summonerCollection = client.collection(summoner.name)
 
-
          // console.log(client.findOne({'name': summoner.name, 'region': req.params.region}))
          
          // Check if already pulling

@@ -16,10 +16,13 @@ router.get('/:region/:summonerURI', async (req, res) => {
    /*
       1.  Check to see if summoner document exists in summoner collection in Aramstats DB
       2.  If summoner doesn't exist in summ collection, check to see if summoner exists in Riot DB
-      3.1 If summoneer exists in Riot DB, start initial pull of summoner
+      *3.1 If summoneer exists in Riot DB, start initial pull of summoner
       3.2 If summoner doesn't exist in Riot DB, return DNE
+
+      * For 3.1, have two collections: summoner & matches???
    */
 
+   const db = loadDatabase()
 })
 
 // Update summoner
@@ -40,9 +43,9 @@ router.delete('/delete/:region/:summonerURI', async (req, res) => {
    */
 })
 
-async function loadSummonerCollection() {
+async function loadDatabase() {
    const client = await mongodb.MongoClient.connect(process.env.DB_CONNECTION_STRING)
-   return client.db('aramstats').collection('summoner')
+   return client.db('aramstats')
 }
 
 module.exports = router

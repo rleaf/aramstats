@@ -18,6 +18,64 @@ Database
 ****************************************************************************************
 
 """
+Using one-to-many referenced here: https://www.mongodb.com/blog/post/6-rules-of-thumb-for-mongodb-schema-design
+
+This guy says having MANY MANY collections as opposed to having MANY MANY documents in a collection is a no-go:
+https://www.mongodb.com/community/forums/t/any-case-where-collection-per-entity-is-a-good-model/105561/4?u=ryan_lin
+"""
+
+# Summoner Collection
+{
+   # Summoner document
+   {
+      metaData: {},
+      championData: [
+         {
+            champion: "Azir",
+            averageStats: {
+               kills: Number,
+               ...
+            },
+            matches: [
+               ObjectID(AAAA),
+               ObjectID(AAAB),
+               ObjectID(AAA),
+            ]
+         },
+         {
+            averageStats: {
+               kills: Number,
+               ...
+            },
+            matches: [
+               ObjectID(AAAA),
+               ObjectID(AAAB),
+               ObjectID(AAA),
+            ]
+         },
+      ]
+   }
+}
+
+# Summoner Collection
+{
+   # Summoner document
+   {
+      metaData: {},
+      # Champion data
+      {
+         champion: "Azir",
+         averages: {...},
+         matches: [
+            ObjectID(AAAA),
+            ObjectID(AAAB),
+            ObjectID(AAAC),
+         ]
+      }
+   }
+}
+
+"""
 Represent each summoner as a collection in the 'summoners' db.
 Aliquot champion unique statistics/information into their own documents.
 """
@@ -82,3 +140,58 @@ Aliquot champion unique statistics/information into their own nested objects.
       }
    }
 } 
+
+
+"""
+Use first archetype, but name collections uniquely (ie: do not use summoner name as there is a faker in NA and a faker in EUW). Use something like PUUID or account Id. PUUID is unique globally.
+"""
+# DB (Current)
+{
+   # Summoner 1 Collection puuid
+   {
+      # Account Info
+      {}
+      # Champ X Data
+      {}
+      # Champ Y Data
+      {}
+      # Champ Z Data
+      {}
+      ...
+   }
+   # Summoner 2 Collection puuid
+   {
+      # Account Info
+      {}
+      # Champ X Data
+      {}
+      # Champ Y Data
+      {}
+      # Champ Z Data
+      {}
+      ...
+   }
+}
+
+btw, it'd be pretty neat to see patch deltas for champ stats such as dps, dtps, dmps, etc to see overall flux. 
+
+******
+
+
+# Matches Collection
+{
+   # Match 1
+   {
+      "_id": "AAAA"
+      # Match data
+      ...
+   }
+   # Match 2
+   {
+      "_id": "AAAA"
+      # Match data
+      ...
+   }
+   # Store matchdata, enough for Match.vue
+   ... 
+}
