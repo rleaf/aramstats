@@ -95,7 +95,7 @@ export default {
       },
 
       itemImg(player, i) {
-         return `http://ddragon.leagueoflegends.com/cdn/13.10.1/img/item/${player[`item${i}`]}.png`
+         return `http://ddragon.leagueoflegends.com/cdn/13.17.1/img/item/${player[`item${i}`]}.png`
       }
    },
 

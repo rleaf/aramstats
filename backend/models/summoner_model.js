@@ -7,10 +7,11 @@ const summonerSchema = new mongoose.Schema({
    pull: {
       active: Boolean,
       current: Number,
-      ceiling: Number
+      queue: Number
    },
    challenges: [
       {
+         _id: false,
          challengeId: Number,
          percentile: Number,
          level: String,
@@ -20,6 +21,7 @@ const summonerSchema = new mongoose.Schema({
    ],
    championData: [
       {
+         _id: false,
          name: String,
          games: Number,
          averages: {
