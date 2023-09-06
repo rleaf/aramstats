@@ -33,7 +33,7 @@ export default {
             region: this.region.toLowerCase(),
             username: encodeURI(this.input),
          }})
-
+         
          this.callProc = true
 
          // push region into localstorage

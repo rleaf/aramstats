@@ -52,7 +52,7 @@ async function getSummonerMatches(summoner, region) {
 }
 
 /* 
-* Total match history for ARAM (450).
+* Total match history for ARAM (450). matchList[0] is most recent match.
 */
 async function getAllSummonerMatches(summoner, region) {
    const summonerGet = (await api.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response

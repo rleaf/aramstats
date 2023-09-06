@@ -50,6 +50,7 @@ router
             2. Backend checks first to see if there exists a collection with the summoner name
                and region
             3. If not, backend checks to see if there's a summoner with just the summoner name
+            *Hello, ryan from the future here. I did it like this because I didn't initially store regions.
             4. If both checks fail, parse new summoner
             5. If either check succeeds, respond with that collection
          */
