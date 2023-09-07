@@ -8,7 +8,8 @@ const summonerSchema = new mongoose.Schema({
    pull: {
       active: Boolean,
       current: Number,
-      queue: Number
+      queue: Number,
+      lastMatchId: String,
    },
    challenges: [
       {

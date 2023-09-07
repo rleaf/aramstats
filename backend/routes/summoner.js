@@ -3,8 +3,7 @@ const mongodb = require('mongodb')
 const dotenv = require('dotenv')
 const twisted = require('../twisted_calls')
 const summonerModel = require('../models/summoner_model')
-const matchModel = require('../models/match_model')
-const championNameBook = require('../constants/championNames')
+const summonerMatchesModel = require('../models/summonerMatches_model')
 const challengeIds = require('../constants/challengesIds')
 
 dotenv.config()
@@ -19,8 +18,6 @@ router.get('/:region/:summonerURI', async (req, res) => {
       1. Check to see if summoner document exists in summoner collection in Aramstats DB
       2. If summoner exists in Aramstats, return summoner document
       3. If summoner DNE in Aramstats DB, start init pull
-
-      For 3, have two collections: summoner & matches???
    */
 
    let summoner
@@ -45,8 +42,15 @@ router.get('/:region/:summonerURI', async (req, res) => {
 
       // 2.
       if (exists) {
+         if (exists.pull.active) {
+            console.log(`already pulling ${summoner.name} (${req.params.region})`)
+            res.send(exists.pull)
+            return
+         }
+
+         const summonerResponse = await aggregateSummoner(summoner.puuid)
          console.log(`Summoner ${summoner.name} (${req.params.region}) already parsed.`)
-         res.send(exists)
+         res.send(summonerResponse[0])
          return
       }
 
@@ -60,11 +64,13 @@ router.get('/:region/:summonerURI', async (req, res) => {
       const summonerDocument = new summonerModel({
          puuid: summoner.puuid,
          name: summoner.name,
+         region: req.params.region,
          profileIcon: summoner.profileIconId,
          pull: {
             active: true,
             current: 0,
-            queue: matchlist.length
+            queue: matchlist.length,
+            lastMatchId: matchlist[matchlist.length - 1]
          },
          challenges: challenges
       })
@@ -77,10 +83,10 @@ router.get('/:region/:summonerURI', async (req, res) => {
 
       summonerDocument.pull.active = false
       summonerDocument.pull.queue = 0
-      summonerDocument.save()
-      
-      const result = await summonerModel.findOne({ 'puuid': summoner.puuid })
-      res.send(result)
+      await summonerDocument.save()
+
+      const summonerResponse = (await aggregateSummoner(summoner.puuid))[0]
+      res.send(summonerResponse)
       console.log('done')
    } else {
       // Summoner DNE
@@ -116,7 +122,7 @@ async function championParser(summonerDocument) {
    // Iterate over each champion sub document
    for (const champion of summonerDocument.championData) {
       
-      const matches = await matchModel.find( {"_id": { $in: champion.matches}} )
+      const matches = await summonerMatchesModel.find( {"_id": { $in: champion.matches}} )
       // console.log(matches, 'records')
       
       champion.games = matches.length
@@ -138,7 +144,7 @@ async function championParser(summonerDocument) {
          champion.averages.selfMitigatedPerMinute+= Math.round(match.totals.selfMitigated / match.gameDuration)
          champion.averages.totalDamageDealt+= match.totals.damageDealtToChampions
          champion.averages.totalDamageTaken+= match.totals.damageTaken
-         champion.averages.totalHeal+= match.totals.healed
+         champion.averages.totalHeal+ match.totals.healed
          champion.averages.totalSelfMitigated+= match.totals.selfMitigated
          champion.multikills.triple+= match.multikills.triple
          champion.multikills.quadra+= match.multikills.quadra
@@ -151,18 +157,16 @@ async function championParser(summonerDocument) {
    }
 
    await summonerDocument.save()
-   console.log(summonerDocument.championData, 'champion Data')
-
 }
 
 async function matchParser(summoner, region, matchlist, summonerDocument) {
 
-   // for (let i = 0; i < matchlist.length; i++) {
-   for (let i = 0; i < 5; i++) {
+   for (let i = 0; i < matchlist.length; i++) {
+   // for (let i = 0; i < 5; i++) {
       if (i % 25 === 0) {
          console.log(`Parsing ${summoner.name} (${region}), match ${i}`)
          summonerDocument.pull.current = i
-         summonerDocument.save()
+         await summonerDocument.save()
       }
 
       const game = await twisted.getMatchInfo(matchlist[i], region)
@@ -179,7 +183,7 @@ async function matchParser(summoner, region, matchlist, summonerDocument) {
          const player = game.info.participants[puuidIndex]
 
 
-         const match = new matchModel({
+         const match = new summonerMatchesModel({
             matchId: game.metadata.matchId,
             gameCreation: game.info.gameCreation,
             gameDuration: getGameDuration(game.info),
@@ -226,6 +230,29 @@ async function matchParser(summoner, region, matchlist, summonerDocument) {
          }
       }
    }
+}
+
+async function aggregateSummoner(puuid) {
+   return await summonerModel.aggregate([
+      { $match: { puuid: puuid} },
+      { $unwind: "$championData" },
+      { $lookup: {
+         from: "summonermatches",
+         localField: "championData.matches",
+         foreignField: "_id",
+         as: "championData.matches"
+      }},
+      { $group: {
+         _id: "$_id",
+         puuid: { $first: "$puuid"},
+         name: { $first: "$name"},
+         region: { $first: "$region"},
+         profileIcon: { $first: "$profileIcon"},
+         pull: { $first: "$pull"},
+         challenges: { $first: "$challenges"},
+         championData: { $push: "$championData"}
+      }}
+   ])
 }
 
 async function challengeScribe(puuid, region) {
