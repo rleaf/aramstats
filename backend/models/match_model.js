@@ -5,7 +5,7 @@ const matchSchema = new mongoose.Schema({
    gameCreation: Number,
    gameDuration: Number,
    gameVersion: String,
-   win: Number,
+   win: Boolean,
    kills: Number,
    deaths: Number,
    assists: Number,
@@ -21,7 +21,7 @@ const matchSchema = new mongoose.Schema({
       damageTaken: Number,
       selfMitigated: Number,
       healed: Number,
-      HealsOnTeammates: Number,
+      healsOnTeammates: Number,
       gold: Number
    },
    multikills: {

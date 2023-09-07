@@ -41,6 +41,7 @@ router.get('/:region/:summonerURI', async (req, res) => {
 
    if (summoner) {
       // 1.
+      // const db = await loadDatabase()
       const exists = await summonerModel.findOne({ 'puuid': summoner.puuid })
 
       // 2.
@@ -51,6 +52,7 @@ router.get('/:region/:summonerURI', async (req, res) => {
       }
 
       // 3.
+      
       // 3.1 Pull all matchIds
       // Reverse so it starts processing the last game first - most recent game should be at top.
       const matchlist = (await twisted.getAllSummonerMatches(summoner.name, req.params.region)).reverse()
@@ -68,20 +70,31 @@ router.get('/:region/:summonerURI', async (req, res) => {
          },
          challenges: challenges
       })
+      // summonerModel.create({
+      //    puuid: summoner.puuid,
+      //    name: summoner.name,
+      //    region: req.params.region,
+      //    profileIcon: summoner.profileIconId,
+      //    pull: {
+      //       active: true,
+      //       current: 0,
+      //       queue: matchlist.length
+      //    },
+      //    challenges: challenges
+      // })
+
       // 3.3 Parse every match, store what I want in matches collection. Once match document
       //     is created, push the _id to summoner.<champion>.matches 
       await matchParser(summoner, req.params.region, matchlist, summonerDocument)
+      // await matchParser(summoner, req.params.region, matchlist)
 
       // Iterate over champion matches & calc avgs
-      await championParser(summonerDocument)
+      // await championParser(summonerDocument, summoner.puuid)
+      await championParser(summoner.puuid)
 
-      summonerDocument.pull.active = false
-      summonerDocument.pull.queue = 0
-      summonerDocument.save()
-      
+      console.log(`Finished parsing ${summoner.name} (${req.params.region})`)
       const result = await summonerModel.findOne({ 'puuid': summoner.puuid })
       res.send(result)
-      console.log('done')
    } else {
       // Summoner DNE
       res.sendStatus(504)
@@ -111,10 +124,14 @@ async function loadDatabase() {
    return client.db('aramstats')
 }
 
-async function championParser(summonerDocument) {
+// async function championParser(championData) {
+async function championParser(puuid) {
 
+   // summonerModel.findOne({ puuid: summoner.puuid})
+   const championData = await summonerModel.findOne({ "puuid": puuid})
+   console.log(championData, 'data')
    // Iterate over each champion sub document
-   for (const champion of summonerDocument.championData) {
+   for (const champion of championData) {
       
       const matches = await matchModel.find( {"_id": { $in: champion.matches}} )
       // console.log(matches, 'records')
@@ -150,19 +167,23 @@ async function championParser(summonerDocument) {
       }
    }
 
-   await summonerDocument.save()
-   console.log(summonerDocument.championData, 'champion Data')
+   await championData.save()
+   console.log(championData.championData, 'champion Data')
 
 }
 
 async function matchParser(summoner, region, matchlist, summonerDocument) {
+// async function matchParser(summoner, region, matchlist) {
 
    // for (let i = 0; i < matchlist.length; i++) {
-   for (let i = 0; i < 5; i++) {
-      if (i % 25 === 0) {
+   for (let i = 0; i < 1; i++) {
+      if (i % 25 == 0) {
          console.log(`Parsing ${summoner.name} (${region}), match ${i}`)
-         summonerDocument.pull.current = i
-         summonerDocument.save()
+         // summonerDocument.pull.current = i
+         // summonerModel.findOneAndUpdate(
+         //    { "puuid": summoner.puuid},
+         //    { $set: {"pull.current": i} }
+         // )
       }
 
       const game = await twisted.getMatchInfo(matchlist[i], region)
@@ -213,9 +234,16 @@ async function matchParser(summoner, region, matchlist, summonerDocument) {
 
          await match.save()
          const championEmbed = summonerDocument.championData.find(e => e.name === player.championName)
+         // const championEmbed = (await summonerModel.findOne({"puuid": summoner.puuid})).championData.find(
+         //    e => e.name === player.championName
+         // )
 
          if (championEmbed) {
             championEmbed.matches.push(match._id)
+            // await summonerModel.findOneAndUpdate(
+            //    { "puuid": summoner.puuid },
+            //    { $push: { "championData.matches": match._id }}
+            // )
          } else {
             summonerDocument.championData.push(
                {
@@ -223,6 +251,10 @@ async function matchParser(summoner, region, matchlist, summonerDocument) {
                   matches: match._id
                }
             )
+            // await summonerModel.findOneAndUpdate(
+            //    { "puuid": summoner.puuid },
+            //    { $push: { championData: {name: player.championName, matches: match._id} }}
+            // )
          }
       }
    }
