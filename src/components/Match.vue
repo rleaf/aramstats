@@ -13,8 +13,8 @@ export default {
          gameDuration: Number,
          date: null,
          kda: `${this.match.kills}/${this.match.deaths}/${this.match.assists}`,
-         primaryRune: this.match.primaryRune,
-         secondaryTree: this.match.secondaryTree,
+         // primaryRune: this.match.primaryRune,
+         // secondaryTree: this.match.secondaryTree,
          items: [[], []],
          matchInfo: false,
       }
@@ -22,6 +22,7 @@ export default {
 
    created() {
       this.timeSet()
+
       this.itemImages()
       // const url = `http://ddragon.leagueoflegends.com/cdn/12.23.1/data/en_US/runesReforged.json`
       // axios.get(url)
@@ -31,8 +32,19 @@ export default {
       // console.log(this.match)
    },
 
+   // watch: {
+   //    currentPatch(curr, _) {
+   //       /* 
+   //          Component loads faster than async getCurrentPatch() responds on UserReady,
+   //          so only fire when this.currentPatch not falsey
+   //       */
+   //       if (curr) this.itemImages()
+   //    }
+   // },
+
    props: {
-      match: Object
+      match: Object,
+      currentPatch: ''
    },
 
    methods: {
@@ -48,7 +60,7 @@ export default {
          for (let i = 0; i < 6; i++) {
             if (this.match.items) {
                if (this.match.items[i] != 0) {
-                  let x = `http://ddragon.leagueoflegends.com/cdn/13.17.1/img/item/${this.match.items[i]}.png`
+                  let x = `http://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/item/${this.match.items[i]}.png`
                   if (i < 3) {
                      this.items[0].push(x)
                   } else {
@@ -62,15 +74,19 @@ export default {
       matchDetail() {
          // console.log('soon.tm')
          this.matchInfo =! this.matchInfo
+      },
+
+      perMinute(unit) {
+         return Math.round(unit / this.match.gameDuration)
       }
    },
 
    computed: {
       primary() {
-         return new URL(`../assets/runes/${this.primaryRune}.png`, import.meta.url).href
+         return new URL(`../assets/runes/${this.match.primaryRune}.png`, import.meta.url).href
       },
       secondary() {
-         return new URL(`../assets/runes/${this.secondaryTree}.png`, import.meta.url).href
+         return new URL(`../assets/runes/${this.match.secondaryRune}.png`, import.meta.url).href
       },
       matchWinLoss() {
          return (this.match.win) ? 'win' : 'loss'
@@ -85,6 +101,7 @@ export default {
       rotateArrow() {
          return (this.matchInfo) ? 'transform: rotate(180deg);' : ''
       }
+
    },
 
 }
@@ -128,49 +145,49 @@ export default {
          </div>
          <div class="damage">
             <h5>Damage</h5>
-            {{ this.match.totalDamageDealtToChampions }}, {{ damageShare || '-' }}% <span class="unit">DS</span>
+            {{ this.match.totals.damageDealtToChampions }}, {{ damageShare || '-' }}% <span class="unit">DS</span>
             <div class="per-minute">
-               {{ this.match.damagePerMinute }} / m
+               {{ perMinute(this.match.totals.damageDealtToChampions) }} / m
             </div>
          </div>
          <div class="healing">
             <h5>Healing</h5>
-            {{ this.match.totalHeal }}
+            {{ this.match.totals.healed }}
             <div class="per-minute">
-               {{ this.match.healPerMinute }} / m
+               {{ perMinute(this.match.totals.healed) }} / m
             </div>
          </div>
          <div class="ally">
             <h5>Ally Heals</h5>
-            {{ this.match.totalHealsOnTeammates }}
+            {{ this.match.totals.healsOnTeammates }}
             <div class="per-minute">
-               {{ this.match.allyHealPerMinute }} / m
+               {{ perMinute(this.match.totals.healsOnTeammates) }} / m
             </div>
          </div>
          <div class="taken">
             <h5>Taken</h5>
-            {{ this.match.totalDamageTaken }}
+            {{ this.match.totals.damageTaken }}
             <div class="per-minute">
-               {{ this.match.damageTakenPerMinute }} / m
+               {{ perMinute(this.match.totals.damageTaken) }} / m
             </div>
          </div>
          <div class="mitigated">
             <h5>Mitigated</h5>
-            {{ this.match.totalSelfMitigated }}
+            {{ this.match.totals.selfMitigated }}
             <div class="per-minute">
-               {{ this.match.selfMitigatedPerMinute }} / m
+               {{ perMinute(this.match.totals.selfMitigated) }} / m
             </div>
          </div>
          <div class="gold">
             <h5>Gold</h5>
-            {{ this.match.goldEarned }}
+            {{ this.match.totals.gold }}
             <div class="per-minute">
-               {{ this.match.goldPerMinute }} / m
+               {{ perMinute(this.match.totals.gold) }} / m
             </div>
          </div>
       </div>
    </div>
-   <MatchInfo v-if="this.matchInfo" :matchId="this.match.matchId"/>
+   <MatchInfo v-if="this.matchInfo" :matchId="this.match.matchId" :currentPatch="this.currentPatch"/>
    <!-- <div v-show="this.matchInfo">
    </div> -->
    

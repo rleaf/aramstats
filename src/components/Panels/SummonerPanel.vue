@@ -49,7 +49,7 @@ export default {
          // Iterate through champions
          for (const champion of this.championData) {
             let gameCount = champion.matches.length
-            let championClass = classBook[champion.championName.toLowerCase()]
+            let championClass = classBook[champion.name.toLowerCase()]
 
             // Iterate through subclasses
             for (const subClass of championClass) {

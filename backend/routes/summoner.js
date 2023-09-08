@@ -56,8 +56,8 @@ router.get('/:region/:summonerURI', async (req, res) => {
 
       // 3.
       // 3.1 Pull all matchIds
-      // Reverse so it starts processing the oldest game first - have most recent game should be at [0].
-      const matchlist = (await twisted.getAllSummonerMatches(summoner.name, req.params.region)).reverse()
+      // Most recent game should be at [0]
+      const matchlist = (await twisted.getAllSummonerMatches(summoner.name, req.params.region))
       const challenges = await challengeScribe(summoner.puuid, req.params.region)
       
       // 3.2 Create summoner document
@@ -122,7 +122,7 @@ router.put('/update/:region/:summonerURI', async (req, res) => {
    const summonerDocument = await summonerModel.findOne({ puuid: summoner.puuid })
 
    // Get total matchlist
-   const totalMatchlist = (await twisted.getAllSummonerMatches(summoner.name, req.params.region)).reverse()
+   const totalMatchlist = (await twisted.getAllSummonerMatches(summoner.name, req.params.region))
 
    // Find idx of last match id in matchlist
    const lastMatchIndex = matches.findIndex(x => x === summonerDocument.pull.lastMatchId) + 1

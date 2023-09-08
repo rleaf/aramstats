@@ -36,11 +36,12 @@ export default {
 
    data() {
       return {
+         currentPatch: '',
          championData: this.response.championData,
          challengeInfo: this.response.challenges,
          profile: {
             // IconId: `http://ddragon.leagueoflegends.com/cdn/13.9.1/img/profileicon/${this.response.profileIconId}.png`,
-            IconId: `http://ddragon.leagueoflegends.com/cdn/13.17.1/img/profileicon/${this.response.profileIconId}.png`,
+            IconId: `http://ddragon.leagueoflegends.com/cdn/13.17.1/img/profileicon/${this.response.profileIcon}.png`,
             name: this.response.name
          },
          selected: 'Total Games',
@@ -65,14 +66,24 @@ export default {
    },
 
    created() {
-      console.log(this.response, 'toad')
       this.summonerAverages()
-      
+      this.getCurrentPatch() 
       // Pull patch data from https://ddragon.leagueoflegends.com/api/versions.json
 
    },
 
    methods: {
+      async getCurrentPatch() {
+         const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
+
+         try {
+            // this.currentPatch = (await axios.get(url)).data[0].split('.').slice(0, 2).join('.')
+            this.currentPatch = (await axios.get(url)).data[0]
+         } catch (e) {
+            console.log(e, 'getCurrentPatch')
+         }
+      },
+
       async updateSummoner() {
          this.isDisabled = true
          const url = `/api/summoners/update/${this.$route.params.region}/${this.$route.params.username}`
@@ -216,7 +227,7 @@ export default {
                </div>
                <div class="4">
                   <h3>Kill Participation</h3>
-                  {{ this.summonerStats.killParticipation }}
+                  {{ this.summonerStats.killParticipation }}%
                </div>
             </div>
             <div class="summ-mk">
@@ -253,7 +264,7 @@ export default {
             </div>
          </div>
          <div class="panel" v-show="this.panel === 0">
-            <ListPanel :championData="this.championData" />
+            <ListPanel :championData="this.championData" :currentPatch="this.currentPatch" />
          </div>
          <div class="panel" v-show="this.panel === 1">
             <SummonerPanel 

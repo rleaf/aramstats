@@ -29,50 +29,44 @@ export default {
             'Champion': 'name',
             'Total Games': 'games',
             'Wins': 'wins',
-            'Damage': '',
-            'DPM': 'averageDamagePerMinute',
-            'Healing': 'averageTotalHeal',
-            'HPM': 'averageHealPerMinute',
-            'Ally Healing': 'averageHealingOnTeammates',
-            'Ally HPM': 'averageAllyHealPerMinute',
-            'Damage Taken': 'averageTotalDamageTaken',
-            'DTPM': 'averageDamageTakenPerMinute',
-            'Damage Mitigated': 'averageTotalSelfMitigated',
-            'DMPM': 'averageSelfMitigatedPerMinute',
-            'Gold': 'averageGoldEarned',
-            'GPM': 'averageGoldPerMinute',
-            'Kill Participation': 'averageKillParticipation',
-            'Damage Share': 'averageDamageShare',
-            'Triple kills': 'totalTripleKills',
-            'Quadra kills': 'totalQuadraKills',
-            'Penta kills': 'totalPentaKills',
+            'Damage': 'averages.totalDamageDealt',
+            'DPM': 'averages.damagePerMinute',
+            'Healing': 'averages.totalHeal',
+            'HPM': 'averages.healingPerMinute',
+            'Ally Healing': 'averages.healingOnTeammates',
+            'Ally HPM': 'averages.allyHealPerMinute',
+            'Damage Taken': 'averages.totalDamageTaken',
+            'DTPM': 'averages.damageTakenPerMinute',
+            'Damage Mitigated': 'averages.totalSelfMitigated',
+            'DMPM': 'averages.selfMitigatedPerMinute',
+            'Gold': 'averages.goldEarned',
+            'GPM': 'averages.goldPerMinute',
+            'Kill Participation': 'averages.killParticipation',
+            'Damage Share': 'averages.damageShare',
+            'Triple kills': 'multikills.triple',
+            'Quadra kills': 'multikills.quadra',
+            'Penta kills': 'multikills.penta',
          }
 
-         const filtered = this.championData.filter(x => x.name.toLowerCase().includes(this.search.toLowerCase()))
-         // console.log(filtered, 'names')
-         // console.log(this.championData, 'names')
-
-         // if (this.sortBy === 'Champion') {
-         //    return (this.order) ?
-         //       filtered.sort((a, b) => a.championName.localeCompare(b.championName)) :
-         //       filtered.sort((a, b) => b.championName.localeCompare(a.championName))
-         // }
          if (this.sortBy === 'Champion') {
             return (this.order) ?
                this.championData.sort((a, b) => a.name.localeCompare(b.name)) :
                this.championData.sort((a, b) => b.name.localeCompare(a.name))
          }
 
-         const value = table[this.sortBy]
+         const access = (path, object) => {
+            return path.split('.').reduce((o, i) => o[i], object)
+         }
 
          return (this.order) ?
-            this.championData.sort((a, b) => b[value] - a[value]) :
-            this.championData.sort((a, b) => a[value] - b[value])
+            this.championData.sort((a, b) => access(table[this.sortBy], b) - access(table[this.sortBy], a)) :
+            this.championData.sort((a, b) => access(table[this.sortBy], a) - access(table[this.sortBy], b))
       },
    },
 
    props: {
-      championData: Object
+      championData: Object,
+      currentPatch: ''
    }
    
 }
@@ -109,9 +103,10 @@ export default {
          </div>
       </div>
       <div class="champion-container">
-         <Champion v-for="(champ, i) in sortedChamps" 
-         :key="champ.championName"
+         <Champion v-for="champ in sortedChamps" 
+         :key="champ.name"
          :champion="champ"
+         :currentPatch="this.currentPatch"
          />
       </div>
 

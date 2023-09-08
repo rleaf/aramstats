@@ -1,5 +1,5 @@
 const express = require('express')
-const twisted = require('../../twisted_calls')
+const twisted = require('../twisted_calls')
 
 const router = express.Router()
 

@@ -8,36 +8,36 @@ export default {
 
    data() {
       return {
-         championIcon: new URL(`../assets/champion_icons/${this.champion.championName.toLowerCase()}.png`, import.meta.url).href,
+         championIcon: new URL(`../assets/champion_icons/${this.champion.name.toLowerCase()}.png`, import.meta.url).href,
          expand: false,
       }
    },
 
    computed: {
       championName() {
-         return (this.champion.trueChampionName) ? this.champion.trueChampionName : this.champion.championName
+         return (this.champion.trueChampionName) ? this.champion.trueChampionName : this.champion.name
       },
 
       background() {
-         const img = new URL(`../assets/champion_splash/${this.champion.championName.toLowerCase()}.webp`, import.meta.url).href
+         const img = new URL(`../assets/champion_splash/${this.champion.name.toLowerCase()}.webp`, import.meta.url).href
          return `background: linear-gradient(to right, rgba(var(--tint100RGB), 0.8), rgba(var(--tint100RGB), 0.85) 10%, rgba(var(--tint100RGB), 1.0) 60%), no-repeat -110% 20%/80% url('${img}')`
       },
       winrate() {
-         return Math.round((this.champion.wins / this.champion.totalGames) * 100)
+         return Math.round((this.champion.wins / this.champion.games) * 100)
       },
 
       size() {
-         return `${this.champion.wins}/${this.champion.totalGames}`
+         return `${this.champion.wins}/${this.champion.games}`
       },
 
       kda() {
-         if (!this.champion.averageKills) return '-'
-         return `${this.champion.averageKills}/${this.champion.averageDeaths}/${this.champion.averageAssists}`
+         return `${this.champion.averages.kills}/${this.champion.averages.deaths}/${this.champion.averages.assists}`
       },
    },
 
    props: {
-      champion: Object
+      champion: Object,
+      currentPatch: ''
    }
 }
 </script>
@@ -52,7 +52,7 @@ export default {
          <div class="lhs">
             <h2>{{ championName }}</h2>
             <div class="lhs-stats">
-               <img :src="this.championIcon" :alt="this.champion.championName">
+               <img :src="this.championIcon" :alt="this.champion.name">
                <div class="champ-winrate">
                   <div class="title">
                      Winrate
@@ -72,15 +72,15 @@ export default {
                      {{ kda }}
                   </div>
                   <div class="sub">
-                     {{ this.champion.averageKillParticipation }}% KP
+                     {{ this.champion.averages.killParticipation }}% KP
                   </div>
                </div>
             </div>
          </div>
          <div class="multi-kills">
-            <div class="triple">{{ this.champion.totalTripleKills }}</div>
-            <div class="quadra">{{ this.champion.totalQuadraKills }}</div>
-            <div class="penta">{{ this.champion.totalPentaKills }}</div>
+            <div class="triple">{{ this.champion.multikills.triple }}</div>
+            <div class="quadra">{{ this.champion.multikills.quadra }}</div>
+            <div class="penta">{{ this.champion.multikills.penta }}</div>
          </div>
          <div class="rhs-stats">
             <div>
@@ -88,10 +88,10 @@ export default {
                   Damage
                </div>
                <div class="secondary-body">
-                  {{ this.champion.averageTotalDamageDealt }}, {{ this.champion.averageDamageShare || '-' }}%
+                  {{ this.champion.averages.totalDamageDealt }}, {{ this.champion.averages.damageShare || '-' }}%
                </div>
                <div class="secondary-sub">
-                  {{ this.champion.averageDamagePerMinute }}/m
+                  {{ this.champion.averages.damagePerMinute }}/m
                </div>
             </div>
             <div>
@@ -99,10 +99,10 @@ export default {
                   Healing
                </div>
                <div class="secondary-body">
-                  {{ this.champion.averageTotalHeal }}
+                  {{ this.champion.averages.totalHeal }}
                </div>
                <div class="secondary-sub">
-                  {{ this.champion.averageHealPerMinute || '-' }}/m
+                  {{ this.champion.averages.healingPerMinute || '-' }}/m
                </div>
             </div>
             <div>
@@ -110,10 +110,10 @@ export default {
                   Ally Healing
                </div>
                <div class="secondary-body">
-                  {{ this.champion.averageHealingOnTeammates }}
+                  {{ this.champion.averages.healingOnTeammates }}
                </div>
                <div class="secondary-sub">
-                  {{ this.champion.averageAllyHealPerMinute }}/m
+                  {{ this.champion.averages.allyHealPerMinute }}/m
                </div>
             </div>
             <div>
@@ -121,10 +121,10 @@ export default {
                   Damage Taken
                </div>
                <div class="secondary-body">
-                  {{ this.champion.averageTotalDamageTaken }}
+                  {{ this.champion.averages.totalDamageTaken }}
                </div>
                <div class="secondary-sub">
-                  {{ this.champion.averageDamageTakenPerMinute || '-'  }}/m
+                  {{ this.champion.averages.damageTakenPerMinute || '-'  }}/m
                </div>
             </div>
             <div>
@@ -132,10 +132,10 @@ export default {
                   Damage Mitigated
                </div>
                <div class="secondary-body">
-                  {{ this.champion.averageTotalSelfMitigated || '-'  }}
+                  {{ this.champion.averages.totalSelfMitigated || '-'  }}
                </div>
                <div class="secondary-sub">
-                  {{ this.champion.averageSelfMitigatedPerMinute || '-'  }}/m
+                  {{ this.champion.averages.selfMitigatedPerMinute || '-'  }}/m
                </div>
             </div>
             <div>
@@ -143,86 +143,20 @@ export default {
                   Gold
                </div>
                <div class="secondary-body">
-                  {{ this.champion.averageGoldEarned }}
+                  {{ this.champion.averages.goldEarned }}
                </div>
                <div class="secondary-sub">
-                  {{ this.champion.averageGoldPerMinute }}/m
+                  {{ this.champion.averages.goldPerMinute }}/m
                </div>
             </div>
          </div>
-         <!-- <div class="secondary-stats">
-            <div>
-               <div class="title">
-                  Damage
-               </div>
-               <div class="secondary-body">
-                  {{ this.champion.averageTotalDamageDealt }}, {{ this.champion.averageDamageShare || '-' }}%
-               </div>
-               <div class="secondary-sub">
-                  {{ this.champion.averageDamagePerMinute }}/m
-               </div>
-            </div>
-            <div>
-               <div class="title">
-                  Healing
-               </div>
-               <div class="secondary-body">
-                  {{ this.champion.averageTotalHeal }}
-               </div>
-               <div class="secondary-sub">
-                  {{ this.champion.averageHealPerMinute || '-' }}/m
-               </div>
-            </div>
-            <div>
-               <div class="title">
-                  Ally Heals
-               </div>
-               <div class="secondary-body">
-                  {{ this.champion.averageHealingOnTeammates }}
-               </div>
-               <div class="secondary-sub">
-                  {{ this.champion.averageAllyHealPerMinute }}/m
-               </div>
-            </div>
-            <div>
-               <div class="title">
-                  Taken
-               </div>
-               <div class="secondary-body">
-                  {{ this.champion.averageTotalDamageTaken }}
-               </div>
-               <div class="secondary-sub">
-                  {{ this.champion.averageDamageTakenPerMinute || '-'  }}/m
-               </div>
-            </div>
-            <div>
-               <div class="title">
-                  Mitigated
-               </div>
-               <div class="secondary-body">
-                  {{ this.champion.averageTotalSelfMitigated || '-'  }}
-               </div>
-               <div class="secondary-sub">
-                  {{ this.champion.averageSelfMitigatedPerMinute || '-'  }}/m
-               </div>
-            </div>
-            <div>
-               <div class="title">
-                  Gold
-               </div>
-               <div class="secondary-body">
-                  {{ this.champion.averageGoldEarned }}
-               </div>
-               <div class="secondary-sub">
-                  {{ this.champion.averageGoldPerMinute }}/m
-               </div>
-            </div>
-         </div> -->
       </div>
       <div class="match" v-show="this.expand">
-         <Match v-for="match in this.champion.matches"
+         <Match v-if="currentPatch" v-for="match in this.champion.matches"
             :key="match.matchId"
-            :match="match"/>
+            :match="match"
+            :currentPatch="this.currentPatch"
+            />
       </div>
    </div>
 </template>

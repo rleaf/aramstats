@@ -14,13 +14,13 @@ app.use(cors())
 mongoose.connect(process.env.DB_CONNECTION_STRING, {dbName: 'aramstats'})
 
 const summoners = require('./routes/summoner')
-// const matchInfo = require('./routes/matchInfo')
+const matchInfo = require('./routes/matchInfo')
 // const summoners = require('./routes/old/summoners')
 // const matchInfo = require('./routes/old/matchInfo')
 // // const history = require('./routes/matchHistory')
 
 app.use('/api/summoners', summoners)
-// app.use('/api/matchInfo', matchInfo)
+app.use('/api/matchInfo', matchInfo)
 // app.use('/api/history', history)
 
 // app.use(express.static(__dirname + '/public/'))

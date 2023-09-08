@@ -95,7 +95,7 @@ export default {
       },
 
       itemImg(player, i) {
-         return `http://ddragon.leagueoflegends.com/cdn/13.17.1/img/item/${player[`item${i}`]}.png`
+         return `http://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/item/${player[`item${i}`]}.png`
       }
    },
 
@@ -106,7 +106,8 @@ export default {
    },
  
    props: {
-      matchId: String
+      matchId: String,
+      currentPatch: ''
    }
 }
 
