@@ -26,10 +26,10 @@ export default {
    computed: {
       sortedChamps() {
          const table = {
-            'Champion': 'championName',
-            'Total Games': 'totalGames',
+            'Champion': 'name',
+            'Total Games': 'games',
             'Wins': 'wins',
-            'Damage': 'averageTotalDamageDealt',
+            'Damage': '',
             'DPM': 'averageDamagePerMinute',
             'Healing': 'averageTotalHeal',
             'HPM': 'averageHealPerMinute',
@@ -48,24 +48,31 @@ export default {
             'Penta kills': 'totalPentaKills',
          }
 
-         const filtered = this.info.filter(x => x.championName.toLowerCase().includes(this.search.toLowerCase()))
+         const filtered = this.championData.filter(x => x.name.toLowerCase().includes(this.search.toLowerCase()))
+         // console.log(filtered, 'names')
+         // console.log(this.championData, 'names')
 
+         // if (this.sortBy === 'Champion') {
+         //    return (this.order) ?
+         //       filtered.sort((a, b) => a.championName.localeCompare(b.championName)) :
+         //       filtered.sort((a, b) => b.championName.localeCompare(a.championName))
+         // }
          if (this.sortBy === 'Champion') {
             return (this.order) ?
-               filtered.sort((a, b) => a.championName.localeCompare(b.championName)) :
-               filtered.sort((a, b) => b.championName.localeCompare(a.championName))
+               this.championData.sort((a, b) => a.name.localeCompare(b.name)) :
+               this.championData.sort((a, b) => b.name.localeCompare(a.name))
          }
 
          const value = table[this.sortBy]
 
          return (this.order) ?
-            filtered.sort((a, b) => b[value] - a[value]) :
-            filtered.sort((a, b) => a[value] - b[value])
+            this.championData.sort((a, b) => b[value] - a[value]) :
+            this.championData.sort((a, b) => a[value] - b[value])
       },
    },
 
    props: {
-      info: Object
+      championData: Object
    }
    
 }

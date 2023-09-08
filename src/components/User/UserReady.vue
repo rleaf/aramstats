@@ -25,34 +25,23 @@ export default {
       Danger
    },
 
-   // head: {
-      // title: { outer: 'toad'}
-      // script: [
-      //    {
-      //       async: '',
-      //       src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3046400863804606',
-      //       crossorigin: 'anonymous'
-      //    }
-      // ]
-   // },
-
    watch: {
       $route: {
          immediate: true,
          handler() {
-            document.title = `${this.userInfo[0].name} | ARAM Stats`
+            document.title = `${this.response.name} | ARAM Stats`
          }
       }
    },
 
    data() {
       return {
-         championInfo: this.userInfo.slice(1),
-         challengeInfo: this.userInfo[0].challenges,
+         championData: this.response.championData,
+         challengeInfo: this.response.challenges,
          profile: {
-            // IconId: `http://ddragon.leagueoflegends.com/cdn/13.9.1/img/profileicon/${this.userInfo[0].profileIconId}.png`,
-            IconId: `http://ddragon.leagueoflegends.com/cdn/13.17.1/img/profileicon/${this.userInfo[0].profileIconId}.png`,
-            name: this.userInfo[0].name
+            // IconId: `http://ddragon.leagueoflegends.com/cdn/13.9.1/img/profileicon/${this.response.profileIconId}.png`,
+            IconId: `http://ddragon.leagueoflegends.com/cdn/13.17.1/img/profileicon/${this.response.profileIconId}.png`,
+            name: this.response.name
          },
          selected: 'Total Games',
          refresh: 'Update',
@@ -76,7 +65,11 @@ export default {
    },
 
    created() {
-      this.iterate()
+      console.log(this.response, 'toad')
+      this.summonerAverages()
+      
+      // Pull patch data from https://ddragon.leagueoflegends.com/api/versions.json
+
    },
 
    methods: {
@@ -86,7 +79,7 @@ export default {
 
          this.refresh = 'Updating...'
          let res = await axios.put(url)
-         this.championInfo = res.data.slice(1)
+         this.championData = res.data.slice(1)
          this.challengeInfo = res.data[0].challenges
 
          // Rerender champ list
@@ -99,22 +92,23 @@ export default {
          this.refresh = 'Update'
       },
 
-      iterate() {
-         for (const champ of this.championInfo) {
-            this.summonerStats.totalMatches += champ.totalGames
+      summonerAverages() {
+         for (const champ of this.championData) {
+            this.summonerStats.totalMatches += champ.games
             this.summonerStats.totalWins += champ.wins
 
-            this.summonerStats.kda[0] += champ.averageKills
-            this.summonerStats.kda[1] += champ.averageDeaths
-            this.summonerStats.kda[2] += champ.averageAssists
+            this.summonerStats.kda[0] += champ.averages.kills
+            this.summonerStats.kda[1] += champ.averages.deaths
+            this.summonerStats.kda[2] += champ.averages.assists
 
-            this.summonerStats.killParticipation += champ.averageKillParticipation
+            this.summonerStats.killParticipation += champ.averages.killParticipation
 
-            this.summonerStats.multiKills.triple += champ.totalTripleKills
-            this.summonerStats.multiKills.quadra += champ.totalQuadraKills
-            this.summonerStats.multiKills.penta += champ.totalPentaKills
+            this.summonerStats.multiKills.triple += champ.multikills.triple
+            this.summonerStats.multiKills.quadra += champ.multikills.quadra
+            this.summonerStats.multiKills.penta += champ.multikills.penta
          }
-         this.summonerStats.kda = this.summonerStats.kda.map(x => Math.round(x / this.championInfo.length * 10) / 10)
+         this.summonerStats.kda = this.summonerStats.kda.map(x => Math.round(x / this.championData.length * 10) / 10)
+         this.summonerStats.killParticipation = Math.round(this.summonerStats.killParticipation / this.championData.length * 10) / 10
       },
    },
 
@@ -144,15 +138,15 @@ export default {
          }
          if (this.selected === 'Champion') {
             return (this.order) ?
-               this.championInfo.sort((a, b) => a.championName.localeCompare(b.championName)) :
-               this.championInfo.sort((a, b) => b.championName.localeCompare(a.championName))
+               this.championData.sort((a, b) => a.championName.localeCompare(b.championName)) :
+               this.championData.sort((a, b) => b.championName.localeCompare(a.championName))
          }
 
          const value = table[this.selected]
 
          return (this.order) ?
-            this.championInfo.sort((a, b) => b[value] - a[value]) :
-            this.championInfo.sort((a, b) => a[value] - b[value])
+            this.championData.sort((a, b) => b[value] - a[value]) :
+            this.championData.sort((a, b) => a[value] - b[value])
       },
 
       bongocat() { 
@@ -164,9 +158,9 @@ export default {
       },
 
       kda() {
-         // console.log(this.championInfo)
-         // if (!this.championInfo.averageKills) return '-'
-         // return `${this.summonerStats.kda.kills / this.championInfo.length}/${this.summonerStats.kda.deaths / this.championInfo.length}/${this.summonerStats.kda.assists / this.championInfo.length}`
+         // console.log(this.championData)
+         // if (!this.championData.averageKills) return '-'
+         // return `${this.summonerStats.kda.kills / this.championData.length}/${this.summonerStats.kda.deaths / this.championData.length}/${this.summonerStats.kda.assists / this.championData.length}`
          return `${this.summonerStats.kda[0]} / ${this.summonerStats.kda[1]} / ${this.summonerStats.kda[2]}`
       },
 
@@ -175,9 +169,9 @@ export default {
       //    return `${Math.round(((this.champion.averageKills + this.champion.averageAssists) / this.champion.averageDeaths) * 100) / 100}`
       // },
 
-      killParticipation() {
-         return `${Math.round(this.summonerStats.killParticipation / this.championInfo.length * 10) / 10}%`
-      },
+      // killParticipation() {
+      //    return `${Math.round(this.summonerStats.killParticipation / this.championData.length * 10) / 10}%`
+      // },
 
       background() {
          return `background: radial-gradient(circle at 50% -160%, transparent 30%, var(--tint100) 77%), no-repeat center -330% url('${this.profile.IconId}');
@@ -186,7 +180,7 @@ export default {
    },
    
    props: {
-      userInfo: Object
+      response: Object
    }
 }
 </script>
@@ -222,7 +216,7 @@ export default {
                </div>
                <div class="4">
                   <h3>Kill Participation</h3>
-                  {{ killParticipation }}
+                  {{ this.summonerStats.killParticipation }}
                </div>
             </div>
             <div class="summ-mk">
@@ -259,16 +253,16 @@ export default {
             </div>
          </div>
          <div class="panel" v-show="this.panel === 0">
-            <ListPanel :info="this.championInfo" />
+            <ListPanel :championData="this.championData" />
          </div>
          <div class="panel" v-show="this.panel === 1">
             <SummonerPanel 
-               :championData="this.championInfo"
+               :championData="this.championData"
                :challengeData="this.challengeInfo" 
                :totalMatches="this.summonerStats.totalMatches" />
          </div>
          <div class="panel" v-show="this.panel === 2">
-            <ChampionPanel :data="this.championInfo"/>
+            <ChampionPanel :data="this.championData"/>
          </div>
       </div>
    </div>

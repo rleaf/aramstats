@@ -56,7 +56,7 @@ router.get('/:region/:summonerURI', async (req, res) => {
 
       // 3.
       // 3.1 Pull all matchIds
-      // Reverse so it starts processing the last game first - most recent game should be at top.
+      // Reverse so it starts processing the oldest game first - have most recent game should be at [0].
       const matchlist = (await twisted.getAllSummonerMatches(summoner.name, req.params.region)).reverse()
       const challenges = await challengeScribe(summoner.puuid, req.params.region)
       
@@ -87,7 +87,7 @@ router.get('/:region/:summonerURI', async (req, res) => {
 
       const summonerResponse = (await aggregateSummoner(summoner.puuid))[0]
       res.send(summonerResponse)
-      console.log('done')
+      console.log(`${summoner.name} (${req.params.region}) finished.`)
    } else {
       // Summoner DNE
       res.sendStatus(504)
@@ -102,6 +102,48 @@ router.put('/update/:region/:summonerURI', async (req, res) => {
       2. Find corresponding lastMatchID index and then begin updating summoner document from
          proceeding match data.
    */ 
+   let summoner
+
+   // I prefer to only use puuid to query aramstats db, so I need to get it from Riot again.
+   try {
+      console.log(`Searching for ${req.params.summonerURI} (${req.params.region})`)
+      summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
+   } catch (e) {
+      if (e.status === 429) {
+         console.log(`Hit rate limit on getSummoner for ${req.params.summonerURI} (${req.params.region})`)
+      }
+      if (e.status === 404 || e.status === 403) {
+         res.status(e.status).send(e.statusText)
+         return
+      }
+   }
+
+   // Get summoner data
+   const summonerDocument = await summonerModel.findOne({ puuid: summoner.puuid })
+
+   // Get total matchlist
+   const totalMatchlist = (await twisted.getAllSummonerMatches(summoner.name, req.params.region)).reverse()
+
+   // Find idx of last match id in matchlist
+   const lastMatchIndex = matches.findIndex(x => x === summonerDocument.pull.lastMatchId) + 1
+   const matchlist = totalMatchlist.slice(lastMatchIndex)
+
+   // Set pull flags
+   summonerDocument.pull.active = true
+   summonerDocument.pull.lastMatchId = totalMatchlist[totalMatchlist.length - 1]
+   summonerDocument.save()
+   
+   
+   
+   // emergency clog incase i hit update without building this
+   console.log(pancakes)
+   await matchParser(summoner, req.params.region, matchlist, summonerDocument, true)
+   const summonerResponse = (await aggregateSummoner(summoner.puuid))[0]
+   
+   summonerDocument.pull.active = false
+   summonerDocument.save()
+
+   res.send(summonerResponse)
 })
 
 // Delete summoner
@@ -144,7 +186,7 @@ async function championParser(summonerDocument) {
          champion.averages.selfMitigatedPerMinute+= Math.round(match.totals.selfMitigated / match.gameDuration)
          champion.averages.totalDamageDealt+= match.totals.damageDealtToChampions
          champion.averages.totalDamageTaken+= match.totals.damageTaken
-         champion.averages.totalHeal+ match.totals.healed
+         champion.averages.totalHeal+= match.totals.healed
          champion.averages.totalSelfMitigated+= match.totals.selfMitigated
          champion.multikills.triple+= match.multikills.triple
          champion.multikills.quadra+= match.multikills.quadra
@@ -159,12 +201,12 @@ async function championParser(summonerDocument) {
    await summonerDocument.save()
 }
 
-async function matchParser(summoner, region, matchlist, summonerDocument) {
+async function matchParser(summoner, region, matchlist, summonerDocument, update = false) {
 
    for (let i = 0; i < matchlist.length; i++) {
    // for (let i = 0; i < 5; i++) {
       if (i % 25 === 0) {
-         console.log(`Parsing ${summoner.name} (${region}), match ${i}`)
+         console.log(`Parsing ${summoner.name} (${region}), match ${i}/${matchlist.length}`)
          summonerDocument.pull.current = i
          await summonerDocument.save()
       }
@@ -184,6 +226,7 @@ async function matchParser(summoner, region, matchlist, summonerDocument) {
 
 
          const match = new summonerMatchesModel({
+            _master: summonerDocument._id,
             matchId: game.metadata.matchId,
             gameCreation: game.info.gameCreation,
             gameDuration: getGameDuration(game.info),
@@ -251,7 +294,18 @@ async function aggregateSummoner(puuid) {
          pull: { $first: "$pull"},
          challenges: { $first: "$challenges"},
          championData: { $push: "$championData"}
-      }}
+      }},
+      // Omit _id?
+      // { $project: {
+      //    _id: 0,
+      //    puuid: 1,
+      //    name: 1,
+      //    region: 1,
+      //    profileIcon: 1,
+      //    pull: 1,
+      //    challenges: 1,
+      //    championData: 1
+      // }}
    ])
 }
 

@@ -31,7 +31,6 @@ import axios from 'axios'
             try {
                const res = await axios.get(url)
                this.response = res.data
-               console.log(this.response, 'response')
                this.userReadyRender = true
             } catch (e) {
                this.errorStatusParent = e.response.status
@@ -60,7 +59,7 @@ import axios from 'axios'
          v-if="!userReadyRender && !userErrorRender"/>
       <UserReady
          v-if="userReadyRender"
-         :userInfo="this.response"/>
+         :response="this.response"/>
       <UserError
          v-if="userErrorRender"
          :user="this.$route.params.username"
