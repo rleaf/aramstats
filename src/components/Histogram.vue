@@ -23,20 +23,20 @@ export default {
          mean: null,
          svg: null,
          statDomain: {
-            'damagePerMinute': 'Damage / minute',
-            'healPerMinute': 'Healing / minute',
-            'allyHealPerMinute': 'Ally healing / minute',
-            'damageTakenPerMinute': 'Damage taken / minute',
-            'selfMitigatedPerMinute': 'Damage mitigated / minute',
-            'goldPerMinute': 'Gold / minute',
+            'damageDealtToChampions': 'Damage / minute',
+            'healed': 'Healing / minute',
+            'healsOnTeammates': 'Ally healing / minute',
+            'damageTaken': 'Damage taken / minute',
+            'selfMitigated': 'Damage mitigated / minute',
+            'gold': 'Gold / minute',
          },
          averageTable: {
-            'damagePerMinute': 'averageDamagePerMinute',
-            'healPerMinute': 'averageHealPerMinute',
-            'allyHealPerMinute': 'averageHealingOnTeammates' ,
-            'damageTakenPerMinute': 'averageDamageTakenPerMinute' ,
-            'selfMitigatedPerMinute': 'averageSelfMitigatedPerMinute' ,
-            'goldPerMinute': 'averageGoldPerMinute' ,
+            'damageDealtToChampions': 'damagePerMinute',
+            'healed': 'healingPerMinute',
+            'healsOnTeammates': 'allyHealPerMinute',
+            'damageTaken': 'damageTakenPerMinute',
+            'selfMitigated': 'selfMitigatedPerMinute',
+            'gold': 'goldPerMinute'
          }
       }
    },
@@ -45,46 +45,53 @@ export default {
       this.width = 450 - this.margin.left - this.margin.right
       this.height = 298 - this.margin.top - this.margin.bottom
 
-      this.avgStat = this.initChampion.averageDamagePerMinute
-      this.Histogram(this.initChampion.matches)
+      // this.avgStat = this.initChampion.averages.damagePerMinute
+      this.avgStat = this.championData.averages[this.averageTable[this.stat]]
+      // this.Histogram(this.initChampion.matches)
+      this.Histogram(this.championData.matches)
    },
 
    watch: {
       championData() {
-         this.avgStat = this.championData[this.averageTable[this.stat]]
+         this.avgStat = this.championData.averages[this.averageTable[this.stat]]
          this.updateHistogram(this.championData.matches)
       },
 
       stat() {
-         this.avgStat = this.championData[this.averageTable[this.stat]]
+         // this.avgStat = this.championData[this.averageTable[this.stat]]
+         this.avgStat = this.championData.averages[this.averageTable[this.stat]]
          this.updateHistogram(this.championData.matches)
       },
 
-      comparisonData(_, prev) {
-         (prev) ? this.comparisonUpdate(this.comparisonData, true) :
-            this.comparisonUpdate(this.comparisonData)
-      }
+      // comparisonData(_, prev) {
+      //    (prev) ? this.comparisonUpdate(this.comparisonData, true) :
+      //       this.comparisonUpdate(this.comparisonData)
+      // }
    },
 
    methods: {
+      perMinute(unit, duration) {
+         return Math.round(unit / duration)
+      },
+
       getDomain() {
          switch (this.stat) {
-            case 'damagePerMinute':
+            case 'damageDealtToChampions':
                return 5000
             
-            case 'healPerMinute':
+            case 'healed':
                return 2500
 
-            case 'allyHealPerMinute':
+            case 'healsOnTeammates':
                return 1000
                
-            case 'damageTakenPerMinute':
+            case 'damageTaken':
                return 5000
 
-            case 'selfMitigatedPerMinute':
+            case 'selfMitigated':
                return 10000
 
-            case 'goldPerMinute':
+            case 'gold':
                return 2000
 
             default:
@@ -130,9 +137,15 @@ export default {
 
          // Histogram
          this.histogram = d3.histogram()
-            .value(d => d[this.stat])
+            .value(d => {
+
+               // return d[this.stat]
+               // console.log(d, 'toad')
+               return d.totals[this.stat] / d.gameDuration
+            })
             .domain(this.x.domain())
             .thresholds(this.x.ticks(20))
+
 
          if (data) this.bins = this.histogram(data)
 
@@ -254,7 +267,7 @@ export default {
             .tickValues(xAxisTicks)
 
          this.histogram = d3.histogram()
-            .value(d => d[this.stat])
+            .value(d => d.totals[this.stat] / d.gameDuration)
             .domain(this.x.domain())
             .thresholds(this.x.ticks(20))
 
@@ -443,16 +456,11 @@ export default {
 
       getStdDev(data, mean, comparison = false) {
          let arr = []
-
-         if (comparison == false) {
-            data.matches.forEach((match) => {
-               arr.push(match.damagePerMinute)
-            })
-         } else {
-            data.forEach((match) => {
-               arr.push(match.damagePerMinute)
-            })
-         }
+         
+         data.matches.forEach((match) => {
+            let pie = this.perMinute(match.totals[this.stat], match.gameDuration)
+            arr.push(pie)
+         })
 
          let std = 0
          let num = arr.length

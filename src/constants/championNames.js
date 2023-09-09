@@ -23,4 +23,4 @@ const championNameBook = {
    'XinZhao' : 'Xin Zhao'
 }
 
-module.exports = championNameBook
+export default championNameBook

@@ -1,4 +1,6 @@
 <script>
+import championNameBook from '../constants/championNames'
+
 export default {
    data() {
       return {
@@ -11,17 +13,20 @@ export default {
    mounted() {
       for (let i = 0; i < this.data.length; i++) {
          let champ = {}
-         if ('championName' in this.data[i]) {
-            if (this.data[i].trueChampionName) {
-               champ.trueChampionName = this.data[i].trueChampionName
-            }
+         // if (this.data[i].trueChampionName) {
+         //    champ.trueChampionName = this.data[i].trueChampionName
+         // }
 
-            champ.championName = this.data[i].championName
-            champ.image = new URL(`../assets/champion_icons/${champ.championName.toLowerCase()}.png`, import.meta.url).href
-            this.championBook.push(champ)
+         if (this.data[i].name in championNameBook) {
+            champ.name = championNameBook[this.data[i].name]
+         } else {
+            champ.name = this.data[i].name
          }
+
+         champ.image = new URL(`../assets/champion_icons/${this.data[i].name.toLowerCase()}.png`, import.meta.url).href
+         this.championBook.push(champ)
       }
-      this.championBook.sort((a, b) => a.championName.localeCompare(b.championName))
+      this.championBook.sort((a, b) => a.name.localeCompare(b.name))
    },
 
    methods: {
@@ -44,11 +49,11 @@ export default {
    computed: {
       champSearchList() {
          return this.championBook.filter(champ => {
-            if (champ.trueChampionName) {
-               return champ.trueChampionName.toLowerCase().includes(this.championFilter.toLowerCase())
-            } else {
-               return champ.championName.toLowerCase().includes(this.championFilter.toLowerCase())
-            }
+            return champ.name.toLowerCase().includes(this.championFilter.toLowerCase())
+            // if (champ.trueChampionName) {
+            //    return champ.trueChampionName.toLowerCase().includes(this.championFilter.toLowerCase())
+            // } else {
+            // }
          })
       },
    },
@@ -64,10 +69,10 @@ export default {
       <input type="text" placeholder="Nunu & Willump" v-model="championFilter" @click="championSearch"
          @keyup.esc="champSearchFocus = false">
       <div class="champion-search-list" v-show="champSearchFocus">
-         <div class="champion-search-select" v-for="champ in champSearchList" :key="champ.championName"
-            @click="selectChampion(champ.trueChampionName || champ.championName)">
+         <div class="champion-search-select" v-for="champ in champSearchList" :key="champ.name"
+            @click="selectChampion(champ.name)">
             <img :src="champ.image" alt="">
-            {{ champ.trueChampionName || champ.championName }}
+            {{ champ.name }}
          </div>
       </div>
       <div class="outside-search" v-show="champSearchFocus" @click="champSearchFocus = false"></div>

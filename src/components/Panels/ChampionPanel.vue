@@ -14,7 +14,7 @@ export default {
    data() {
       return {
          championFilter: null,
-         championData: null,
+         championData: this.data[0],
          championIndex: null,
          initChampionData: null,
          nunuIndex: null,
@@ -22,33 +22,27 @@ export default {
          comparisonData: null,
          comparisonWins: 0,
          comparisonKDA: null,
-         statFilter: ['DPM', 'damagePerMinute'],
+         statFilter: ['DPM', 'damageDealtToChampions'],
          // statBook: ['DPM', 'HPM', 'AHPM', 'TPM', 'MPM', 'GPM'],
          statBook: {
-            'DPM': 'damagePerMinute',
-            'HPM': 'healPerMinute',
-            'AHPM': 'allyHealPerMinute',
-            'DTPM': 'damageTakenPerMinute',
-            'DMPM': 'selfMitigatedPerMinute',
-            'GPM': 'goldPerMinute'
+            'DPM': 'damageDealtToChampions',
+            'HPM': 'healed',
+            'AHPM': 'healsOnTeammates',
+            'DTPM': 'damageTaken',
+            'DMPM': 'selfMitigated',
+            'GPM': 'gold'
          },
          statDrop: false
       }
    },
 
+   mounted() {
 
-   created() {
-      this.nunuIndex = this.data.findIndex(e => e.championName == 'Nunu')
-
-      // no...nunu...games...?
-      if (this.nunuIndex == -1) this.nunuIndex = 3
-
-      this.championData = this.data[this.nunuIndex]
    },
 
    watch: {
       championFilter(c, p) {
-         this.getChampionIndex()
+         this.championIndex = this.data.findIndex((e) => e.name === this.championFilter)
          this.championData = this.data[this.championIndex]
       }
    },
@@ -57,17 +51,6 @@ export default {
       changeUnit() {
          this.statDrop = !this.statDrop
          // this.$emit('unit', this.statDrop)
-      },
-
-      getChampionIndex() {
-         this.championIndex = this.data.findIndex((e) => {
-            if (e.trueChampionName) {
-               return e.trueChampionName == this.championFilter
-            } else {
-               return e.championName == this.championFilter
-            }
-         })
-
       },
 
       champComparison() {
@@ -119,19 +102,17 @@ export default {
       },
 
       kda() {
-         return `${this.championData.averageKills}/${this.championData.averageDeaths}/${this.championData.averageAssists}`
+         return `${this.championData.averages.kills}/${this.championData.averages.deaths}/${this.championData.averages.assists}`
       },
 
       kdr() {
-         return `${Math.round(((this.championData.averageKills + this.championData.averageAssists) / this.championData.averageDeaths) * 100) / 100}`
+         return `${Math.round(((this.championData.averages.kills + this.championData.averages.assists) / this.championData.averages.deaths) * 100) / 100}`
       },
 
       background() {
-         // let url = new URL(`../../assets/champion_images/${this.championData.championName}_0.webp`, import.meta.url).href
-
-         // lazy way for now :)
-         return `background: linear-gradient(to left, rgba(var(--profile-panel-dec-rgb), 0.9) 50%, rgba(var(--profile-panel-dec-rgb), 0.75)),
-            no-repeat url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${this.championData.championName}_0.jpg');`
+         const img = new URL(`../../assets/champion_splash/${this.championData.name.toLowerCase()}.webp`, import.meta.url).href
+         // return `background: linear-gradient(to right, rgba(var(--tint100RGB), 0.8), rgba(var(--tint100RGB), 0.85) 10%, rgba(var(--tint100RGB), 1.0) 60%), no-repeat -110% 20%/80% url('${img}')`
+         return `background: linear-gradient(to left, rgba(var(--tint100RGB), 0.9), rgba(var(--tint100RGB), 0.85) 10%, rgba(var(--tint100RGB), 1.0) 70%), no-repeat 100% 20%/80% url('${img}')`
       },
 
       ensembleWinRate() {
@@ -158,7 +139,7 @@ export default {
 </script>
 
 <template>
-   <div class="champion-main">
+   <div class="champion-main" :style="background">
       <div class="head">
          <ChampSearch :data="this.data" @championFocus="champion => championFilter = champion"/>
          <div class="champion-stats">
@@ -196,7 +177,7 @@ export default {
          :championData="this.championData"
          :stat="this.statFilter[1]"
          :comparisonData="this.comparisonData"
-         :initChampion="this.data[this.nunuIndex]"/>
+         :initChampion="this.championData"/>
       </div>
    </div>
 </template>
