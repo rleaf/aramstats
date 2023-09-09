@@ -188,12 +188,6 @@ export default {
       </div>
    </div>
    <MatchInfo v-if="this.matchInfo" :matchId="this.match.matchId" :currentPatch="this.currentPatch"/>
-   <!-- <div v-show="this.matchInfo">
-   </div> -->
-   
-   
-   <!-- <div class="match-info" v-show="this.matchInfo">
-   </div> -->
 </template>
 
 <style scoped>

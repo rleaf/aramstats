@@ -1,5 +1,7 @@
 <script>
 import Champion from '../Champion.vue'
+import championNameBook from '../../constants/championNames'
+
 
 export default {
    components: {
@@ -48,10 +50,16 @@ export default {
             'Penta kills': 'multikills.penta',
          }
 
+         const filtered = this.championData.filter(champion => {
+            return (champion.name in championNameBook) ?
+               championNameBook[champion.name].toLowerCase().includes(this.search.toLowerCase()) :
+               champion.name.toLowerCase().includes(this.search.toLowerCase())
+         })
+
          if (this.sortBy === 'Champion') {
             return (this.order) ?
-               this.championData.sort((a, b) => a.name.localeCompare(b.name)) :
-               this.championData.sort((a, b) => b.name.localeCompare(a.name))
+               filtered.sort((a, b) => a.name.localeCompare(b.name)) :
+               filtered.sort((a, b) => b.name.localeCompare(a.name))
          }
 
          const access = (path, object) => {
@@ -59,8 +67,8 @@ export default {
          }
 
          return (this.order) ?
-            this.championData.sort((a, b) => access(table[this.sortBy], b) - access(table[this.sortBy], a)) :
-            this.championData.sort((a, b) => access(table[this.sortBy], a) - access(table[this.sortBy], b))
+            filtered.sort((a, b) => access(table[this.sortBy], b) - access(table[this.sortBy], a)) :
+            filtered.sort((a, b) => access(table[this.sortBy], a) - access(table[this.sortBy], b))
       },
    },
 

@@ -1,5 +1,6 @@
 <script>
 import Match from './Match.vue'
+import championNameBook from '../constants/championNames'
 
 export default {
    components: {
@@ -13,10 +14,20 @@ export default {
       }
    },
 
+   mounted() {
+      // console.log(championNameBook, 'book')
+   },
+
+   methods: {
+      getChampionName(name) {
+         return (name in championNameBook) ? championNameBook[name] : name
+      }
+   },
+
    computed: {
-      championName() {
-         return (this.champion.trueChampionName) ? this.champion.trueChampionName : this.champion.name
-      },
+      // championName() {
+      //    return (this.champion.trueChampionName) ? this.champion.trueChampionName : this.champion.name
+      // },
 
       background() {
          const img = new URL(`../assets/champion_splash/${this.champion.name.toLowerCase()}.webp`, import.meta.url).href
@@ -50,7 +61,7 @@ export default {
             <img src="../assets/arrow2.svg" alt="" :class="{ expand: this.expand }">
          </button>
          <div class="lhs">
-            <h2>{{ championName }}</h2>
+            <h2>{{ getChampionName(this.champion.name) }}</h2>
             <div class="lhs-stats">
                <img :src="this.championIcon" :alt="this.champion.name">
                <div class="champ-winrate">
@@ -151,7 +162,7 @@ export default {
             </div>
          </div>
       </div>
-      <div class="match" v-show="this.expand">
+      <div class="match" v-if="this.expand">
          <Match v-if="currentPatch" v-for="match in this.champion.matches"
             :key="match.matchId"
             :match="match"
