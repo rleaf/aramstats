@@ -205,6 +205,7 @@ export default {
             .attr("text-align", "right")
             .attr("fill", "var(--color-font)")
             .attr("font-size", "0.8rem")
+            // .html(`<p>toad</p>`)
             .text(`mean: ${this.avgStat}, std: ${this.getStdDev(this.initChampion, this.avgStat)}`)
 
          // Put comparison higher in DOM
@@ -296,7 +297,7 @@ export default {
             .text(`${this.statDomain[this.stat]}`)
 
          this.blueLegend.selectAll("text.stats")
-            .text(`mean: ${this.avgStat}, std: ${this.getStdDev(this.championData, this.avgStat)}`)
+            .text(`mean: ${this.avgStat} std: ${this.getStdDev(this.championData, this.avgStat)}`)
 
          this.svg.select("g.base")
             .selectAll("rect")

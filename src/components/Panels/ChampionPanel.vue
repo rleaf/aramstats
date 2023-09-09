@@ -3,6 +3,7 @@ import Histogram from '../Histogram.vue'
 import ChampSearch from '../ChampSearch.vue'
 import RuneWinrate from '../RuneWinrate.vue'
 import MythicWinrate from '../MythicWinrate.vue'
+import championNameBook from '../../constants/championNames'
 
 export default {
    components: {
@@ -42,6 +43,10 @@ export default {
 
    watch: {
       championFilter(c, p) {
+         if (Object.values(championNameBook).indexOf(c) > -1 ) {
+            this.championFilter = Object.keys(championNameBook).find(k => championNameBook[k] === c)
+         }
+
          this.championIndex = this.data.findIndex((e) => e.name === this.championFilter)
          this.championData = this.data[this.championIndex]
       }

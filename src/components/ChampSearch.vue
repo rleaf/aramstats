@@ -13,9 +13,6 @@ export default {
    mounted() {
       for (let i = 0; i < this.data.length; i++) {
          let champ = {}
-         // if (this.data[i].trueChampionName) {
-         //    champ.trueChampionName = this.data[i].trueChampionName
-         // }
 
          if (this.data[i].name in championNameBook) {
             champ.name = championNameBook[this.data[i].name]
@@ -37,25 +34,26 @@ export default {
          this.champSearchFocus = true
       },
 
-      selectChampion(champion) {
-         this.championFocus = champion
-         this.championFilter = champion
+      selectChampion(name) {
+         this.championFocus = name
+         this.championFilter = name
          this.champSearchFocus = false
 
-         this.$emit('championFocus', champion)
+         this.$emit('championFocus', name)
       },
+
+      
+      champName(name) {
+         return (name in championNameBook) ? 
+            championNameBook[name] : 
+            name
+      }
    },
 
    computed: {
       champSearchList() {
-         return this.championBook.filter(champ => {
-            return champ.name.toLowerCase().includes(this.championFilter.toLowerCase())
-            // if (champ.trueChampionName) {
-            //    return champ.trueChampionName.toLowerCase().includes(this.championFilter.toLowerCase())
-            // } else {
-            // }
-         })
-      },
+         return this.championBook.filter(champ => champ.name.toLowerCase().includes(this.championFilter.toLowerCase()))
+      }
    },
 
    props: {
@@ -72,7 +70,7 @@ export default {
          <div class="champion-search-select" v-for="champ in champSearchList" :key="champ.name"
             @click="selectChampion(champ.name)">
             <img :src="champ.image" alt="">
-            {{ champ.name }}
+            {{ champName(champ.name) }}
          </div>
       </div>
       <div class="outside-search" v-show="champSearchFocus" @click="champSearchFocus = false"></div>

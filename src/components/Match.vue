@@ -139,9 +139,9 @@ export default {
       </div>
       <div class="match-right">
          <div class="multikills">
-            <span class="triple">{{ this.match.tripleKills }}</span>
-            <span class="quadra">{{ this.match.quadraKills }}</span>
-            <span class="penta">{{ this.match.pentaKills }}</span>
+            <span class="triple">{{ this.match.multikills.triple }}</span>
+            <span class="quadra">{{ this.match.multikills.quadra }}</span>
+            <span class="penta">{{ this.match.multikills.penta }}</span>
          </div>
          <div class="damage">
             <h5>Damage</h5>
