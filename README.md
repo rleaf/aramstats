@@ -10,19 +10,21 @@ insightful statistics.
 
 <hr>
 
-#### Ideas, organized by amount of work.
+#### Ideas
 
-#### big
-- [ ] Show match data (Click on individual matches to see team/enemy comp, etc...)
-- [ ] Compare champ performance to db.
-#### med
-- [ ] Sort histogram by other stats aside from DPM
-- [ ] Add small match history tile to Overview Panel
-#### small
-- [ ] I'm feeling lucky
-<i>none</i>
+#### not fin
+- [ ] Crawl ARAM matches & provide global / regional stats
+- [ ] Compare champ performance to db (smaller version of above idea)
+- [ ] Add the newer regions (PH, VN, ...)
+- [ ] Show top X most played with summoners w/ on sidebar
+- [ ] Add "I'm feeling lucky" to home page
+- [ ] Add small match history tile to Overview Panel ????
+- [ ] Mobile UI...
+
 
 #### fin
+- [x] Sort histogram by other stats aside from DPM
+- [x] Show match data (Click on individual matches to see team/enemy comp, etc...)
 - [x] Site colors
 - [x] Better day/night mode
 - [x] Add challenge tokens
