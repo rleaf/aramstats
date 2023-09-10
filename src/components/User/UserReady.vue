@@ -90,7 +90,7 @@ export default {
 
          this.refresh = 'Updating...'
          let res = await axios.put(url)
-         this.championData = res.data.slice(1)
+         this.championData = res.data
          this.challengeInfo = res.data[0].challenges
 
          // Rerender champ list
@@ -264,7 +264,7 @@ export default {
             </div>
          </div>
          <div class="panel" v-show="this.panel === 0">
-            <ListPanel :championData="this.championData" :currentPatch="this.currentPatch" />
+            <ListPanel :championData="this.championData" :currentPatch="this.currentPatch" :key="this.updateKey"/>
          </div>
          <div class="panel" v-show="this.panel === 1">
             <SummonerPanel 

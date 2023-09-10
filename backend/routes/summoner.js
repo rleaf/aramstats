@@ -56,7 +56,7 @@ router.get('/:region/:summonerURI', async (req, res) => {
 
       // 3.
       // 3.1 Pull all matchIds
-      // Most recent game should be at [0]
+      // Most recent game is at [0]
       const matchlist = (await twisted.getAllSummonerMatches(summoner.name, req.params.region))
       const challenges = await challengeScribe(summoner.puuid, req.params.region)
       
@@ -70,7 +70,7 @@ router.get('/:region/:summonerURI', async (req, res) => {
             active: true,
             current: 0,
             queue: matchlist.length,
-            lastMatchId: matchlist[matchlist.length - 1]
+            lastMatchId: matchlist[0]
          },
          challenges: challenges
       })
@@ -125,25 +125,34 @@ router.put('/update/:region/:summonerURI', async (req, res) => {
    const totalMatchlist = (await twisted.getAllSummonerMatches(summoner.name, req.params.region))
 
    // Find idx of last match id in matchlist
-   const lastMatchIndex = matches.findIndex(x => x === summonerDocument.pull.lastMatchId) + 1
-   const matchlist = totalMatchlist.slice(lastMatchIndex)
+   const lastMatchIndex = totalMatchlist.findIndex(x => x === summonerDocument.pull.lastMatchId)
+   const matchlist = totalMatchlist.slice(0, lastMatchIndex)
 
    // Set pull flags
    summonerDocument.pull.active = true
-   summonerDocument.pull.lastMatchId = totalMatchlist[totalMatchlist.length - 1]
-   summonerDocument.save()
+   summonerDocument.pull.lastMatchId = totalMatchlist[0]
+   await summonerDocument.save()
    
    
    
    // emergency clog incase i hit update without building this
-   console.log(pancakes)
-   await matchParser(summoner, req.params.region, matchlist, summonerDocument, true)
+
+   await matchParser(summoner, req.params.region, matchlist, summonerDocument)
+
+   /* 
+   Produces fucked up values because operates on running values. Needs to start from 0 each time.
+   Have to wipe all champion averages and do a total champion parse again or
+   has to find which champions have updated matches and then only champion parse those.
+   */
+   await championParser(summonerDocument, true)
+
    const summonerResponse = (await aggregateSummoner(summoner.puuid))[0]
    
    summonerDocument.pull.active = false
-   summonerDocument.save()
+   await summonerDocument.save()
 
    res.send(summonerResponse)
+   console.log(`Finished updating ${summoner.name} (${req.params.region}).`)
 })
 
 // Delete summoner
@@ -159,7 +168,7 @@ async function loadDatabase() {
    return client.db('aramstats')
 }
 
-async function championParser(summonerDocument) {
+async function championParser(summonerDocument, update) {
 
    // Iterate over each champion sub document
    for (const champion of summonerDocument.championData) {
@@ -219,7 +228,6 @@ async function matchParser(summoner, region, matchlist, summonerDocument, update
             }
          })
       
-         
       if (game) {
          const puuidIndex = game.metadata.participants.findIndex(x => x === summoner.puuid)
          const player = game.info.participants[puuidIndex]
@@ -260,7 +268,6 @@ async function matchParser(summoner, region, matchlist, summonerDocument, update
 
          await match.save()
          const championEmbed = summonerDocument.championData.find(e => e.name === player.championName)
-
          if (championEmbed) {
             championEmbed.matches.push(match._id)
          } else {
