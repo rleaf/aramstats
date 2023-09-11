@@ -1,7 +1,7 @@
 <script>
 import Champion from '../Champion.vue'
 import Dropdown from '../Dropdown.vue'
-import MatchHistory from '../MatchHistory.vue'
+import Pancakes from '../Pancakes.vue'
 
 import ListPanel from '../Panels/ListPanel.vue'
 import SummonerPanel from '../Panels/SummonerPanel.vue'
@@ -16,7 +16,7 @@ export default {
    components: {
       Champion,
       Dropdown,
-      MatchHistory,
+      Pancakes,
       Histogram,
       ChampSearch,
       ListPanel,
@@ -239,7 +239,7 @@ export default {
             </div>
          </div>
          
-         <MatchHistory />
+         <Pancakes />
       </div>
       <div class="rhs">
          <div class="sections">

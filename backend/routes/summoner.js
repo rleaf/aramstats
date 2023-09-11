@@ -131,12 +131,9 @@ router.put('/update/:region/:summonerURI', async (req, res) => {
    summonerDocument.profileIcon = summoner.profileIconId
    summonerDocument.challenges = challenges
    await summonerDocument.save()
-   console.log(summonerDocument.profileIcon, summoner.profileIconId)
 
-   // Get total matchlist
+   // Get total matchlist & find idx of last match
    const totalMatchlist = (await twisted.getAllSummonerMatches(summoner.name, req.params.region))
-
-   // Find idx of last match id in matchlist
    const lastMatchIndex = totalMatchlist.findIndex(x => x === summonerDocument.pull.lastMatchId)
 
    /* 
@@ -146,7 +143,7 @@ router.put('/update/:region/:summonerURI', async (req, res) => {
    */
    const matchlist = totalMatchlist.slice(0, lastMatchIndex).reverse()
 
-   // There are no matches in matchlist, ie the summoner is UTD
+   // There are no matches in matchlist, therefore the summoner is UTD
    if (matchlist.length === 0) {
       console.log(`Summoner ${summoner.name} (${req.params.region}) already updated`)
       const summonerResponse = (await aggregateSummoner(summoner.puuid))[0]
@@ -161,18 +158,12 @@ router.put('/update/:region/:summonerURI', async (req, res) => {
    
    let updatedChampions = []
 
+   // Parse new matchlist & return updatedChampions, to filter for champion parsing
    await matchParser(summoner, req.params.region, matchlist, summonerDocument, updatedChampions)
-   /* 
-      Produces fucked up values because operates on running values and needs to start from 0 each time.
-      Have to wipe all champion averages and do a total champion parse again or
-      have to find which champions have updated matches and then only champion parse those.
-   */
 
-   // await championParser(summonerDocument, updatedChampions)
-
+   // Basically championParse(), but operates only on the champs in updatedChamps.
    for (const champion of summonerDocument.championData) {
       if (updatedChampions.includes(champion.name)) {
-         // If champion already exists, zero their values
          Object.keys(champion.averages).forEach(v => champion.averages[v] = 0)
          Object.keys(champion.multikills).forEach(v => champion.multikills[v] = 0)
          champion.wins = 0
@@ -181,9 +172,7 @@ router.put('/update/:region/:summonerURI', async (req, res) => {
       
          champion.games = matches.length
 
-         /* 
-            Is it more efficient to aggregate average stats on res.send() versus writing & reading them to/from DB?
-         */
+         // Is it more efficient to aggregate average stats on res.send() versus writing & reading them to/from DB?
          for (const match of matches) {
             if (match.win) champion.wins++
             champion.averages.allyHealPerMinute+= Math.round(match.totals.healsOnTeammates / match.gameDuration)
@@ -374,7 +363,7 @@ async function aggregateSummoner(puuid) {
       },
       // Lookup does not guarantee order https://stackoverflow.com/questions/67396937/array-is-reordered-when-using-lookup
       // {$sort: {
-      //    "championData.gameCreation": 1
+      //    "championData.gameCreation": 1 # something like this
       // }},
       { $group: {
          _id: "$_id",
