@@ -49,7 +49,7 @@ export default {
             'Quadra kills': 'multikills.quadra',
             'Penta kills': 'multikills.penta',
          }
-
+         
          const filtered = this.championData.filter(champion => {
             return (champion.name in championNameBook) ?
                championNameBook[champion.name].toLowerCase().includes(this.search.toLowerCase()) :
@@ -74,7 +74,8 @@ export default {
 
    props: {
       championData: Object,
-      currentPatch: ''
+      currentPatch: '',
+      // updateKey: Number
    }
    
 }
@@ -110,6 +111,7 @@ export default {
             <input type="text" placeholder="Search Champion" v-model="this.search">
          </div>
       </div>
+      <!-- <div class="champion-container" :key="this.updateKey"> -->
       <div class="champion-container">
          <Champion v-for="champ in sortedChamps" 
          :key="champ.name"

@@ -106,7 +106,6 @@ router.put('/update/:region/:summonerURI', async (req, res) => {
          proceeding match data.
    */ 
    let summoner
-   console.log(`Updating ${summoner.name} (${req.params.region}).`)
    // I prefer to only use puuid to query aramstats db, so I need to get it from Riot again.
    try {
       summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
@@ -119,7 +118,8 @@ router.put('/update/:region/:summonerURI', async (req, res) => {
          return
       }
    }
-
+   console.log(`Updating ${summoner.name} (${req.params.region}).`)
+   
    // Get summoner data
    const summonerDocument = await summonerModel.findOne({ puuid: summoner.puuid })
 
@@ -130,6 +130,8 @@ router.put('/update/:region/:summonerURI', async (req, res) => {
    summonerDocument.level = summoner.summonerLevel
    summonerDocument.profileIcon = summoner.profileIconId
    summonerDocument.challenges = challenges
+   await summonerDocument.save()
+   console.log(summonerDocument.profileIcon, summoner.profileIconId)
 
    // Get total matchlist
    const totalMatchlist = (await twisted.getAllSummonerMatches(summoner.name, req.params.region))

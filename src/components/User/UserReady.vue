@@ -36,12 +36,10 @@ export default {
 
    data() {
       return {
-         currentPatch: '',
          championData: this.response.championData,
          challengeInfo: this.response.challenges,
-         profile: {
-            // IconId: `http://ddragon.leagueoflegends.com/cdn/13.9.1/img/profileicon/${this.response.profileIconId}.png`,
-            IconId: `http://ddragon.leagueoflegends.com/cdn/13.17.1/img/profileicon/${this.response.profileIcon}.png`,
+         summoner: {
+            iconId: this.response.profileIcon,
             name: this.response.name
          },
          selected: 'Total Games',
@@ -67,40 +65,32 @@ export default {
 
    created() {
       this.summonerAverages()
-      this.getCurrentPatch() 
       // Pull patch data from https://ddragon.leagueoflegends.com/api/versions.json
 
    },
 
    methods: {
-      async getCurrentPatch() {
-         const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
-
-         try {
-            // this.currentPatch = (await axios.get(url)).data[0].split('.').slice(0, 2).join('.')
-            this.currentPatch = (await axios.get(url)).data[0]
-         } catch (e) {
-            console.log(e, 'getCurrentPatch')
-         }
-      },
-
       async updateSummoner() {
          this.isDisabled = true
          const url = `/api/summoners/update/${this.$route.params.region}/${this.$route.params.username}`
 
          this.refresh = 'Updating...'
-         let res = await axios.put(url)
-         this.championData = res.data
-         this.challengeInfo = res.data[0].challenges
+         const res = await axios.put(url)
+
+         this.championData = res.data.championData
+         this.summoner.iconId = res.data.profileIcon
+         this.challengeInfo = res.data.challenges
 
          // Rerender champ list
-         this.updateKey += 1
+         this.updateKey++
 
          // Re-enable button
          this.isDisabled = false
 
          // Set button back to 'update'
          this.refresh = 'Update'
+
+         console.log(this.summoner, 'prof')
       },
 
       summonerAverages() {
@@ -184,26 +174,32 @@ export default {
       //    return `${Math.round(this.summonerStats.killParticipation / this.championData.length * 10) / 10}%`
       // },
 
+      profileIcon() {
+         // clogs 403 initially because getpatch hasn't run. once responds w/ patch will update reactively.
+         return `http://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/profileicon/${this.summoner.iconId}.png`
+      },
+
       background() {
-         return `background: radial-gradient(circle at 50% -160%, transparent 30%, var(--tint100) 77%), no-repeat center -330% url('${this.profile.IconId}');
+         return `background: radial-gradient(circle at 50% -160%, transparent 30%, var(--tint100) 77%), no-repeat center -330% url('${this.profileIcon}');
                  background-size: 380px;`
       },
    },
    
    props: {
-      response: Object
+      response: Object,
+      currentPatch: null
    }
 }
 </script>
 
 <template>
-   <div class="user-ready-main">
+   <div class="user-ready-main" :key="this.updateKey">
       <div class="lhs">
          <div class="profile" :style="background">
             <div class="name-wrapper">
-               <img class="pfp" :src=profile.IconId  alt="">
+               <img class="pfp" :src=profileIcon  alt="">
                <div>
-                  {{ this.profile.name }}
+                  {{ this.response.name }}
                   <div>
                      <button :disabled="isDisabled" @click="updateSummoner()">
                         {{ this.refresh }}
@@ -264,7 +260,8 @@ export default {
             </div>
          </div>
          <div class="panel" v-show="this.panel === 0">
-            <ListPanel :championData="this.championData" :currentPatch="this.currentPatch" :key="this.updateKey"/>
+            <!-- <ListPanel :championData="this.championData" :currentPatch="this.currentPatch" :updateKey="this.updateKey"/> -->
+            <ListPanel :championData="this.championData" :currentPatch="this.currentPatch" :updateKey="this.updateKey"/>
          </div>
          <div class="panel" v-show="this.panel === 1">
             <SummonerPanel 
