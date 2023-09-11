@@ -32,6 +32,7 @@ import axios from 'axios'
                const res = await axios.get(url)
                this.response = res.data
                this.userReadyRender = true
+               console.log(this.response)
             } catch (e) {
                this.errorStatusParent = e.response.status
                this.userErrorRender = true

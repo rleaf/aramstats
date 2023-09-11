@@ -64,6 +64,7 @@ router.get('/:region/:summonerURI', async (req, res) => {
       const summonerDocument = new summonerModel({
          puuid: summoner.puuid,
          name: summoner.name,
+         level: summoner.summonerLevel,
          region: req.params.region,
          profileIcon: summoner.profileIconId,
          pull: {
@@ -86,6 +87,8 @@ router.get('/:region/:summonerURI', async (req, res) => {
       await summonerDocument.save()
 
       const summonerResponse = (await aggregateSummoner(summoner.puuid))[0]
+
+      
       res.send(summonerResponse)
       console.log(`${summoner.name} (${req.params.region}) finished.`)
    } else {
@@ -103,10 +106,9 @@ router.put('/update/:region/:summonerURI', async (req, res) => {
          proceeding match data.
    */ 
    let summoner
-
+   console.log(`Updating ${summoner.name} (${req.params.region}).`)
    // I prefer to only use puuid to query aramstats db, so I need to get it from Riot again.
    try {
-      console.log(`Searching for ${req.params.summonerURI} (${req.params.region})`)
       summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
    } catch (e) {
       if (e.status === 429) {
@@ -121,36 +123,101 @@ router.put('/update/:region/:summonerURI', async (req, res) => {
    // Get summoner data
    const summonerDocument = await summonerModel.findOne({ puuid: summoner.puuid })
 
+   // Update summoner properties
+   const challenges = await challengeScribe(summoner.puuid, req.params.region)
+
+   summonerDocument.name = summoner.name
+   summonerDocument.level = summoner.summonerLevel
+   summonerDocument.profileIcon = summoner.profileIconId
+   summonerDocument.challenges = challenges
+
    // Get total matchlist
    const totalMatchlist = (await twisted.getAllSummonerMatches(summoner.name, req.params.region))
 
    // Find idx of last match id in matchlist
    const lastMatchIndex = totalMatchlist.findIndex(x => x === summonerDocument.pull.lastMatchId)
-   const matchlist = totalMatchlist.slice(0, lastMatchIndex)
+
+   /* 
+      Reverse to make most recent games appear at top.
+      1. matchlist = [newest, newer, new].reverse() # [new, newer, newest]
+      2. championEmbed.matches.unshift(matchlist[i for i in matchlist]) # adds new first...then newer...then newest to beginning
+   */
+   const matchlist = totalMatchlist.slice(0, lastMatchIndex).reverse()
+
+   // There are no matches in matchlist, ie the summoner is UTD
+   if (matchlist.length === 0) {
+      console.log(`Summoner ${summoner.name} (${req.params.region}) already updated`)
+      const summonerResponse = (await aggregateSummoner(summoner.puuid))[0]
+      res.send(summonerResponse)
+      return
+   }
 
    // Set pull flags
    summonerDocument.pull.active = true
    summonerDocument.pull.lastMatchId = totalMatchlist[0]
    await summonerDocument.save()
    
-   
-   
-   // emergency clog incase i hit update without building this
+   let updatedChampions = []
 
-   await matchParser(summoner, req.params.region, matchlist, summonerDocument)
-
+   await matchParser(summoner, req.params.region, matchlist, summonerDocument, updatedChampions)
    /* 
-   Produces fucked up values because operates on running values. Needs to start from 0 each time.
-   Have to wipe all champion averages and do a total champion parse again or
-   has to find which champions have updated matches and then only champion parse those.
+      Produces fucked up values because operates on running values and needs to start from 0 each time.
+      Have to wipe all champion averages and do a total champion parse again or
+      have to find which champions have updated matches and then only champion parse those.
    */
-   await championParser(summonerDocument, true)
 
-   const summonerResponse = (await aggregateSummoner(summoner.puuid))[0]
-   
+   // await championParser(summonerDocument, updatedChampions)
+
+   for (const champion of summonerDocument.championData) {
+      if (updatedChampions.includes(champion.name)) {
+         // If champion already exists, zero their values
+         Object.keys(champion.averages).forEach(v => champion.averages[v] = 0)
+         Object.keys(champion.multikills).forEach(v => champion.multikills[v] = 0)
+         champion.wins = 0
+
+         const matches = await summonerMatchesModel.find( {"_id": { $in: champion.matches}} )
+      
+         champion.games = matches.length
+
+         /* 
+            Is it more efficient to aggregate average stats on res.send() versus writing & reading them to/from DB?
+         */
+         for (const match of matches) {
+            if (match.win) champion.wins++
+            champion.averages.allyHealPerMinute+= Math.round(match.totals.healsOnTeammates / match.gameDuration)
+            champion.averages.assists+= match.assists
+            champion.averages.damagePerMinute+= Math.round(match.totals.damageDealtToChampions / match.gameDuration)
+            champion.averages.damageShare+= match.damageShare * 100
+            champion.averages.damageTakenPerMinute+= Math.round(match.totals.damageTaken / match.gameDuration)
+            champion.averages.deaths+= match.deaths
+            champion.averages.goldEarned+= match.totals.gold
+            champion.averages.goldPerMinute+= Math.round(match.totals.gold / match.gameDuration)
+            champion.averages.healingPerMinute+= Math.round(match.totals.healed / match.gameDuration)
+            champion.averages.healingOnTeammates+= match.totals.healsOnTeammates
+            champion.averages.killParticipation+= match.killParticipation * 100
+            champion.averages.kills+= match.kills
+            champion.averages.selfMitigatedPerMinute+= Math.round(match.totals.selfMitigated / match.gameDuration)
+            champion.averages.totalDamageDealt+= match.totals.damageDealtToChampions
+            champion.averages.totalDamageTaken+= match.totals.damageTaken
+            champion.averages.totalHeal+= match.totals.healed
+            champion.averages.totalSelfMitigated+= match.totals.selfMitigated
+            champion.multikills.triple+= match.multikills.triple
+            champion.multikills.quadra+= match.multikills.quadra
+            champion.multikills.penta+= match.multikills.penta
+         }
+
+         for (const [k, v] of Object.entries(champion.averages)) {
+            champion.averages[k] = Math.round(v / matches.length)
+         }
+
+      }  
+   }
+
    summonerDocument.pull.active = false
    await summonerDocument.save()
 
+   const summonerResponse = (await aggregateSummoner(summoner.puuid))[0]
+   
    res.send(summonerResponse)
    console.log(`Finished updating ${summoner.name} (${req.params.region}).`)
 })
@@ -168,10 +235,18 @@ async function loadDatabase() {
    return client.db('aramstats')
 }
 
-async function championParser(summonerDocument, update) {
+async function championParser(summonerDocument, updateArr) {
 
+   
    // Iterate over each champion sub document
    for (const champion of summonerDocument.championData) {
+
+      if (updateArr && updateArr.includes(champion.name)) {
+         // If champion already exists, zero their values
+         Object.keys(champion.averages).forEach(v => champion.averages[v] = 0)
+         Object.keys(champion.multikills).forEach(v => champion.multikills[v] = 0)
+         champion.wins = 0
+      }
       
       const matches = await summonerMatchesModel.find( {"_id": { $in: champion.matches}} )
       // console.log(matches, 'records')
@@ -210,10 +285,9 @@ async function championParser(summonerDocument, update) {
    await summonerDocument.save()
 }
 
-async function matchParser(summoner, region, matchlist, summonerDocument, update = false) {
+async function matchParser(summoner, region, matchlist, summonerDocument, updateArr) {
 
    for (let i = 0; i < matchlist.length; i++) {
-   // for (let i = 0; i < 5; i++) {
       if (i % 25 === 0) {
          console.log(`Parsing ${summoner.name} (${region}), match ${i}/${matchlist.length}`)
          summonerDocument.pull.current = i
@@ -232,6 +306,7 @@ async function matchParser(summoner, region, matchlist, summonerDocument, update
          const puuidIndex = game.metadata.participants.findIndex(x => x === summoner.puuid)
          const player = game.info.participants[puuidIndex]
 
+         if (updateArr) updateArr.push(player.championName)
 
          const match = new summonerMatchesModel({
             _master: summonerDocument._id,
@@ -280,6 +355,8 @@ async function matchParser(summoner, region, matchlist, summonerDocument, update
          }
       }
    }
+
+   if (updateArr) return updateArr
 }
 
 async function aggregateSummoner(puuid) {
@@ -291,7 +368,12 @@ async function aggregateSummoner(puuid) {
          localField: "championData.matches",
          foreignField: "_id",
          as: "championData.matches"
-      }},
+         }
+      },
+      // Lookup does not guarantee order https://stackoverflow.com/questions/67396937/array-is-reordered-when-using-lookup
+      // {$sort: {
+      //    "championData.gameCreation": 1
+      // }},
       { $group: {
          _id: "$_id",
          puuid: { $first: "$puuid"},

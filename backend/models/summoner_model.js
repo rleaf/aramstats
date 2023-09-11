@@ -3,6 +3,7 @@ const mongoose = require("mongoose")
 const summonerSchema = new mongoose.Schema({
    puuid: String,
    name: String,
+   level: Number,
    region: String,
    profileIcon: Number,
    pull: {

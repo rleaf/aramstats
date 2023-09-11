@@ -44,6 +44,10 @@ export default {
       kda() {
          return `${this.champion.averages.kills}/${this.champion.averages.deaths}/${this.champion.averages.assists}`
       },
+
+      sortMatches() {
+         return this.champion.matches.sort((a, b) => b.gameCreation - a.gameCreation)
+      }
    },
 
    props: {
@@ -163,7 +167,7 @@ export default {
          </div>
       </div>
       <div class="match" v-if="this.expand">
-         <Match v-if="currentPatch" v-for="match in this.champion.matches"
+         <Match v-if="currentPatch" v-for="match in sortMatches"
             :key="match.matchId"
             :match="match"
             :currentPatch="this.currentPatch"
