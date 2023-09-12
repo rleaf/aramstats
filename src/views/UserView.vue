@@ -16,7 +16,7 @@ import axios from 'axios'
             userReadyRender: false,
             userErrorRender: false,
             errorStatusParent: Number,
-            currentPatch: null
+            currentPatch: null,
          }
       },
       
@@ -69,7 +69,8 @@ import axios from 'axios'
 <template>
    <div>
       <UserLoading 
-         v-if="!userReadyRender && !userErrorRender"/>
+         v-if="!userReadyRender && !userErrorRender"
+         :status="this.response"/>
       <UserReady
          v-if="userReadyRender"
          :response="this.response"

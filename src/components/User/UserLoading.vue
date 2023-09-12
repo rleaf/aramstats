@@ -4,11 +4,37 @@ import axios from 'axios'
 export default {
    data() {
       return {
-         hover: null
+         hover: null,
+         status: null
       }
    },
 
+   mounted() {
+      this.check = setInterval(() => {
+         this.lookup()
+      }, 20000);
+   },
+
+   beforeUnmount() {
+      clearInterval(this.check)
+      console.log('cleared')
+   },
+
    methods: {
+      async lookup() {
+         const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
+
+         try {
+            const res = await axios.get(url)
+            this.status = res.data
+            this.userReadyRender = true
+         } catch (e) {
+            this.errorStatusParent = e.response.status
+            this.userErrorRender = true
+         }
+
+      },
+
       async deleteSummoner() {
          const url = `/api/summoners/delete/${this.$route.params.region}/${this.$route.params.username}`
          const text = `
@@ -24,6 +50,10 @@ export default {
             this.$router.push({ name: `home` })
          }
       }
+   },
+
+   props: {
+      response: null
    }
 }
 </script>
@@ -36,6 +66,9 @@ export default {
          </h2>
          <p>
             This will take a bit when parsing a new summoner (~5-20 min depending on load).
+         </p>
+         <p v-if="this.status">
+            {{ status.current }} / {{ status.queue }}
          </p>
          <!-- <p>
             If you're stuck, delete & re-pull summoner.
