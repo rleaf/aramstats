@@ -55,7 +55,6 @@ const summonerSchema = new mongoose.Schema({
          matches: [mongoose.SchemaTypes.ObjectId]
       }
    ]
-
 })
 
 module.exports = mongoose.model('summoners', summonerSchema)

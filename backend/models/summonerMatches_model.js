@@ -33,7 +33,14 @@ const summonerMatchesSchema = new mongoose.Schema({
       triple: Number,
       quadra: Number,
       penta: Number,
-   }
+   },
+   summonerEncounters: [
+      {
+         _id: false,
+         name: String,
+         ally: Number,
+      }
+   ]
 })
 
 module.exports = mongoose.model('summonerMatches', summonerMatchesSchema)

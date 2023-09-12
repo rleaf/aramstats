@@ -332,6 +332,21 @@ async function matchParser(summoner, region, matchlist, summonerDocument, update
             },
          })
 
+         for (const participant of game.info.participants) {
+            if (participant.puuid != player.puuid) {
+               let p = {
+                  name: participant.summonerName
+               }
+
+               if (participant.teamId === player.teamId) {
+                  p.ally = 1
+               } else {
+                  p.ally = 0
+               }
+               match.summonerEncounters.push(p)
+            }
+         }
+
          await match.save()
          const championEmbed = summonerDocument.championData.find(e => e.name === player.championName)
          if (championEmbed) {
@@ -368,6 +383,7 @@ async function aggregateSummoner(puuid) {
       { $group: {
          _id: "$_id",
          puuid: { $first: "$puuid"},
+         level: { $first: "$level"},
          name: { $first: "$name"},
          region: { $first: "$region"},
          profileIcon: { $first: "$profileIcon"},

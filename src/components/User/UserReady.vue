@@ -78,6 +78,7 @@ export default {
          const res = await axios.put(url)
 
          this.championData = res.data.championData
+         this.summoner.name = res.data.name
          this.summoner.iconId = res.data.profileIcon
          this.challengeInfo = res.data.challenges
 
@@ -199,7 +200,7 @@ export default {
             <div class="name-wrapper">
                <img class="pfp" :src=profileIcon  alt="">
                <div>
-                  {{ this.response.name }}
+                  {{ this.summoner.name }}
                   <div>
                      <button :disabled="isDisabled" @click="updateSummoner()">
                         {{ this.refresh }}
@@ -239,7 +240,7 @@ export default {
             </div>
          </div>
          
-         <Pancakes />
+         <Pancakes :championData="this.championData"/>
       </div>
       <div class="rhs">
          <div class="sections">
