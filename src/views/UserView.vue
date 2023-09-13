@@ -70,7 +70,7 @@ import axios from 'axios'
    <div>
       <UserLoading 
          v-if="!userReadyRender && !userErrorRender"
-         :status="this.response"/>
+         :response="this.response"/>
       <UserReady
          v-if="userReadyRender"
          :response="this.response"

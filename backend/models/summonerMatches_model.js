@@ -35,11 +35,11 @@ const summonerMatchesSchema = new mongoose.Schema({
       penta: Number,
    },
    summonerEncounters: [
-      {
-         _id: false,
-         name: String,
-         ally: Number,
-      }
+      // {
+      //    _id: false,
+      //    name: String,
+      //    ally: Number,
+      // }
    ]
 })
 

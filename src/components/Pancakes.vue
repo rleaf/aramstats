@@ -13,12 +13,46 @@ export default {
    data() {
       return {
          tab: 0,
-         summoners: []
+         summoners: [],
+         populate: false,
+         test: []
       }
    },
 
-   created() {      
-      /* 
+   created() {
+      // Populate array of all encountered summoners 
+      let j = []
+      for (const champion of this.championData) {
+         for (const match of champion.matches) {
+            j.push(match.summonerEncounters)
+         }
+      }
+      j = j.flat().sort()
+      console.log(j)
+
+      // Count redundant summoner names
+      let counter = j.reduce((o, c) => {
+         o[c] = 1 + o[c] || 1
+         return o
+      }, {})
+
+      // First filter for summoners encountered gt 5, then sort by frequency
+      this.test = Object.entries(counter).filter(x => x[1] > 5).sort((a, b) => b[1] - a[1])
+      // console.log(counter, ' count')
+      console.log(this.test, ' test')
+   },
+
+   mounted() {      
+      // console.log(this.championData)
+   },
+
+   methods: {
+      counter() {
+
+      },
+      
+      populateSummoners() {
+         /* 
          Algorithmically concerning, probably okay. Do this in aggregation?
             champion: unbounded
                what: amount of champions in League of Legends.
@@ -29,34 +63,33 @@ export default {
             summoner: bounded
                what: number of players in game excluding yourself.
                why: will always be 9. 5 players on enemy team, 4 bots on mine.
-      */
-      for (const champion of this.championData) {
-         for (const match of champion.matches) {
-            for (const summoner of match.summonerEncounters) {
+         */
 
-               if (!this.summoners.some(e => e.name === summoner.name)) {
-                  // Summ DNE, push to this.summoners
-                  let s = {
-                     name: summoner.name,
-                     encounters: 1,
-                     win: 0,
-                  }
-                  if (match.win) s.win++
-                  this.summoners.push(s)
-               } else {
-                  let s = this.summoners.find(e => e.name === summoner.name)
-                  s.encounters++
-                  if (match.win) s.win++
-               }
-            }
-         }
+         this.populate = true
+
+         // for (const summoner of this.test) {
+         //    if (!this.summoners.some(e => e.name === summoner.name)) {
+         //       // Summ DNE, push to this.summoners
+         //       let s = {
+         //          name: summoner.name,
+         //          encounters: 1,
+         //          win: 0,
+         //       }
+         //       // if (match.win) s.win++
+         //       this.summoners.push(s)
+         //    } else {
+         //       let s = this.summoners.find(e => e.name === summoner.name)
+         //       s.encounters++
+         //       // if (match.win) s.win++
+         //    }
+         // }  
       }
    },
 
    computed: {
       summonersCompute() {
-         return this.summoners.sort((a, b) => b.encounters - a.encounters).slice(0, 50)
-         // return this.summoners.sort((a, b) => b.encounters - a.encounters).filter(e => e.encounters > 5)
+         // return this.summoners.sort((a, b) => b.encounters - a.encounters).slice(0, 100)
+         return this.summoners.sort((a, b) => b.encounters - a.encounters).filter(e => e.encounters > 5)
       }
    },
 
@@ -84,14 +117,32 @@ export default {
          pancakes
       </div>
       <div class="encounters" v-show="this.tab === 1">
+         <!-- <div class="load-encounters" v-if="!this.populate">
+            <p>
+               Iterate through matches and show summoners you've encountered >5 times. This is...experimental. Loading will take a couple
+               of seconds.
+            </p>
+            <button :disabled="this.populate" @click="this.populateSummoners()">
+               Load
+            </button>
+         </div>
+         <div class="headers" v-if="this.populate">
+            <div>Summoner</div>
+            <div>Games</div>
+         </div>
+         <div class="table" v-if="this.populate"> -->
          <div class="headers">
             <div>Summoner</div>
             <div>Games</div>
          </div>
          <div class="table">
-            <div class="row" :class="i % 2 == 0 ? `alt` : ``" v-for="(summoner, i) in summonersCompute">
+            <!-- <div class="row" :class="i % 2 == 0 ? `alt` : ``" v-for="(summoner, i) in summonersCompute">
                <div>{{ summoner.name }}</div>
                <div>{{ summoner.encounters }}</div>
+            </div> -->
+            <div class="row" :class="i % 2 == 0 ? `alt` : ``" v-for="(summoner, i) in this.test">
+               <div>{{ summoner[0] }}</div>
+               <div>{{ summoner[1] }}</div>
             </div>
          </div>
       </div>
@@ -122,6 +173,24 @@ export default {
 .active {
    color: var(--color-font);
    background: var(--hoverButton);
+}
+
+.load-encounters p {
+   text-align: center;
+   line-height: 1.5;
+   padding: 0 2rem;
+   margin-bottom: 1rem;
+}
+
+.encounters button {
+   display: block;
+   margin: 0 auto;
+   border: 1px solid var(--color-font);
+   border-radius: 8px;
+   padding: 0.5rem 1rem;
+   color: var(--color-font);
+   background: none;
+   cursor: pointer;
 }
 
 .pancakes-main {

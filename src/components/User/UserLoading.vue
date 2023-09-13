@@ -9,15 +9,20 @@ export default {
       }
    },
 
+   watch: {
+      status(c, _) {
+         if (c && c.current === c.queue) this.$router.go()
+      }
+   },
+
    mounted() {
       this.check = setInterval(() => {
          this.lookup()
-      }, 20000);
+      }, 90000)
    },
 
    beforeUnmount() {
       clearInterval(this.check)
-      console.log('cleared')
    },
 
    methods: {
@@ -52,8 +57,14 @@ export default {
       }
    },
 
-   props: {
-      response: null
+   computed: {
+      queue() {
+         if (this.status) {
+            return `${this.status.current} / ${this.status.queue}`
+         } else {
+            return `0 / TBD`
+         }
+      }
    }
 }
 </script>
@@ -67,16 +78,11 @@ export default {
          <p>
             This will take a bit when parsing a new summoner (~5-20 min depending on load).
          </p>
-         <p v-if="this.status">
-            {{ status.current }} / {{ status.queue }}
+         <p>
+            {{ queue }}
+            <br>
+            I update every 90 seconds.
          </p>
-         <!-- <p>
-            If you're stuck, delete & re-pull summoner.
-         </p>
-         <p></p>
-         <a class="purge" @mouseover="hover = true" @mouseleave="hover = false" @click="deleteSummoner()" >
-            Delete
-         </a> -->
       </div>
    </div>
 </template>
