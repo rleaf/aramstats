@@ -90,8 +90,6 @@ export default {
 
          // Set button back to 'update'
          this.refresh = 'Update'
-
-         console.log(this.summoner, 'prof')
       },
 
       summonerAverages() {

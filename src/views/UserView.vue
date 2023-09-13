@@ -68,7 +68,7 @@ import axios from 'axios'
                   this.status = res.data
                } else {
                   this.response = res.data
-                  console.log(this.response, 'res')
+                  // console.log(this.response, 'res')
                   this.userReadyRender = true
                }
             } catch (e) {

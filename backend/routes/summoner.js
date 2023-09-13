@@ -43,7 +43,7 @@ router.get('/:region/:summonerURI', async (req, res) => {
       // 2.
       if (exists) {
          if (exists.pull.active) {
-            console.log(`already pulling ${summoner.name} (${req.params.region})`)
+            // console.log(`already pulling ${summoner.name} (${req.params.region})`)
             res.send(exists.pull)
             return
          }
@@ -332,19 +332,8 @@ async function matchParser(summoner, region, matchlist, summonerDocument, update
             },
          })
 
-         // let p = []
          for (const participant of game.info.participants) {
             if (participant.puuid != player.puuid) {
-               // let p = {
-               //    name: participant.summonerName
-               // }
-
-               // if (participant.teamId === player.teamId) {
-               //    p.ally = 1
-               // } else {
-               //    p.ally = 0
-               // }
-               // match.summonerEncounters.push(p)
                match.summonerEncounters.push(participant.summonerName)
             }
          }
