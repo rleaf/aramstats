@@ -1,49 +1,16 @@
 <script>
-/* 
-   Temporarily called pancakes while I think of a better name.
-
-   Component houses two tabs. One tab is for a match history, similar to waht you'd
-   see on op.gg and the other tab displays summoner frequency. See if there are any
-   familiar faces.
-*/
-import axios from 'axios'
-
-
+// Temporarily called pancakes while I think of a better name.
 export default {
    data() {
       return {
          tab: 0,
-         summoners: [],
          populate: false,
-         test: []
+         summoners: []
       }
    },
 
    created() {
-      // Populate array of all encountered summoners 
-      let j = []
-      for (const champion of this.championData) {
-         for (const match of champion.matches) {
-            j.push(match.summonerEncounters)
-         }
-      }
-      j = j.flat().sort()
-      console.log(j)
-
-      // Count redundant summoner names
-      let counter = j.reduce((o, c) => {
-         o[c] = 1 + o[c] || 1
-         return o
-      }, {})
-
-      // First filter for summoners encountered gt 5, then sort by frequency
-      this.test = Object.entries(counter).filter(x => x[1] > 5).sort((a, b) => b[1] - a[1])
-      // console.log(counter, ' count')
-      console.log(this.test, ' test')
-   },
-
-   mounted() {      
-      // console.log(this.championData)
+      this.populateSummoners()
    },
 
    methods: {
@@ -59,37 +26,61 @@ export default {
                why: is okay because champ release is slow. (~164 on naafiri)
             match: unbounded
                what: number the num of games a summ has played on that champ.
-               why: fastest growing metric, but operates in <1000 matches domain
+               why: fastesst growing metric, but operates in <1000 matches domain
             summoner: bounded
                what: number of players in game excluding yourself.
                why: will always be 9. 5 players on enemy team, 4 bots on mine.
          */
+         let j = []
+         
+         for (const champion of this.championData) {
+            for (const match of champion.matches) {
+               j.push(match.summonerEncounters)
+            }
+         }
+         j = j.flat().sort()
+         
+         /* 
+         ALGO 1
+         ---
+         0.8ms-2.5ms. Generally <1ms. on ryi
+         8-15ms on Night Owl (760x faster than one below)
+         ---
+         */
+         // Count redundant summoner names
+         let counter = j.reduce((o, c) => {
+            o[c] = 1 + o[c] || 1
+            return o
+         }, {})
 
-         this.populate = true
+         // First filter for summoners encountered gt 5, then sort by frequency
+         this.summoners = Object.entries(counter).filter(x => x[1] > 5).sort((a, b) => b[1] - a[1])
 
-         // for (const summoner of this.test) {
-         //    if (!this.summoners.some(e => e.name === summoner.name)) {
+
+         /*
+         ALGO 2
+         ---
+         7999-9500 ms on Night Owl
+         ---
+         */
+         // for (const summoner of j) {
+         //    if (!this.summoners.some(e => e[0] === summoner)) {
          //       // Summ DNE, push to this.summoners
-         //       let s = {
-         //          name: summoner.name,
-         //          encounters: 1,
-         //          win: 0,
-         //       }
-         //       // if (match.win) s.win++
+         //       let s = [summoner, 1]
          //       this.summoners.push(s)
          //    } else {
-         //       let s = this.summoners.find(e => e.name === summoner.name)
-         //       s.encounters++
-         //       // if (match.win) s.win++
+         //       let s = this.summoners.find(e => e[0] === summoner)
+         //       s[1]++
          //    }
-         // }  
+         // }
+         // this.summoners = this.summoners.filter(x => x[1] > 5).sort((a, b) => b[1] - a[1])
       }
    },
 
    computed: {
       summonersCompute() {
          // return this.summoners.sort((a, b) => b.encounters - a.encounters).slice(0, 100)
-         return this.summoners.sort((a, b) => b.encounters - a.encounters).filter(e => e.encounters > 5)
+         return this.summoners.sort((a, b) => b.encounters - a.encounters)
       }
    },
 
@@ -117,30 +108,15 @@ export default {
          pancakes
       </div>
       <div class="encounters" v-show="this.tab === 1">
-         <!-- <div class="load-encounters" v-if="!this.populate">
-            <p>
-               Iterate through matches and show summoners you've encountered >5 times. This is...experimental. Loading will take a couple
-               of seconds.
-            </p>
-            <button :disabled="this.populate" @click="this.populateSummoners()">
-               Load
-            </button>
+         <div class="description">
+            People you've played with >5 times.
          </div>
-         <div class="headers" v-if="this.populate">
-            <div>Summoner</div>
-            <div>Games</div>
-         </div>
-         <div class="table" v-if="this.populate"> -->
          <div class="headers">
             <div>Summoner</div>
             <div>Games</div>
          </div>
          <div class="table">
-            <!-- <div class="row" :class="i % 2 == 0 ? `alt` : ``" v-for="(summoner, i) in summonersCompute">
-               <div>{{ summoner.name }}</div>
-               <div>{{ summoner.encounters }}</div>
-            </div> -->
-            <div class="row" :class="i % 2 == 0 ? `alt` : ``" v-for="(summoner, i) in this.test">
+            <div class="row" :class="i % 2 == 0 ? `alt` : ``" v-for="(summoner, i) in this.summoners">
                <div>{{ summoner[0] }}</div>
                <div>{{ summoner[1] }}</div>
             </div>
@@ -175,37 +151,24 @@ export default {
    background: var(--hoverButton);
 }
 
-.load-encounters p {
-   text-align: center;
-   line-height: 1.5;
-   padding: 0 2rem;
-   margin-bottom: 1rem;
-}
-
-.encounters button {
-   display: block;
-   margin: 0 auto;
-   border: 1px solid var(--color-font);
-   border-radius: 8px;
-   padding: 0.5rem 1rem;
-   color: var(--color-font);
-   background: none;
-   cursor: pointer;
-}
-
 .pancakes-main {
    display: flex;
    flex-direction: column;
    background: var(--tint100);
    border-radius: 15px;
-   /* overflow: hidden; */
-   /* Make it so height of lhs and rhs are identical by having them fit to user-ready-main property */
-   height: 430px; 
+   /* Hello future ryan, pls make it so height of lhs and rhs are identical by having them fit to user-ready-main property */
+   height: 420px; 
+}
+
+.description {
+   text-align: center;
+   margin: 10px 0;
+   font-style: italic;
+   color: var(--light800);
 }
 
 .history, .encounters {
    width: 100%;
-   margin-top: 10px;
 }
 
 .history {
@@ -214,6 +177,8 @@ export default {
 
 .encounters {
    width: inherit;
+   display: flex;
+   flex-direction: column;
    font-size: 0.8rem;
    line-height: 1.25;
    height: 90%;
@@ -228,12 +193,11 @@ export default {
    justify-content: space-evenly;
    width: calc(100% - 8px);
    padding: 0.25rem 0;
-   /* border-bottom: 1px solid var(--color-font); */
+   font-weight: 600;
 }
 
 .table {
    overflow-y: scroll;
-   height: inherit;
 }
 
 .encounters .row {

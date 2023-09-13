@@ -17,13 +17,34 @@ import axios from 'axios'
             userErrorRender: false,
             errorStatusParent: Number,
             currentPatch: null,
+            status: null,
+            check: null
          }
+      },
+      
+      watch: {
+         status(c, _) {
+            if ((c && c.current === c.queue) || this.userReadyRender) this.$router.go()
+         },
+
+         userReadyRender(c, _) {
+            if (c) clearInterval(this.check)
+         },
+
+         // response(c, _) {
+         //    if (Object.hasOwn(c, 'name')) this.userReadyRender = true
+         // }
       },
       
       created() {
          this.lookup()
          this.getCurrentPatch()
+         
          // this.matchHistory()
+
+         this.check = setInterval(() => {
+            this.lookup()
+         }, 30000)
       },
 
       methods: {
@@ -43,8 +64,13 @@ import axios from 'axios'
 
             try {
                const res = await axios.get(url)
-               this.response = res.data
-               this.userReadyRender = true
+               if (res.data.active) {
+                  this.status = res.data
+               } else {
+                  this.response = res.data
+                  console.log(this.response, 'res')
+                  this.userReadyRender = true
+               }
             } catch (e) {
                this.errorStatusParent = e.response.status
                this.userErrorRender = true
@@ -70,7 +96,7 @@ import axios from 'axios'
    <div>
       <UserLoading 
          v-if="!userReadyRender && !userErrorRender"
-         :response="this.response"/>
+         :status="this.status"/>
       <UserReady
          v-if="userReadyRender"
          :response="this.response"

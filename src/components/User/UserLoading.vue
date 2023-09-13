@@ -5,35 +5,45 @@ export default {
    data() {
       return {
          hover: null,
-         status: null
       }
    },
 
    watch: {
-      status(c, _) {
-         if (c && c.current === c.queue) this.$router.go()
-      }
+      // status(c, _) {
+      //    if (c && c.current === c.queue) this.$router.go()
+      // }
    },
 
    mounted() {
-      this.check = setInterval(() => {
-         this.lookup()
-      }, 90000)
+      // if (this.response) this.status = this.response.pull
+
+      // setTimeout(() => {
+      //    console.log('yee')
+      //    this.lookup()
+      // }, 5000);
+      
+      // this.check = setInterval(() => {
+      //    console.log('yoo')
+      //    this.lookup()
+      // }, 90000)
    },
 
    beforeUnmount() {
-      clearInterval(this.check)
+      // clearInterval(this.check)
    },
 
    methods: {
       async lookup() {
+         console.log('toad')
          const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
 
          try {
             const res = await axios.get(url)
-            this.status = res.data
+            this.status = res.data.pull
+            console.log(this.status, 'status')
             this.userReadyRender = true
          } catch (e) {
+            console.log(e, 'e')
             this.errorStatusParent = e.response.status
             this.userErrorRender = true
          }
@@ -65,24 +75,40 @@ export default {
             return `0 / TBD`
          }
       }
+   },
+
+   props: {
+      status: null
    }
 }
 </script>
 
 <template>
    <div class="loading-main">
-      <div>
-         <h2>
-            Parsing summoner...
-         </h2>
-         <p>
-            This will take a bit when parsing a new summoner (~5-20 min depending on load).
-         </p>
-         <p>
-            {{ queue }}
-            <br>
-            I update every 90 seconds.
-         </p>
+      <div class="active" v-if="this.status">
+         <div>
+            <h2>
+               Parsing summoner...
+            </h2>
+            <p>
+               This will take a bit when parsing a new summoner (~5-20 min depending on load).
+            </p>
+            <div class="queue">
+               <p>
+                  {{ queue }} matches completed
+               </p>
+               <p class="sub">
+                  I update every 30 seconds.
+               </p>
+            </div>
+         </div>
+      </div>
+      <div class="null" v-if="!this.status">
+         <div>
+            <h2>
+               Searching for summoner...
+            </h2>
+         </div>
       </div>
    </div>
 </template>
@@ -105,6 +131,18 @@ p {
    color: var(--color-font);
    width: 700px;
    line-height: 1.5;
+}
+
+.queue p {
+   /* color: var(--light700); */
+   font-weight: 500;
+}
+
+p.sub {
+   font-size: 0.9rem;
+   font-weight: normal;
+   font-style: italic;
+   color: var(--light500);
 }
 
 a {
