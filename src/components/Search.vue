@@ -12,7 +12,6 @@ export default {
          region: '',
          inputAlert: false,
          alertMessage: String,
-         callProc: true
       }
    },
 
@@ -34,7 +33,6 @@ export default {
             username: encodeURI(this.input),
          }})
          
-         this.callProc = true
 
          // push region into localstorage
          // localStorage.setItem('region', this.region)

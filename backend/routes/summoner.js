@@ -44,6 +44,7 @@ router.get('/:region/:summonerURI', async (req, res) => {
       if (exists) {
          if (exists.pull.active) {
             // console.log(`already pulling ${summoner.name} (${req.params.region})`)
+            // res.send(exists.pull)
             res.send(exists.pull)
             return
          }

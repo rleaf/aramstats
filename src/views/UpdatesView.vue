@@ -2,6 +2,17 @@
    <div class="update-main">
       <div class="update-block">
          <div class="header">
+            <h2>Database reset.</h2>
+            <h3>9/14/23</h3>
+         </div>
+         <hr>
+         <p>
+            I've finished revamping the backend and have reset the database; you will have to reparse your summoner.
+            Although it may not look very different this is a significant change to the website so let me know if you find any issues.
+         </p>
+      </div>
+      <div class="update-block">
+         <div class="header">
             <h2>Redesigning backend. Intending to wipe all data.</h2>
             <h3>9/2/23</h3>
          </div>

@@ -5,13 +5,8 @@ export default {
    data() {
       return {
          hover: null,
+         
       }
-   },
-
-   watch: {
-      // status(c, _) {
-      //    if (c && c.current === c.queue) this.$router.go()
-      // }
    },
 
    mounted() {
@@ -34,13 +29,11 @@ export default {
 
    methods: {
       async lookup() {
-         console.log('toad')
          const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
 
          try {
             const res = await axios.get(url)
             this.status = res.data.pull
-            console.log(this.status, 'status')
             this.userReadyRender = true
          } catch (e) {
             console.log(e, 'e')
@@ -78,14 +71,15 @@ export default {
    },
 
    props: {
-      status: null
+      status: null,
+      responseStatus: null
    }
 }
 </script>
 
 <template>
    <div class="loading-main">
-      <div class="active" v-if="this.status">
+      <div class="active" v-if="responseStatus === 0">
          <div>
             <h2>
                Parsing summoner...
@@ -98,12 +92,12 @@ export default {
                   {{ queue }} matches completed
                </p>
                <p class="sub">
-                  I update every 30 seconds.
+                  I update every 30 seconds (or refresh browser).
                </p>
             </div>
          </div>
       </div>
-      <div class="null" v-if="!this.status">
+      <div class="null" v-else>
          <div>
             <h2>
                Searching for summoner...

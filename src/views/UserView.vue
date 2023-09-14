@@ -3,6 +3,7 @@ import UserLoading from '../components/User/UserLoading.vue'
 import UserError from '../components/User/UserError.vue'
 import UserReady from '../components/User/UserReady.vue'
 import axios from 'axios'
+import { time } from 'vue-gtag'
 
    export default {
       components: {
@@ -13,38 +14,33 @@ import axios from 'axios'
       data() {
          return {
             response: null,
-            userReadyRender: false,
-            userErrorRender: false,
+            responseStatus: null,
             errorStatusParent: Number,
             currentPatch: null,
-            status: null,
-            check: null
+            poll: null,
+            unique: 0,
          }
       },
-      
-      watch: {
-         status(c, _) {
-            if ((c && c.current === c.queue) || this.userReadyRender) this.$router.go()
-         },
 
-         userReadyRender(c, _) {
-            if (c) clearInterval(this.check)
-         },
-
-         // response(c, _) {
-         //    if (Object.hasOwn(c, 'name')) this.userReadyRender = true
-         // }
-      },
-      
       created() {
          this.lookup()
-         this.getCurrentPatch()
-         
-         // this.matchHistory()
 
-         this.check = setInterval(() => {
+         // Consider long polling https://javascript.info/long-polling
+         setTimeout(() => {
+            if (!this.responseStatus) {
+               this.unique++
+               this.lookup()
+            }
+         }, 5000)
+
+         this.poll = setInterval(() => {
+            this.unique++
             this.lookup()
          }, 30000)
+      },
+      
+      mounted() {
+         this.getCurrentPatch()
       },
 
       methods: {
@@ -59,23 +55,29 @@ import axios from 'axios'
             }
          },
 
-         async lookup() {
+         lookup() {
             const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
 
-            try {
-               const res = await axios.get(url)
-               if (res.data.active) {
-                  this.status = res.data
-               } else {
-                  this.response = res.data
-                  // console.log(this.response, 'res')
-                  this.userReadyRender = true
+            axios.get(url, {
+               params: {
+                  rand: this.unique
                }
-            } catch (e) {
-               this.errorStatusParent = e.response.status
-               this.userErrorRender = true
-            }
-
+            })
+            .then((res) => {
+               this.response = res.data
+               
+               if (this.response.active) {
+                  this.responseStatus = 0
+               } else {
+                  this.responseStatus = 1
+                  clearInterval(this.poll)
+               }
+            })
+            .catch((e) => {
+               clearInterval(this.poll)
+               console.log(e)
+               this.responseStatus = 2
+            })
          },
 
          async matchHistory() {
@@ -95,14 +97,15 @@ import axios from 'axios'
 <template>
    <div>
       <UserLoading 
-         v-if="!userReadyRender && !userErrorRender"
-         :status="this.status"/>
+         v-if="!responseStatus"
+         :status="this.response"
+         :responseStatus="this.responseStatus"/>
       <UserReady
-         v-if="userReadyRender"
+         v-if="responseStatus === 1"
          :response="this.response"
          :currentPatch="this.currentPatch"/>
       <UserError
-         v-if="userErrorRender"
+         v-if="responseStatus === 2"
          :user="this.$route.params.username"
          :errorStatus="this.errorStatusParent"/>
    </div>

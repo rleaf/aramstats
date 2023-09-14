@@ -4,8 +4,7 @@
 
 <template>
    <div class="header-main">
-      <RouterLink to="/updates">Redesigning backend. Intending to wipe all data.</RouterLink>
-      <!-- <p>Working on fix for those stuck on the "Parsing summoner..." page.</p> -->
+      <RouterLink to="/updates">Database reset.</RouterLink>
    </div>
 </template>
 
@@ -15,14 +14,12 @@
       justify-content: center;
       align-items: center;
       height: 35px;
-      background: var(--hoverButton);
-      width: 100%;
-      transition: 0.25s;
+      /* background: var(--hoverButton); */
+      background: #492323;
    }
 
    a, p {
       color: var(--color-font);
       font-size: 0.85rem;
    }
-
 </style>
