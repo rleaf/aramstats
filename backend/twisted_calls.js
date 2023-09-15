@@ -1,4 +1,3 @@
-const e = require('express')
 const twisted = require('twisted')
 const { RegionGroups } = require('twisted/dist/constants')
 const api = new twisted.LolApi({

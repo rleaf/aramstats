@@ -297,7 +297,6 @@ async function matchParser(summoner, region, matchlist, summonerDocument, update
       if (game) {
          const puuidIndex = game.metadata.participants.findIndex(x => x === summoner.puuid)
          const player = game.info.participants[puuidIndex]
-
          if (updateArr) updateArr.push(player.championName)
 
          const match = new summonerMatchesModel({
@@ -445,8 +444,7 @@ function getKillParticipation(player, participants) {
       }
    })
    let kp = Math.round((player.kills + player.assists) / total * 100) / 100
-
-   return kp
+   return kp || 0
 }
 
 module.exports = router
