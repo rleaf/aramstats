@@ -18,6 +18,11 @@ const REGION_CONSTANTS = {
    ru: twisted.Constants.Regions.RUSSIA,
    jp: twisted.Constants.Regions.JAPAN,
    br: twisted.Constants.Regions.BRAZIL,
+   vn: twisted.Constants.Regions.VIETNAM,
+   tw: twisted.Constants.Regions.TAIWAN,
+   th: twisted.Constants.Regions.THAILAND,
+   sg: twisted.Constants.Regions.SINGAPORE,
+   ph: twisted.Constants.Regions.PHILIPPINES,
    pbe: twisted.Constants.Regions.PBE,
 }
 
@@ -33,6 +38,11 @@ const REGION_GROUPS = {
    ru: RegionGroups.EUROPE,
    jp: RegionGroups.ASIA,
    br: RegionGroups.AMERICAS,
+   vn: RegionGroups.SEA,
+   tw: RegionGroups.SEA,
+   th: RegionGroups.SEA,
+   sg: RegionGroups.SEA,
+   ph: RegionGroups.SEA,
 }
 
 /* 

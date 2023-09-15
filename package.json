@@ -19,6 +19,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongodb": "^4.12.1",
+    "mongoose": "^7.5.1",
     "twisted": "github:rleaf/twisted",
     "vue": "^3.2.45",
     "vue-gtag": "^2.0.1",

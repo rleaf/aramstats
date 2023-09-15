@@ -26,12 +26,12 @@ import { time } from 'vue-gtag'
          this.lookup()
 
          // Consider long polling https://javascript.info/long-polling
-         setTimeout(() => {
-            if (!this.responseStatus) {
-               this.unique++
-               this.lookup()
-            }
-         }, 5000)
+         // setTimeout(() => {
+         //    if (!this.responseStatus) {
+         //       this.unique++
+         //       this.lookup()
+         //    }
+         // }, 5000)
 
          this.poll = setInterval(() => {
             this.unique++

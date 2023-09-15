@@ -2,7 +2,7 @@
    <div class="update-main">
       <div class="update-block">
          <div class="header">
-            <h2>Database reset. Prone to crashing.</h2>
+            <h2>Database reset.</h2>
             <h3>9/14/23</h3>
          </div>
          <hr>

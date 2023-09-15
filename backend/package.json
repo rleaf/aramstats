@@ -17,7 +17,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongodb": "^4.12.1",
-    "mongoose": "^7.5.0",
+    "mongoose": "^7.5.1",
     "twisted": "^1.52.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",

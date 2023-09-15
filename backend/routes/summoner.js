@@ -297,8 +297,10 @@ async function matchParser(summoner, region, matchlist, summonerDocument, update
       if (game) {
          const puuidIndex = game.metadata.participants.findIndex(x => x === summoner.puuid)
          const player = game.info.participants[puuidIndex]
-         if (updateArr) updateArr.push(player.championName)
 
+         if (puuidIndex === -1 || !player) continue 
+
+         if (updateArr) updateArr.push(player.championName)
          const match = new summonerMatchesModel({
             _master: summonerDocument._id,
             matchId: game.metadata.matchId,

@@ -4,7 +4,7 @@
 
 <template>
    <div class="header-main">
-      <RouterLink to="/updates">Database reset. Prone to crashing.</RouterLink>
+      <RouterLink to="/updates">Database reset.</RouterLink>
    </div>
 </template>
 

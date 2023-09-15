@@ -1,7 +1,6 @@
 const express = require('express')
 const dotenv = require('dotenv')
-const twisted = require('../../twisted_calls')
-const championNameBook = require('../../constants/championNames')
+const twisted = require('../twisted_calls')
 
 dotenv.config()
 
