@@ -30,7 +30,6 @@ export default {
 
          items.forEach((item) => {
             if (item != 0 && book[item].description.includes('rarityMythic')) {
-
                // If masterwork, revert back to mythic.
                if (book[item].into == undefined) {
                   mythic = book[item].from + '.png'
@@ -46,7 +45,7 @@ export default {
       },
 
       mythicImage(Id) {
-         return `http://ddragon.leagueoflegends.com/cdn/13.17.1/img/item/${Id}`
+         return `http://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/item/${Id}`
       },
 
       async mythicWinrate() {
@@ -55,7 +54,7 @@ export default {
          (this.comparison) ? matches = this.data : matches = this.data.matches
 
          let _res
-         const url = 'http://ddragon.leagueoflegends.com/cdn/13.17.1/data/en_US/item.json'
+         const url = `http://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/data/en_US/item.json`
          await axios.get(url)
             .then((res) => _res = res.data.data)
 
@@ -99,6 +98,7 @@ export default {
    props: {
       data: null,
       comparison: false,
+      currentPatch: null
    }
 }
 </script>

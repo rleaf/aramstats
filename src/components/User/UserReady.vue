@@ -269,7 +269,7 @@ export default {
                :totalMatches="this.summonerStats.totalMatches" />
          </div>
          <div class="panel" v-show="this.panel === 2">
-            <ChampionPanel :data="this.championData"/>
+            <ChampionPanel :data="this.championData" :currentPatch="this.currentPatch"/>
          </div>
       </div>
    </div>

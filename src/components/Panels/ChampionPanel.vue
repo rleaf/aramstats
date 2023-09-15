@@ -138,7 +138,8 @@ export default {
    },
 
    props: {
-      data: null
+      data: null,
+      currentPatch: null
    }
 }
 </script>
@@ -176,7 +177,7 @@ export default {
       <div class="body">
          <div class="rune-mythic">
             <RuneWinrate :data="this.championData"/>
-            <MythicWinrate :data="this.championData"/>
+            <MythicWinrate :data="this.championData" :currentPatch="this.currentPatch"/>
          </div>
          <Histogram
          :championData="this.championData"

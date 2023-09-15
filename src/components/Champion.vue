@@ -52,7 +52,7 @@ export default {
 
    props: {
       champion: Object,
-      currentPatch: ''
+      currentPatch: null
    }
 }
 </script>
