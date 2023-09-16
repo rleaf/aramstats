@@ -7,42 +7,36 @@ export default {
    },
 
    props: {
-      user: String,
-      errorStatus: Number
+      user: {},
+      error: null
    }
 }
 </script>
 
 <template>
    <div class="dne-main">
-      <div v-if="this.errorStatus == 404">
+      <div v-if="this.error === 404">
          <h2>
-            Summoner <i>{{ this.user }}</i> does not exist.
+            Summoner <i>{{ this.user.name }} ({{ this.user.region }})</i> does not exist.
          </h2>
-         <p>
-            :(
-         </p>
+         <br>
+         <img src="https://i.redd.it/6p956lq5yiq81.jpg" alt="">
       </div>
-      <div v-if="this.errorStatus == 403">
+      <div v-if="this.error === 403">
          <h2>
             API key expired :(
          </h2>
          <p>
             @owl#4626 in aram academy discord and I'll refresh.
          </p>
-         <br>
-         <img src="https://i.redd.it/6p956lq5yiq81.jpg" alt="">
       </div>
-      <div v-if="this.errorStatus == 504">
+      <div v-if="this.error === 504">
          <h2>
             Riot API servers are probably down.
          </h2>
          <p>
             Check server status <a href="https://developer.riotgames.com/api-status/" target="_blank">here</a>
-            <!-- @owl#4626 in aram academy discord and I'll refresh. -->
          </p>
-         <br>
-         <img src="https://i.redd.it/6p956lq5yiq81.jpg" alt="">
       </div>
    </div>
 </template>

@@ -3,8 +3,7 @@ export default {
    data() {
       return {
          optionsShown: false,
-         selected: '',
-         placeholder: 'Region'
+         placeholder: 'RG'
       }
    },
    
@@ -21,10 +20,9 @@ export default {
          this.optionsShown = true
       },
       selectOption(option) {
-         this.selected = option
-         this.placeholder = option.region         
+         this.placeholder = option         
          this.optionsShown = false
-         this.$emit('regionEmit', this.selected.region)
+         this.$emit('regionEmit', option)
       },
       exit() {
          this.optionsShown = false
@@ -39,7 +37,7 @@ export default {
       <div class="dropdown-content" v-show="optionsShown">
          <div class="dropdown-item" @mousedown="selectOption(option)"
          v-for="(option, index) in options" :key="index">
-            {{ option.region || '-' }}
+            {{ option.toUpperCase() || '-' }}
          </div>
       </div>
    </div>

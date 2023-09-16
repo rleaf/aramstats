@@ -2,8 +2,8 @@
 import UserLoading from '../components/User/UserLoading.vue'
 import UserError from '../components/User/UserError.vue'
 import UserReady from '../components/User/UserReady.vue'
+import regions from '../constants/regions'
 import axios from 'axios'
-import { time } from 'vue-gtag'
 
    export default {
       components: {
@@ -15,7 +15,7 @@ import { time } from 'vue-gtag'
          return {
             response: null,
             responseStatus: null,
-            errorStatusParent: Number,
+            error: null,
             currentPatch: null,
             poll: null,
             unique: 0,
@@ -58,6 +58,12 @@ import { time } from 'vue-gtag'
          lookup() {
             const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
 
+            if (!regions.includes(this.$route.params.region)) {
+               this.responseStatus = 2
+               this.error = 404
+               return
+            }
+
             axios.get(url, {
                params: {
                   rand: this.unique
@@ -75,7 +81,7 @@ import { time } from 'vue-gtag'
             })
             .catch((e) => {
                clearInterval(this.poll)
-               console.log(e)
+               this.error = e.response.status
                this.responseStatus = 2
             })
          },
@@ -106,8 +112,11 @@ import { time } from 'vue-gtag'
          :currentPatch="this.currentPatch"/>
       <UserError
          v-if="responseStatus === 2"
-         :user="this.$route.params.username"
-         :errorStatus="this.errorStatusParent"/>
+         :user="{
+            name: this.$route.params.username,
+            region: this.$route.params.region
+         }"
+         :error="error"/>
    </div>
 </template>
 

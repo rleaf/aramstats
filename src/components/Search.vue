@@ -1,5 +1,6 @@
 <script>
 import Dropdown from '../components/Dropdown.vue'
+import regions from '../constants/regions'
 
 export default {
    components: {
@@ -9,9 +10,11 @@ export default {
    data() {
       return {
          input: '',
-         region: '',
+         region: 'rg',
          inputAlert: false,
          alertMessage: String,
+         regionOptions: regions,
+         showRegions: false,
       }
    },
 
@@ -29,7 +32,7 @@ export default {
          }
 
          this.$router.push({ name: `user`, params: {
-            region: this.region.toLowerCase(),
+            region: this.region,
             username: encodeURI(this.input),
          }})
          
@@ -40,7 +43,8 @@ export default {
 
       regionSelect(region) {
          this.region = region
-      }
+         this.showRegions = false
+      },
    },
 }
 
@@ -48,37 +52,63 @@ export default {
 
 <template>
    <div class="search">
-      <!-- <h1>ARAM Stats</h1> -->
       <img src="../assets/logo.svg" class="logo" alt="">
       <div class="container">
          <input type="text" v-on:keyup.enter="onEnter" placeholder="Summoner Name" v-model="input">
-         <Dropdown 
-         :options="[
-            {id: 1, region: 'NA'},
-            {id: 2, region: 'EUW'},
-            {id: 3, region: 'EUNE'},
-            {id: 4, region: 'LAN'},
-            {id: 5, region: 'LAS'},
-            {id: 6, region: 'OCE'},
-            {id: 7, region: 'KR'},
-            {id: 8, region: 'TR'},
-         ]"
+         <button class="region" @click="this.showRegions = true">
+            {{ this.region.toUpperCase() }}
+         </button>
+         <!-- <Dropdown 
+            :options="options"
             @region-emit="regionSelect" 
-            />
+            /> -->
+         </div>
+         <div class="region-selection" v-show="showRegions">
+            <div v-for="region in this.regionOptions" :key="region" @click="regionSelect(region)">
+               {{ region.toUpperCase() }}
+            </div>
          </div>
          <Transition name="fade">
             <div class="region-alert" v-show="inputAlert">
                {{ this.alertMessage }}
             </div>
          </Transition>
-
-         <!-- <div class="notif">
-            Search is down, working on database. <br> Hope to be up later today :). <br>- 5/10 (mm/dd)
-         </div> -->
    </div>
 </template>
 
 <style scoped>
+
+.region-selection {
+   margin-top: 1rem;
+}
+
+.region-selection > div {
+   color: var(--color-font);
+   font-size: 0.9rem;
+   margin: 0 .2rem;
+   padding: .2rem .4rem;
+   display: inline-block;
+   background: var(--tint200);
+   border-radius: 5px;
+   cursor: pointer;
+}
+.region-selection > div:hover {
+   transition: 0.1s;
+   background: var(--tint300);
+}
+
+button.region {
+   display: inline-block;
+   color: var(--color-font);
+   font-family: var(--font-main);
+   background: transparent;
+   font-size: 1rem;
+   border-radius: 5px;
+   border: none;
+   padding: 1rem;
+   width: 80px;
+}
+
 img.logo {
    width: 250px;
    padding-bottom: 2rem;

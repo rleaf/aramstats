@@ -76,8 +76,14 @@ router.get('/:region/:summonerURI', async (req, res) => {
          },
          challenges: challenges
       })
+
+      if (matchlist.length === 0) {
+         const summonerResponse = (await aggregateSummoner(summoner.puuid))[0]
+         res.send(summonerResponse)
+      }
+
       // 3.3 Parse every match, store what I want in matches collection. Once match document
-      //     is created, push the _id to summoner.<champion>.matches 
+      //     is created, push the _id to summoner.<champion>.matches
       await matchParser(summoner, req.params.region, matchlist, summonerDocument)
 
       // Iterate over champion matches & calc avgs
