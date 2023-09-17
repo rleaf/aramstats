@@ -95,7 +95,7 @@ export default {
       },
 
       itemImg(player, i) {
-         return `http://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/item/${player[`item${i}`]}.png`
+         if (player[`item${i}`]) return `http://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/item/${player[`item${i}`]}.png`
       }
    },
 
@@ -116,9 +116,9 @@ export default {
 <template>
    <div class="match-info-main">
       <div class="match-info-header">
-         <!-- <h2>
+         <h2>
             {{ this.matchId }}
-         </h2> -->
+         </h2>
          <div class="unit-dropdown">
             <button @click="button">
                {{ Object.keys(this.book)[this.unit] }}

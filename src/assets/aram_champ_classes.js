@@ -37,6 +37,7 @@ export const classBook = {
    blitzcrank: ['Catcher'],
    brand: ['Mage'], /* Burst -> Mage */
    braum: ['Warden'],
+   briar: ['Juggernaut'], /* -Assassin */
    caitlyn: ['Marksman'],
    camille: ['Diver'],
    cassiopeia: ['Battlemage'],

@@ -49,10 +49,12 @@ export default {
          // Iterate through champions
          for (const champion of this.championData) {
             let gameCount = champion.matches.length
+
             let championClass = classBook[champion.name.toLowerCase()]
 
             // Iterate through subclasses
             for (const subClass of championClass) {
+               if (!subClass) continue
                let classIndex = this.classIndexTable[subClass]
                this.classProfile[classIndex][subClass] += (gameCount / this.totalMatches) * 100 // % based off total games 
             }

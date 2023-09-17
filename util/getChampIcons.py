@@ -23,7 +23,9 @@ def _buildList():
 
 
 def _getImages(champ):
+   # CHAMPION ICON
    # image_url = f'https://ddragon.leagueoflegends.com/cdn/13.4.1/img/champion/{champ}.png'
+   # CHAMPION SPLASH
    image_url = f'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/{champ}_0.jpg'
    r = requests.get(image_url, stream=True)
 
