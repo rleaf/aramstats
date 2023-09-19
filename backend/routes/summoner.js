@@ -181,6 +181,7 @@ router.put('/update/:region/:summonerURI', async (req, res) => {
 
          // Is it more efficient to aggregate average stats on res.send() versus writing & reading them to/from DB?
          for (const match of matches) {
+            
             if (match.win) champion.wins++
             champion.averages.allyHealPerMinute+= Math.round(match.totals.healsOnTeammates / match.gameDuration)
             champion.averages.assists+= match.assists
@@ -441,7 +442,7 @@ function getDamageShare(player, participants) {
    })
 
    let cowabunga = Math.round(player.totalDamageDealtToChampions / total * 100) / 100
-   return cowabunga
+   return cowabunga || 0
 }
 
 function getKillParticipation(player, participants) {

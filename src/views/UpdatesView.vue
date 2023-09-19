@@ -1,16 +1,22 @@
 <script>
+import _version from '../constants/version'
+import _updates from '../constants/updates'
+
 export default {
    data() {
       return {
-         tab: 0
+         tab: 0,
+         version: _version,
+         updates: _updates
       }
    },
 
    methods: {
-
-   }
+      getImage(fileName) {
+         return new URL(`../assets/${fileName}.webp`, import.meta.url).href
+      }
+   },
 }
-
 </script>
 
 <template>
@@ -20,109 +26,102 @@ export default {
          <div class="versions" @click="this.tab = 1" :class="{ active: this.tab }">Versioning</div>
       </div>
       <div class="updates" v-show="this.tab === 0">
-         <!-- <div class="description">
-            Commentary on the what/why of some changes.
-         </div> -->
-         <div class="update-block">
+         <div class="update-block" v-for="u in updates">
             <div class="header">
-               <h2>Database reset.</h2>
-               <h3>9/14/23</h3>
+               <div>
+                  <h2>{{ u.title }}</h2>
+                  <h3 v-if="u.version">v{{ u.version }}</h3>
+               </div>
+               <h3>{{ u.date }}</h3>
             </div>
             <hr>
-            <p>
-               I've finished revamping the backend and have reset the database; you will have to reparse your summoner.
-               Although it may not look very different this is a significant change to the website so let me know if you find any issues.
-            </p>
-         </div>
-         <div class="update-block">
-            <div class="header">
-               <h2>Redesigning backend. Intending to wipe all data.</h2>
-               <h3>9/2/23</h3>
-            </div>
-            <hr>
-            <p>
-               There are two main reasons for doing this:
-            </p>
-            <p>
-               The first is because I have more storage.
-               To reduce costs when this site began I opted for the free tier of MongoDB Atlas (~500MB storage). Because of the limited amount of storage, I designed the backend to
-               be "picky" when pulling game data from Riot's servers and only store specific information. It was a decent solution for the free tier, but since upgrading to the Pi
-               (pic below), I can be more liberal with hoarding data which in turn may allow me to provide more stats. 
-            </p>
-            <p>
-               The second is because there's some cleaning up to do. I never intended for this site to be up this long or to even open it up to multiple regions. This started because
-               I wanted to see my performance on certain champs and to try and convince some friends, using empirical data, that maybe Aurelion Sol is just not for them or taking
-               Glacial Augment on Azir deserves a ban. As more people use this site, I'd like to revamp the backend to ameliorate UX and try and make it more efficient so it crashes less. 
-            </p>
-            <p>
-               I'm using these two reasons as an excuse to start fresh on the database. I haven't actually started working on it yet, but just wanted to let those interested know. Hmu
-               @ <code style="background-color: var(--dark600); border-radius: 5px;">ryli.</code> on Discord for any questions.
-            </p>
-            <img src="../assets/leo.webp" width="80%" style="clear: both;" alt="">
-            <p class="sub">
-               "...guys listen to me...glacial Azir is OP - they're doing it everywhere in Korea."
-            </p>
-         </div>
-         <div class="update-block">
-            <div class="header">
-               <h2>Moving database...again.</h2>
-               <h3>7/22/23</h3>
-            </div>
-            <hr>
-            <p>
-               Moving database from an old laptop to a Raspberry Pi 4. Planned to do this a while ago as this was the original goal, but they've always been out of stock.
-            </p>
-            <img src="../assets/piserver.webp" height="400px" style="clear: both;" alt="">
-         </div>
-         <div class="update-block">
-            <div class="header">
-               <h2>Match-level data available</h2>
-               <h3>5/16/23</h3>
-            </div>
-            <hr>
-            <p>
-               Click on any champ then click on the dropdown arrow in a match container. Can see stats like CC, gold spent, dmg, time spent dead, etc... At the moment data is pulled directly
-               from Riot servers and is not stored in the Aramstats db. So old matches may not be viewable.  
-            </p>
-         </div>
-         <div class="update-block">
-            <div class="header">
-               <h2>Moving database</h2>
-               <h3>5/9/23 - 5/10/23</h3>
-            </div>
-            <hr>
-            <p>
-               Migrating database for more capacity. This is...experimental so there are some lingering issues.
-            </p>
-            <p>
-                  <s>Working on the issue where you're stuck on the the "parsing summoner" page for a unexpectedly long period of time.</s> e: I think this is fixed?
-            </p>
-         </div>
-         <div class="update-block">
-            <div class="header">
-               <h2>New UI</h2>
-               <h3>5/2/23</h3>
-            </div>
-            <hr>
-            <p>
-               I'm rolling out a big UI update. Its incomplete, but good enough to the point I think it's nicer to interact with than the prior UI. All base functionality
-               that the prior UI had should be here. Hmu if you find any weird interactions.
-            </p>
+            <p v-for="p in u.body">{{ p }}</p>
+            <img v-if="u.img" :src="getImage(u.img)" alt="">
+            <p class="sub" v-if="u.imgCaption">{{ u.imgCaption }}</p>
          </div>
       </div>
       <div class="versioning" v-show="this.tab === 1">
-         toads
+         <div class="version-block" v-for="v in version">
+            <div class="version-header">
+               <h2>{{ v.version }}</h2>
+               <h3>{{ v.date }}</h3>
+            </div>
+            <hr>
+            <div class="version-body">
+               <div class="notes" v-if="v.notes">
+                  <p>
+                     {{ v.notes }}
+                  </p>
+               </div>
+               <div v-if="v.add">
+                  <h4>Added</h4>
+                  <ul>
+                     <li v-for="a in v.add">{{ a }}</li>
+                  </ul>
+               </div>
+               <div v-if="v.remove">
+                  <h4>Removed</h4>
+                  <ul>
+                     <li v-for="r in v.remove">{{ r }}</li>
+                  </ul>
+               </div>
+               <div v-if="v.fix">
+                  <h4>Fixed</h4>
+                  <ul>
+                     <li v-for="f in v.fix">{{ f }}</li>
+                  </ul>
+               </div>
+               <div v-if="v.adjust">
+                  <h4>Adjusted</h4>
+                  <ul>
+                     <li v-for="a in v.adjust">{{ a }}</li>
+                  </ul>
+               </div>
+            </div>
+         </div>
       </div>
    </div>
 </template>
 
 <style scoped>
 
+.notes p {
+   color: var(--light600);
+   font-style: italic;
+   padding-bottom: 1rem;
+}
+
+.version-body {
+   padding: 1rem;
+}
+
+.version-body ul {
+   color: var(--color-font);
+   font-size: 0.95rem;
+   margin-bottom: 2rem;
+}
+
+h4 {
+   color: var(--color-font);
+   font-size: 1.1rem;
+   font-weight: normal;
+   margin: 0;
+}
+.version-header {
+   display: flex;
+   justify-content: space-between;
+   align-items: flex-end;
+}
+
+.versioning {
+   width: 800px;
+}
+
 .description {
    font-size: 0.9rem;
-   text-align: left;
-   color: var(--light900);
+   color: var(--light800);
    font-style: italic;
+   margin-bottom: 3vh;
 }
 
 .update-tabs > div {
@@ -147,8 +146,7 @@ export default {
    display: flex;
    width: 800px;
    gap: 20px;
-   margin-bottom: 5vh;
-   /* justify-content: left; */
+   margin-bottom: 2vh;
 }
 .update-main {
    display: flex;
@@ -156,18 +154,30 @@ export default {
    flex-direction: column;
    align-items: center;
    padding: 8vh 0;
-   text-align: center;
 }
 
 .update-block {
    width: 800px;
    margin-bottom: 3vh;
+   text-align: center;
+}
+
+.update-block img {
+   max-width: 80%;
+   clear: both;
+   max-height: 400px;
 }
 
 .header {
    display: flex;
    width: 100%;
    justify-content: space-between;
+   align-items: flex-end;
+}
+
+.header > div {
+   display: flex;
+   gap: 1rem;
    align-items: flex-end;
 }
 
@@ -189,8 +199,9 @@ h3 {
    font-size: 1rem;
    line-height: 1;
    text-align: left;
-   color: var(--color-font);
+   color: var(--light600);
    margin-bottom: 0;
+   font-style: italic;
 }
 
 p {
@@ -204,6 +215,7 @@ p {
 p.sub {
    text-align: center;
    font-size: 0.8rem;
+   color: var(--light600);
    font-style: italic;
    margin-top: 0;
 }
