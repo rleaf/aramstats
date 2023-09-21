@@ -12,7 +12,7 @@ const updates = [
    {
       title: "Database reset.",
       date: "9/14/23",
-      version: "2.00",
+      version: "2.0.0",
       body: [
          `I've finished revamping the backend and have reset the database; you will have to reparse your summoner. Although it may not look very different this is a significant change to the website so let me know if you find any issues.`
       ],
@@ -40,7 +40,7 @@ const updates = [
    {
       title: "Match-level data available",
       date: "5/16/23",
-      version: "1.10",
+      version: "1.1.0",
       body: [
          `Click on any champ then click on the dropdown arrow in a match container. Can see stats like CC, gold spent, dmg, time spent dead, etc... At the moment data is pulled directly from Riot servers and is not stored in the Aramstats db. So old matches may not be viewable.`
       ]
@@ -55,7 +55,7 @@ const updates = [
    {
       title: "New UI",
       date: "5/2/23",
-      version: "1.00",
+      version: "1.0.0",
       body: [
          `I'm rolling out a big UI update. Its incomplete, but good enough to the point I think it's nicer to interact with than the prior UI. All base functionality that the prior UI had should be here. Hmu if you find any weird interactions.`
       ]

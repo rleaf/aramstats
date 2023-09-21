@@ -12,7 +12,17 @@
 
 const version = [
    {
-      version: "2.10",
+      version: "2.1.1",
+      date: "TBD",
+      add: [
+         "HTTP -> HTTPS"
+      ],
+      fix: [
+         "Update packages on prod for new OCE regions (forgot, woops)"
+      ]
+   },
+   {
+      version: "2.1.0",
       date: "9/19/23",
       notes: "Retroactively versioning to 5/2/23 to keep tidy.",
       add: [
@@ -32,7 +42,7 @@ const version = [
       ],
    },
    {
-      version: "2.00",
+      version: "2.0.0",
       date: "9/14/23",
       add: [
          'Summoner encounter panel & pancakes placeholder'
@@ -43,16 +53,16 @@ const version = [
       ]
    },
    {
-      version: "1.10",
+      version: "1.1.0",
       date: "5/16/23",
       add: [
          "Match-level data."
       ],
    },
    {
-      version: "1.00",
+      version: "1.0.0",
       date: "5/2/23",
-      notes: "Not technically 1.00 but good enough.",
+      notes: "Not technically 1.0.0 but good enough.",
       adjust: [
          'Updated user interface.',
       ]
