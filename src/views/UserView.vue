@@ -24,7 +24,6 @@ import axios from 'axios'
 
       created() {
          this.lookup()
-
          // Consider long polling https://javascript.info/long-polling
          // setTimeout(() => {
          //    if (!this.responseStatus) {

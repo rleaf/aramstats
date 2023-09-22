@@ -1,14 +1,16 @@
 <script>
    import { RouterLink, RouterView } from 'vue-router'
+   import { userReadyStore } from '../stores/userReady'
 
    export default {
       inheritAttrs: false,
       data() {
          return {
-            day: false
+            day: false,
+            store: userReadyStore()
          }
       },
-
+      
       mounted() {
          if (JSON.parse(localStorage.getItem('theme'))) this.theme()
       },
@@ -19,7 +21,7 @@
             document.querySelector('body').classList.toggle('day')
             localStorage.setItem('theme', JSON.stringify(this.day))
          }
-      }
+      },
    }
 
 </script>
@@ -29,6 +31,7 @@
       <div class="left">
          <RouterLink to="/">Home</RouterLink>
       </div>
+      <input v-if="this.store.userReady" type="text">
       <div class="right">
          <button @click="this.theme()" :class="{day: this.day}">
             <div class="theme"></div>
