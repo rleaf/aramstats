@@ -20,7 +20,8 @@ export default {
             champ.name = this.data[i].name
          }
 
-         champ.image = new URL(`../assets/champion_icons/${this.data[i].name.toLowerCase()}.png`, import.meta.url).href
+         champ.image = `https://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/champion/${this.data[i].name}.png`
+         // champ.image = new URL(`../assets/champion_icons/${this.data[i].name.toLowerCase()}.png`, import.meta.url).href
          this.championBook.push(champ)
       }
       this.championBook.sort((a, b) => a.name.localeCompare(b.name))
@@ -57,7 +58,8 @@ export default {
    },
 
    props: {
-      data: null
+      data: null,
+      currentPatch: null
    }
 }
 </script>

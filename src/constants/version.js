@@ -14,12 +14,13 @@ const version = [
    {
       version: "2.1.1",
       date: "TBD",
-      add: [
-         "HTTP -> HTTPS"
-      ],
       fix: [
          "Update packages on prod for new OCE regions (forgot, woops)"
-      ]
+      ],
+      adjust: [
+         "HTTP -> HTTPS",
+         "Lazy loading image assets"
+      ],
    },
    {
       version: "2.1.0",

@@ -9,14 +9,10 @@ export default {
 
    data() {
       return {
-         championIcon: new URL(`../assets/champion_icons/${this.champion.name.toLowerCase()}.png`, import.meta.url).href,
-         // championIcon: `https://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/champion/${this.champion.name}.png`,
+         championIcon: `https://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/champion/${this.champion.name}.png`,
+         // championIcon: new URL(`../assets/champion_icons/${this.champion.name.toLowerCase()}.png`, import.meta.url).href,
          expand: false,
       }
-   },
-
-   mounted() {
-      // console.log(championNameBook, 'book')
    },
 
    methods: {
@@ -26,15 +22,12 @@ export default {
    },
 
    computed: {
-      // championName() {
-      //    return (this.champion.trueChampionName) ? this.champion.trueChampionName : this.champion.name
-      // },
-
       background() {
-         const img = new URL(`../assets/champion_splash/${this.champion.name.toLowerCase()}.webp`, import.meta.url).href
          // const img = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${this.champion.name}_0.jpg`
-         
-         return `background: linear-gradient(to right, rgba(var(--tint100RGB), 0.8), rgba(var(--tint100RGB), 0.85) 10%, rgba(var(--tint100RGB), 1.0) 60%), no-repeat -110% 20%/80% url('${img}')`
+         const img = new URL(`../assets/champion_splash/${this.champion.name.toLowerCase()}.webp`, import.meta.url).href
+         if (this.lazy) {
+            return `linear-gradient(to right, rgba(var(--tint100RGB), 0.8), rgba(var(--tint100RGB), 0.85) 10%, rgba(var(--tint100RGB), 1.0) 60%), no-repeat -110% 20%/80% url('${img}')`
+         }
       },
       winrate() {
          return Math.round((this.champion.wins / this.champion.games) * 100)
@@ -55,22 +48,22 @@ export default {
 
    props: {
       champion: Object,
-      currentPatch: null
+      currentPatch: null,
+      lazy: Boolean
    }
-}
+}  
 </script>
 
 <template>
    <div>
-
-      <div class="champion-main" :style="background">
+      <div class="champion-main" :style="{ background: background}">
          <button class="dropdown" @click="this.expand =! this.expand">
             <img src="../assets/arrow2.svg" alt="" :class="{ expand: this.expand }">
          </button>
          <div class="lhs">
             <h2>{{ getChampionName(this.champion.name) }}</h2>
             <div class="lhs-stats">
-               <img :src="this.championIcon" :alt="this.champion.name">
+               <img v-if="lazy" :src="this.championIcon" :alt="this.champion.name">
                <div class="champ-winrate">
                   <div class="title">
                      Winrate
@@ -173,8 +166,7 @@ export default {
          <Match v-if="currentPatch" v-for="match in sortMatches"
             :key="match.matchId"
             :match="match"
-            :currentPatch="this.currentPatch"
-            />
+            :currentPatch="this.currentPatch"/>
       </div>
    </div>
 </template>

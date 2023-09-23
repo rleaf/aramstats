@@ -147,7 +147,7 @@ export default {
 <template>
    <div class="champion-main" :style="background">
       <div class="head">
-         <ChampSearch :data="this.data" @championFocus="champion => championFilter = champion"/>
+         <ChampSearch :data="this.data" :currentPatch="this.currentPatch" @championFocus="champion => championFilter = champion"/>
          <div class="champion-stats">
             <div class="winrate">
                {{ winrate }}% <span class="unit">winrate</span>

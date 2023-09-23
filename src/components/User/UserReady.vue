@@ -1,5 +1,4 @@
 <script>
-import Champion from '../Champion.vue'
 import Dropdown from '../Dropdown.vue'
 import Pancakes from '../Pancakes.vue'
 
@@ -16,7 +15,6 @@ import { userReadyStore } from '../../stores/userReady'
 
 export default {
    components: {
-      Champion,
       Dropdown,
       Pancakes,
       Histogram,
@@ -268,18 +266,22 @@ export default {
                Champion
             </div>
          </div>
-         <div class="panel" v-show="this.panel === 0">
-            <!-- <ListPanel :championData="this.championData" :currentPatch="this.currentPatch" :updateKey="this.updateKey"/> -->
-            <ListPanel :championData="this.championData" :currentPatch="this.currentPatch" :updateKey="this.updateKey"/>
+         <div class="panel" v-if="this.panel === 0">
+            <ListPanel
+               :championData="this.championData"
+               :currentPatch="this.currentPatch"
+               :updateKey="this.updateKey"/>
          </div>
-         <div class="panel" v-show="this.panel === 1">
+         <div class="panel" v-if="this.panel === 1">
             <SummonerPanel 
                :championData="this.championData"
                :challengeData="this.challengeInfo" 
                :totalMatches="this.summonerStats.totalMatches" />
          </div>
-         <div class="panel" v-show="this.panel === 2">
-            <ChampionPanel :data="this.championData" :currentPatch="this.currentPatch"/>
+         <div class="panel" v-if="this.panel === 2">
+            <ChampionPanel
+               :data="this.championData"
+               :currentPatch="this.currentPatch"/>
          </div>
       </div>
    </div>

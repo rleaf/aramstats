@@ -2,7 +2,6 @@
 import Champion from '../Champion.vue'
 import championNameBook from '../../constants/championNames'
 
-
 export default {
    components: {
       Champion
@@ -21,7 +20,33 @@ export default {
             { Tank: ['Damage Taken', 'DTPM', 'Damage Mitigated', 'DMPM'] },
             { Multikill: ['Triple Kills', 'Quadra kills', 'Penta kills'] },
             { Misc: ['Kill Participation', 'Gold', 'GPM'] },
-         ]
+         ],
+         championLazyLoad: new Array(this.championData.length).fill(0)
+      }
+   },
+
+   mounted() {
+      const observer = new IntersectionObserver(entries => {
+         entries.forEach(entry => {
+            if (entry.isIntersecting) {
+               this.championLazyLoad[entry.target.componentIndex] = 1
+               observer.unobserve(entry.target)
+            }
+         })
+      })
+
+      const children = Array.from(this.$refs.champion.children)
+
+      for (const [i, child] of children.entries()) {
+         child.componentIndex = i
+         observer.observe(child)
+      }
+   },
+
+   methods: {
+      lazyLoad(idx) {
+         return (this.championLazyLoad[idx] === 1) ?
+            true : false
       }
    },
 
@@ -69,13 +94,12 @@ export default {
          return (this.order) ?
             filtered.sort((a, b) => access(table[this.sortBy], b) - access(table[this.sortBy], a)) :
             filtered.sort((a, b) => access(table[this.sortBy], a) - access(table[this.sortBy], b))
-      },
+      }
    },
 
    props: {
       championData: Object,
       currentPatch: '',
-      // updateKey: Number
    }
    
 }
@@ -111,13 +135,12 @@ export default {
             <input type="text" placeholder="Search Champion" v-model="this.search">
          </div>
       </div>
-      <!-- <div class="champion-container" :key="this.updateKey"> -->
-      <div class="champion-container">
-         <Champion v-for="champ in sortedChamps" 
-         :key="champ.name"
-         :champion="champ"
-         :currentPatch="this.currentPatch"
-         />
+      <div class="champion-container" ref="champion">
+         <Champion v-for="(champ, i) in sortedChamps"
+            :lazy="lazyLoad(i)"
+            :key="champ.name"
+            :champion="champ"
+            :currentPatch="this.currentPatch"/>
       </div>
 
    </div>
