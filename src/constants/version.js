@@ -13,13 +13,13 @@
 const version = [
    {
       version: "2.1.1",
-      date: "TBD",
+      date: "9/23/23",
       fix: [
          "Update packages on prod for new OCE regions (forgot, woops)"
       ],
       adjust: [
          "HTTP -> HTTPS",
-         "Lazy loading image assets"
+         "Lazy loading image assets & pull more from ddragon CDN"
       ],
    },
    {

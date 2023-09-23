@@ -91,7 +91,8 @@ export default {
       },
 
       champImg(champ) {
-         return new URL(`../assets/champion_icons/${champ.toLowerCase()}.png`, import.meta.url).href
+         // return new URL(`../assets/champion_icons/${champ.toLowerCase()}.png`, import.meta.url).href
+         return `https://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/champion/${champ}.png`
       },
 
       itemImg(player, i) {
