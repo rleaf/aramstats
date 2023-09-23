@@ -10,7 +10,7 @@
             store: userReadyStore()
          }
       },
-      
+
       mounted() {
          if (JSON.parse(localStorage.getItem('theme'))) this.theme()
       },
@@ -31,7 +31,7 @@
       <div class="left">
          <RouterLink to="/">Home</RouterLink>
       </div>
-      <input v-if="this.store.userReady" type="text">
+      <!-- <input v-if="this.store.userReady" type="text"> -->
       <div class="right">
          <button @click="this.theme()" :class="{day: this.day}">
             <div class="theme"></div>

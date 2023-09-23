@@ -10,6 +10,7 @@ export default {
    data() {
       return {
          championIcon: new URL(`../assets/champion_icons/${this.champion.name.toLowerCase()}.png`, import.meta.url).href,
+         // championIcon: `https://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/champion/${this.champion.name}.png`,
          expand: false,
       }
    },
@@ -31,6 +32,8 @@ export default {
 
       background() {
          const img = new URL(`../assets/champion_splash/${this.champion.name.toLowerCase()}.webp`, import.meta.url).href
+         // const img = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${this.champion.name}_0.jpg`
+         
          return `background: linear-gradient(to right, rgba(var(--tint100RGB), 0.8), rgba(var(--tint100RGB), 0.85) 10%, rgba(var(--tint100RGB), 1.0) 60%), no-repeat -110% 20%/80% url('${img}')`
       },
       winrate() {

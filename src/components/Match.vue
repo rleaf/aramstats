@@ -60,7 +60,7 @@ export default {
          for (let i = 0; i < 6; i++) {
             if (this.match.items) {
                if (this.match.items[i] != 0) {
-                  let x = `http://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/item/${this.match.items[i]}.png`
+                  let x = `https://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/item/${this.match.items[i]}.png`
                   if (i < 3) {
                      this.items[0].push(x)
                   } else {

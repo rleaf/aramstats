@@ -185,7 +185,7 @@ export default {
 
       profileIcon() {
          // clogs 403 initially because getpatch hasn't run. once responds w/ patch will update reactively.
-         return `http://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/profileicon/${this.summoner.iconId}.png`
+         return `https://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/profileicon/${this.summoner.iconId}.png`
       },
 
       background() {

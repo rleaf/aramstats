@@ -45,7 +45,7 @@ export default {
       },
 
       mythicImage(Id) {
-         return `http://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/item/${Id}`
+         return `https://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/item/${Id}`
       },
 
       async mythicWinrate() {
@@ -54,7 +54,7 @@ export default {
          (this.comparison) ? matches = this.data : matches = this.data.matches
 
          let _res
-         const url = `http://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/data/en_US/item.json`
+         const url = `https://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/data/en_US/item.json`
          await axios.get(url)
             .then((res) => _res = res.data.data)
 
