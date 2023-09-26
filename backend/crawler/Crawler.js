@@ -1,10 +1,11 @@
+const Seed = require('./Seed')
+
 let instance = null
 
-export default class Crawler {
-   constructor(_something) {
+class Crawler {
+   constructor() {
 
       if (instance) return instance
-
       instance = this
 
       /* 
@@ -16,15 +17,15 @@ export default class Crawler {
       1.1 Get most recent patch (ddragon?)
       2. For matches in matchlist
          2.0 If match not on most recent patch, break
-         2.1 *push *unique* puuids to db.puuids
+         2.1 push *unique* puuids to db.puuids
          2.2 push matchdata to db.matches
       3. For puuid in db.puuids
          3.1 get puuid matchlist
-         3.2 *Remove duplicate matches
          3.3 For match in matchlist
             3.30 If match not on most recent patch, break
+            3.301 If match already in db.matches, continue
             3.31 push *unique* puuids to db.puuids
-            3.32 push *unique* matchdata to db.matches
+            3.32 push matchdata to db.matches
 
       **Updating**
       1. For puuid in db.puuids
@@ -35,5 +36,16 @@ export default class Crawler {
 
       Call update step every day/couple days to get new match data.
       */
+      this.seed = new Seed()
+   }
+
+   stop() {
+
+   }
+
+   resume() {
+      
    }
 }
+
+module.exports = Crawler

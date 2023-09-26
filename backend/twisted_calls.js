@@ -59,20 +59,38 @@ async function getSummonerMatches(summoner, region) {
 /* 
 * Total match history for ARAM (450). matchList[0] is most recent match.
 */
-async function getAllSummonerMatches(summonerName, region) {
-   const summonerGet = (await api.Summoner.getByName(summonerName, REGION_CONSTANTS[region])).response
+async function getAllSummonerMatches(puuid, region) {
    let matchList = []
    let stop = true
 
    for (let i = 0; stop; i=i+100) {
-      const pull = await api.MatchV5.list(summonerGet.puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })
+      const pull = await api.MatchV5.list(puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })
       matchList.push(pull.response)
 
-      if (pull.response.length == 0) {
+      if (pull.response.length === 0) {
          stop = false
       }
    }
    return matchList.flat()
+}
+
+/* 
+* Get ARAM matches by the hundreds. Used for crawl init atm.
+*/
+async function getSummonerMatchesOnPatch(puuid, region, patch) {
+   let matchlist = []
+   let stop = true
+
+   for (let i = 0; stop; i+=100) {
+      const pull = (await api.MatchV5.list(puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })).response
+      matchlist.push(pull)
+
+      const lastMatch = await getMatchInfo(pull[pull.length - 1], region)
+      const matchPatch = lastMatch.info.gameVersion.split('.').slice(0, 2).join('.')
+      if (patch != matchPatch) stop = false
+   }
+
+   return matchlist.flat()
 }
 
 /* 
@@ -94,6 +112,7 @@ module.exports = {
    getSummoner,
    getSummonerMatches,
    getAllSummonerMatches,
+   getSummonerMatchesOnPatch,
    getMatchInfo,
    playerChallenges
 }

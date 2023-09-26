@@ -58,7 +58,7 @@ router.get('/:region/:summonerURI', async (req, res) => {
       // 3.
       // 3.1 Pull all matchIds
       // Most recent game is at [0]
-      const matchlist = (await twisted.getAllSummonerMatches(summoner.name, req.params.region))
+      const matchlist = (await twisted.getAllSummonerMatches(summoner.puuid, req.params.region))
       const challenges = await challengeScribe(summoner.puuid, req.params.region)
       
       // 3.2 Create summoner document
@@ -140,7 +140,7 @@ router.put('/update/:region/:summonerURI', async (req, res) => {
    await summonerDocument.save()
 
    // Get total matchlist & find idx of last match
-   const totalMatchlist = (await twisted.getAllSummonerMatches(summoner.name, req.params.region))
+   const totalMatchlist = (await twisted.getAllSummonerMatches(summoner.puuid, req.params.region))
    const lastMatchIndex = totalMatchlist.findIndex(x => x === summonerDocument.pull.lastMatchId)
 
    /* 
