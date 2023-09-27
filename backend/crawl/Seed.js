@@ -6,7 +6,10 @@ const Util = require('./Util')
 
 
 /* 
-   Seed the crawler. Steps 1-3
+   Future Ryan: make it so you can do it for all regions 
+   https://developer.riotgames.com/docs/lol#routing-values
+      - rate limits are per region (americas, asia, europe, sea)
+      - collect puuids on X region and store them in db.puuid_{X}
 */
 class Seed {
    constructor() {
