@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 /* 
-   Dynamically set the collection name, matches_PATCH (matches_13.18).
+   Dynamically set the collection name
 */
 const matchModel = (patch) => {
    const matchesSchema = new mongoose.Schema({

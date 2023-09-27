@@ -1,6 +1,6 @@
 const twisted = require('../twisted_calls')
 const { matchModel } = require('../models/matches_model')
-const puuidModel = require('../models/puuid_model')
+const { puuidModel } = require('../models/puuid_model')
 
 const Util = require('./Util')
 
@@ -13,37 +13,55 @@ class Propagate {
    
    async init() {
       this.patch = await this.util.getPatch()
-      // this.patch = '13.18'
+      this.regionGroups = ['AMERICAS', 'EUROPE', 'ASIA', 'SEA']
       this.matchModel = matchModel(this.patch)
-      this.region = 'na' // fix twisted pls
+      this.puuidModel = puuidModel(this.regionGroups[0]) // Fire crawler on 1, 2, 3
 
-      for (const doc of await puuidModel.find({})) {
-         console.log(doc.puuid)
-         const matchlist = await twisted.getSummonerMatchesOnPatch(doc.puuid, this.region, this.patch)
+      for (const doc of await this.puuidModel.find({})) {
+         // console.log(doc.puuid)
+         const matchlist = await twisted.getSummonerMatchesOnPatch(doc.puuid, doc.region, this.patch)
+         console.log(matchlist[0], matchlist[matchlist.length - 1])
          await this.propagate(matchlist)
       }
+
    }
 
    async propagate(matchlist) {
       for (const matchId of matchlist) {
-         console.log(matchId)
-
+         console.log(`starting ${matchId}`)
+         
          if (this.pause) return
+         
+         const region = this.util.getPlatform(matchId)
+         const match = await twisted.getMatchInfo(matchId, region)
+            .catch(e => console.log(e))
 
-         const match = await twisted.getMatchInfo(matchId, this.region)
-         if (this.patch != match.info.gameVersion.split('.').slice(0, 2).join('.')) break
+         // Continue/Break on...
 
-         for (const puuid of match.metadata.participants) {
-            if (await puuidModel.findOne({ puuid: puuid })) continue
-            await puuidModel.create({ puuid: puuid })
+         // ...dead match
+         if (!match.info.gameDuration) continue
+         
+         // ...old patch
+         if (this.patch != match.info.gameVersion.split('.').slice(0, 2).join('.')) {
+            console.log(this.patch, match.info.gameVersion.split('.').slice(0, 2).join('.'))
+            console.log('old patch')
+            break
          }
-
+         
+         // ...duplicate matchId
          if (await this.matchModel.findOne({ 'metadata.matchId': matchId})) continue
+         console.log(`adding ${matchId} to db`)
          await this.matchModel.create({
             metadata: match.metadata,
             info: match.info
          })
-
+         
+         for (const puuid of match.metadata.participants) {
+            // ...duplicate puuid
+            if (await this.puuidModel.findOne({ puuid: puuid })) continue
+            console.log(`adding ${puuid} to puuids`)
+            await this.puuidModel.create({ puuid: puuid })
+         }
       }
    }
 }

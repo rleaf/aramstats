@@ -1,6 +1,6 @@
 const twisted = require('../twisted_calls')
 const { matchModel } = require('../models/matches_model')
-const puuidModel = require('../models/puuid_model')
+const { puuidModel } = require('../models/puuid_model')
 
 const Util = require('./Util')
 
@@ -9,7 +9,8 @@ const Util = require('./Util')
    Future Ryan: make it so you can do it for all regions 
    https://developer.riotgames.com/docs/lol#routing-values
       - rate limits are per region (americas, asia, europe, sea)
-      - collect puuids on X region and store them in db.puuid_{X}
+      - Need SEED users on every PLATFORM (VN, PH, TW, NA, KR, EUW, etc...)
+         and push seed user crawl to corresponding REGION
 */
 class Seed {
    constructor() {
@@ -19,6 +20,7 @@ class Seed {
          region: 'na'
       }
       this.util = new Util()
+      this.regionGroup = this.util.shorthandToRegionGroup(this.seed.region)
       this.pause = false // Put this somewhere else?
       this.init()
    }
@@ -27,9 +29,9 @@ class Seed {
       // this.patch = await this.util.getPatch()
       this.patch = '13.18' // Simulate p13.18 cause p13.19 is out
       this.matchModel = matchModel(this.patch)
+      this.puuidModel = puuidModel(this.regionGroup)
       this.matchlist = await twisted.getSummonerMatchesOnPatch(this.seed.puuid, this.seed.region, this.patch)
       
-
       await this.populate()
    }
 
@@ -46,8 +48,11 @@ class Seed {
          if (this.patch != match.info.gameVersion.split('.').slice(0, 2).join('.')) break
 
          for (const puuid of match.metadata.participants) {
-            if (await puuidModel.findOne({ puuid: puuid })) continue
-            await puuidModel.create({ puuid: puuid })
+            if (await this.puuidModel.findOne({ puuid: puuid })) continue
+            await this.puuidModel.create({
+               puuid: puuid,
+               region: this.seed.region
+            })
          }
 
          if (await this.matchModel.findOne({ 'metadata.matchId': matchId})) continue
