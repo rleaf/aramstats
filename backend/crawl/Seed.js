@@ -23,8 +23,9 @@ class Seed {
    async init() {
       // this.patch = await this.util.getPatch()
       this.patch = '13.18' // Simulate p13.18 cause p13.19 is out
-      this.matchlist = await twisted.getSummonerMatchesOnPatch(this.seed.puuid, this.seed.region, this.patch)
       this.matchModel = matchModel(this.patch)
+      this.matchlist = await twisted.getSummonerMatchesOnPatch(this.seed.puuid, this.seed.region, this.patch)
+      
 
       await this.populate()
    }
@@ -32,11 +33,9 @@ class Seed {
    async populate() {
       let i = 0
       for (const matchId of this.matchlist) {
+
+         if (i % 25 === 0) console.log(`Completed ${i}/${this.matchlist.length} matches`)
          i++
-         if (i > 5) {
-            console.log('break')
-            break
-         }
 
          if (this.pause) return
          
@@ -55,6 +54,8 @@ class Seed {
          })
 
       }
+
+      console.log(`Stored all matches on patch ${this.patch} for seed user.`)
    }
 }
 

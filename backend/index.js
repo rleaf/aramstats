@@ -6,7 +6,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
-const Crawler = require('./crawler/Crawler')
+const Crawler = require('./crawl/Crawler')
 
 dotenv.config()
 
@@ -16,7 +16,7 @@ app.use(bodyParser.json())
 app.use(cors())
 
 mongoose.connect(process.env.DB_CONNECTION_STRING, {dbName: 'aramstats'})
-// const crawler = new Crawler()
+const crawler = new Crawler()
 
 const summoners = require('./routes/summoner')
 const matchInfo = require('./routes/matchInfo')
