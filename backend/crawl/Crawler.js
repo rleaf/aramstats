@@ -38,15 +38,7 @@ class Crawler {
       */
 
       // this.seed = new Seed()
-      // this.propagate = new Propagate()
-   }
-
-   stop() {
-
-   }
-
-   resume() {
-      
+      this.propagate = new Propagate()
    }
 }
 
