@@ -17,12 +17,21 @@ class Propagate {
       this.matchModel = matchModel(this.patch)
       this.puuidModel = puuidModel(this.regionGroups[0]) // Fire crawler on 1, 2, 3
       this.docIndex = 0
+      this.startIndex = 170
 
-      for (const doc of await this.puuidModel.find({})) {
+      /* 
+      * Have it so it caches index to db on crash
+      */
+
+      let puuidList = await this.puuidModel.find({})
+      if (this.startIndex) puuidList = puuidList.slice(this.startIndex)
+
+      for (const doc of puuidList) {
+         console.log('on: ', doc.puuid)
          const matchlist = await twisted.getSummonerMatchesOnPatch(doc.puuid, doc.region, this.patch)
          await this.propagate(matchlist)
          if (this.docIndex % 25 === 0) {
-            console.log(`On puuid index ${this.docIndex}`)
+            console.log(`On puuid index ${this.docIndex + this.startIndex}`)
          }
          this.docIndex++
       }
@@ -31,26 +40,37 @@ class Propagate {
 
    async propagate(matchlist) {
       for (const matchId of matchlist) {
+         console.log('match', matchId)
          if (this._pause) {
             console.log('Pausing crawl')
             return
          }
          
          const region = this.util.getPlatform(matchId)
-         const match = await twisted.getMatchInfo(matchId, region)
-            .catch(e => console.log(e))
+         let match
 
-         // Continue/Break on...
+         try {
+            match = await twisted.getMatchInfo(matchId, region)
+         } catch (e) {
+            console.log(e, 'err')
+         }
+         // console.timeEnd('1')
+         // const match = await twisted.getMatchInfo(matchId, region)
+         //    .catch(e => {
+         //       console.log(e.response)
 
+         //       if (e.response.status === 404)
+         //    })
+
+         
          // ...dead match
          if (!match.info.gameDuration) continue
-         
+
          // ...old patch
          if (this.patch != match.info.gameVersion.split('.').slice(0, 2).join('.')) {
             console.log('old patch')
             break
          }
-         
          // ...duplicate matchId
          if (await this.matchModel.findOne({ 'metadata.matchId': matchId})) continue
          console.log(`adding ${matchId} to db`)
@@ -63,8 +83,12 @@ class Propagate {
             // ...duplicate puuid
             if (await this.puuidModel.findOne({ puuid: puuid })) continue
             console.log(`adding ${puuid} to puuids`)
-            await this.puuidModel.create({ puuid: puuid })
+            await this.puuidModel.create({
+               puuid: puuid,
+               region: region
+            })
          }
+         
       }
    }
 
