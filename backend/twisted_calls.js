@@ -79,7 +79,10 @@ async function getAllSummonerMatches(puuid, region) {
 }
 
 /* 
-* Get ARAM matches by the hundreds. Used for crawl init atm.
+* Get ARAM matches on the most recent patch by the hundreds. Used for crawl init atm.
+* Summoner `iLoveUrMomXD` (na) has a contiguous sequence of dead matches that return 404. Starting @ NA1_3961520099.
+* 
+* Break loop if matchlist[-1] 404s  
 */
 async function getSummonerMatchesOnPatch(puuid, region, patch) {
    let matchlist = []
@@ -90,6 +93,8 @@ async function getSummonerMatchesOnPatch(puuid, region, patch) {
       matchlist.push(pull)
 
       const lastMatch = await getMatchInfo(pull[pull.length - 1], region)
+      if (lastMatch.status_code && lastMatch.status_code === 404) break
+
       const matchPatch = lastMatch.info.gameVersion.split('.').slice(0, 2).join('.')
       if (patch != matchPatch) stop = false
    }
@@ -101,7 +106,11 @@ async function getSummonerMatchesOnPatch(puuid, region, patch) {
 * Match info.
 */
 async function getMatchInfo(matchId, region) {
-   return (await api.MatchV5.get(matchId, REGION_GROUPS[region])).response  
+   try {
+      return (await api.MatchV5.get(matchId, REGION_GROUPS[region])).response
+   } catch (e) {
+      return e.body.status
+   }
 }
 
 /* 

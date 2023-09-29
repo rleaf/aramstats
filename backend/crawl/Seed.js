@@ -10,7 +10,6 @@ class Seed {
          puuid: 'Yw6wO3eFywwOWN3TR6H8vdqNY9cIjKU71L9GD9UXDeauGeyQCx-GIq913rMp3sDOZo522ACt32Crkg',
          region: 'na'
       }
-      this._pause = false
       this.util = new Util()
       this.regionGroup = this.util.shorthandToRegionGroup(this.seed.region)
       this._pause = false // Put this somewhere else?

@@ -17,7 +17,7 @@ class Propagate {
       this.matchModel = matchModel(this.patch)
       this.puuidModel = puuidModel(this.regionGroups[0]) // Fire crawler on 1, 2, 3
       this.docIndex = 0
-      this.startIndex = 170
+      this.startIndex = 1450
 
       /* 
       * Have it so it caches index to db on crash
@@ -49,21 +49,10 @@ class Propagate {
          const region = this.util.getPlatform(matchId)
          let match
 
-         try {
-            match = await twisted.getMatchInfo(matchId, region)
-         } catch (e) {
-            console.log(e, 'err')
-         }
-         // console.timeEnd('1')
-         // const match = await twisted.getMatchInfo(matchId, region)
-         //    .catch(e => {
-         //       console.log(e.response)
-
-         //       if (e.response.status === 404)
-         //    })
-
-         
+         match = await twisted.getMatchInfo(matchId, region)
+               
          // ...dead match
+         if (match.status_code && match.status_code === 404) continue
          if (!match.info.gameDuration) continue
 
          // ...old patch

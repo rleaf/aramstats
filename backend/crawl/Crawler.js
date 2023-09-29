@@ -1,5 +1,6 @@
 const Seed = require('./Seed')
 const Propagate = require('./Propagate')
+const Test = require('./Test')
 
 let instance = null
 
@@ -38,7 +39,8 @@ class Crawler {
       */
 
       // this.seed = new Seed()
-      this.propagate = new Propagate()
+      // this.propagate = new Propagate()
+      this.test = new Test()
    }
 }
 
