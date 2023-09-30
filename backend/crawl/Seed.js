@@ -5,9 +5,9 @@ const Util = require('./Util')
 
 class Seed {
    constructor() {
-      // Penguin
       this.seed = {
-         puuid: 'Yw6wO3eFywwOWN3TR6H8vdqNY9cIjKU71L9GD9UXDeauGeyQCx-GIq913rMp3sDOZo522ACt32Crkg',
+         // Owl
+         puuid: '-GFwYATK9tnAurTAzLbXvuerLZFem1z0Ux6aRbAmQZG9COHQjeNwPzyHfqfjYMuElQLnf8MPfJ7paQ',
          region: 'na'
       }
       this.util = new Util()
@@ -20,7 +20,9 @@ class Seed {
       // this.patch = await this.util.getPatch()
       this.patch = '13.17' // Simulate p13.18 cause p13.19 is out and I haven't played games on 13.19 :)
       this.matchModel = matchModel(this.patch)
+      this.matchModel.syncIndexes()
       this.puuidModel = puuidModel(this.regionGroup)
+      this.puuidModel.syncIndexes()
       this.matchlist = await twisted.getSummonerMatchesOnPatch(this.seed.puuid, this.seed.region, this.patch)
 
       await this.populate()
@@ -32,10 +34,10 @@ class Seed {
          if (i % 10 === 0) console.log(`Completed ${i}/${this.matchlist.length} matches`)
          i++
 
-         if (this._pause) {
-            console.log('Pausing seed')
-            return
-         }
+         // if (this._pause) {
+         //    console.log('Pausing seed')
+         //    return
+         // }
          
          const match = await twisted.getMatchInfo(matchId, this.seed.region)
          if (this.patch != match.info.gameVersion.split('.').slice(0, 2).join('.')) break

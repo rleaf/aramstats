@@ -5,11 +5,11 @@ const mongoose = require("mongoose")
 */
 const puuidModel = (region) => {
    const puuidSchema = new mongoose.Schema({
-      puuid: String,
+      puuid: { type: String, unique: true},
       region: String
    }, { versionKey: false })
 
-   return mongoose.model('puuids_' + region, puuidSchema)
+   return mongoose.model(region + '_puuids', puuidSchema)
 }
 
 module.exports = { puuidModel }

@@ -5,9 +5,13 @@ const mongoose = require("mongoose")
 */
 const matchModel = (patch) => {
    const matchesSchema = new mongoose.Schema({
-      metadata: Object,
+      metadata: {
+         dataVersion: String,
+         matchId: { type: String, unique: true },
+         participants: [String]
+      },
       info: Object
-   })
+   }, { versionKey: false})
 
    return mongoose.model('matches_' + patch, matchesSchema)
 }
