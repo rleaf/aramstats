@@ -10,7 +10,11 @@ class Crawler {
       if (instance) return instance
       instance = this
 
-      /* 
+      /*
+      ****************************************
+      Moving to Python.
+      ****************************************
+
       0. See if API key is being used by a user and halt crawl or
          when API key is not under use, resume crawl
 
@@ -37,9 +41,9 @@ class Crawler {
             1.11 push *unique* puuids to db.puuids
             1.12 push *unique* matchdata to db.matches
       */
-
+      
       // this.seed = new Seed()
-      this.propagate = new Propagate()
+      // this.propagate = new Propagate()
       // this.test = new Test()
    }
 }

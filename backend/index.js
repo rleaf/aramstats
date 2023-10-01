@@ -16,6 +16,7 @@ app.use(bodyParser.json())
 app.use(cors())
 
 mongoose.connect(process.env.DB_CONNECTION_STRING, {dbName: 'aramstats'})
+console.log(process.env.DB_CONNECTION_STRING)
 const crawler = new Crawler()
 
 const summoners = require('./routes/summoner')
