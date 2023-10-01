@@ -13,16 +13,14 @@ class Propagate {
    
    async init() {
       this.patch = await this.util.getPatch()
-      this.regionGroups = ['americas', 'EUROPE', 'ASIA', 'SEA']
+      this.regionGroups = ['AMERICAS', 'EUROPE', 'ASIA', 'SEA']
       this.matchModel = matchModel(this.patch)
       this.puuidModel = puuidModel(this.regionGroups[0]) // Fire crawler on 1, 2, 3
       // this.matchModel.syncIndexes()
       // this.puuidModel.syncIndexes()
       this.docIndex = 0
-      this.start = 0
-      this.startIndex = 510
-      this.ceiling = 70
-      this.recycle = false
+      this.startIndex = 2940
+      this.binSize = 50
 
       /* 
       * Have it so it caches index to db on crash
@@ -33,7 +31,7 @@ class Propagate {
 
       for (const doc of puuidList) {
          console.log('on: ', doc.puuid)
-         await this.propagate(doc)
+         await this.propagate(doc, 0, this.binSize)
          if (this.docIndex % 10 === 0) {
             console.log(`On puuid index ${this.docIndex + this.startIndex} ***************************************************`)
          }
@@ -42,11 +40,14 @@ class Propagate {
       console.log('fin')
    }
 
-   async propagate(doc) {
-      const matchlist = await twisted.getSummonerMatches(doc.puuid, doc.region, this.start)
-      const region = this.util.getPlatform(matchlist[0])
-      let matchdeck = []
-      let puuiddeck = []
+   async propagate(doc, start, binSize) {
+      const matchlist = await twisted.getSummonerMatches(doc.puuid, doc.region, start, binSize)
+      if (matchlist.length === 0) return
+
+      // const region = this.util.getPlatform(matchlist[0])
+      let matchBatch = []
+      let puuidBatch = []
+      let persist = false
 
       for (let i = 0; i < matchlist.length; i++) {
          console.log(matchlist[i])
@@ -61,38 +62,32 @@ class Propagate {
          // ...old patch
          if (this.patch != match.info.gameVersion.split('.').slice(0, 2).join('.')) break
 
-         matchdeck.push(match)
-         puuiddeck.push(match.metadata.participants)
+         matchBatch.push(match)
+         puuidBatch.push(match.metadata.participants)
 
-         if (i === this.ceiling) {
-            this.recycle = true
-            this.start += this.ceiling
-            break
-            // console.log('getting more matches')
-            // await this.push(matchdeck, puuiddeck, region)
-            // await this.propagate(doc, this.start)
-         }
+         // if (i === matchlist.length - 1 && i >= binSize) persist = true
+         if (i === matchlist.length - 1) persist = true
       }
 
-      await this.push(matchdeck, puuiddeck, region)
-      if (this.recycle) this.propagate(doc)
-   }
-
-   async push(matchdeck, puuiddeck, region) {
-      let toad = puuiddeck.flat().map(el => {
-         return { puuid: el, region: region }
+      let toad = puuidBatch.flat().map(el => {
+         return { puuid: el, region: doc.region }
       })
 
       try {
-         await this.matchModel.insertMany(matchdeck, { ordered: false })
+         await this.matchModel.insertMany(matchBatch, { ordered: false })
       } catch (e){ 
-         console.log(`Duplicate matches, inserted: ${e.result.insertedCount}/${matchdeck.length}`)
+         console.log(`Duplicate matches, inserted: ${e.result.insertedCount}/${matchBatch.length}`)
        }
 
       try {
          await this.puuidModel.insertMany(toad, { ordered: false }) 
       } catch (e) {
          console.log(`Duplicate puuids, inserted: ${e.result.insertedCount}/${toad.length}`)  
+      }
+
+      if (persist) {
+         console.log('persist')
+         await this.propagate(doc, start + binSize, binSize)
       }
    }
 

@@ -55,9 +55,9 @@ async function getSummoner(summoner, region) {
 /* 
 * Variable match history for ARAM (450). Used for utility.
 */
-async function getSummonerMatches(puuid, region, start) {
+async function getSummonerMatches(puuid, region, start, count) {
    // const summonerGet = (await api.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
-   return (await api.MatchV5.list(puuid, REGION_GROUPS[region], { queue: 450, start: start, count: 100 })).response
+   return (await api.MatchV5.list(puuid, REGION_GROUPS[region], { queue: 450, start: start, count: count })).response
 }
 
 /* 
