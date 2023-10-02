@@ -5,26 +5,41 @@ from dotenv import load_dotenv
 from propagate import Propagate
 from seed import Seed
 
+
 class Crawler():
    """
    Entry point for crawler.
+   
+   Region mapping for riotwatcher
+   remap = {
+      "br1": "americas",
+      "la1": "americas",
+      "la2": "americas",
+      "na1": "americas",
+      "oc1": "sea",
+      "ph2": "sea",
+      "sg2": "sea",
+      "th2": "sea",
+      "tw2": "sea",
+      "vn2": "sea",
+      "eun1": "europe",
+      "euw1": "europe",
+      "ru": "europe",
+      "tr1": "europe",
+      "jp1": "asia",
+      "kr": "asia",
+   }
    """
    def __init__(self, config) -> None:
       load_dotenv()
 
-      client = MongoClient(os.environ['DB_CONNECTION_STRING'])
+      db = MongoClient(os.environ['DB_CONNECTION_STRING'])['aramstats']
       region = config.region
-      db = client.aramstats
       
       if config.seed:
          Seed(db, region)
       else:
          Propagate(db, region)
-
-      # self.test()
-
-   def test(_):
-      print(os.environ['DB_CONNECTION_STRING'])
 
 if __name__ == '__main__':
    args = argparse.ArgumentParser()
