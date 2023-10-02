@@ -10,7 +10,10 @@ def get_latest_patch() -> str:
    # print(lol_watcher.data_dragon.versions_for_region(region)['v'].split('.')[0:2])
    url = 'https://ddragon.leagueoflegends.com/api/versions.json'
    res = requests.get(url).json()[0].split('.')[0:2]
-   return '.'.join(res)  
+   return '.'.join(res)
+
+def get_match_patch(match: object) -> str:
+   return '.'.join(match['info']['gameVersion'].split('.')[0:2])
 
 def get_summoner_matches_on_patch(puuid: str, region: str, current_patch: str) -> str:
    bin = []
@@ -26,11 +29,21 @@ def get_summoner_matches_on_patch(puuid: str, region: str, current_patch: str) -
       try:
          last_match = lol_watcher.match.by_id(match_id=matchlist[-1], region=region)
          trailing_patch = '.'.join(last_match['info']['gameVersion'].split('.')[0:2])
-      except ApiError as err:
-         print(err, '@@@err')
+      except ApiError as e:
+         print(e, '@@@')
 
       if current_patch != trailing_patch: return bin
 
+def get_matchlist(puuid: str, region: str, start: int, count: int) -> list[str]:
+   try:
+      return lol_watcher.match.matchlist_by_puuid(puuid=puuid, region=region, start=start, count=count)
+   except ApiError as e:
+      print(e, '@@@')
+
 def get_match(match_id, region):
-   return lol_watcher.match.by_id(match_id=match_id, region=region)
- 
+   try:
+      return lol_watcher.match.by_id(match_id=match_id, region=region)
+   except ApiError as err:
+      print(err)
+      if err.response.status_code == 429:
+         print('We should retry in {} seconds.'.format(err.response.headers['Retry-After']))

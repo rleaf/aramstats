@@ -1,6 +1,9 @@
+# Crawler
+__pycache__/
+
+# Frontend
 src/assets/champion_images
 /public
-/crawler/__pycache__
 
 # Logs
 logs
