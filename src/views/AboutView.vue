@@ -7,7 +7,7 @@
         aramstats.lol parses all of a summoner's available ARAM games available in the Riot API to display insightful statistics.
       </p>
       <p>
-        Get in touch with me @ryli. (display name: Owl) on Discord.
+        Get in touch with me @<code>ryli.</code> (display name: Owl) on Discord.
       </p>
     </div>
     <div class="about-block">
@@ -22,14 +22,20 @@
       <h2>Some data is showing up weird.</h2>
       <hr>
       <p>
-        If you're seeing "-", "NaN", a certainly incorrect value, or nothing in a spot where there should be a number it's because that stat is a recent addition to Aramstats
-        and older parses won't have pulled the required information from Riot to show it.
+        It is probably a bug. Ping me in Discord and I'll fix it.
       </p>
     </div>
   </div>
 </template>
 
 <style scoped>
+
+code {
+   background: var(--dark500);
+   padding: 0.1rem 0.15rem;
+   border-radius: 5px;
+}
+
 .about-main {
   display: flex;
   width: 100%;

@@ -68,12 +68,19 @@ nav .right {
 }
 
 a {
-   padding: 0 1rem;
+   margin: 0 0.5rem;
+   padding: 0.4rem 0.7rem;
    font-weight: 500;
    font-size: 1rem;
    text-decoration: none;
    color: var(--color-font);
    transition: 0.4s;
+   border-radius: 8px;
+}
+
+a:hover {
+   transition: 0.2s ease-in-out;
+   background: var(--tint200);
 }
 
 

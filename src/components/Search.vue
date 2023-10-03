@@ -18,31 +18,30 @@ export default {
       }
    },
 
-   methods: {
+   created() {
+      const localRegion = localStorage.getItem('region')
+      if (localRegion) this.region = localRegion
+   },
 
+   methods: {
       onEnter() {
-         if (this.region == '' || this.input == '') {
+         if (this.region.length === 0 || this.input == '') {
             this.alertMessage = 'Enter a summoner name and/or region.'
             this.inputAlert = true
             setTimeout(() => {
                this.inputAlert = false
-            }, 800)
-
-            return
+            }, 1000)
          }
 
          this.$router.push({ name: `user`, params: {
             region: this.region,
             username: encodeURI(this.input),
          }})
-         
-
-         // push region into localstorage
-         // localStorage.setItem('region', this.region)
       },
 
       regionSelect(region) {
          this.region = region
+         localStorage.setItem('region', this.region)
          this.showRegions = false
       },
    },
@@ -84,6 +83,7 @@ export default {
 
 .region-selection > div {
    color: var(--color-font);
+   text-align: center;
    font-size: 0.9rem;
    margin: 0 .2rem;
    padding: .2rem .4rem;
@@ -98,15 +98,23 @@ export default {
 }
 
 button.region {
+   right: 50px;
    display: inline-block;
+   height: inherit;
    color: var(--color-font);
    font-family: var(--font-main);
-   background: transparent;
+   font-size: 0.9rem;
+   background: none;
    font-size: 1rem;
    border-radius: 5px;
+   cursor: pointer;
    border: none;
-   padding: 1rem;
-   width: 80px;
+   padding: 0.2rem 0.4rem;
+}
+
+button.region:hover {
+   background: var(--tint200);
+   transition: 0.1s ease-in-out;
 }
 
 img.logo {
@@ -129,26 +137,26 @@ img.logo {
 }
 
 .container {
-   /* display: inline-block; */
-   /* background-color: var(--search-bar); */
+   display: flex;
+   align-items: center;
+   padding: 0.7rem 2rem;
    border: 2px solid var(--tint100);
    border-radius: 50px;
+   width: 380px;
 }
 
 input {
    display: inline-block;
    background: transparent;
    border: none;
-   padding: 1rem 4rem;
+   padding-left: 1rem;
    font-size: 1rem;
    color: var(--color-font);
-   /* color: var(--color-font-search); */
-   /* width: 300px; */
+   width: 100%;
 }
 
 input:focus {
    outline: none;
-   /* background-color: var(--tint100); */
    color: var(--color-font);
    transition: 0.4s;
 }
@@ -175,11 +183,12 @@ button {
    margin-top: 0.5rem;
    padding: 0.2rem 0.5rem;
    border: #f50d0d 1px solid;
+   border-radius: 10px;
    transition: 1s;
 }
 
 .fade-leave-active {
-   transition: opacity 0.6s ease;
+   transition: opacity 0.6s cubic-bezier(.25,.1,.25,1);
 }
 
 .fade-leave-to {

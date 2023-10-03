@@ -21,32 +21,41 @@ export default {
             { Multikill: ['Triple Kills', 'Quadra kills', 'Penta kills'] },
             { Misc: ['Kill Participation', 'Gold', 'GPM'] },
          ],
-         championLazyLoad: new Array(this.championData.length).fill(0)
+         championLazyLoad: new Array(this.championData.length).fill(0),
+         observer: null
       }
    },
 
    mounted() {
-      const observer = new IntersectionObserver(entries => {
-         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-               this.championLazyLoad[entry.target.componentIndex] = 1
-               observer.unobserve(entry.target)
-            }
-         })
-      })
+      this.lazyLoadImages() 
+   },
 
-      const children = Array.from(this.$refs.champion.children)
-
-      for (const [i, child] of children.entries()) {
-         child.componentIndex = i
-         observer.observe(child)
-      }
+   updated() {
+      this.lazyLoadImages()
    },
 
    methods: {
       lazyLoad(idx) {
          return (this.championLazyLoad[idx] === 1) ?
             true : false
+      },
+
+      lazyLoadImages() {
+         this.observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+               if (entry.isIntersecting) {
+                  this.championLazyLoad[entry.target.componentIndex] = 1
+                  this.observer.unobserve(entry.target)
+               }
+            })
+         })
+
+         const children = Array.from(this.$refs.champion.children)
+
+         for (const [i, child] of children.entries()) {
+            child.componentIndex = i
+            this.observer.observe(child)
+         }
       }
    },
 
@@ -90,6 +99,13 @@ export default {
          const access = (path, object) => {
             return path.split('.').reduce((o, i) => o[i], object)
          }
+
+         // console.log('toads', this.$refs)
+         // setTimeout(() => {
+         //    console.log('toads', this.$refs)
+            
+         // }, 1000);
+         // this.lazyLoadImages()
 
          return (this.order) ?
             filtered.sort((a, b) => access(table[this.sortBy], b) - access(table[this.sortBy], a)) :
@@ -157,12 +173,11 @@ export default {
 }
 
 .sort {
-   font-size: 1.2rem;
+   font-size: 1rem;
    font-weight: bold;
 }
 
 .sort-button {
-   margin-left: 5px;
    background: transparent;
    padding: 0.5rem 1rem;
    border-radius: 15px;

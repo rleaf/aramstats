@@ -12,6 +12,21 @@
 
 const version = [
    {
+      version: "2.1.2",
+      date: "10/3/23",
+      notes: "ARAM crawler built at this point, but seeing if I need a new key. Rate limit conflict between API requests sent by users from Aramstats and API requests sent by crawler for matchdata.",
+      add: [
+         "500 error handling when database is down",
+         "Transition to Pinia for global properties",
+         "Use localStorage for region on home page search",
+         "Minor UI improvements (eg: button hover css)"
+      ],
+      fix: [
+         "Twisted 429 bug",
+         "Image assets not lazy loading on sort in List Panel"
+      ],
+   },
+   {
       version: "2.1.1",
       date: "9/23/23",
       fix: [

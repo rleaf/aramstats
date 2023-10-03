@@ -4,7 +4,7 @@ import pymongo
 class Propagate():
    def __init__(self, patch: str, region: str, puuid_collection, match_collection) -> None:
       index = 0
-      start = 280
+      start = 1365
       batch_size = 50
       self.patch = patch
       self.region = region
@@ -28,10 +28,9 @@ class Propagate():
 
       for matchId in matchlist:
          match = util.get_match(matchId, doc['region'])
-
          # Continue/Break on...
          # ...404 match
-         if 'status_code' in match and match['status_code'] == 404: continue
+         if match == 404: continue
          # ...dead match
          if match['info']['gameDuration'] == 0: continue
          # ...old patch
