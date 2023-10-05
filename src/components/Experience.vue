@@ -8,19 +8,7 @@ export default {
       }
    },
    
-   watch: {
-      // $route (to, from) {
-      //    if (to.name === 'home') {
-      //       // this.render = true
-      //    } else {
-      //       this.experience = null
-      //       this.render = false
-      //    }
-      // }
-   },
-   
    mounted() {
-
       this.experience = new Experience(document.querySelector('.webgl'), false)
    },  
 }
@@ -39,7 +27,7 @@ export default {
    position: fixed;
    top: 0;
    left: 0;
-   z-index: 50;
+   z-index: -7;
 }
 
 </style>

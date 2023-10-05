@@ -19,12 +19,6 @@ export default class Renderer {
          antialias: true
       })
       this.instance.setClearColor( 0x000000, 0)
-      this.instance.physicallyCorrectLights = true
-      this.instance.outputEncoding = THREE.sRGBEncoding
-      this.instance.toneMapping = THREE.CineonToneMapping
-      this.instance.toneMappingExposure = 1.75
-      this.instance.shadowMap.enabled = true
-      this.instance.shadowMap.type = THREE.PCFShadowMap
       this.instance.setSize(this.sizes.width, this.sizes.height)
       this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
    }

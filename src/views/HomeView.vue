@@ -5,20 +5,6 @@ import Legal from '../components/Legal.vue'
 import Experience from '../components/Experience.vue'
 </script>
 
-<script>
-// export default {
-//   watch: {
-//     $route: {
-//       immediate: true,
-//       handler() {
-//         document.title = `ARAM Stats`
-//       }
-//     }
-//   }
-// }
-
-</script>
-
 <template>
   <main>
     <Search />
