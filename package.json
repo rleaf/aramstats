@@ -2,6 +2,7 @@
   "name": "lol-aram",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "start": "node backend/index.js",
     "nodemon": "nodemon backend/index.js",
@@ -23,7 +24,9 @@
     "mongodb": "^4.12.1",
     "mongoose": "^7.5.1",
     "pinia": "^2.1.6",
+    "three": "^0.157.0",
     "twisted": "github:rleaf/twisted",
+    "vite-plugin-glsl": "^1.1.1",
     "vue": "^3.2.45",
     "vue-gtag": "^2.0.1",
     "vue-head": "github:MKGaru/vue-head#vue3",
@@ -38,6 +41,7 @@
     "eslint-plugin-vue": "^9.3.0",
     "nodemon": "^2.0.20",
     "prettier": "^2.7.1",
+    "tweakpane": "^4.0.1",
     "vite": "^4.0.0"
   }
 }

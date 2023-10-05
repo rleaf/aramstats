@@ -2,6 +2,7 @@
 // @ts-ignore
 import Search from '../components/Search.vue'
 import Legal from '../components/Legal.vue'
+import Experience from '../components/Experience.vue'
 </script>
 
 <script>
@@ -22,5 +23,6 @@ import Legal from '../components/Legal.vue'
   <main>
     <Search />
     <Legal />
+    <Experience />
   </main>
 </template>
