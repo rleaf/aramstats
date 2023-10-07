@@ -14,22 +14,31 @@ export default class Map {
    }
    
    async init() {
-      this.obj = await this.loader.loadAsync('src/assets/Experience/model/howling2.glb')
+      this.obj = await this.loader.loadAsync('src/assets/Experience/model/simpleBridge2.glb')
+      this.obj.scene.traverse(child => {
+         if (child.isMesh) {
+            child.material.side = THREE.DoubleSide
+            child.material.wireframe = true
+         }
+      })
+      this.bbox = new THREE.Box3().setFromObject(this.obj.scene)
       this.loaded = true
-      this.setGeometry()
+      // this.setGeometry()
       this.setMaterial()
+      this.fillPoints()
       this.setMesh()
    }
    
    setGeometry() {
-      const vertices = []
+      // const vertices = []
       this.obj.scene.traverse((child) => {
          if(child.isMesh) {
-            vertices.push(...child.geometry.attributes.position.array)
+            child.material.side = THREE.DoubleSide
+            // vertices.push(...child.geometry.attributes.position.array)
          } 
       })
-      this.geometry = new THREE.BufferGeometry()
-      this.geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
+      // this.geometry = new THREE.BufferGeometry()
+      // this.geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
    }
 
    setMaterial() {
@@ -42,12 +51,36 @@ export default class Map {
       })
    }
 
+   fillPoints() {
+      const points = []
+      let counter = 0
+
+      while (counter < 20000) {
+         let v = new THREE.Vector3(
+            THREE.MathUtils.randFloat(this.bbox.min.x, this.bbox.max.x),
+            THREE.MathUtils.randFloat(this.bbox.min.y, this.bbox.max.y),
+            THREE.MathUtils.randFloat(this.bbox.min.z, this.bbox.max.z)
+         )
+            
+         this.ray = new THREE.Raycaster(v, new THREE.Vector3(0, 1, 0))
+         const intersects = this.ray.intersectObject(this.obj.scene) 
+
+         if (intersects.length === 1) {
+            points.push(v)
+            counter++
+         }
+      }
+
+      this.geometry2 = new THREE.BufferGeometry().setFromPoints(points)
+   }
+
    setMesh() {
-      this.mesh = new THREE.Points(this.geometry, this.material)
+      this.mesh = new THREE.Points(this.geometry2, this.material)
+      // this.scene.add(this.obj.scene)
       this.scene.add(this.mesh)
    }
 
    update() {
-      this.mesh.rotation.y += 0.0005
+      // this.mesh.rotation.y += 0.0005
    }
 }
