@@ -14,19 +14,22 @@ export default class Map {
    }
    
    async init() {
-      this.obj = await this.loader.loadAsync('src/assets/Experience/model/simpleBridge2.glb')
+      this.obj = await this.loader.loadAsync('src/assets/Experience/model/MAIN.glb')
+      this.scene.add(this.obj.scene)
       this.obj.scene.traverse(child => {
          if (child.isMesh) {
-            child.material.side = THREE.DoubleSide
+            console.log(child)
+            // child.geometry.computeFaceNormals()
+            // child.material.side = THREE.DoubleSide
             child.material.wireframe = true
          }
       })
-      this.bbox = new THREE.Box3().setFromObject(this.obj.scene)
+      // this.bbox = new THREE.Box3().setFromObject(this.obj.scene)
       this.loaded = true
-      // this.setGeometry()
-      this.setMaterial()
-      this.fillPoints()
-      this.setMesh()
+      this.setGeometry()
+      // this.setMaterial()
+      // this.fillPoints()
+      // this.setMesh()
    }
    
    setGeometry() {
@@ -76,8 +79,8 @@ export default class Map {
 
    setMesh() {
       this.mesh = new THREE.Points(this.geometry2, this.material)
-      // this.scene.add(this.obj.scene)
-      this.scene.add(this.mesh)
+      this.scene.add(this.obj.scene)
+      // this.scene.add(this.mesh)
    }
 
    update() {
