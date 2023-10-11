@@ -3,6 +3,7 @@ __pycache__/
 
 # Frontend
 src/assets/champion_images
+src/assets/Experience/model
 /public
 
 # Logs

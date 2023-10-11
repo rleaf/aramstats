@@ -19,8 +19,8 @@ export default class Camera {
    setInstance() {
       this.instance = new THREE.PerspectiveCamera(50, this.sizes.width / this.sizes.height, 0.1, 20000)
       // this.instance.position.set(4, 6, 8)
-      this.instance.position.set(6727, 3053, -1158)
-      // this.instance.lookAt(0, 0, 0)
+      this.instance.position.set(547, 504, 124)
+      this.instance.lookAt(0, 0, 0)
       
 
       this.scene.add(this.instance)
@@ -39,5 +39,6 @@ export default class Camera {
 
    update() {
       this.controls.update()
+      // console.log(this.instance.position)
    }
 }

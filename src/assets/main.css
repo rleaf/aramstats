@@ -25,6 +25,7 @@
   /* Default  Night Mode */
 :root {
   --color-background: #0d111c;
+  --toaders: #41558b;
   --color-font: var(--light200);
   --runeMythic: #1c202a;
   --hoverButton: rgba(255, 255, 255, 0.1);
