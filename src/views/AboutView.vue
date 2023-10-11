@@ -14,7 +14,7 @@
       <h2>Why aren't all my games shown?</h2>
       <hr>
       <p>
-        Riot only stores up to 1,000 games or 2 years old worth of data. This is why, if you've played >1,000 games in that timeframe, your first pull will only
+        Riot only stores up to 1,000 games within a 2 year time frame. This is why, if you've played >1,000 games in the last 2 years, your first pull will only
         have ~9XX games.
       </p>
     </div>

@@ -10,7 +10,6 @@ export default class World {
       this.scene = this.experience.scene
       this.environment = new Environment()
       this.map = new Map()
-      // this.scene.background = new THREE.Color(0x0d111c)
    }
 
    update() {

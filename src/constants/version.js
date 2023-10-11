@@ -12,7 +12,19 @@
 
 const version = [
    {
+      version: "2.2.0",
+      date: "10/11/23",
+      notes: "Taking break from backend to do something front.",
+      add: [
+         'Landing experience'
+      ],
+      remove: [],
+      fix: [],
+      adjust: []
+   }, 
+   {
       version: "2.1.2",
+      remove: [],
       date: "10/3/23",
       notes: "ARAM crawler built at this point, but seeing if I need a new key. Rate limit conflict between API requests sent by users from Aramstats and API requests sent by crawler for matchdata.",
       add: [

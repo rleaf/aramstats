@@ -48,30 +48,30 @@ export default {
             </div>
             <hr>
             <div class="version-body">
-               <div class="notes" v-if="v.notes">
+               <div class="notes" v-if="v.notes && v.notes.length">
                   <p>
                      {{ v.notes }}
                   </p>
                </div>
-               <div v-if="v.add">
+               <div v-if="v.add && v.add.length">
                   <h4>Added</h4>
                   <ul>
                      <li v-for="a in v.add">{{ a }}</li>
                   </ul>
                </div>
-               <div v-if="v.remove">
+               <div v-if="v.remove && v.remove.length">
                   <h4>Removed</h4>
                   <ul>
                      <li v-for="r in v.remove">{{ r }}</li>
                   </ul>
                </div>
-               <div v-if="v.fix">
+               <div v-if="v.fix && v.fix.length">
                   <h4>Fixed</h4>
                   <ul>
                      <li v-for="f in v.fix">{{ f }}</li>
                   </ul>
                </div>
-               <div v-if="v.adjust">
+               <div v-if="v.adjust && v.adjust.length">
                   <h4>Adjusted</h4>
                   <ul>
                      <li v-for="a in v.adjust">{{ a }}</li>

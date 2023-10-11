@@ -13,11 +13,6 @@ export default class Mouse{
 
    setMouse() {
       window.addEventListener('mousemove', (e) => {
-         // this.pointer.x = (e.clientX / this.sizes.width) - 0.5
-         // this.pointer.y = (e.clientY / this.sizes.height) - 0.5
-
-
-         // Raycaster normalized to (-1, +1)
          this.pointer.x = (e.clientX / this.sizes.width) * 2 - 1
          this.pointer.y = - (e.clientY / this.sizes.height) * 2 + 1
       })

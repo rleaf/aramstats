@@ -137,6 +137,7 @@ img.logo {
 }
 
 .container {
+   background: var(--color-background);
    display: flex;
    align-items: center;
    padding: 0.7rem 2rem;
@@ -144,6 +145,12 @@ img.logo {
    border-radius: 50px;
    width: 380px;
 }
+
+/* Thinking */
+/* .container:focus-within {
+   box-shadow: 0 0 10px var(--hoverButton);
+   transition: 0.25s;
+} */
 
 input {
    display: inline-block;
