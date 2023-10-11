@@ -10,6 +10,9 @@ export default defineConfig({
     vue(),
     glsl(), // requires `"type": "module"` in package.json
   ],
+  assetsInclude: [
+    '**/*.glb'
+  ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

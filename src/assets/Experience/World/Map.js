@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import Experience from '../Experience'
 import vertexIndices from '../../vertexIndices'
+import model from '../model/MAIN.glb'
 
 
 export default class Map {
@@ -15,7 +16,7 @@ export default class Map {
    }
    
    async init() {
-      this.obj = await this.loader.loadAsync('src/assets/Experience/model/MAIN.glb')
+      this.obj = await this.loader.loadAsync(model)
       this.obj.scene.traverse(child => {
          if (child.isMesh) child.material.wireframe = true
       })
