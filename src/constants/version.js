@@ -20,7 +20,9 @@ const version = [
       ],
       remove: [],
       fix: [],
-      adjust: []
+      adjust: [
+         'Search UX'
+      ]
    }, 
    {
       version: "2.1.2",

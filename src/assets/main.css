@@ -25,8 +25,9 @@
   /* Default  Night Mode */
 :root {
   --color-background: #0d111c;
+  --searchHover: #151a2b;
   --color-font: var(--light200);
-  --runeMythic: #1c202a;
+  --runeMythic: #2e3341;
   --hoverButton: rgba(255, 255, 255, 0.1);
 
   --win: rgba(21, 106, 128, 0.2);
@@ -53,6 +54,7 @@
 /* Day mode */
 .day {
   --color-background: #fff;
+  --searchHover: #fff;
   --color-font: #000;
   --runeMythic: var(--light400);
   --hoverButton: rgba(0, 0, 0, 0.1);

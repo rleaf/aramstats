@@ -43,7 +43,7 @@ export default class Experience {
    }
 
    update() {
-      this.camera.update(this.time.current)
+      this.camera.update()
       this.renderer.update()
       this.world.update()
    }

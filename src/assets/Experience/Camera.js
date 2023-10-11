@@ -39,11 +39,11 @@ export default class Camera {
       this.instance.updateProjectionMatrix()
    }
 
-   update(time) {
+   update() {
       // this.controls.update()
       if (this.wobble) {
-         this.instance.position.x = 406 + -(this.pointer.y * 10)
-         this.instance.position.z = 88 + -(this.pointer.x * 10)
+         this.instance.position.x = 406 + -(this.pointer.y * 30)
+         // this.instance.position.z = 88 + -(this.pointer.x * 10)
       }
       this.instance.lookAt(50, 340, 24)
    }

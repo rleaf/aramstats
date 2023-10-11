@@ -45,8 +45,9 @@ export default {
             Aramstats database is down.
          </h2>
          <p>
-            Ping me on Discord (<code>ryli.</code>) if you see this so I can look into it. This is probably not intentional.
+            Ping me on Discord (<code>@ryli.</code>)  so I can look into it. This is probably not intentional.
          </p>
+         <img src="https://i.redd.it/k8obvr07gfb91.png" alt="">
       </div>
    </div>
 </template>
@@ -64,6 +65,10 @@ code {
    justify-content: center;
    margin-top: 20vh;
    text-align: center;
+}
+
+img {
+   max-height: 60vh;
 }
 
 h2 {

@@ -15,6 +15,7 @@ export default {
          alertMessage: String,
          regionOptions: regions,
          showRegions: false,
+         containerFocus: false
       }
    },
 
@@ -25,12 +26,13 @@ export default {
 
    methods: {
       onEnter() {
-         if (this.region.length === 0 || this.input == '') {
+         if (this.region === 'rg' || this.input == '') {
             this.alertMessage = 'Enter a summoner name and/or region.'
             this.inputAlert = true
             setTimeout(() => {
                this.inputAlert = false
-            }, 1000)
+            }, 1200)
+            return
          }
 
          this.$router.push({ name: `user`, params: {
@@ -42,8 +44,17 @@ export default {
       regionSelect(region) {
          this.region = region
          localStorage.setItem('region', this.region)
+         console.log(this.$refs.container)
+         this.$refs.input.focus()
          this.showRegions = false
       },
+      
+      focusContainer() {
+         console.log(this.$refs.container)
+         this.containerFocus = true
+         console.log(this.containerFocus)
+         // this.$refs.container.style.background = 'tomato'
+      }
    },
 }
 
@@ -52,8 +63,13 @@ export default {
 <template>
    <div class="search">
       <img src="../assets/logo.svg" class="logo" alt="">
-      <div class="container">
-         <input type="text" v-on:keyup.enter="onEnter" placeholder="Summoner Name" v-model="input">
+      <div ref="container" class="container" :class="{ focus: this.containerFocus}">
+         <input ref="input" type="text"
+            @focus="this.containerFocus = true"
+            @blur="this.containerFocus = false"
+            v-on:keyup.enter="onEnter"
+            placeholder="Summoner Name"
+            v-model="input">
          <button class="region" @click="this.showRegions = true">
             {{ this.region.toUpperCase() }}
          </button>
@@ -144,13 +160,13 @@ img.logo {
    border: 2px solid var(--tint100);
    border-radius: 50px;
    width: 380px;
+   transition: 0.25s;
 }
 
-/* Thinking */
-/* .container:focus-within {
-   box-shadow: 0 0 10px var(--hoverButton);
-   transition: 0.25s;
-} */
+.focus {
+   background: var(--searchHover);
+   border-color: var(--light700);
+}
 
 input {
    display: inline-block;
@@ -189,13 +205,13 @@ button {
    background-color: #ffd4d4;
    margin-top: 0.5rem;
    padding: 0.2rem 0.5rem;
+   font-size: 0.95rem;
    border: #f50d0d 1px solid;
    border-radius: 10px;
-   transition: 1s;
 }
 
 .fade-leave-active {
-   transition: opacity 0.6s cubic-bezier(.25,.1,.25,1);
+   transition: opacity 0.3s cubic-bezier(.25,.1,.25,1);
 }
 
 .fade-leave-to {

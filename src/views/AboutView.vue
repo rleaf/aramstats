@@ -7,7 +7,7 @@
         aramstats.lol parses all of a summoner's available ARAM games available in the Riot API to display insightful statistics.
       </p>
       <p>
-        Get in touch with me @<code>ryli.</code> (display name: Owl) on Discord.
+        Get in touch with me <code>@ryli.</code> (display name: Owl) on Discord.
       </p>
     </div>
     <div class="about-block">
