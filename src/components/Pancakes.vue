@@ -109,7 +109,7 @@ export default {
       </div>
       <div class="encounters" v-show="this.tab === 1">
          <div class="description">
-            People you've played with >5 times.
+            People you've encountered >5 times.
          </div>
          <div class="headers">
             <div>Summoner</div>

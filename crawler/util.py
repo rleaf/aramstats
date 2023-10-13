@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import requests
 
 load_dotenv()
-lol_watcher = LolWatcher(os.environ['RIOT_API_KEY'])
+lol_watcher = LolWatcher(os.environ['DEV_RIOT_API_KEY'])
 
 def get_latest_patch() -> str:
    # print(lol_watcher.data_dragon.versions_for_region(region)['v'].split('.')[0:2])
@@ -23,7 +23,7 @@ def get_summoner_matches_on_patch(puuid: str, region: str, current_patch: str) -
          matchlist = lol_watcher.match.matchlist_by_puuid(puuid=puuid, region=region, start=x ,count=10, queue=450)
       except ApiError as err:
          print(err, '@@@@error')
-
+      
       [bin.append(x) for x in matchlist]
 
       try:

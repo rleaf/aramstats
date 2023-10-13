@@ -1,0 +1,37 @@
+Best way to aggregate matchdata in db?
+
+---
+Can either:
+   1. Create db.documents for each champion and update those documents as needed with methods
+      below. On each GET for champion stats, send that db.document.
+   2. On each GET for champion stats from frontend, compute & aggregate all champion stats
+      to send to frontend.
+---
+
+1. Dependant on Riot crawl
+   1. After each matchdata respose from Riot, iterate through the champions of that match and
+      mutate/populate champion statistics.
+
+   Pros
+      - Don't need an isolated aggregation step; does everything at once
+      - Summoners will pull "UTD" statistics because of immediate champion stat mutations
+      - Don't have to store matchdata at all? Since computing champion stats immediately
+        after each GET request, only need to store matchId and then throw data away. MatchId
+        will then be used to check redundant matches in crawler.
+   Cons
+      - Makes for a very slow crawl. Each crawl step will have 10 loops for accumulating
+        champion data. Dunno if will make very slow, assuming.
+      - If not storing matchdata, I also lose potential routes for growing.
+
+2. Independent from Riot crawl
+   1. Compute champ stats whenever in own environment. Iterate through all matches in
+      the db and for each match, compute champion statistics.
+
+   Pros
+      - Independent from crawl. Can have both processes running simultaneously making for overall
+        faster time.
+   Cons
+      - Redundant computations. After initial champ aggregation, it will recompute the same data
+        every proceeding aggregation. Inefficient. Can be fixed with indexing such that after
+        each aggregation completion, scribe an index to start the proceeding aggregation on.
+      - Champion stats are only as "UTD" on the most recent aggregation.

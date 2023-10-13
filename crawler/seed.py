@@ -29,8 +29,8 @@ class Seed():
    """
    def __init__(self, patch: str, region: str, puuid_collection, match_collection) -> None:
       seed_user = {
-         # Most recent games on patch 13.17, but just need puuids so good enough.
-         "puuid": "-GFwYATK9tnAurTAzLbXvuerLZFem1z0Ux6aRbAmQZG9COHQjeNwPzyHfqfjYMuElQLnf8MPfJ7paQ",
+         # Night Owl on DEV_KEY
+         "puuid": "KGN0ZR8dNoUTFk57zZEsnmevV5mBiVc0Kpzn5IbMbiCM3BvrqWAXcrEj73tHS71YYSOmVz7SH75aDg",
          "region": "na1"
       }
       # fake_patch = '13.17'
