@@ -10,6 +10,13 @@
 
 const updates = [
    {
+      title: "Intermittent database freezing.",
+      date: "10/13/23",
+      body: [
+         `The RPi the Aramstats database runs on has been randomly freezing starting around October 12. As a temporary fix I'm manually power cycling the device, however this is why you may be stuck on the "Searching for summoner..." page for a long period of time. Looking into it.`
+      ],
+   },
+   {
       title: "Database reset.",
       date: "9/14/23",
       version: "2.0.0",

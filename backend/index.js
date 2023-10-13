@@ -15,6 +15,10 @@ app.use(bodyParser.json())
 app.use(cors())
 
 mongoose.connect(process.env.DB_CONNECTION_STRING, {dbName: 'aramstats'})
+   .catch((err) => {
+      console.log('pancakes')
+      throw err
+   })
 
 const summoners = require('./routes/summoner')
 const matchInfo = require('./routes/matchInfo')

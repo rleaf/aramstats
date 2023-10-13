@@ -4,7 +4,8 @@
 
 <template>
    <div class="header-main">
-      <RouterLink to="/updates">Database reset.</RouterLink>
+      <!-- <p>The database is intermittently crashing & am looking for a fix. (Oct 12)</p> -->
+      <RouterLink to="/updates">Intermittent database freezing.</RouterLink>
    </div>
 </template>
 
@@ -14,8 +15,7 @@
       justify-content: center;
       align-items: center;
       height: 35px;
-      /* background: var(--hoverButton); */
-      background: #492323;
+      background: var(--hoverButton);
    }
 
    a, p {
