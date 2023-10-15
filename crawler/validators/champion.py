@@ -1,17 +1,3 @@
-""" 
-{
-   name: string,
-   kills: int,  # kills, deaths, assists maybe ridiculous to store?
-   deaths: int,
-   assists: int,
-   games: int,
-   wins: int, # losses = games - wins
-   builds: [
-      # If I want to do buildpath, I will also have to use the timeline endpoint
-   ]
-}
- """
-
 champion_schema = {
       "$jsonSchema": {
          "bsonType": "object",

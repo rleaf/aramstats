@@ -35,3 +35,108 @@ Can either:
         every proceeding aggregation. Inefficient. Can be fixed with indexing such that after
         each aggregation completion, scribe an index to start the proceeding aggregation on.
       - Champion stats are only as "UTD" on the most recent aggregation.
+
+
+
+******************************************
+Storing winrates for unique build paths (putting this here so I don't have to make another txt file)
+
+Goals
+   - Small file size. Don't want to store every combination of items (~96c6)...just the popular ones.
+   - Easy to understand. Keep relatively unconvoluted so when I forget I can remember.
+   - In a structure that can be conveniently parsed by the frontend.
+   - I want to store...
+      1. Buildpath (aka Items). Seeing winrate for X build or Y item is nice.
+      2. Friendly & Enemy team composition. Seeing a champions winrate into X comp or with Y comp is also nice.
+      3. Skill leveling order. Also...nice.
+
+      Items, Team comp, skill order can be associated w/ each other.
+         "Oh turns out crit adc has infinitely higher winrate into a tanky comp than leth adc".
+         "Oh so going leth jinx build means you max W first..."
+         "Oh, if I have an enchanter on my team, this adc's winrate goes up by X percent with Y build path."
+         etc...
+
+1. Store every possible build (all combinations)
+   1. Easily increment corresponding build by one for each encounter and if that match was won.
+   + Easy to think
+   + Gives most room to play and represent data
+   - Prohibitively large filesize.
+
+2. Store only observed builds
+   1. Write build and then monitor times encountered and if won.
+   + Smaller file size than ^
+   + Easy to think
+   + Gives same amount of room to play as above
+   - Although smaller, file size is still upper bounded at all possible combinations.
+
+3. Store winrates by item slots. "Item X has Y winrate when built first versus Y winrate when build second"
+   1. This is weird
+   - Even lighter file size (I think).
+   - Obscures combinatorial data. Can't see how item X performs jointly with item Z.
+
+******************************
+Schema could/would look something like...
+
+Champion Schema
+{
+   name: string, # champion name
+   kills?: int,  # kda maybe too ridiculous
+   deaths?: int,
+   assists?: int,
+   games: int, # number of times champ has been seen in
+   wins: int, # number of times champ has won
+
+
+   """
+   builds is an object where each n-nested object (excluding meta) can be interpreted as a BUILD and a BUILDPATH. A BUILDPATH is the order
+   of itemization a player takes to get to their BUILD. A BUILD is the items a player has at game end. For example, where the * is near Runaan's,
+   that means a player has the BUILDPATH IE -> Storm -> LDR -> Runaan's and, depending on the "games" property in meta, if that BUILDPATH
+   was ever a final BUILD.
+   """
+   
+   builds: {
+      3031: { # IE
+         3095: { # Storm
+            3036: { # LDR
+               3046: {...} # PD
+               3072: {...} # BT
+               3084: {.*.} # Runaan's
+               meta: {...}
+            }
+            meta: {...}
+         },
+         3073: { # BT
+            3036: { # LDR
+            ...
+            meta: {...}
+            },
+            meta: {...}
+         }
+         meta: {...}
+      },
+      3095: { # Stormrazor
+         ...
+         meta: {
+            friendlyTeam: [string], # Friendly team comp
+            enemyTeam: [string], # Enemy team comp
+            games: int,
+            wins: int
+         }
+      },
+      ...
+   }
+
+
+//   buildPath: [
+//      build1: [00000],
+//      build2: [00000],
+//      build3: [00000]
+//
+//      OR
+//
+//      item1: int,
+//      item2: int,
+//      item3: int,
+//      item4: int
+//   ]
+}

@@ -64,7 +64,7 @@ export default {
    <div class="search">
       <img src="../assets/logo.svg" class="logo" alt="">
       <div ref="container" class="container" :class="{ focus: this.containerFocus}">
-         <input ref="input" type="text"
+         <input ref="input" type="text" spellcheck="false"
             @focus="this.containerFocus = true"
             @blur="this.containerFocus = false"
             v-on:keyup.enter="onEnter"

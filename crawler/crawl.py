@@ -38,11 +38,11 @@ class Crawler():
          self.match_collection.create_index('metadata.matchId', unique=True)
 
    # Check if existing championStats collection
-      if "championStats" in collection_list:
-         self.champion_stats = db["championStats"]
-      else:
-         self.champion_stats = db.create_collection("championStats", validator=V.champion_schema)
-         self.champino_stats.create_index('name', unique=True)
+      # if "championStats" in collection_list:
+      #    self.champion_stats = db["championStats"]
+      # else:
+      #    self.champion_stats = db.create_collection("championStats", validator=V.champion_schema)
+      #    self.champion_stats.create_index('name', unique=True)
       
       if config.seed:
          Seed(patch, region, self.puuid_collection, self.match_collection)
