@@ -27,7 +27,7 @@ class Seed():
       "kr": "asia",
    }
    """
-   def __init__(self, patch: str, region: str, puuid_collection, match_collection) -> None:
+   def __init__(self, patch: str, region: str, puuid_collection, match_collection, champion_collection) -> None:
       seed_user = {
          # Night Owl on DEV_KEY
          "puuid": "KGN0ZR8dNoUTFk57zZEsnmevV5mBiVc0Kpzn5IbMbiCM3BvrqWAXcrEj73tHS71YYSOmVz7SH75aDg",
@@ -36,6 +36,7 @@ class Seed():
       # fake_patch = '13.17'
       self.puuid_collection = puuid_collection
       self.match_collection = match_collection
+      self.champion_collection = champion_collection
       matchlist = util.get_summoner_matches_on_patch(seed_user["puuid"], seed_user["region"], patch)
       puuid_bin = []
       match_bin = []
@@ -46,6 +47,11 @@ class Seed():
          game_patch = '.'.join(match_data['info']['gameVersion'].split('.')[0:2])
 
          if patch != game_patch: break
+
+         print(match_id, "*************************")
+         match_timeline = util.get_match_timeline(match_id, seed_user["region"])
+         champion_bin = util.champion_parse(match_data["info"]["participants"], match_timeline)
+         self.champion_collection.insert_many(champion_bin)
 
          [puuid_bin.append({ 'puuid': puuid, 'region': seed_user['region']}) for puuid in match_data['metadata']['participants']]
          match_bin.append({ 'metadata': match_data['metadata'], 'info': match_data['info']})

@@ -1,15 +1,23 @@
 champion_schema = {
       "$jsonSchema": {
          "bsonType": "object",
-         "required": ["puuid", "region"],
+         "required": ["name", "games", "wins", "builds"],
          "properties": {
-            "puuid": {
+            "name": {
                "bsonType": "string",
-               "description": "a summoner's puuid"
+               "description": "champion name"
             },
-            "region": {
-               "bsonType": "string",
-               "description": "a puuid's region"
+            "games": {
+               "bsonType": "int",
+               "description": "champion observations"
+            },
+            "wins": {
+               "bsonType": "int",
+               "description": "champion win observations"
+            },
+            "builds": {
+               "bsonType": "object",
+               "description": "nested objs storing build data"
             }
          }
       }

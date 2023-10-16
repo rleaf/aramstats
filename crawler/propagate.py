@@ -2,7 +2,7 @@ import util
 import pymongo
 
 class Propagate():
-   def __init__(self, patch: str, region: str, puuid_collection, match_collection) -> None:
+   def __init__(self, patch: str, region: str, puuid_collection, match_collection, champion_collection) -> None:
       index = 0
       start = 1365
       batch_size = 50

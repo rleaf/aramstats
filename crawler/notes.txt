@@ -90,8 +90,18 @@ Champion Schema
    """
    builds is an object where each n-nested object (excluding meta) can be interpreted as a BUILD and a BUILDPATH. A BUILDPATH is the order
    of itemization a player takes to get to their BUILD. A BUILD is the items a player has at game end. For example, where the * is near Runaan's,
-   that means a player has the BUILDPATH IE -> Storm -> LDR -> Runaan's and, depending on the "games" property in meta, if that BUILDPATH
+   that means a player has the BUILDPATH IE -> Storm -> LDR -> Runaan's and, if the "meta.games" property in that object is > 0, if that BUILDPATH
    was ever a final BUILD.
+
+   the meta property in each object contains summed metadata for the number of times a BUILD has been encountered.
+      friendlyTeam: A summed "multi-hot" vector of length n where n is equal to the total champions, ordered by release date. Each index corresponds
+         to a champion where arr[0] is the first champion released and arr[-1] is the most recent (briar atm).
+      enemyTeam: Same as above. friendlyTeam maps the friendly champion encounters with some BUILD and enemyTeam maps the enemy champion encounters with
+         some BUILD. **Important to see that this struct homogenizes champion encounters and does not retain team composition. I think that would be an unbounded constraint and not good for a pequeño database. Another important concern is that I would need to maintain a champion table for the multi-hot vectors (ie add new champ
+         on every release)**
+      games: number of times champ is observed.
+      nah***levelPath: sequence of integers representing leveling path for champion. 18 ints (0-3) long
+      wins: observed times champion has won. 
    """
    
    builds: {
@@ -107,8 +117,8 @@ Champion Schema
          },
          3073: { # BT
             3036: { # LDR
-            ...
-            meta: {...}
+               ...
+               meta: {...}
             },
             meta: {...}
          }
@@ -117,8 +127,9 @@ Champion Schema
       3095: { # Stormrazor
          ...
          meta: {
-            friendlyTeam: [string], # Friendly team comp
-            enemyTeam: [string], # Enemy team comp
+            friendlyTeam: [int], # summed "multi-hot" vector
+            enemyTeam: [int], # summed "multi-hot" vector
+            ***levelPath: int,
             games: int,
             wins: int
          }

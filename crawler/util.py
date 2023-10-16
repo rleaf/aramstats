@@ -57,4 +57,49 @@ def get_match(match_id, region):
          raise
          res = e.response.status_code
 
-   # return res
+
+def get_match_timeline(match_id, region):
+   try:
+      return lol_watcher.match.timeline_by_match(match_id=match_id, region=region)
+   except ApiError as e:
+      # print(e.response.text)
+      print(e)
+      if e.response.status_code == 429:
+         print('We should retry in {} seconds.'.format(e.response.headers['Retry-After']))
+      else:
+         raise
+         res = e.response.status_code
+
+def fun(x):
+   return [x["championName"], ]
+
+def champion_parse(participants, timeline):
+   champion_bin = []
+   champion = {}
+
+   # Same as comprehension below
+   # for match_participant in participants:
+   #    for timeline_participant in timeline["info"]["participants"]:
+   #       if match_participant["puuid"] == timeline_participant["puuid"]:
+   #          table.append({match_participant["championName"]: timeline_participant["participantId"]})
+
+   # Associate participantID with championName
+   table = {x["participantId"]: y["championName"] for x in timeline["info"]["participants"] for y in participants if x["puuid"] == y["puuid"]}
+   skill_level = []
+   items = []
+
+   for frame in timeline["info"]["frames"]:
+      for event in frame["events"]:
+         # Capture Level
+         if event["type"] == "ITEM_PURCHASED": items.append(event)
+         # Capture Build
+         if event["type"] == "SKILL_LEVEL_UP": skill_level.append(event)
+
+   
+
+   print(items)
+   # for i in range(1, 11):
+   #    print(i)
+
+   print(toad)
+   return champion_bin
