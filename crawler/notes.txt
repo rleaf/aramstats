@@ -105,27 +105,49 @@ Champion Schema
    """
    
    builds: {
+      # step 1
       3031: { # IE
+         # step 2
          3095: { # Storm
+            # step 3
             3036: { # LDR
+               # step 4
                3046: {...} # PD
                3072: {...} # BT
                3084: {.*.} # Runaan's
+               starting: {...},
                meta: {...}
             }
+            starting: {...},
             meta: {...}
          },
          3073: { # BT
+            # step 3
             3036: { # LDR
+               # step 4
                ...
+               starting: {...},
                meta: {...}
             },
+            starting: {...},
             meta: {...}
          }
+         starting: {...},
          meta: {...}
       },
       3095: { # Stormrazor
          ...
+         starting: {
+            3133: { # Hammer
+               2031: { # Refillable Pot
+                  meta: {...}
+               }
+               meta: {
+                  games: int,
+                  wins: int
+               }
+            }
+         },
          meta: {
             friendlyTeam: [int], # summed "multi-hot" vector
             enemyTeam: [int], # summed "multi-hot" vector
@@ -134,20 +156,5 @@ Champion Schema
             wins: int
          }
       },
-      ...
    }
-
-
-//   buildPath: [
-//      build1: [00000],
-//      build2: [00000],
-//      build3: [00000]
-//
-//      OR
-//
-//      item1: int,
-//      item2: int,
-//      item3: int,
-//      item4: int
-//   ]
 }

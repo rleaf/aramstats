@@ -2,14 +2,19 @@ import os
 from riotwatcher import LolWatcher, ApiError
 from dotenv import load_dotenv
 import requests
+import pprint
+pp = pprint.PrettyPrinter()
 
 load_dotenv()
 lol_watcher = LolWatcher(os.environ['DEV_RIOT_API_KEY'])
 
-def get_latest_patch() -> str:
+def get_latest_patch(discrete=False) -> str:
    # print(lol_watcher.data_dragon.versions_for_region(region)['v'].split('.')[0:2])
    url = 'https://ddragon.leagueoflegends.com/api/versions.json'
-   res = requests.get(url).json()[0].split('.')[0:2]
+   if discrete:
+      res = requests.get(url).json()[0].split('.')[0:3]
+   else:
+      res = requests.get(url).json()[0].split('.')[0:2]
    return '.'.join(res)
 
 def get_match_patch(match: object) -> str:
@@ -70,36 +75,131 @@ def get_match_timeline(match_id, region):
          raise
          res = e.response.status_code
 
-def fun(x):
-   return [x["championName"], ]
+def get_items():
+   patch = get_latest_patch(True)
+   url = f'https://ddragon.leagueoflegends.com/cdn/{patch}/data/en_US/item.json'
+   res = requests.get(url).json()
+   return res
 
-def champion_parse(participants, timeline):
-   champion_bin = []
-   champion = {}
+def champion_parse(participants, timeline, _items):
+   """ 
+   Return a list of champion documents to be inserted into DB for a given game
+   1. Create a champion bin to return (to be insertedmany())
+   2. Push champion names to list elements. Need to do this first because all of the timeline references only by the
+      participantId index and I want them translated to champs.
+   3. Loop through frames in match timeline for relevant data.
+      -- ITEMS --
+      3.1 If item is not legendary, continue (does not build into anything excluding masterworks) 
+      3.2 If item exists on item step, continue
+      3.3 Push to builds
+      -- SKILL LEVELS --
+      potatoes
+      -- META --
+      potatoes
+   """
+   champion_bin = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
 
-   # Same as comprehension below
+   # 1 and 2 are the "same"
+   # 1
    # for match_participant in participants:
    #    for timeline_participant in timeline["info"]["participants"]:
    #       if match_participant["puuid"] == timeline_participant["puuid"]:
    #          table.append({match_participant["championName"]: timeline_participant["participantId"]})
+   # 2
+   # table = {x["participantId"]: y["championName"] for x in timeline["info"]["participants"] for y in participants if x["puuid"] == y["puuid"]}
 
-   # Associate participantID with championName
-   table = {x["participantId"]: y["championName"] for x in timeline["info"]["participants"] for y in participants if x["puuid"] == y["puuid"]}
-   skill_level = []
-   items = []
+   # Push to champion_bin in same loops
+   [champion_bin[x["participantId"]-1].update({"name": y["championName"]}) for x in timeline["info"]["participants"] for y in participants if x["puuid"] == y["puuid"]]
+   _starting_items = [ [] for _ in range(10) ]
+   _build = [ [] for _ in range(10) ]
+   _skill_level = [ [] for _ in range(10) ]
 
-   for frame in timeline["info"]["frames"]:
+   # for i, champ in enumerate(champion_bin):
+   #    for j, frame in enumerate(timeline["info"]["frames"]):
+   #       for event in frame["events"]:
+   #          if i+1 != event["participantId"]: continue
+   #          # Capture Level
+   #          if event["type"] == "SKILL_LEVEL_UP":
+   #             pass
+
+   #          # Capture Build
+   #          if event["type"] == "ITEM_PURCHASED":
+   #             item_id = str(event["itemId"])
+
+   #             # IF "into" DNE in item || IF item builds into masterwork (ornn) item. This assumes the 'requiredAlly' key is unique to Ornn.
+   #             if "into" not in items[item_id] or 'requiredAlly' in items[str(items[item_id]["into"][0])]:
+
+   #                # Starting items
+   #                if j == 1:
+   #                   pass
+   #                print(items[item_id]["name"])
+
+
+   for i, frame in enumerate(timeline["info"]["frames"]):
       for event in frame["events"]:
          # Capture Level
-         if event["type"] == "ITEM_PURCHASED": items.append(event)
+         if event["type"] == "SKILL_LEVEL_UP":
+            _skill_level[event["participantId"] - 1].append(event["skillSlot"])
+
          # Capture Build
-         if event["type"] == "SKILL_LEVEL_UP": skill_level.append(event)
+         if event["type"] == "ITEM_PURCHASED":
+            event_item = str(event["itemId"])
+            items = _items[event_item]
 
-   
+            # IF "into" DNE in item || IF item builds into masterwork (ornn) item. Assumes the 'requiredAlly' key is unique to Ornn.
+            if "into" not in items or 'requiredAlly' in _items[str(items["into"][0])]:
 
-   print(items)
-   # for i in range(1, 11):
-   #    print(i)
+               """ 
+               Snapshotting starting items:
+                  1. Look at items purchased only in the first time step, aka second frame.
+                     - Summoners may be afk/dc past the first time step. Therefore snapshot won't have captured their start
+                  2. Classify all purchases until >1300g as starting items.
+                     - Too meticulous. Also some people may omit buying till 1300g cap to spike earlier (ie: they don't buy pots)
+                  3. Say first 2 purchased items are starting items.
+                     - This is so dumb I feel bad writing this. Some start noonquiver, noon + 2 pots, quad daggers, boots + blade/horn + pot, etc... all neq 2
+               """
+               # Starting items. Going w/ 1 for now.
+               if i < 2:
+                  _starting_items[event["participantId"] - 1].append(event_item)
+               else: 
+                  _build[event["participantId"] - 1].append(event_item)
+                  
+                  """ 
+                  starting
+                  {
+                     3177: {
+                        3070: {...}
+                        meta: {...}
+                     }
+                  } 
+                    
+                  """
+   print(_starting_items, 'starting')
+   print(_build, 'build')
+   print(_skill_level, 'skill')
+
+   starting_items = turtles(_starting_items)
+   build = turtles(_build, meta=starting_items)
+   pp.pprint(build)
 
    print(toad)
    return champion_bin
+
+def turtles(list, meta=None):
+   x = []
+   for u, k in enumerate(list):
+         # y = {'startingItems': start[i]}
+      y = {"meta": {"wins": 0, "games": 0}}
+      for v, j in enumerate(reversed(k)):
+         if "meta" in y:
+            y = {j: y}
+         else:
+         # if start is not None:
+         #    y = {j: y, "starting": start[i], "meta": {}}
+         # else:
+         # if meta is not None and v == 0:
+         #    y = {j: y, "meta": { "startingItems": meta[u]}}
+         # else: 
+            y = {j: y}
+      x.append(y)
+   return x

@@ -20,6 +20,7 @@ class Crawler():
       collection_list = db.list_collection_names()
       region = config.region
       patch = util.get_latest_patch()
+      items = util.get_items()
       puuid_collection_name = f"{region.upper()}_puuids"
       match_collection_name = f"{patch}_matches"
 
@@ -45,7 +46,7 @@ class Crawler():
          # self.champion_stats.create_index('name', unique=True) # don't think i need
       
       if config.seed:
-         Seed(patch, region, self.puuid_collection, self.match_collection, self.champion_stats)
+         Seed(patch, items, region, self.puuid_collection, self.match_collection, self.champion_stats)
       else:
          Propagate(patch, region, self.puuid_collection, self.match_collection, self.champion_stats)
 

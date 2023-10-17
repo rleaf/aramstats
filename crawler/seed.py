@@ -27,7 +27,7 @@ class Seed():
       "kr": "asia",
    }
    """
-   def __init__(self, patch: str, region: str, puuid_collection, match_collection, champion_collection) -> None:
+   def __init__(self, patch: str, items: dict, region: str, puuid_collection, match_collection, champion_collection) -> None:
       seed_user = {
          # Night Owl on DEV_KEY
          "puuid": "KGN0ZR8dNoUTFk57zZEsnmevV5mBiVc0Kpzn5IbMbiCM3BvrqWAXcrEj73tHS71YYSOmVz7SH75aDg",
@@ -48,10 +48,44 @@ class Seed():
 
          if patch != game_patch: break
 
+         ###############
          print(match_id, "*************************")
-         match_timeline = util.get_match_timeline(match_id, seed_user["region"])
-         champion_bin = util.champion_parse(match_data["info"]["participants"], match_timeline)
-         self.champion_collection.insert_many(champion_bin)
+         # team_100 = [x["championName"] for x in match_data["info"]["participants"] if x["teamId"] == 100]
+         # team_200 = [x["championName"] for x in match_data["info"]["participants"] if x["teamId"] == 200]
+      
+         # match_timeline = util.get_match_timeline(match_id, seed_user["region"])
+         # champion_bin = util.champion_parse(match_data["info"]["participants"], match_timeline, items["data"])
+         # self.champion_collection.insert_many(champion_bin)
+         build_games = ['builds.3066.meta.games', 1]
+         build_wins = ['builds.3066.meta.wins', 0]
+         try:
+            self.champion_collection.update_one(
+               {
+                  "name": "Jinx",
+               },
+               {
+                  "$inc": {
+                     "games": 314,
+                     "wins": 217,
+                     build_games[0]: build_games[1],
+                     build_wins[0]: build_wins[1]
+                  },
+                  # "$set": {
+                  #    "builds": {
+                  #       "3066": {
+                  #          "meta": {
+                  #             "games": 1,
+                  #             "wins": 1
+                  #          }
+                  #       }
+                  #    }
+                  # }
+               },
+               upsert=True
+            )
+         except Exception as e:
+            print(e, 'toad')
+         ###############
 
          [puuid_bin.append({ 'puuid': puuid, 'region': seed_user['region']}) for puuid in match_data['metadata']['participants']]
          match_bin.append({ 'metadata': match_data['metadata'], 'info': match_data['info']})
