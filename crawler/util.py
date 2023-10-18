@@ -81,6 +81,71 @@ def get_items():
    res = requests.get(url).json()
    return res
 
+def get_champion_upsert_data(participant_id, timeline, items, win):
+   path = []
+   leveling_path = ''
+   starting_build_path = []
+   blacklist = [
+      2003, # Healing potion
+      2140, # Elixer of wrath
+      2138, # Elixer of iron
+      2139, # Elixir of sorcery
+      3177, # Guardian's Blade
+      3184, # Guardian's Hammer
+      3112, # Guardian's Orb
+      2051, # Guardian's Horn
+   ]
+
+   for i, frame in enumerate(timeline["info"]["frames"]):
+      for event in frame["events"]:
+         if "participantId" in event and event["participantId"] == participant_id:
+
+            if event["type"] == "SKILL_LEVEL_UP":
+               leveling_path += str(event["skillSlot"])
+
+            if event["type"] == "ITEM_PURCHASED":
+               # item = items[str(event["itemId"])]
+
+               # Snapshot starting items
+               if i < 2: starting_build_path.append(str(event["itemId"]))
+
+               # # Health potions. A little naive.
+               # if event["itemId"] in blacklist: continue
+
+               # # IF "into" DNE in item || IF item builds into masterwork (ornn) item. Assumes the 'requiredAlly' key is unique to Ornn.
+               # if "into" not in item or 'requiredAlly' in items[str(item["into"][0])]:
+               #    path.append(str(event["itemId"]))
+
+   # path = 'builds.' + '.'.join(path) + '.meta'
+   if len(starting_build_path) == 0:
+      db_starting_path = 'startingBuild.0000.meta'
+   else:
+      db_starting_path = 'startingBuild.' + '.'.join(starting_build_path) + '.meta'
+
+   return leveling_path, db_starting_path
+
+def item_filter(i, items):
+   blacklist = [
+      "0", # No item
+      "2003", # Healing potion
+      "2140", # Elixer of wrath
+      "2138", # Elixer of iron
+      "2139", # Elixir of sorcery
+      "3177", # Guardian's Blade
+      "3184", # Guardian's Hammer
+      "3112", # Guardian's Orb
+      "2051", # Guardian's Horn
+   ]
+   if i in blacklist: return False
+
+   item = items[i]
+
+   if "into" not in item or 'requiredAlly' in items[str(item["into"][0])]:
+      return True
+   else:
+      return False
+
+
 def champion_parse(participants, timeline, _items):
    """ 
    Return a list of champion documents to be inserted into DB for a given game
@@ -185,21 +250,16 @@ def champion_parse(participants, timeline, _items):
    print(toad)
    return champion_bin
 
-def turtles(list, meta=None):
+def starter_turtles(list, win):
    x = []
-   for u, k in enumerate(list):
-         # y = {'startingItems': start[i]}
-      y = {"meta": {"wins": 0, "games": 0}}
-      for v, j in enumerate(reversed(k)):
-         if "meta" in y:
-            y = {j: y}
-         else:
-         # if start is not None:
-         #    y = {j: y, "starting": start[i], "meta": {}}
-         # else:
-         # if meta is not None and v == 0:
-         #    y = {j: y, "meta": { "startingItems": meta[u]}}
-         # else: 
-            y = {j: y}
-      x.append(y)
-   return x
+   if win:
+      y = {"meta": {"wins": 1, "games": 1}}
+   else:
+      y = {"meta": {"wins": 0, "games": 1}}
+
+   for v, j in enumerate(reversed(list)):
+         y = {j: y}
+
+   x.append(y)
+
+   return x[0]

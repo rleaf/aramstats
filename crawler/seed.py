@@ -1,3 +1,4 @@
+from tracemalloc import start
 import pymongo
 import util
 import validators as V
@@ -42,53 +43,62 @@ class Seed():
       match_bin = []
 
       print(f"Seeding {seed_user['region']}.")
+      
       for match_id in matchlist:
-         match_data = util.get_match(match_id, seed_user["region"])
-         game_patch = '.'.join(match_data['info']['gameVersion'].split('.')[0:2])
+         match = util.get_match(match_id, seed_user["region"])
+         game_patch = '.'.join(match['info']['gameVersion'].split('.')[0:2])
 
          if patch != game_patch: break
 
-         ###############
-         print(match_id, "*************************")
-         # team_100 = [x["championName"] for x in match_data["info"]["participants"] if x["teamId"] == 100]
-         # team_200 = [x["championName"] for x in match_data["info"]["participants"] if x["teamId"] == 200]
-      
-         # match_timeline = util.get_match_timeline(match_id, seed_user["region"])
-         # champion_bin = util.champion_parse(match_data["info"]["participants"], match_timeline, items["data"])
-         # self.champion_collection.insert_many(champion_bin)
-         build_games = ['builds.3066.meta.games', 1]
-         build_wins = ['builds.3066.meta.wins', 0]
-         try:
-            self.champion_collection.update_one(
-               {
-                  "name": "Jinx",
-               },
-               {
-                  "$inc": {
-                     "games": 314,
-                     "wins": 217,
-                     build_games[0]: build_games[1],
-                     build_wins[0]: build_wins[1]
-                  },
-                  # "$set": {
-                  #    "builds": {
-                  #       "3066": {
-                  #          "meta": {
-                  #             "games": 1,
-                  #             "wins": 1
-                  #          }
-                  #       }
-                  #    }
-                  # }
-               },
-               upsert=True
-            )
-         except Exception as e:
-            print(e, 'toad')
-         ###############
+         match_timeline = util.get_match_timeline(match_id, seed_user["region"])
+         table = {y["championName"]:x["participantId"] for x in match_timeline["info"]["participants"] \
+            for y in match["info"]["participants"] if x["puuid"] == y["puuid"]}
 
-         [puuid_bin.append({ 'puuid': puuid, 'region': seed_user['region']}) for puuid in match_data['metadata']['participants']]
-         match_bin.append({ 'metadata': match_data['metadata'], 'info': match_data['info']})
+         champions_data = [[x["championName"], x["win"], x["teamId"], [str(x[f"item{y}"]) for y in range(6)]] for x in match["info"]["participants"]]
+
+         for champion_data in champions_data:
+            """
+            name <str>: champion name
+            won <int>: boolean indicating win/lose
+            friendly_team <list>: summed multi-hot vector of friendly encounters
+            enemy_team <list>: summed multi-hot vector of enemy encounters
+            path <str>: build path in dot notation
+            level_path <dict>: datum to be inserted in .levelPath that stores level path info
+            starting_build <tuple>: [0] houses starting build path, similar to path. [1] houses datum to be inserted.
+            """
+            # Timeline-res level data
+            level_path, starting_build = util.get_champion_upsert_data(table[champion_data[0]], match_timeline, items["data"], champion_data[1])
+
+            # Match-res level data
+            filtered_items = list(filter(lambda x: util.item_filter(x, items["data"]), champion_data[3]))
+            path = 'builds.' + '.'.join([str(x) for x in filtered_items]) + '.meta'
+            name = champion_data[0] # champion name 
+            won = 1 if champion_data[1] else 0 # if champion won the game, either (0 or 1)
+
+            if len(filtered_items) > 0:
+               try:
+                  self.champion_collection.update_one(
+                     {
+                        "name": name,
+                     },
+                     {
+                        "$inc": {
+                           "games": 1,
+                           "wins": won,
+                           f'{path}.games': 1,
+                           f'{path}.wins': won,
+                           f"{path}.{level_path}": 1,
+                           f"{path}.{starting_build}.games": 1,
+                           f"{path}.{starting_build}.wins": won,
+                        },
+                     },
+                     upsert = True
+                  )
+               except Exception as e:
+                  print(e, 'pancakes')
+
+         [puuid_bin.append({ 'puuid': puuid, 'region': seed_user['region']}) for puuid in match['metadata']['participants']]
+         match_bin.append({ 'metadata': match['metadata'], 'info': match['info']})
 
       try:
          self.puuid_collection.insert_many(puuid_bin, ordered=False)

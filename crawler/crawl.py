@@ -48,7 +48,7 @@ class Crawler():
       if config.seed:
          Seed(patch, items, region, self.puuid_collection, self.match_collection, self.champion_stats)
       else:
-         Propagate(patch, region, self.puuid_collection, self.match_collection, self.champion_stats)
+         Propagate(patch, items, region, self.puuid_collection, self.match_collection, self.champion_stats)
 
 if __name__ == '__main__':
    args = argparse.ArgumentParser()
