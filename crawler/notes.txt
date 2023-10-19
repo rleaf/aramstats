@@ -158,3 +158,36 @@ Champion Schema
       },
    }
 }
+
+********************
+10/18
+
+Prob:
+   Crawler does not check for redundancy. Insertmany's on every match parsed and then the db, using unique indices, precludes duplicate matches.
+   Currently have championstat step working within the crawler operating on every parsed match cached. Champion stat function is upserting duplicates because the schema does not use a unique index (makes no sense?).
+
+S1:
+   Add logic to check if the match about to be parsed is already in the database. If is, skip it else parse.
+      + Easy to implement
+      + Everything in one script
+      - +1 more query operation per GET req from Riot.
+      - Slower compared to using unique indices.
+
+S1.5:
+   Keep everything in one script like S1, but use the 11000 mongodb error to filter out dup matchIDs. Feed that into the champion parse.
+      + Everything in one script
+      + Same ~speed as S1 ??
+      + Immediate updating
+
+S2:
+   Segregate championstat step from crawler into own script.
+      - Creates two scripts
+      - Using same API key in multiple spots ???
+         * Need key on championstat to get match_timeline data. Can store.....but a single doc is
+         500kb. prefer not to
+      - hmm
+
+         * cache index (in db?) for championstat to avoid redundancy.
+         * has to fire repeatedly (every hour, day, minute...) to provide updated champion stats
+         * 
+

@@ -2,11 +2,28 @@ import os
 from riotwatcher import LolWatcher, ApiError
 from dotenv import load_dotenv
 import requests
-import pprint
-pp = pprint.PrettyPrinter()
+import time
 
 load_dotenv()
 lol_watcher = LolWatcher(os.environ['DEV_RIOT_API_KEY'])
+
+class Timer():
+   def __init__(self, name) -> None:
+      self.start_time = None
+      self.name = name
+
+   def start(self):
+      if self.start_time is not None:
+         raise Exception('timer exists')
+      
+      self.start_time = time.perf_counter()
+   
+   def stop(self):
+      if self.start_time is None:
+         raise Exception('timer DNE')
+
+      delta = time.perf_counter() - self.start_time
+      print(f"*****{self.name}***** :{delta:0.4f} seconds.")
 
 def get_latest_patch(discrete=False) -> str:
    # print(lol_watcher.data_dragon.versions_for_region(region)['v'].split('.')[0:2])
@@ -81,20 +98,9 @@ def get_items():
    res = requests.get(url).json()
    return res
 
-def get_champion_upsert_data(participant_id, timeline, items, win):
-   path = []
+def get_champion_upsert_data(participant_id, timeline):
    leveling_path = ''
    starting_build_path = []
-   blacklist = [
-      2003, # Healing potion
-      2140, # Elixer of wrath
-      2138, # Elixer of iron
-      2139, # Elixir of sorcery
-      3177, # Guardian's Blade
-      3184, # Guardian's Hammer
-      3112, # Guardian's Orb
-      2051, # Guardian's Horn
-   ]
 
    for i, frame in enumerate(timeline["info"]["frames"]):
       for event in frame["events"]:
@@ -245,7 +251,6 @@ def champion_parse(participants, timeline, _items):
 
    starting_items = turtles(_starting_items)
    build = turtles(_build, meta=starting_items)
-   pp.pprint(build)
 
    print(toad)
    return champion_bin

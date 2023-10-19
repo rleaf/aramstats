@@ -29,34 +29,72 @@ class Seed():
    }
    """
    def __init__(self, patch: str, items: dict, region: str, puuid_collection, match_collection, champion_collection) -> None:
-      seed_user = {
+      
+      self.seed_user = {
          # Night Owl on DEV_KEY
          "puuid": "KGN0ZR8dNoUTFk57zZEsnmevV5mBiVc0Kpzn5IbMbiCM3BvrqWAXcrEj73tHS71YYSOmVz7SH75aDg",
          "region": "na1"
       }
-      # fake_patch = '13.17'
       self.puuid_collection = puuid_collection
       self.match_collection = match_collection
       self.champion_collection = champion_collection
-      matchlist = util.get_summoner_matches_on_patch(seed_user["puuid"], seed_user["region"], patch)
+      self.patch = patch
+      self.region = region
+      self.items = items["data"]
+      self.match_data_cache = []
+
+      self.seed()
+      self.champion_parse()
+      print(f"Fin seeding {self.seed_user['region']}.")
+      
+   def seed(self):
       puuid_bin = []
       match_bin = []
+      matchlist = util.get_summoner_matches_on_patch(self.seed_user["puuid"], self.seed_user["region"], self.patch)
 
-      print(f"Seeding {seed_user['region']}.")
-      
+      print(f"Seeding {self.seed_user['region']}.")
       for match_id in matchlist:
-         match = util.get_match(match_id, seed_user["region"])
+         match = util.get_match(match_id, self.seed_user["region"])
          game_patch = '.'.join(match['info']['gameVersion'].split('.')[0:2])
 
-         if patch != game_patch: break
+         # ...404 match
+         if match == 404: continue
+         # ...dead match OR remake
+         if match['info']['gameDuration'] < 210: continue
+         # ...old patch
+         if self.patch != game_patch: break
 
-         match_timeline = util.get_match_timeline(match_id, seed_user["region"])
-         table = {y["championName"]:x["participantId"] for x in match_timeline["info"]["participants"] \
-            for y in match["info"]["participants"] if x["puuid"] == y["puuid"]}
+         champions_data =  [[p["participantId"], p["championName"], p["win"], p["teamId"], p["championId"], [str(p[f"item{y}"]) for y in range(6)] ] for p in match["info"]["participants"]]
+         self.match_data_cache.append([match_id, champions_data])
 
-         champions_data = [[x["championName"], x["win"], x["teamId"], [str(x[f"item{y}"]) for y in range(6)]] for x in match["info"]["participants"]]
+         [puuid_bin.append({ 'puuid': puuid, 'region': self.seed_user['region']}) for puuid in match['metadata']['participants']]
+         match_bin.append({ 'metadata': match['metadata'], 'info': match['info']})
+      try:
+         self.puuid_collection.insert_many(puuid_bin, ordered=False)
+      except pymongo.errors.BulkWriteError as e:
+         errors = list(filter(lambda x: x['code'] != 11000, e.details['writeErrors']))
+         if len(errors) > 0:
+            raise Exception(f'Non-11000 errors in insertmany operation for TEST{self.region}_puuids')
+         else:
+            pass
 
-         for champion_data in champions_data:
+      try:
+         self.match_collection.insert_many(match_bin, ordered=False)
+      except pymongo.errors.BulkWriteError as e:
+         dup_matches = [x["keyValue"]["metadata.matchId"] for x in e.details["writeErrors"]]
+         self.match_data_cache = list(filter(lambda x: x[0] not in dup_matches, self.match_data_cache))
+
+         errors = list(filter(lambda x: x['code'] != 11000, e.details['writeErrors']))
+         if len(errors) > 0:
+            raise Exception(f'Non-11000 errors in insertmany operation for TEST{self.patch}_matches')
+         else:
+            pass
+         
+   def champion_parse(self):
+      for match_data in self.match_data_cache: 
+         match_timeline = util.get_match_timeline(match_data[0], self.seed_user["region"])
+
+         for champion_data in match_data[1]:
             """
             name <str>: champion name
             won <int>: boolean indicating win/lose
@@ -67,13 +105,15 @@ class Seed():
             starting_build <tuple>: [0] houses starting build path, similar to path. [1] houses datum to be inserted.
             """
             # Timeline-res level data
-            level_path, starting_build = util.get_champion_upsert_data(table[champion_data[0]], match_timeline, items["data"], champion_data[1])
+            level_path, starting_build = util.get_champion_upsert_data(champion_data[0], match_timeline)
 
             # Match-res level data
-            filtered_items = list(filter(lambda x: util.item_filter(x, items["data"]), champion_data[3]))
+            filtered_items = list(filter(lambda x: util.item_filter(x, self.items), champion_data[5]))
             path = 'builds.' + '.'.join([str(x) for x in filtered_items]) + '.meta'
-            name = champion_data[0] # champion name 
-            won = 1 if champion_data[1] else 0 # if champion won the game, either (0 or 1)
+            friends = [x[4] for x in match_data[1] if x[3] == champion_data[3]]
+            enemies = [x[4] for x in match_data[1] if x[3] != champion_data[3]]
+            name = champion_data[1] # champion name 
+            won = 1 if champion_data[2] else 0 # if champion won the game, either (0 or 1)
 
             if len(filtered_items) > 0:
                try:
@@ -90,32 +130,19 @@ class Seed():
                            f"{path}.{level_path}": 1,
                            f"{path}.{starting_build}.games": 1,
                            f"{path}.{starting_build}.wins": won,
+                           # Friendlies
+                           f"{path}.friendlyEncounters.{friends[0]}": 1,
+                           f"{path}.friendlyEncounters.{friends[1]}": 1,
+                           f"{path}.friendlyEncounters.{friends[2]}": 1,
+                           f"{path}.friendlyEncounters.{friends[3]}": 1,
+                           # Enemies
+                           f"{path}.enemyEncounters.{enemies[0]}": 1,
+                           f"{path}.enemyEncounters.{enemies[1]}": 1,
+                           f"{path}.enemyEncounters.{enemies[2]}": 1,
+                           f"{path}.enemyEncounters.{enemies[3]}": 1,
                         },
                      },
                      upsert = True
                   )
                except Exception as e:
                   print(e, 'pancakes')
-
-         [puuid_bin.append({ 'puuid': puuid, 'region': seed_user['region']}) for puuid in match['metadata']['participants']]
-         match_bin.append({ 'metadata': match['metadata'], 'info': match['info']})
-
-      try:
-         self.puuid_collection.insert_many(puuid_bin, ordered=False)
-      except pymongo.errors.BulkWriteError as e:
-         errors = list(filter(lambda x: x['code'] != 11000, e.details['writeErrors']))
-         if len(errors) > 0:
-            raise Exception(f'Non-11000 errors in insertmany operation for TEST{region}_puuids')
-         else:
-            pass
-
-      try:
-         self.match_collection.insert_many(match_bin, ordered=False)
-      except pymongo.errors.BulkWriteError as e:
-         errors = list(filter(lambda x: x['code'] != 11000, e.details['writeErrors']))
-         if len(errors) > 0:
-            raise Exception(f'Non-11000 errors in insertmany operation for TEST{patch}_matches')
-         else:
-            pass
-      
-      print(f"Fin seeding {seed_user['region']}.")

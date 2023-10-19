@@ -1,6 +1,6 @@
 import os
 import argparse
-from wsgiref import validate
+# from wsgiref import validate
 import util
 import validators as V
 from pymongo import MongoClient
@@ -38,11 +38,11 @@ class Crawler():
          self.match_collection = db.create_collection(match_collection_name, validator=V.match_schema)
          self.match_collection.create_index('metadata.matchId', unique=True)
 
-   # Check if existing championStats collection
-      if "championStats" in collection_list:
-         self.champion_stats = db["championStats"]
+   # Check if existing championstats collection
+      if "championstats" in collection_list:
+         self.champion_stats = db["championstats"]
       else:
-         self.champion_stats = db.create_collection("championStats", validator=V.champion_schema)
+         self.champion_stats = db.create_collection("championstats", validator=V.champion_schema)
          # self.champion_stats.create_index('name', unique=True) # don't think i need
       
       if config.seed:
