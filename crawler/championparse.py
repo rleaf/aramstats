@@ -55,6 +55,10 @@ class ChampionParser():
             starting_build <str>: starting build in dot notation
             friends <list>: list containing ally champions encountered
             enemies <list>: list containing ememy champion encountered
+
+            CONSIDERATIONS
+               1. Store friends & enemies as a summed multi-hot vector where each index
+                  corresponds to the championId as opposed to a dict of championNames.
             """
             win = 1 if participant["win"] else 0
             name = participant["championName"]
@@ -75,11 +79,6 @@ class ChampionParser():
             if starting_build == 'startingBuild..meta': starting_build = 'startingBuild.0000.meta'
             friends = list(filter(lambda x: x != participant["championName"], team_100 if participant["teamId"] == 100 else team_200))
             enemies = team_100 if participant["teamId"] != 100 else team_200
-            # print(path)
-            # print(level_path)
-            # print(starting_build)
-            # print(friends)
-            # print(enemies)
 
             if len(filtered_items) > 0:
                try:
@@ -93,7 +92,7 @@ class ChampionParser():
                            "wins": win,
                            f'{path}.games': 1,
                            f'{path}.wins': win,
-                           f"{path}.{level_path}": 1,
+                           f"{path}.levelPath.{level_path}": 1,
                            f"{path}.{starting_build}.games": 1,
                            f"{path}.{starting_build}.wins": win,
                            # Friendlies
@@ -106,6 +105,7 @@ class ChampionParser():
                            f"{path}.enemyEncounters.{enemies[1]}": 1,
                            f"{path}.enemyEncounters.{enemies[2]}": 1,
                            f"{path}.enemyEncounters.{enemies[3]}": 1,
+                           f"{path}.enemyEncounters.{enemies[4]}": 1,
                         },
                      },
                      upsert = True
