@@ -20,7 +20,6 @@ class Crawler():
       collection_list = db.list_collection_names()
       region = config.region
       patch = util.get_latest_patch()
-      items = util.get_items()
       puuid_collection_name = f"{region.upper()}_puuids"
       match_collection_name = f"{patch}_matches"
 
@@ -38,17 +37,10 @@ class Crawler():
          self.match_collection = db.create_collection(match_collection_name, validator=V.match_schema)
          self.match_collection.create_index('metadata.matchId', unique=True)
 
-   # Check if existing championstats collection
-      if "championstats" in collection_list:
-         self.champion_stats = db["championstats"]
-      else:
-         self.champion_stats = db.create_collection("championstats", validator=V.champion_schema)
-         # self.champion_stats.create_index('name', unique=True) # don't think i need
-      
       if config.seed:
-         Seed(patch, items, region, self.puuid_collection, self.match_collection, self.champion_stats)
+         Seed(patch, region, self.puuid_collection, self.match_collection)
       else:
-         Propagate(patch, items, region, self.puuid_collection, self.match_collection, self.champion_stats)
+         Propagate(patch, region, self.puuid_collection, self.match_collection)
 
 if __name__ == '__main__':
    args = argparse.ArgumentParser()

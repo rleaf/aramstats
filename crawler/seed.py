@@ -28,7 +28,7 @@ class Seed():
       "kr": "asia",
    }
    """
-   def __init__(self, patch: str, items: dict, region: str, puuid_collection, match_collection, champion_collection) -> None:
+   def __init__(self, patch: str, region: str, puuid_collection, match_collection) -> None:
       
       self.seed_user = {
          # Night Owl on DEV_KEY
@@ -37,14 +37,13 @@ class Seed():
       }
       self.puuid_collection = puuid_collection
       self.match_collection = match_collection
-      self.champion_collection = champion_collection
+      # self.champion_collection = champion_collection
       self.patch = patch
       self.region = region
-      self.items = items["data"]
-      self.match_data_cache = []
+      # self.match_data_cache = []
 
       self.seed()
-      self.champion_parse()
+      # self.champion_parse()
       print(f"Fin seeding {self.seed_user['region']}.")
       
    def seed(self):
@@ -64,11 +63,25 @@ class Seed():
          # ...old patch
          if self.patch != game_patch: break
 
-         champions_data =  [[p["participantId"], p["championName"], p["win"], p["teamId"], p["championId"], [str(p[f"item{y}"]) for y in range(6)] ] for p in match["info"]["participants"]]
-         self.match_data_cache.append([match_id, champions_data])
+
+         skill_level_bin = []
+         item_bin = []
+         match_timeline = util.get_match_timeline(match_id, self.seed_user["region"])
+         
+         for frame in match_timeline["info"]["frames"]:
+            for event in frame["events"]:
+               if event["type"] == "SKILL_LEVEL_UP":
+                  skill_level_bin.append(event)
+               if event["type"] == "ITEM_PURCHASED" or event["type"] == "ITEM_SOLD" or event["type"] == "ITEM_UNDO":
+                  item_bin.append(event)
+
+         timeline_bin = [skill_level_bin, item_bin]
+
+         # champions_data =  [[p["participantId"], p["championName"], p["win"], p["teamId"], p["championId"], [str(p[f"item{y}"]) for y in range(6)] ] for p in match["info"]["participants"]]
+         # self.match_data_cache.append([match_id, champions_data])
 
          [puuid_bin.append({ 'puuid': puuid, 'region': self.seed_user['region']}) for puuid in match['metadata']['participants']]
-         match_bin.append({ 'metadata': match['metadata'], 'info': match['info']})
+         match_bin.append({ 'metadata': match['metadata'], 'info': match['info'], 'timeline': timeline_bin})
       try:
          self.puuid_collection.insert_many(puuid_bin, ordered=False)
       except pymongo.errors.BulkWriteError as e:
@@ -81,8 +94,8 @@ class Seed():
       try:
          self.match_collection.insert_many(match_bin, ordered=False)
       except pymongo.errors.BulkWriteError as e:
-         dup_matches = [x["keyValue"]["metadata.matchId"] for x in e.details["writeErrors"]]
-         self.match_data_cache = list(filter(lambda x: x[0] not in dup_matches, self.match_data_cache))
+         # dup_matches = [x["keyValue"]["metadata.matchId"] for x in e.details["writeErrors"]]
+         # self.match_data_cache = list(filter(lambda x: x[0] not in dup_matches, self.match_data_cache))
 
          errors = list(filter(lambda x: x['code'] != 11000, e.details['writeErrors']))
          if len(errors) > 0:

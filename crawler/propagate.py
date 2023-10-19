@@ -2,22 +2,21 @@ import util
 import pymongo
 
 class Propagate():
-   def __init__(self, patch: str, items: dict, region: str, puuid_collection, match_collection, champion_collection) -> None:
+   def __init__(self, patch: str, region: str, puuid_collection, match_collection) -> None:
       index = 0
-      start = 0
+      start = 20
       batch_size = 50
       self.puuid_collection = puuid_collection
       self.match_collection = match_collection
-      self.champion_collection = champion_collection
+      # self.champion_collection = champion_collection
       self.patch = patch
       self.region = region
-      self.items = items["data"]
-      self.match_data_cache = []
+      # self.match_data_cache = []
       for doc in self.puuid_collection.find(skip=start):
          if index % 20 == 0: print(f"{'@' * 5} INDEX: {index + start} {'@' * 5}")
          print(f"on puuid: {doc['puuid']}")
          self.propagate(doc, 0, batch_size)
-         self.champion_parse(doc)
+         # self.champion_parse(doc)
          index += 1
       print('fin')
 
@@ -33,56 +32,29 @@ class Propagate():
          print(match_id)
          match = util.get_match(match_id, doc['region'])
          # Continue/Break on...
-         # ...404 match
-         if match == 404: continue
-         # ...dead match OR remake
-         if match['info']['gameDuration'] < 210: continue
+         # ...404 match or ...dead match/remake
+         if match == 404 or match['info']['gameDuration'] < 210: continue
          # ...old patch
          if self.patch != util.get_match_patch(match): break
 
-         champions_data =  [[p["participantId"], p["championName"], p["win"], p["teamId"], p["championId"], [str(p[f"item{y}"]) for y in range(6)] ] for p in match["info"]["participants"]]
-         self.match_data_cache.append([match_id, champions_data])
-
-         # match_timeline = util.get_match_timeline(match_id, doc['region'])
-         # table = {y["championName"]:x["participantId"] for x in match_timeline["info"]["participants"] \
-         #    for y in match["info"]["participants"] if x["puuid"] == y["puuid"]}
-
-         # # range(6) instead of 7 to omit poro-snax
-         # champions_data = [[x["championName"], x["win"], x["teamId"], [str(x[f"item{y}"]) for y in range(6)]] for x in match["info"]["participants"]]
-
-         # for champion_data in champions_data:
-         #    # Timeline-res level data
-         #    level_path, starting_build = util.get_champion_upsert_data(table[champion_data[0]], match_timeline, self.items, champion_data[1])
-
-         #    # Match-res level data
-         #    filtered_items = list(filter(lambda x: util.item_filter(x, self.items), champion_data[3]))
-         #    path = 'builds.' + '.'.join([str(x) for x in filtered_items]) + '.meta'
-         #    name = champion_data[0] # champion name 
-         #    won = 1 if champion_data[1] else 0 # if champion won the game, either (0 or 1)
-
-         #    if len(filtered_items) > 0:
-         #       try:
-         #          self.champion_collection.update_one(
-         #             {
-         #                "name": name,
-         #             },
-         #             {
-         #                "$inc": {
-         #                   "games": 1,
-         #                   "wins": won,
-         #                   f'{path}.games': 1,
-         #                   f'{path}.wins': won,
-         #                   f"{path}.{level_path}": 1,
-         #                   f"{path}.{starting_build}.games": 1,
-         #                   f"{path}.{starting_build}.wins": won,
-         #                },
-         #             },
-         #             upsert = True
-         #          )
-         #       except Exception as e:
-         #          print(e, 'pancakes')
+         skill_level_bin = []
+         item_bin = []
+         match_timeline = util.get_match_timeline(match_id, doc["region"])
          
-         match_batch.append(match)
+         for frame in match_timeline["info"]["frames"]:
+            for event in frame["events"]:
+               if event["type"] == "SKILL_LEVEL_UP":
+                  skill_level_bin.append(event)
+               if event["type"] == "ITEM_PURCHASED" or event["type"] == "ITEM_SOLD" or event["type"] == "ITEM_UNDO":
+                  item_bin.append(event)
+
+         timeline_bin = [skill_level_bin, item_bin]
+
+         # champions_data =  [[p["participantId"], p["championName"], p["win"], p["teamId"], p["championId"], [str(p[f"item{y}"]) for y in range(6)] ] for p in match["info"]["participants"]]
+         # self.match_data_cache.append([match_id, champions_data])
+
+         # match_batch.append(match)
+         match_batch.append({ 'metadata': match['metadata'], 'info': match['info'], 'timeline': timeline_bin})
          [puuid_batch.append({ 'puuid': participant, 'region': doc['region']}) \
             for participant in match['metadata']['participants']]
 
@@ -93,8 +65,8 @@ class Propagate():
       try:
          self.match_collection.insert_many(match_batch, ordered=False)
       except pymongo.errors.BulkWriteError as e:
-         dup_matches = [x["keyValue"]["metadata.matchId"] for x in e.details["writeErrors"]]
-         self.match_data_cache = list(filter(lambda x: x[0] not in dup_matches, self.match_data_cache))
+         # dup_matches = [x["keyValue"]["metadata.matchId"] for x in e.details["writeErrors"]]
+         # self.match_data_cache = list(filter(lambda x: x[0] not in dup_matches, self.match_data_cache))
 
          errors = list(filter(lambda x: x['code'] != 11000, e.details['writeErrors']))
          if len(errors) > 0:
@@ -115,7 +87,7 @@ class Propagate():
       
       if persist: 
          print('persisting')
-         self.champion_parse(doc)
+         # self.champion_parse(doc)
          self.propagate(doc, start + batch_size, batch_size)
 
    def champion_parse(self, doc: object):
