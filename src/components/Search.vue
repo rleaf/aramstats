@@ -1,6 +1,7 @@
 <script>
 import Dropdown from '../components/Dropdown.vue'
 import regions from '../constants/regions'
+import champions from '../constants/champions'
 
 export default {
    components: {
@@ -15,17 +16,32 @@ export default {
          alertMessage: String,
          regionOptions: regions,
          showRegions: false,
-         containerFocus: false
+         containerFocus: false,
+         championNames: null,
       }
    },
 
    created() {
       const localRegion = localStorage.getItem('region')
       if (localRegion) this.region = localRegion
+
+      this.championNames = champions.names.map((name) => {
+         return (name in champions.table) ? champions.table[name] : name
+      })
+
+      console.log(this.championNames)
    },
 
    methods: {
-      onEnter() {
+      inputFocus() {
+         this.containerFocus = true
+         this.showRegions = false
+      },
+      championSearch() {
+         console.log('tomatoes')
+      },
+
+      summonerSearch() {
          if (this.region === 'rg' || this.input == '') {
             this.alertMessage = 'Enter a summoner name and/or region.'
             this.inputAlert = true
@@ -44,7 +60,6 @@ export default {
       regionSelect(region) {
          this.region = region
          localStorage.setItem('region', this.region)
-         console.log(this.$refs.container)
          this.$refs.input.focus()
          this.showRegions = false
       },
@@ -53,9 +68,19 @@ export default {
          console.log(this.$refs.container)
          this.containerFocus = true
          console.log(this.containerFocus)
-         // this.$refs.container.style.background = 'tomato'
       }
    },
+
+   computed: {
+      filteredChamps() {
+         // console.log(champions)
+         // const currentPatch = '13.20.1'
+         // const url = `https://ddragon.leagueoflegends.com/cdn/${currentPatch}/img/champion/${this.data[i].name}.png`
+         // console.log(this.region, this.region.length)
+         if (this.input.length === 0) return
+         return this.championNames.filter(champ => champ.toLowerCase().startsWith(this.input.toLowerCase())).slice(0, 5)
+      }
+   }
 }
 
 </script>
@@ -65,9 +90,10 @@ export default {
       <img src="../assets/logo.svg" class="logo" alt="">
       <div ref="container" class="container" :class="{ focus: this.containerFocus}">
          <input ref="input" type="text" spellcheck="false"
-            @focus="this.containerFocus = true"
+            @focus="inputFocus"
             @blur="this.containerFocus = false"
-            v-on:keyup.enter="onEnter"
+            @keyup.enter.exact="summonerSearch"
+            @keyup.shift.enter="championSearch"
             placeholder="Summoner Name"
             v-model="input">
          <button class="region" @click="this.showRegions = true">
@@ -77,21 +103,40 @@ export default {
             :options="options"
             @region-emit="regionSelect" 
             /> -->
+      </div>
+      <div class="region-selection" v-show="showRegions">
+         <div v-for="region in this.regionOptions" :key="region" @click="regionSelect(region)">
+            {{ region.toUpperCase() }}
          </div>
-         <div class="region-selection" v-show="showRegions">
-            <div v-for="region in this.regionOptions" :key="region" @click="regionSelect(region)">
-               {{ region.toUpperCase() }}
-            </div>
+      </div>
+      <Transition name="fade">
+         <div class="region-alert" v-show="inputAlert">
+            {{ this.alertMessage }}
          </div>
-         <Transition name="fade">
-            <div class="region-alert" v-show="inputAlert">
-               {{ this.alertMessage }}
-            </div>
-         </Transition>
+      </Transition>
+      <!-- <div class="champion-search" v-show="this.containerFocus"> -->
+      <div class="champion-search">
+         <div v-for="champ in filteredChamps">
+            <!-- <img :src="" alt="" srcset=""> -->
+            {{ champ }}
+         </div>
+      </div>
    </div>
 </template>
 
 <style scoped>
+
+.champion-search > div {
+   padding: 0.3rem 0; 
+}
+.champion-search {
+   background: var(--color-background);
+   color: var(--color-font-unfocused);
+   font-size: 0.95rem;
+   margin-top: 5px;
+   border-radius: 5px;
+   width: calc(380px + 4rem);
+}
 
 .region-selection {
    margin-top: 1rem;

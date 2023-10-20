@@ -79,6 +79,7 @@ def get_match(match_id, region):
 
 
 def get_match_timeline(match_id, region):
+   # print(match_id, region)
    try:
       return lol_watcher.match.timeline_by_match(match_id=match_id, region=region)
    except ApiError as e:

@@ -22,10 +22,11 @@ mongoose.connect(process.env.DB_CONNECTION_STRING, {dbName: 'aramstats'})
 
 const summoners = require('./routes/summoner')
 const matchInfo = require('./routes/matchInfo')
+const championInfo = require('./routes/champion')
 
 app.use('/api/summoners', summoners)
 app.use('/api/matchInfo', matchInfo)
-// app.use('/api/history', history)
+app.use('/api/champions', championInfo)
 
 let server
 

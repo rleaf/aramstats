@@ -27,6 +27,7 @@
   --color-background: #0d111c;
   --searchHover: #151a2b;
   --color-font: var(--light200);
+  --color-font-unfocused: var(--light700);
   --runeMythic: #2e3341;
   --hoverButton: rgba(255, 255, 255, 0.1);
 

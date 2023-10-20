@@ -2,22 +2,20 @@ import util
 import pymongo
 
 class Propagate():
-   def __init__(self, patch: str, region: str, puuid_collection, match_collection) -> None:
-      index = 0
-      start = 20
+   def __init__(self, patch: str, region: str, puuid_collection, match_collection, meta_collection, config_index) -> None:
+      _index = 0
+      start = config_index if config_index is not None else meta_collection.find_one({ "name": "crawler"})["index"]
       batch_size = 50
       self.puuid_collection = puuid_collection
       self.match_collection = match_collection
-      # self.champion_collection = champion_collection
       self.patch = patch
       self.region = region
-      # self.match_data_cache = []
       for doc in self.puuid_collection.find(skip=start):
-         if index % 20 == 0: print(f"{'@' * 5} INDEX: {index + start} {'@' * 5}")
+         if _index % 20 == 0: print(f"{'@' * 5} INDEX: {_index + start} {'@' * 20}")
          print(f"on puuid: {doc['puuid']}")
          self.propagate(doc, 0, batch_size)
-         # self.champion_parse(doc)
-         index += 1
+         _index += 1
+         meta_collection.update_one({ "name": "crawler"}, { "$set": {"index": _index + start} })
       print('fin')
 
    def propagate(self, doc: object, start: int, batch_size: int) -> None:

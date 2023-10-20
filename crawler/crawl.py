@@ -40,12 +40,15 @@ class Crawler():
       if config.seed:
          Seed(patch, region, self.puuid_collection, self.match_collection)
       else:
-         Propagate(patch, region, self.puuid_collection, self.match_collection)
+         self.meta_collection = db["meta"]
+         Propagate(patch, region, self.puuid_collection, self.match_collection, self.meta_collection, config.index)
 
 if __name__ == '__main__':
    args = argparse.ArgumentParser()
    args.add_argument('-s', '--seed', type=int, choices=[0, 1], default=0,
                      help='Set to 1 to seed crawl. Set to propagation by default.')
+   args.add_argument('-i', '--index', type=int, default=None,
+                     help='Set starting index for propagation.')
    args.add_argument('region', choices=['americas', 'europe', 'asia', 'sea'],
                      help='Select region to crawl through.')
    config = args.parse_args()
