@@ -18,6 +18,7 @@ export default {
          showRegions: false,
          containerFocus: false,
          championNames: null,
+         champions: []
       }
    },
 
@@ -25,11 +26,13 @@ export default {
       const localRegion = localStorage.getItem('region')
       if (localRegion) this.region = localRegion
 
-      this.championNames = champions.names.map((name) => {
-         return (name in champions.table) ? champions.table[name] : name
-      })
-
-      console.log(this.championNames)
+      for (const champion of champions.names) {
+         let x = {}
+         x.backName = champion
+         x.frontName = (champion in champions.table) ? champions.table[champion] : champion
+         x.image = `https://ddragon.leagueoflegends.com/cdn/13.20.1/img/champion/${champion}.png`
+         this.champions.push(x)
+      }
    },
 
    methods: {
@@ -73,12 +76,8 @@ export default {
 
    computed: {
       filteredChamps() {
-         // console.log(champions)
-         // const currentPatch = '13.20.1'
-         // const url = `https://ddragon.leagueoflegends.com/cdn/${currentPatch}/img/champion/${this.data[i].name}.png`
-         // console.log(this.region, this.region.length)
          if (this.input.length === 0) return
-         return this.championNames.filter(champ => champ.toLowerCase().startsWith(this.input.toLowerCase())).slice(0, 5)
+         return this.champions.filter(champ => champ.frontName.toLowerCase().startsWith(this.input.toLowerCase())).slice(0, 5)
       }
    }
 }
@@ -86,56 +85,107 @@ export default {
 </script>
 
 <template>
-   <div class="search">
+   <div class="search-main">
       <img src="../assets/logo.svg" class="logo" alt="">
       <div ref="container" class="container" :class="{ focus: this.containerFocus}">
-         <input ref="input" type="text" spellcheck="false"
+         <input ref="input" type="text" spellcheck="false" autocomplete="off"
             @focus="inputFocus"
-            @blur="this.containerFocus = false"
-            @keyup.enter.exact="summonerSearch"
-            @keyup.shift.enter="championSearch"
-            placeholder="Summoner Name"
+            @keyup.enter="summonerSearch"
+            placeholder="Summoner or Champion"
             v-model="input">
-         <button class="region" @click="this.showRegions = true">
+         <button class="region" @click="this.showRegions = true, this.containerFocus = false">
             {{ this.region.toUpperCase() }}
          </button>
-         <!-- <Dropdown 
-            :options="options"
-            @region-emit="regionSelect" 
-            /> -->
       </div>
       <div class="region-selection" v-show="showRegions">
          <div v-for="region in this.regionOptions" :key="region" @click="regionSelect(region)">
             {{ region.toUpperCase() }}
          </div>
       </div>
-      <Transition name="fade">
+      <transition name="fade">
          <div class="region-alert" v-show="inputAlert">
             {{ this.alertMessage }}
          </div>
-      </Transition>
-      <!-- <div class="champion-search" v-show="this.containerFocus"> -->
-      <div class="champion-search">
-         <div v-for="champ in filteredChamps">
-            <!-- <img :src="" alt="" srcset=""> -->
-            {{ champ }}
-         </div>
+      </transition>
+      <div ref="champions" class="champion-search" v-show="this.containerFocus && this.input.length > 0">
+         <router-link :to="{ name: 'champions', params: {champion: champ.backName.toLowerCase()}}" v-for="champ in filteredChamps">
+            <img :src="champ.image" alt="" srcset="" rel="preload">
+            {{ champ.frontName }}
+         </router-link>
       </div>
+      <!-- <div class="transition-wrapper">
+         <transition name="slide">
+         </transition>
+      </div> -->
    </div>
+   <div class="back" @click="this.containerFocus = false" v-if="this.containerFocus"></div>
 </template>
 
 <style scoped>
-
-.champion-search > div {
-   padding: 0.3rem 0; 
+.back {
+   position: fixed;
+   top: 0;
+   left: 0;
+   z-index: 1;
+   width: 100%;
+   height: 100vh;
 }
+
+.testo {
+   width: 100%;
+   height: 100%;
+}
+
+.transition-wrapper {
+   overflow: hidden;
+}
+
 .champion-search {
-   background: var(--color-background);
+   position: relative;
+   /* background: var(--color-background); */
+   background: #1f263f;
    color: var(--color-font-unfocused);
-   font-size: 0.95rem;
+   font-size: 0.8rem;
+   /* height: 205px; */
    margin-top: 5px;
-   border-radius: 5px;
-   width: calc(380px + 4rem);
+   /* border: 1px solid var(--light700); */
+   /* border-radius: 5px; */
+   /* padding: 0.5rem 0; */
+   width: calc(380px);
+}
+
+.champion-search h3 {
+   font-size: 0.9rem;
+   /* font-weight: normal; */
+   /* text-decoration: underline; */
+   color: var(--light400);
+   width: auto;
+   /* background: var(--hoverButton); */
+   padding: 1rem 0.8rem;
+   margin: 0;
+}
+
+.champion-search > a {
+   display: flex;
+   align-items: center;
+   gap: 0.5rem;
+   position: relative;
+   z-index: 2;
+   color: var(--color-font-unfocused);
+   text-decoration: none;
+   padding: 0.3rem 1rem;
+   padding-left: 1.5rem;
+   transition: 0.25s;
+}
+
+
+.champion-search > a:hover {
+   background: var(--hoverButton);
+   color: var(--color-font)
+}
+
+.champion-search img {
+   width: 33px;
 }
 
 .region-selection {
@@ -189,15 +239,17 @@ img.logo {
       filter: brightness(0) saturate(100%) invert(18%) sepia(9%) saturate(2305%) hue-rotate(184deg) brightness(105%) contrast(92%);
    }
 }
-.search {
+
+.search-main {
    display: flex;
    flex-direction: column;
    margin-top: 20vh;
    width: 100%;
    align-items: center;
 }
-
 .container {
+   position: relative;
+   z-index: 2;
    background: var(--color-background);
    display: flex;
    align-items: center;
@@ -235,7 +287,6 @@ button {
 }
 
 .notif {
-   /* background: rgba(255, 255, 255, 0.308); */
    color: var(--color-font);
    text-align: center;
    padding: 0.5rem 1rem;
@@ -243,7 +294,6 @@ button {
    margin-top: 2rem;
    border: 1px var(--tint100) solid;
    font-size: 0.9rem;
-   /* width: 30%; */
 }
 
 .region-alert {
@@ -261,5 +311,17 @@ button {
 
 .fade-leave-to {
    opacity: 0;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+   transition: 0.5s cubic-bezier(.25,.1,.25,1);
+}
+
+.slide-enter {
+   transform: translate(0, 100%)
+}
+.slide-leave-to {
+   transform: translate(0, -100%)
 }
 </style>
