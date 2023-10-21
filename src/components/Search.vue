@@ -2,6 +2,9 @@
 import Dropdown from '../components/Dropdown.vue'
 import regions from '../constants/regions'
 import champions from '../constants/champions'
+import axios from 'axios'
+
+import { globalsStore } from '../stores/globals'
 
 export default {
    components: {
@@ -18,24 +21,46 @@ export default {
          showRegions: false,
          containerFocus: false,
          championNames: null,
-         champions: []
+         champions: [],
+         store: globalsStore()
       }
    },
 
    created() {
+      // this.getCurrentPatch()
+
       const localRegion = localStorage.getItem('region')
       if (localRegion) this.region = localRegion
 
+      // for (const champion of champions.names) {
+      //    let x = {}
+      //    x.backName = champion
+      //    x.frontName = (champion in champions.table) ? champions.table[champion] : champion
+      //    x.image = `https://ddragon.leagueoflegends.com/cdn/13.20.1/img/champion/${champion}.png`
+      //    this.champions.push(x)
+      // }
       for (const champion of champions.names) {
          let x = {}
-         x.backName = champion
-         x.frontName = (champion in champions.table) ? champions.table[champion] : champion
-         x.image = `https://ddragon.leagueoflegends.com/cdn/13.20.1/img/champion/${champion}.png`
+         x.back = (champion[1] === "MonkeyKing") ? 'wukong' : champion[1].toLowerCase()
+         // x.back = champion[1].toLowerCase()
+         x.front = champion[2]
+         x.image = `https://ddragon.leagueoflegends.com/cdn/13.20.1/img/champion/${champion[1]}.png`
          this.champions.push(x)
       }
    },
 
    methods: {
+      async getCurrentPatch() {
+         const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
+
+         try {
+            // this.currentPatch = (await axios.get(url)).data[0].split('.').slice(0, 2).join('.')
+            this.store.patch = (await axios.get(url)).data[0]
+         } catch (e) {
+            console.log(e, 'getCurrentPatch')
+         }
+      },
+
       inputFocus() {
          this.containerFocus = true
          this.showRegions = false
@@ -77,7 +102,7 @@ export default {
    computed: {
       filteredChamps() {
          if (this.input.length === 0) return
-         return this.champions.filter(champ => champ.frontName.toLowerCase().startsWith(this.input.toLowerCase())).slice(0, 5)
+         return this.champions.filter(champ => champ.front.toLowerCase().startsWith(this.input.toLowerCase())).slice(0, 5)
       }
    }
 }
@@ -108,9 +133,9 @@ export default {
          </div>
       </transition>
       <div ref="champions" class="champion-search" v-show="this.containerFocus && this.input.length > 0">
-         <router-link :to="{ name: 'champions', params: {champion: champ.backName.toLowerCase()}}" v-for="champ in filteredChamps">
+         <router-link :to="{ name: 'champions', params: {champion: champ.back}}" v-for="champ in filteredChamps">
             <img :src="champ.image" alt="" srcset="" rel="preload">
-            {{ champ.frontName }}
+            {{ champ.front }}
          </router-link>
       </div>
       <!-- <div class="transition-wrapper">

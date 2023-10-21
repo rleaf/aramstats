@@ -2,17 +2,24 @@
 import ChampionLoading from '../components/Champion/ChampionLoading.vue'
 import ChampionError from '../components/Champion/ChampionError.vue'
 import ChampionReady from '../components/Champion/ChampionReady.vue'
+
+import champions from '../constants/champions'
 import axios from 'axios'
 
 export default {
+   components: {
+      ChampionLoading,
+      ChampionError,
+      ChampionReady
+   },
+
    data() {
       return {
-
+         status: null
       }
    },
 
    created() {
-      console.log(this.$route.params.champion, 'toad')
       this.lookup()
    },
 
@@ -22,7 +29,20 @@ export default {
 
    methods: {
       lookup() {
-         
+         const url = `/api/champions/${this.$route.params.champion}`
+
+         // if (this.$route.params.champion in champions.names) {
+         //    do some error handling here so don't waste api call to backend
+         //    if champion param is some arbitrary string
+         // }
+
+         axios.get(url).then((res) => {
+            this.champion = res.data
+            this.status = 1
+         }).catch((e) => {
+            console.log('err', e)
+            this.status = 2
+         })
       }
    }
 }
@@ -31,11 +51,11 @@ export default {
 </script>
 
 <template>
-   <div class="champion-main">
-
-   </div>
+   <ChampionLoading
+      v-if="!this.status"/>
+   <ChampionReady
+      v-if="this.status === 1"
+      :champion="this.champion"/>
+   <ChampionError
+      v-if="this.status === 2"/>
 </template>
-
-<style scoped>
-
-</style>

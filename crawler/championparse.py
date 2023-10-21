@@ -61,7 +61,9 @@ class ChampionParser():
                   corresponds to the championId as opposed to a dict of championNames.
             """
             win = 1 if participant["win"] else 0
-            name = participant["championName"]
+            name = 'wukong' if participant["championName"] == 'MonkeyKing' else participant["championName"].lower()
+            # name = participant["championName"].lower()
+            id = participant["championId"]
             path = [str(participant[f"item{x}"]) for x in range(6)]
             filtered_items = list(filter(lambda x: util.item_filter(x, self.items), path))
             path = 'builds.' + '.'.join([str(x) for x in filtered_items]) + '.meta'
@@ -85,6 +87,7 @@ class ChampionParser():
                   self.champion_stats_collection.update_one(
                      {
                         "name": name,
+                        "id": id
                      },
                      {
                         "$inc": {

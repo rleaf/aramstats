@@ -1,10 +1,18 @@
 const express = require('express')
-const twisted = require('../twisted_calls')
+const mongodb = require('mongodb')
 
 const router = express.Router()
 
 router.get('/:champion', async (req, res) => {
-   res.send(req.params.champion)
+   
+   const coll = await loadChampionStatsCollection()
+   const pancakes = await coll.findOne({"name": req.params.champion})
+   res.send(pancakes)
 })
+
+async function loadChampionStatsCollection() {
+   const client = await mongodb.MongoClient.connect(process.env.DB_CONNECTION_STRING)
+   return client.db('aramstats').collection('championstats')
+}
 
 module.exports = router
