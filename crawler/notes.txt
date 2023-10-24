@@ -1,3 +1,163 @@
+****************************************************************************
+****************************************************************************
+10/22
+
+
+Change data structure for champion data. Currently is an n-nested dictionary where n is the items built for some build. One item (node) can branch into any other item, so if there are 30 items worth storing data for, each initial node has 29 possible branches and then 28 possible branches on the proceeding node. There is a meta dict for every observed item build containing metadata such as games observed, won, friendly team comp, enemy team comp, etc...
+
+Although easy and cost-effective(?) to store, it's a pain in the ass to unfold on the client side because each build requires traversing, in order, the n-nested layers multiple times.
+
+BEFORE:
+With above data structure, average file sizes after parsing 10,290 matches for 165 champions is:
+   "avg_KB": 177.5682181818182,
+   "avg_MB": 0.1775682181818182
+
+AFTER:
+With below data structure.
+   "avg_KB": 179.71912727272726,
+   "avg_MB": 0.1797191272727273
+
+* Make better for CSR *
+
+1. have skills & runes be dependent on builds. 
+   O <int>: observed games
+   W <int>: wins
+   F <list>: friendly championIds
+   E <list>: enemy championIds
+   T <int>: rune tree. 1-5
+   RP <int>: rune path (2231011211) 0-3 primary, 4-6 secondary, 7-9 are those small ones
+   SP <int>: skillpath
+   {
+      name: "sona",
+      games: 3489,
+      wins: 1681,
+      skills: {
+         "1237.1854.4583.5928": [[O, W, SP], [O, W, SP], [O, W, SP]],
+         ...
+      }
+      runes: {
+         "1237.1854.4583.5928": [[O, W, T, RP], [O, W, T, RP], [O, W, T, RP]],
+         "1858.6938.2738.6970.2735.0285" : [[O, W, T, RP], [O, W, T, RP], [O, W, T, RP]],
+         ...
+      }
+      builds: {
+         "1237.1854.4583.5928" : [O, W, F, E],
+         "1858.6938.2738.6970.2735.0285" : [O, W, F, E],
+         "1858.6938.2738.3859.2844" : [O, W, F, E],
+         "1858.6938.2738.6970.4891.4734" : [O, W, F, E],
+      }
+   }
+
+   + Convenient enough to unfold since every skill/rune path associates, using its key, with a build.
+   - Can not see rune/skill stats independent to build.
+   - Big dict?
+
+2. Have skills, runes, and builds independent.
+   Same variables as above. BP <int>: build path
+   {
+      name: "sona",
+      games: 3489,
+      wins: 1681,
+      skills: [
+         [O, W, SP],
+         [O, W, SP],
+         ...
+      ]
+      runes: [
+         [O, W, T, RP],
+         [O, W, T, RP],
+         ...
+      ],
+      builds: [
+         [O, W, BP],
+         [O, W, BP],
+         [O, W, BP],
+         ...
+      ]
+   }
+
+   + Can see independent skill/rune/build stats
+
+3. Have skills/runes/build independent but provide some linkage, w/ items dict, to see item-specific stats.
+   items <dict>: k:v pairs are itemId:list where list elements contain stats pertaining to keystone rune and skill path.
+   
+   items: bounded to total items in game
+   items.XXXX[0]: bounded to keystone runes
+   items.XXXX[1]: bounded to unique skill paths (could be a lot?)
+   
+
+   {
+      name: "sona",
+      games: 3489,
+      wins: 1681,
+      skills: {
+         "SP": [O, W],
+         "SP": [O, W]
+         ...
+      }
+      runes: {
+         "T.RP": [O, W],
+         "T.RP": [O, W],
+         ...
+      }
+      items: {
+         "2398": [
+            {
+               "KS": [O, W],
+               ...
+            },
+            {
+               "SP" [O, W],
+               ...
+            }
+         ]
+         ...
+      },
+      builds: {
+         "BP": [O, W, {"SB": [O, W]}],
+         "BP": [O, W, {"SB": [O, W]}],
+         "BP": [O, W, {"SB": [O, W]}],
+         ...
+      }
+   }
+
+****************************************************************************
+****************************************************************************
+
+10/18
+
+Prob:
+   Crawler does not check for redundancy. Insertmany's on every match parsed and then the db, using unique indices, precludes duplicate matches.
+   Currently have championstat step working within the crawler operating on every parsed match cached. Champion stat function is upserting duplicates because the schema does not use a unique index (makes no sense?).
+
+S1:
+   Add logic to check if the match about to be parsed is already in the database. If is, skip it else parse.
+      + Easy to implement
+      + Everything in one script
+      - +1 more query operation per GET req from Riot.
+      - Slower compared to using unique indices.
+
+S1.5:
+   Keep everything in one script like S1, but use the 11000 mongodb error to filter out dup matchIDs. Feed that into the champion parse.
+      + Everything in one script
+      + Same ~speed as S1 ??
+      + Immediate updating
+
+S2:
+   Segregate championstat step from crawler into own script.
+      - Creates two scripts
+      - Using same API key in multiple spots ???
+         * Need key on championstat to get match_timeline data. Can store.....but a single doc is
+         500kb. prefer not to
+      - hmm
+
+         * cache index (in db?) for championstat to avoid redundancy.
+         * has to fire repeatedly (every hour, day, minute...) to provide updated champion stats
+         * 
+
+****************************************************************************
+****************************************************************************
+
 Best way to aggregate matchdata in db?
 
 ---
@@ -158,36 +318,3 @@ Champion Schema
       },
    }
 }
-
-********************
-10/18
-
-Prob:
-   Crawler does not check for redundancy. Insertmany's on every match parsed and then the db, using unique indices, precludes duplicate matches.
-   Currently have championstat step working within the crawler operating on every parsed match cached. Champion stat function is upserting duplicates because the schema does not use a unique index (makes no sense?).
-
-S1:
-   Add logic to check if the match about to be parsed is already in the database. If is, skip it else parse.
-      + Easy to implement
-      + Everything in one script
-      - +1 more query operation per GET req from Riot.
-      - Slower compared to using unique indices.
-
-S1.5:
-   Keep everything in one script like S1, but use the 11000 mongodb error to filter out dup matchIDs. Feed that into the champion parse.
-      + Everything in one script
-      + Same ~speed as S1 ??
-      + Immediate updating
-
-S2:
-   Segregate championstat step from crawler into own script.
-      - Creates two scripts
-      - Using same API key in multiple spots ???
-         * Need key on championstat to get match_timeline data. Can store.....but a single doc is
-         500kb. prefer not to
-      - hmm
-
-         * cache index (in db?) for championstat to avoid redundancy.
-         * has to fire repeatedly (every hour, day, minute...) to provide updated champion stats
-         * 
-

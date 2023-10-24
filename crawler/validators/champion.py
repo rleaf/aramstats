@@ -1,11 +1,14 @@
 champion_schema = {
       "$jsonSchema": {
          "bsonType": "object",
-         "required": ["name", "games", "wins", "builds"],
+         "required": ["name", "id", "games", "wins", "skills", "runes", "builds", "items"],
          "properties": {
             "name": {
                "bsonType": "string",
                "description": "champion name"
+            },
+            "id": {
+               "bsonType": "int"
             },
             "games": {
                "bsonType": "int",
@@ -15,10 +18,22 @@ champion_schema = {
                "bsonType": "int",
                "description": "champion win observations"
             },
+            "skills": {
+               "bsonType": "object",
+               "description": "skills dict",
+            },
+            "runes": {
+               "bsonType": "object",
+               "description": "runes dict",
+            },
             "builds": {
                "bsonType": "object",
-               "description": "nested objs storing build data"
-            }
+               "description": "builds dict",
+            },
+            "items": {
+               "bsonType": "object",
+               "description": "items dict",
+            },
          }
       }
    }

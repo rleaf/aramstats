@@ -96,6 +96,13 @@ def get_items():
    res = requests.get(url).json()
    return res
 
+def get_runes():
+   # patch = get_latest_patch(True)
+   # url = f'https://ddragon.leagueoflegends.com/cdn/{patch}/data/en_US/runesReforged.json'
+   url = 'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perks.json'
+   res = requests.get(url).json()
+   return res
+
 def get_champion_upsert_data(participant_id, timeline):
    leveling_path = ''
    starting_build_path = []
