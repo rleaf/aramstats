@@ -60,8 +60,8 @@ class ChampionParser():
             # <str> Build path string ID used as field in database.
             build_path = '_'.join([str(x) for x in filtered_items])
 
-            # <str> Skill path string ID used as field in database. A little naive as snapshots most frequently leveled skill on slice.
-            skill_path = ''.join(str(x["skillSlot"]) for x in match["timeline"][0] if x["participantId"] == participant["participantId"])
+            # <str> Skill path string ID used as field in database.
+            skill_path = ''.join(str(x["skillSlot"]) for x in match["timeline"][0] if x["participantId"] == participant["participantId"] and x["levelUpType"] == "NORMAL")
             basic_skills = skill_path.replace('4', '')
 
             # <str> Level order of spells.
@@ -85,17 +85,8 @@ class ChampionParser():
                '3': 'e'
             }
 
-            count = [
-               [], [], [], [], [], []
-            ]
-            for s in skills:
-               if skills[s] > 5: skills[s] = 5 # Khazix can level 9 times apparently. Maybe do non-bandaid fix later.
-               if skills[s] == 0: count[5].append(s)
-               if skills[s] == 1: count[4].append(s)
-               if skills[s] == 2: count[3].append(s)
-               if skills[s] == 3: count[2].append(s)
-               if skills[s] == 4: count[1].append(s)
-               if skills[s] == 5: count[0].append(s)
+            count = [ [] for _ in range(max(ql, wl, el) + 1) ]
+            for s in skills: count[-skills[s]-1].append(s)
 
             """ 
             Cause I'm gonna forget in 5 minutes.
@@ -106,7 +97,7 @@ class ChampionParser():
             """
             for i, arr in enumerate(count):
                if len(arr) > 1:
-                  if i == 5:
+                  if i == max(ql, wl, el):
                      for v in arr: level_order += table[v]
                      continue
                   o = {v: len(basic_skills) - 1 - basic_skills[::-1].index(v) for v in arr}
@@ -114,6 +105,7 @@ class ChampionParser():
                   for u in s: level_order += table[u]
                elif len(arr) == 1:
                   level_order += table[arr[0]]
+
             # <str> Rune path string ID used as field in database.
             for x in match["info"]["participants"]:
                if x["participantId"] == participant["participantId"]:
