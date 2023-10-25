@@ -30,8 +30,8 @@ class Propagate():
          print(match_id)
          match = util.get_match(match_id, doc['region'])
          # Continue/Break on...
-         # ...404 match or ...dead match/remake
-         if match == 404 or match['info']['gameDuration'] < 210: continue
+         # ...404 match or ...dead match/remake. Remakes are < 210, but setting to 300 as an arbitrary cutoff for "pointless" games. (5 minute length)
+         if match == 404 or match['info']['gameDuration'] < 300: continue
          # ...old patch
          if self.patch != util.get_match_patch(match): break
 

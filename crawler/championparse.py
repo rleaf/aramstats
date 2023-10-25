@@ -3,8 +3,6 @@ import util
 import validators as V
 from pymongo import MongoClient
 from dotenv import load_dotenv
-import pprint
-pp = pprint.PrettyPrinter()
 
 load_dotenv()
 
@@ -64,13 +62,21 @@ class ChampionParser():
 
             # <str> Skill path string ID used as field in database. A little naive as snapshots most frequently leveled skill on slice.
             skill_path = ''.join(str(x["skillSlot"]) for x in match["timeline"][0] if x["participantId"] == participant["participantId"])
-            basic_skills = skill_path.replace('4', '')[3:]
+            basic_skills = skill_path.replace('4', '')
+
+            # <str> Level order of spells.
             level_order = ''
+            
+            ql, wl, el = 0, 0, 0
+            for v in basic_skills:
+               if v == '1': ql +=1
+               if v == '2': wl +=1
+               if v == '3': el +=1
 
             skills = {
-               '1': basic_skills.count('1'),
-               '2': basic_skills.count('2'),
-               '3': basic_skills.count('3')
+               '1': ql,
+               '2': wl,
+               '3': el
             }
 
             table = {
@@ -79,22 +85,35 @@ class ChampionParser():
                '3': 'e'
             }
 
-            _singles = [x for x in skills if skills[x] == 1]
-            _zeros = [table[x] for x in skills if skills[x] == 0]
+            count = [
+               [], [], [], [], [], []
+            ]
+            for s in skills:
+               if skills[s] > 5: skills[s] = 5 # Khazix can level 9 times apparently. Maybe do non-bandaid fix later.
+               if skills[s] == 0: count[5].append(s)
+               if skills[s] == 1: count[4].append(s)
+               if skills[s] == 2: count[3].append(s)
+               if skills[s] == 3: count[2].append(s)
+               if skills[s] == 4: count[1].append(s)
+               if skills[s] == 5: count[0].append(s)
 
-            qwe = [0, 0, 0]
-            singles = ''
-            zeros = ''.join(_zeros)
-
-            for i in basic_skills:
-               qwe[int(i) - 1] += 1
-               if i in _singles:
-                  singles += table[i]
-                  continue
-               
-               if qwe[int(i) - 1] == skills[i] and table[i] not in level_order: level_order += table[i]
-            level_order += singles + zeros
-
+            """ 
+            Cause I'm gonna forget in 5 minutes.
+            1. iterate through count list which stores values by frequency in spell string where most occuring (5 levels) is the leading list and the least occuring (0 levels) is the trailing list.
+            2.0 If multiple spells detected in trailing list, where multiple spells are not leveled at all, then add to level_order string arbitrarily & CONTINUE.
+            2.1 If there are multiple spells with same frequency (level 18 champ has all 3 spells leveled 5 times), then iter through that and find the spell that has the earliest last occurence and append, by earliest last occurence first, to the level_order string.
+            3. If there is only one spell in a count sub-list, add to string. 
+            """
+            for i, arr in enumerate(count):
+               if len(arr) > 1:
+                  if i == 5:
+                     for v in arr: level_order += table[v]
+                     continue
+                  o = {v: len(basic_skills) - 1 - basic_skills[::-1].index(v) for v in arr}
+                  s = sorted(o, key=lambda x: o[x])
+                  for u in s: level_order += table[u]
+               elif len(arr) == 1:
+                  level_order += table[arr[0]]
             # <str> Rune path string ID used as field in database.
             for x in match["info"]["participants"]:
                if x["participantId"] == participant["participantId"]:
@@ -140,6 +159,16 @@ class ChampionParser():
                      # Skills
                      f"skills.levelOrder.{level_order}.games": 1,
                      f"skills.levelOrder.{level_order}.wins": win,
+                     f"skills.levelOrder.{level_order}.friends.{f[0]}": 1,
+                     f"skills.levelOrder.{level_order}.friends.{f[1]}": 1,
+                     f"skills.levelOrder.{level_order}.friends.{f[2]}": 1,
+                     f"skills.levelOrder.{level_order}.friends.{f[3]}": 1,
+                     f"skills.levelOrder.{level_order}.enemies.{e[0]}": 1,
+                     f"skills.levelOrder.{level_order}.enemies.{e[1]}": 1,
+                     f"skills.levelOrder.{level_order}.enemies.{e[2]}": 1,
+                     f"skills.levelOrder.{level_order}.enemies.{e[3]}": 1,
+                     f"skills.levelOrder.{level_order}.enemies.{e[4]}": 1,
+
                      f"skills.{skill_path}.games": 1,
                      f"skills.{skill_path}.wins": win,
                      # Runes
@@ -188,9 +217,6 @@ class ChampionParser():
                   update["$inc"][f"items.{i}.enemies.{e[3]}"] = 1
                   update["$inc"][f"items.{i}.enemies.{e[4]}"] = 1
 
-               # pp.pprint(update)
-               # print(filtered_items)
-               # print(toad)
                try:
                   self.champion_stats_collection.update_one(query, update, upsert = True)
                except Exception as e:
