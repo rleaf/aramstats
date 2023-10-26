@@ -1,3 +1,4 @@
+from logging import Filterer
 import os
 import util
 import validators as V
@@ -11,8 +12,8 @@ class ChampionParser():
       db = MongoClient(os.environ['DB_CONNECTION_STRING'])['aramstats']
       collection_list = db.list_collection_names()
       patch = util.get_latest_patch()
-      # match_collection_name = f"{patch}_matches"
-      match_collection_name = f"13.20_matches"
+      match_collection_name = f"{patch}_matches"
+      # match_collection_name = f"13.20_matches"
       self.champion_stats_name = "championstats"
       self.items = util.get_items()["data"]
       self.runes = util.get_runes()
@@ -62,16 +63,20 @@ class ChampionParser():
             id = participant["championId"]
 
             # <[str]> List containing string representation of final build item IDs.
-            path = [str(participant[f"item{x}"]) for x in range(6)]
+            path = [participant[f"item{x}"] for x in range(6)]
 
             # <[str]> List containing filtered (desired) items.
             filtered_items = list(filter(lambda x: util.item_filter(x, self.items), path))
+            filtered_items = list(map(util.item_evolutions, filtered_items))
+            
+            item_order = [i["itemId"] for i in match["timeline"][1] if i["participantId"] == participant["participantId"] and i["type"] == "ITEM_PURCHASED" and i["itemId"] in filtered_items]
 
             # <str> Build path string ID used as field in database.
             build_path = '_'.join([str(x) for x in filtered_items])
 
             # <str> Skill path string ID used as field in database.
-            skill_path = ''.join(str(x["skillSlot"]) for x in match["timeline"][0] if x["participantId"] == participant["participantId"] and x["levelUpType"] == "NORMAL")
+            skill_path = ''.join(str(x["skillSlot"]) for x in match["timeline"][0] if x["participantId"] == participant["participantId"])
+            # skill_path = ''.join(str(x["skillSlot"]) for x in match["timeline"][0] if x["participantId"] == participant["participantId"] and x["levelUpType"] == "NORMAL")
             basic_skills = skill_path.replace('4', '')
 
             # <str> Level order of spells.
@@ -202,6 +207,9 @@ class ChampionParser():
                   # Totals
                   update["$inc"][f"items.{i}.games"] = 1
                   update["$inc"][f"items.{i}.wins"] = win
+                  # Position
+                  update["$inc"][f"items.{i}.position.{item_order.index(i)}.games"] = 1
+                  update["$inc"][f"items.{i}.position.{item_order.index(i)}.wins"] = win
                   # Keystone
                   update["$inc"][f"items.{i}.keystone.{key_stone}.games"] = 1
                   update["$inc"][f"items.{i}.keystone.{key_stone}.wins"] = win

@@ -137,27 +137,39 @@ def get_champion_upsert_data(participant_id, timeline):
 
 def item_filter(i, items):
    blacklist = [
-      "0", # No item
-      "2003", # Healing potion
-      "2140", # Elixer of wrath
-      "2138", # Elixer of iron
-      "2139", # Elixir of sorcery
-      "3177", # Guardian's Blade
-      "3184", # Guardian's Hammer
-      "3112", # Guardian's Orb
-      "2051", # Guardian's Horn
-      "2010", # Total Biscuit of Everlasting Will (Klepto biscuit)
-      "2403" # Minion dematerializer (Klepto)
+      0, # No item
+      2003, # Healing potion
+      2140, # Elixer of wrath
+      2138, # Elixer of iron
+      2139, # Elixir of sorcery
+      3177, # Guardian's Blade
+      3184, # Guardian's Hammer
+      3112, # Guardian's Orb
+      2051, # Guardian's Horn
+      2010, # Total Biscuit of Everlasting Will (Klepto biscuit)
+      2403, # Minion dematerializer (Klepto)
+      3400, # Your Cut
    ]
-   if i in blacklist: return False
 
-   item = items[i]
+   if i in blacklist: return False
+   item = items[str(i)]
 
    if "into" not in item or 'requiredAlly' in items[str(item["into"][0])]:
       return True
    else:
       return False
+   
+def item_evolutions(i):
+   evolutions = {
+      3040: 3003, # Seraphs: Archangel's 
+      3042: 3004, # Muramana: Manamune
+      3121: 3119, # Fimbulwinter: Winter's Approach
+   }
 
+   if i in evolutions:
+      return evolutions[i]
+   else:
+      return i
 
 def champion_parse(participants, timeline, _items):
    """ 

@@ -9,7 +9,8 @@ export default {
          itemBin: [],
          backName: champions.imageName[this.champion.id],
          abilities: [],
-         title: ''
+         title: '',
+         tab: 1,
       }
    },
 
@@ -124,13 +125,46 @@ export default {
             </div>
          </div>
    
-         <div class="body-tabs">
-            Toads
+         <!-- <div class="body-tabs">
+            <div class="tab" @click="this.tab = 1">
+               General
+            </div>
+            <div class="tab" @click="this.tab = 2">
+               Builds & Items
+            </div>
+         </div> -->
+
+         <div class="body">
+            <div class="tldr body-1">
+               <h2>tldr</h2>
+               <div class="body-2">
+                  toad
+               </div>
+            </div>
+            
+            <div class="builds body-1">
+               <h2>Builds</h2>
+               <div class="item-bin">
+                  <img :src="mythicImage(i)" @click="this.toggleItemBin(i)" rel="preload" v-for="i in Object.keys(this.champion.items)">
+               </div>
+
+            </div>
+
+            <div class="abilities body-1">
+               <h2>Abilities</h2>
+               
+            </div>
+
+            <div class="runes body-1">
+               <h2>Runes</h2>
+            </div>
+            <!-- <div class="builds" v-if="this.tab === 1">
+            </div>
+
+            <div class="items" v-if="this.tab === 2">
+            </div> -->
          </div>
    
-         <div class="item-bin">
-            <img :src="mythicImage(i)" @click="this.toggleItemBin(i)" rel="preload" v-for="i in Object.keys(this.champion.items)">
-         </div>
       </div>
    </div>
 </template>
@@ -225,8 +259,6 @@ export default {
       text-align: center;
       width: 0.9rem;
 
-      /* bottom: 0; */
-      /* right: 0; */
    }
    .champion-abilities div:not(:first-child) {
       margin-left: 10px;
@@ -250,13 +282,59 @@ export default {
    }
 
    .body-tabs {
-      margin-top: 20px;
+      margin-top: 50px;
       color: var(--color-font);
-      border-bottom: 1px solid var(--color-font);
+      border-bottom: 1px solid var(--tint400);
       width: 100%;
    }
+
+   .body-tabs div:first-child {
+      /* margin-left: 0.8rem; */
+   }
+
+   .body-tabs div:not(:first-child) {
+      margin: 0 1rem;
+   }
+
+   .body {
+      margin-top: 50px;
+   }
+
+   .body div:not(:first-child) {
+      margin-top: 20px;
+   }
+
+   .body-2 {
+      background: var(--tint100);
+      border-radius: 15px;
+   }
+   .body h2 {
+      color: var(--tint400);
+      margin: 1rem;
+      font-size: 1.1rem;
+      font-style: italic;
+      font-weight: normal;
+   }
+
+   .tab {
+      background: var(--tint100);
+      font-size: 0.9rem;
+      border-radius: 10px 10px 0 0;
+      border-top: 1px solid var(--tint400);
+      border-left: 1px solid var(--tint400);
+      border-right: 1px solid var(--tint400);
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      display: inline-block;
+      transition: 0.25s;
+   }
+
+   .tab:hover {
+      background: var(--hoverButton);
+   }
+
    .item-bin {
-      margin: 1rem 0;
+      /* margin: 1rem 0; */
       /* text-align: center; */
       padding: 1rem 0;
       border-radius: 15px;

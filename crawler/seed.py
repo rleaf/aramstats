@@ -70,7 +70,7 @@ class Seed():
          
          for frame in match_timeline["info"]["frames"]:
             for event in frame["events"]:
-               if event["type"] == "SKILL_LEVEL_UP":
+               if event["type"] == "SKILL_LEVEL_UP" and event["levelUpType"] == "NORMAL":
                   skill_level_bin.append(event)
                if event["type"] == "ITEM_PURCHASED" or event["type"] == "ITEM_SOLD" or event["type"] == "ITEM_UNDO":
                   item_bin.append(event)
