@@ -24,10 +24,20 @@ export default {
    },
 
    mounted() {
-
+      this.getCurrentPatch()
    },
 
    methods: {
+      async getCurrentPatch() {
+         const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
+
+         try {
+            this.patch = (await axios.get(url)).data[0]
+         } catch (e) {
+            console.log(e, 'getCurrentPatch')
+         }
+      },
+
       lookup() {
          const url = `/api/champions/${this.$route.params.champion}`
 
@@ -55,7 +65,8 @@ export default {
       v-if="!this.status"/>
    <ChampionReady
       v-if="this.status === 1"
-      :champion="this.champion"/>
+      :champion="this.champion"
+      :patch="this.patch"/>
    <ChampionError
       v-if="this.status === 2"/>
 </template>

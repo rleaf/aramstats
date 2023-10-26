@@ -146,6 +146,8 @@ def item_filter(i, items):
       "3184", # Guardian's Hammer
       "3112", # Guardian's Orb
       "2051", # Guardian's Horn
+      "2010", # Total Biscuit of Everlasting Will (Klepto biscuit)
+      "2403" # Minion dematerializer (Klepto)
    ]
    if i in blacklist: return False
 

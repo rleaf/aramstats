@@ -6,7 +6,7 @@ const router = express.Router()
 router.get('/:champion', async (req, res) => {
    
    const coll = await loadChampionStatsCollection()
-   const pancakes = await coll.findOne({"name": req.params.champion})
+   const pancakes = await coll.findOne({"lowerName": req.params.champion.toLowerCase()})
    res.send(pancakes)
 })
 

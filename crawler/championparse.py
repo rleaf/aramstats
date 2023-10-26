@@ -46,7 +46,17 @@ class ChampionParser():
             win = 1 if participant["win"] else 0
 
             # <str> Champion name. Doing the wukong thing for url convenience on front-back end comms
-            name = 'wukong' if participant["championName"] == 'MonkeyKing' else participant["championName"].lower()
+            name_table = {
+               "MonkeyKing": "Wukong",
+               "FiddleSticks": "Fiddlesticks"
+            }
+            
+            if participant["championName"] in name_table:
+               lower_name = name_table[participant["championName"]].lower()
+               name = name_table[participant["championName"]]
+            else:
+               lower_name = participant["championName"].lower()
+               name = participant["championName"]
 
             # <int> Champion ID
             id = participant["championId"]
@@ -140,6 +150,7 @@ class ChampionParser():
             if len(filtered_items) > 0:
 
                query = {
+                  "lowerName": lower_name,
                   "name": name,
                   "id": id
                }
