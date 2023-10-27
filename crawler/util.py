@@ -148,11 +148,13 @@ def item_filter(i, items):
       2051, # Guardian's Horn
       2010, # Total Biscuit of Everlasting Will (Klepto biscuit)
       2403, # Minion dematerializer (Klepto)
-      3400, # Your Cut
+      3400, # Your Cut (Pyke)
    ]
 
    if i in blacklist: return False
    item = items[str(i)]
+
+   if 'requiredAlly' in item: return False
 
    if "into" not in item or 'requiredAlly' in items[str(item["into"][0])]:
       return True
@@ -164,6 +166,8 @@ def item_evolutions(i):
       3040: 3003, # Seraphs: Archangel's 
       3042: 3004, # Muramana: Manamune
       3121: 3119, # Fimbulwinter: Winter's Approach
+
+
    }
 
    if i in evolutions:

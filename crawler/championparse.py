@@ -43,6 +43,9 @@ class ChampionParser():
             self.meta_document.update_one({ "name": self.champion_stats_name}, { "$set": {"index": self.index} })
                
          for participant in match["info"]["participants"]:
+            skills_timeline = list(filter(lambda x: participant["participantId"] == x["participantId"], match["timeline"][1]))
+            abilities_timeline = list(filter(lambda x: participant["participantId"] == x["participantId"], match["timeline"][0]))
+
             # <int> Win
             win = 1 if participant["win"] else 0
 
@@ -69,13 +72,16 @@ class ChampionParser():
             filtered_items = list(filter(lambda x: util.item_filter(x, self.items), path))
             filtered_items = list(map(util.item_evolutions, filtered_items))
             
-            item_order = [i["itemId"] for i in match["timeline"][1] if i["participantId"] == participant["participantId"] and i["type"] == "ITEM_PURCHASED" and i["itemId"] in filtered_items]
+            item_order = []
+            for i in skills_timeline:
+               if i["type"] != "ITEM_PURCHASED" or i["itemId"] not in filtered_items or i["itemId"] in item_order: continue
+               item_order.append(i["itemId"])
 
             # <str> Build path string ID used as field in database.
             build_path = '_'.join([str(x) for x in filtered_items])
 
             # <str> Skill path string ID used as field in database.
-            skill_path = ''.join(str(x["skillSlot"]) for x in match["timeline"][0] if x["participantId"] == participant["participantId"])
+            skill_path = ''.join(str(x["skillSlot"]) for x in abilities_timeline)
             # skill_path = ''.join(str(x["skillSlot"]) for x in match["timeline"][0] if x["participantId"] == participant["participantId"] and x["levelUpType"] == "NORMAL")
             basic_skills = skill_path.replace('4', '')
 
@@ -137,8 +143,8 @@ class ChampionParser():
 
             # <str> Starting items string ID used as field in database. 
             starting_build = []
-            for x in match["timeline"][1]:
-               if x["timestamp"] < 60000 and x["participantId"] == participant["participantId"]:
+            for x in abilities_timeline:
+               if x["timestamp"] < 60000:
                   if x["type"] == "ITEM_PURCHASED":
                      starting_build.append(x["itemId"])
                   if x["type"] == "ITEM_UNDO":

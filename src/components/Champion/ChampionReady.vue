@@ -11,6 +11,9 @@ export default {
          abilities: [],
          title: '',
          tab: 1,
+         tldr: {
+            items: [[], [], [], [], [], []]
+         },
       }
    },
 
@@ -18,9 +21,34 @@ export default {
       console.log(this.backName)
       console.log(this.champion)
       this.getChampData()
+      this.tldrItems()
+      console.log(this.tldr.items)
+   },
+   
+   mounted() {
+
    },
       
    methods: {
+      winrate(total, win) {
+         return `${Math.round( win / total * 1000) / 10}%`
+      },
+
+      tldrItems() {
+         const sub = (idx, k, v) => {
+            // [itemId, games, wins]
+            if (idx in v.position) this.tldr.items[idx].push([k, v.position[`${idx}`].games, v.position[`${idx}`].wins])
+         }
+
+         for (const [k, v] of Object.entries(this.champion.items)) {
+            for (let i = 0; i < 6; i++) {
+               sub(i, k, v)
+               this.tldr.items[i].sort((a, b) => b[1] - a[1])
+            }
+
+         }
+      },
+
       abilityLetter(idx) {
          switch (idx) {
             case 0:
@@ -45,7 +73,7 @@ export default {
          const url = `https://ddragon.leagueoflegends.com/cdn/${this.patch}/data/en_US/champion/${this.backName}.json`
          axios.get(url).then(res => {
             const tomato = res.data.data[this.backName]
-            console.log('tomato', tomato)
+            // console.log('tomato', tomato)
             this.title = tomato.title
             this.abilities.push(tomato.passive.image.full)
             for (const spell of tomato.spells) {
@@ -54,7 +82,7 @@ export default {
          })
       },
 
-      mythicImage(Id) {
+      itemImage(Id) {
          return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/item/${Id}.png`
       },
 
@@ -76,7 +104,7 @@ export default {
          return `linear-gradient(to right, rgba(var(--tint100RGB), 1.0), rgba(var(--tint100RGB), 0.9) 10%, rgba(var(--tint100RGB), .8) 60%, rgba(var(--tint100RGB), .7) 90%), no-repeat -20% 15%/100% url('${img}')`
       },
 
-      winrate() {
+      championWinrate() {
          return `${Math.round((this.champion.wins / this.champion.games) * 1000) / 10}%`
       },
 
@@ -118,7 +146,7 @@ export default {
             </div>
             <div class="champion-header-cell">
                <h3>Winrate</h3>
-               {{ winrate }}
+               {{ championWinrate }}
                <h4>
                   {{ this.champion.games }} games
                </h4>
@@ -134,28 +162,198 @@ export default {
             </div>
          </div> -->
 
-         <div class="body">
-            <div class="tldr body-1">
+         <div class="champion-body">
+            <div class="tldr section">
                <h2>tldr</h2>
-               <div class="body-2">
-                  toad
+               <div class="tldr-body">
+                  <div class="tldr-left">
+                     <div class="tldr-runes">
+                        runes go here?
+                     </div>
+                     <div class="tldr-misc">
+                        toads
+                     </div>
+                  </div>
+                  <div class="tldr-right">
+                     <div class="tldr-items">
+                        <div class="item">
+
+                           <h2>1</h2>
+                           <div class="tldr-wrapper">
+                              <img :src="itemImage(this.tldr.items[0][0][0])" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(this.tldr.items[0][0][1], this.tldr.items[0][0][2]) }} </h4>
+                                 <h3> ({{ this.tldr.items[0][0][1] }}) </h3>
+                              </div>
+                           </div>
+                           <div class="tldr-wrapper">
+                              <img :src="itemImage(this.tldr.items[0][1][0])" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(this.tldr.items[0][1][1], this.tldr.items[0][1][2]) }} </h4>
+                                 <h3> ({{ this.tldr.items[0][1][1] }}) </h3>
+                              </div>
+                           </div>
+                           <div class="tldr-wrapper">
+                              <img :src="itemImage(this.tldr.items[0][2][0])" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(this.tldr.items[0][2][1], this.tldr.items[0][2][2]) }} </h4>
+                                 <h3> ({{ this.tldr.items[0][2][1] }}) </h3>
+                              </div>
+                           </div>
+
+                        </div>
+                        <div class="item">
+
+                           <h2>2</h2>
+                           <div class="tldr-wrapper">
+                              <img :src="itemImage(this.tldr.items[1][0][0])" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(this.tldr.items[1][0][1], this.tldr.items[1][0][2]) }} </h4>
+                                 <h3> ({{ this.tldr.items[1][0][1] }}) </h3>
+                              </div>
+                           </div>
+                           <div class="tldr-wrapper">
+                              <img :src="itemImage(this.tldr.items[1][1][0])" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(this.tldr.items[1][1][1], this.tldr.items[1][1][2]) }} </h4>
+                                 <h3> ({{ this.tldr.items[1][1][1] }}) </h3>
+                              </div>
+                           </div>
+                           <div class="tldr-wrapper">
+                              <img :src="itemImage(this.tldr.items[1][2][0])" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(this.tldr.items[1][2][1], this.tldr.items[1][2][2]) }} </h4>
+                                 <h3> ({{ this.tldr.items[1][2][1] }}) </h3>
+                              </div>
+                           </div>
+
+                        </div>
+                        <div class="item">
+
+                           <h2>3</h2>
+                           <div class="tldr-wrapper">
+                              <img :src="itemImage(this.tldr.items[2][0][0])" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(this.tldr.items[2][0][1], this.tldr.items[2][0][2]) }} </h4>
+                                 <h3> ({{ this.tldr.items[2][0][1] }}) </h3>
+                              </div>
+                           </div>
+                           <div class="tldr-wrapper">
+                              <img :src="itemImage(this.tldr.items[2][1][0])" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(this.tldr.items[2][1][1], this.tldr.items[2][1][2]) }} </h4>
+                                 <h3> ({{ this.tldr.items[2][1][1] }}) </h3>
+                              </div>
+                           </div>
+                           <div class="tldr-wrapper">
+                              <img :src="itemImage(this.tldr.items[2][2][0])" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(this.tldr.items[2][2][1], this.tldr.items[2][2][2]) }} </h4>
+                                 <h3> ({{ this.tldr.items[2][2][1] }}) </h3>
+                              </div>
+                           </div>
+
+                        </div>
+                        <div class="item">
+
+                           <h2>4</h2>
+                           <div class="tldr-wrapper">
+                              <img :src="itemImage(this.tldr.items[3][0][0])" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(this.tldr.items[3][0][1], this.tldr.items[3][0][2]) }} </h4>
+                                 <h3> ({{ this.tldr.items[3][0][1] }}) </h3>
+                              </div>
+                           </div>
+                           <div class="tldr-wrapper">
+                              <img :src="itemImage(this.tldr.items[3][1][0])" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(this.tldr.items[3][1][1], this.tldr.items[3][1][2]) }} </h4>
+                                 <h3> ({{ this.tldr.items[3][1][1] }}) </h3>
+                              </div>
+                           </div>
+                           <div class="tldr-wrapper">
+                              <img :src="itemImage(this.tldr.items[3][2][0])" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(this.tldr.items[3][2][1], this.tldr.items[3][2][2]) }} </h4>
+                                 <h3> ({{ this.tldr.items[3][2][1] }}) </h3>
+                              </div>
+                           </div>
+
+                        </div>
+                        <div class="item">
+
+                           <h2>5</h2>
+                           <div class="tldr-wrapper">
+                              <img :src="itemImage(this.tldr.items[4][0][0])" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(this.tldr.items[4][0][1], this.tldr.items[4][0][2]) }} </h4>
+                                 <h3> ({{ this.tldr.items[4][0][1] }}) </h3>
+                              </div>
+                           </div>
+                           <div class="tldr-wrapper">
+                              <img :src="itemImage(this.tldr.items[4][1][0])" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(this.tldr.items[4][1][1], this.tldr.items[4][1][2]) }} </h4>
+                                 <h3> ({{ this.tldr.items[4][1][1] }}) </h3>
+                              </div>
+                           </div>
+                           <div class="tldr-wrapper">
+                              <img :src="itemImage(this.tldr.items[4][2][0])" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(this.tldr.items[4][2][1], this.tldr.items[4][2][2]) }} </h4>
+                                 <h3> ({{ this.tldr.items[4][2][1] }}) </h3>
+                              </div>
+                           </div>
+
+                        </div>
+                        <div class="item">
+
+                           <h2>6</h2>
+                           <div class="tldr-wrapper">
+                              <img :src="itemImage(this.tldr.items[5][0][0])" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(this.tldr.items[5][0][1], this.tldr.items[5][0][2]) }} </h4>
+                                 <h3> ({{ this.tldr.items[5][0][1] }}) </h3>
+                              </div>
+                           </div>
+                           <div class="tldr-wrapper">
+                              <img :src="itemImage(this.tldr.items[5][1][0])" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(this.tldr.items[5][1][1], this.tldr.items[5][1][2]) }} </h4>
+                                 <h3> ({{ this.tldr.items[5][1][1] }}) </h3>
+                              </div>
+                           </div>
+                           <div class="tldr-wrapper">
+                              <img :src="itemImage(this.tldr.items[5][2][0])" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(this.tldr.items[5][2][1], this.tldr.items[5][2][2]) }} </h4>
+                                 <h3> ({{ this.tldr.items[5][2][1] }}) </h3>
+                              </div>
+                           </div>
+
+                        </div>
+                     </div>
+                     <div class="tldr-abilities">
+                        abilities
+                     </div>
+                  </div>
                </div>
             </div>
             
-            <div class="builds body-1">
+            <div class="builds section">
                <h2>Builds</h2>
                <div class="item-bin">
-                  <img :src="mythicImage(i)" @click="this.toggleItemBin(i)" rel="preload" v-for="i in Object.keys(this.champion.items)">
+                  <img :src="itemImage(i)" @click="this.toggleItemBin(i)" rel="preload" v-for="i in Object.keys(this.champion.items)">
                </div>
 
             </div>
 
-            <div class="abilities body-1">
+            <div class="abilities section">
                <h2>Abilities</h2>
                
             </div>
 
-            <div class="runes body-1">
+            <div class="runes section">
                <h2>Runes</h2>
             </div>
             <!-- <div class="builds" v-if="this.tab === 1">
@@ -281,34 +479,93 @@ export default {
       flex-direction: column;
    }
 
-   .body-tabs {
+   .champion-body-tabs {
       margin-top: 50px;
       color: var(--color-font);
       border-bottom: 1px solid var(--tint400);
       width: 100%;
    }
 
-   .body-tabs div:first-child {
+   .tldr-body {
+      display: flex;
+      justify-content: space-evenly;
+   }
+
+   .tldr-left {
+      display: flex;
+      flex-direction: column;
+   }
+   
+   .tldr-right {
+      display: flex;
+      flex-direction: column;
+   }
+
+   .tldr-items {
+      display: flex;
+      gap: 40px;
+   }
+
+   .tldr-items .item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+   }
+
+   .tldr-items h4 {
+      display: inline-block;
+      color: var(--light300);
+      text-align: center;
+      font-weight: normal;
+      margin: 0;
+      font-size: 0.75rem;
+   }
+   
+   .tldr-items h3 {
+      display: inline-block;
+      color: var(--tint400);
+      text-align: center;
+      font-weight: normal;
+      margin: 0;
+      font-size: 0.75rem;
+      margin-left: 0.3rem;
+      /* font-style: italic; */
+   }
+
+   .tldr-items .item img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      /* margin: auto; */
+      /* text-align: center; */
+      width: 34px;
+      border: 1px solid var(--tint400);
+   }
+
+
+
+   .champion-body-tabs div:first-child {
       /* margin-left: 0.8rem; */
    }
 
-   .body-tabs div:not(:first-child) {
+   .champion-body-tabs div:not(:first-child) {
       margin: 0 1rem;
    }
 
-   .body {
+   .champion-body {
       margin-top: 50px;
+      color: var(--color-font);
    }
 
-   .body div:not(:first-child) {
-      margin-top: 20px;
+   .champion-body div:not(:first-child) {
+      /* margin-top: 20px; */
    }
 
-   .body-2 {
+   .section div {
       background: var(--tint100);
       border-radius: 15px;
    }
-   .body h2 {
+   .champion-body h2 {
       color: var(--tint400);
       margin: 1rem;
       font-size: 1.1rem;
