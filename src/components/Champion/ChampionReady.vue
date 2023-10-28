@@ -10,10 +10,20 @@ export default {
          backName: champions.imageName[this.champion.id],
          abilities: [],
          title: '',
-         tab: 1,
-         tldr: {
-            items: [[], [], [], [], [], []]
-         },
+         tab: 0,
+         items: null,
+         mythicBuilds: [
+            /* 
+            0: itemId
+            1: games
+            2: wins
+            3: [[i0], [i1], [i2], [i3], [i4], [i5]]
+            4: levelOrder
+            5: skillPath
+            6: runes
+            7: spells
+            */
+         ],
       }
    },
 
@@ -21,8 +31,8 @@ export default {
       console.log(this.backName)
       console.log(this.champion)
       this.getChampData()
-      this.tldrItems()
-      console.log(this.tldr.items)
+      this.getMythicClusters()
+      this.getItems()
    },
    
    mounted() {
@@ -30,23 +40,73 @@ export default {
    },
       
    methods: {
+      getItems() {
+         const url = `https://ddragon.leagueoflegends.com/cdn/${this.patch}/data/en_US/item.json`
+         axios.get(url).then(res => {
+            this.items = res.data.data
+         })
+      },
       winrate(total, win) {
          return `${Math.round( win / total * 1000) / 10}%`
       },
 
-      tldrItems() {
-         const sub = (idx, k, v) => {
-            // [itemId, games, wins]
-            if (idx in v.position) this.tldr.items[idx].push([k, v.position[`${idx}`].games, v.position[`${idx}`].wins])
+      getMythicClusters() {
+         
+         for (const k in this.champion.mythics) {
+            if (k === '0') continue
+            this.mythicBuilds.push([k, this.champion.items[k].games, this.champion.items[k].wins])
          }
+         this.mythicBuilds.sort((a, b) => b[1] - a[1])
 
-         for (const [k, v] of Object.entries(this.champion.items)) {
-            for (let i = 0; i < 6; i++) {
-               sub(i, k, v)
-               this.tldr.items[i].sort((a, b) => b[1] - a[1])
+         for (const i in this.mythicBuilds) {
+            let item = this.mythicBuilds[i][0]
+            let itemPosition = [[], [], [], [], [], []]
+            let levelOrder = []
+            let skillPath = []
+            let runes = []
+            let spells = []
+
+            // itemPosition
+            for (const [pos, v] of Object.entries(this.champion.mythics[item].items)) {
+               for (const [k2, v2] of Object.entries(v)) {
+                  itemPosition[pos].push([k2, v2.games, v2.wins])
+               }
+               itemPosition[pos].sort((a, b) => b[1] - a[1])
             }
+            this.mythicBuilds[i].push(itemPosition)
 
+            // levelOrder
+            for (const [k, v] of Object.entries(this.champion.mythics[item].levelOrder)) {
+               levelOrder.push([k , v.games, v.wins])
+            }
+            levelOrder.sort((a, b) => b[1] - a[1])
+            this.mythicBuilds[i].push(levelOrder)
+
+            
+            // skillPath
+            for (const [k, v] of Object.entries(this.champion.mythics[item].skillPath)) {
+               skillPath.push([k , v.games, v.wins])
+            }
+            skillPath.sort((a, b) => b[1] - a[1])
+            this.mythicBuilds[i].push(skillPath)
+            
+            // runes
+            for (const [k, v] of Object.entries(this.champion.mythics[item].runes)) {
+               runes.push([k , v.games, v.wins])
+            }
+            runes.sort((a, b) => b[1] - a[1])
+            this.mythicBuilds[i].push(runes)
+            
+            // spells
+            for (const [k, v] of Object.entries(this.champion.mythics[item].spells)) {
+               spells.push([k , v.games, v.wins])
+            }
+            spells.sort((a, b) => b[1] - a[1])
+            this.mythicBuilds[i].push(spells)
+
+            
          }
+         console.log('potato', this.mythicBuilds)
       },
 
       abilityLetter(idx) {
@@ -80,6 +140,12 @@ export default {
                this.abilities.push(spell.id)
             }
          })
+      },
+
+      getItemName(i) {
+         if (this.items !== null) {
+            return this.items[i].name
+         }
       },
 
       itemImage(Id) {
@@ -152,19 +218,16 @@ export default {
                </h4>
             </div>
          </div>
-   
-         <!-- <div class="body-tabs">
-            <div class="tab" @click="this.tab = 1">
-               General
-            </div>
-            <div class="tab" @click="this.tab = 2">
-               Builds & Items
-            </div>
-         </div> -->
 
          <div class="champion-body">
             <div class="tldr section">
                <h2>tldr</h2>
+               <div class="tldr-tabs">
+                  <div class="tab" @click="this.tab = i" v-for="(mythic, i) in this.mythicBuilds.slice(0, 3)" :key="i">
+                     <img :src="itemImage(mythic[0])" alt="">
+                     {{ this.getItemName(mythic[0]) }}
+                  </div>
+               </div>
                <div class="tldr-body">
                   <div class="tldr-left">
                      <div class="tldr-runes">
@@ -176,162 +239,18 @@ export default {
                   </div>
                   <div class="tldr-right">
                      <div class="tldr-items">
-                        <div class="item">
 
-                           <h2>1</h2>
-                           <div class="tldr-wrapper">
-                              <img :src="itemImage(this.tldr.items[0][0][0])" alt="">
+                        <div class="item" v-for="i in 6" :key="i">
+                           <h2>{{ i }}</h2>
+                           <div class="tldr-wrapper" v-for="item in this.mythicBuilds[this.tab][3][i-1].slice(0, 3)" :key="item[0]">
+                              <img :src="itemImage(item[0])" alt="">
                               <div class="image-sub">
-                                 <h4> {{ winrate(this.tldr.items[0][0][1], this.tldr.items[0][0][2]) }} </h4>
-                                 <h3> ({{ this.tldr.items[0][0][1] }}) </h3>
+                                 <h4> {{ winrate(item[1], item[2]) }} </h4>
+                                 <h3> ({{ item[1] }}) </h3>
                               </div>
                            </div>
-                           <div class="tldr-wrapper">
-                              <img :src="itemImage(this.tldr.items[0][1][0])" alt="">
-                              <div class="image-sub">
-                                 <h4> {{ winrate(this.tldr.items[0][1][1], this.tldr.items[0][1][2]) }} </h4>
-                                 <h3> ({{ this.tldr.items[0][1][1] }}) </h3>
-                              </div>
-                           </div>
-                           <div class="tldr-wrapper">
-                              <img :src="itemImage(this.tldr.items[0][2][0])" alt="">
-                              <div class="image-sub">
-                                 <h4> {{ winrate(this.tldr.items[0][2][1], this.tldr.items[0][2][2]) }} </h4>
-                                 <h3> ({{ this.tldr.items[0][2][1] }}) </h3>
-                              </div>
-                           </div>
-
                         </div>
-                        <div class="item">
-
-                           <h2>2</h2>
-                           <div class="tldr-wrapper">
-                              <img :src="itemImage(this.tldr.items[1][0][0])" alt="">
-                              <div class="image-sub">
-                                 <h4> {{ winrate(this.tldr.items[1][0][1], this.tldr.items[1][0][2]) }} </h4>
-                                 <h3> ({{ this.tldr.items[1][0][1] }}) </h3>
-                              </div>
-                           </div>
-                           <div class="tldr-wrapper">
-                              <img :src="itemImage(this.tldr.items[1][1][0])" alt="">
-                              <div class="image-sub">
-                                 <h4> {{ winrate(this.tldr.items[1][1][1], this.tldr.items[1][1][2]) }} </h4>
-                                 <h3> ({{ this.tldr.items[1][1][1] }}) </h3>
-                              </div>
-                           </div>
-                           <div class="tldr-wrapper">
-                              <img :src="itemImage(this.tldr.items[1][2][0])" alt="">
-                              <div class="image-sub">
-                                 <h4> {{ winrate(this.tldr.items[1][2][1], this.tldr.items[1][2][2]) }} </h4>
-                                 <h3> ({{ this.tldr.items[1][2][1] }}) </h3>
-                              </div>
-                           </div>
-
-                        </div>
-                        <div class="item">
-
-                           <h2>3</h2>
-                           <div class="tldr-wrapper">
-                              <img :src="itemImage(this.tldr.items[2][0][0])" alt="">
-                              <div class="image-sub">
-                                 <h4> {{ winrate(this.tldr.items[2][0][1], this.tldr.items[2][0][2]) }} </h4>
-                                 <h3> ({{ this.tldr.items[2][0][1] }}) </h3>
-                              </div>
-                           </div>
-                           <div class="tldr-wrapper">
-                              <img :src="itemImage(this.tldr.items[2][1][0])" alt="">
-                              <div class="image-sub">
-                                 <h4> {{ winrate(this.tldr.items[2][1][1], this.tldr.items[2][1][2]) }} </h4>
-                                 <h3> ({{ this.tldr.items[2][1][1] }}) </h3>
-                              </div>
-                           </div>
-                           <div class="tldr-wrapper">
-                              <img :src="itemImage(this.tldr.items[2][2][0])" alt="">
-                              <div class="image-sub">
-                                 <h4> {{ winrate(this.tldr.items[2][2][1], this.tldr.items[2][2][2]) }} </h4>
-                                 <h3> ({{ this.tldr.items[2][2][1] }}) </h3>
-                              </div>
-                           </div>
-
-                        </div>
-                        <div class="item">
-
-                           <h2>4</h2>
-                           <div class="tldr-wrapper">
-                              <img :src="itemImage(this.tldr.items[3][0][0])" alt="">
-                              <div class="image-sub">
-                                 <h4> {{ winrate(this.tldr.items[3][0][1], this.tldr.items[3][0][2]) }} </h4>
-                                 <h3> ({{ this.tldr.items[3][0][1] }}) </h3>
-                              </div>
-                           </div>
-                           <div class="tldr-wrapper">
-                              <img :src="itemImage(this.tldr.items[3][1][0])" alt="">
-                              <div class="image-sub">
-                                 <h4> {{ winrate(this.tldr.items[3][1][1], this.tldr.items[3][1][2]) }} </h4>
-                                 <h3> ({{ this.tldr.items[3][1][1] }}) </h3>
-                              </div>
-                           </div>
-                           <div class="tldr-wrapper">
-                              <img :src="itemImage(this.tldr.items[3][2][0])" alt="">
-                              <div class="image-sub">
-                                 <h4> {{ winrate(this.tldr.items[3][2][1], this.tldr.items[3][2][2]) }} </h4>
-                                 <h3> ({{ this.tldr.items[3][2][1] }}) </h3>
-                              </div>
-                           </div>
-
-                        </div>
-                        <div class="item">
-
-                           <h2>5</h2>
-                           <div class="tldr-wrapper">
-                              <img :src="itemImage(this.tldr.items[4][0][0])" alt="">
-                              <div class="image-sub">
-                                 <h4> {{ winrate(this.tldr.items[4][0][1], this.tldr.items[4][0][2]) }} </h4>
-                                 <h3> ({{ this.tldr.items[4][0][1] }}) </h3>
-                              </div>
-                           </div>
-                           <div class="tldr-wrapper">
-                              <img :src="itemImage(this.tldr.items[4][1][0])" alt="">
-                              <div class="image-sub">
-                                 <h4> {{ winrate(this.tldr.items[4][1][1], this.tldr.items[4][1][2]) }} </h4>
-                                 <h3> ({{ this.tldr.items[4][1][1] }}) </h3>
-                              </div>
-                           </div>
-                           <div class="tldr-wrapper">
-                              <img :src="itemImage(this.tldr.items[4][2][0])" alt="">
-                              <div class="image-sub">
-                                 <h4> {{ winrate(this.tldr.items[4][2][1], this.tldr.items[4][2][2]) }} </h4>
-                                 <h3> ({{ this.tldr.items[4][2][1] }}) </h3>
-                              </div>
-                           </div>
-
-                        </div>
-                        <div class="item">
-
-                           <h2>6</h2>
-                           <div class="tldr-wrapper">
-                              <img :src="itemImage(this.tldr.items[5][0][0])" alt="">
-                              <div class="image-sub">
-                                 <h4> {{ winrate(this.tldr.items[5][0][1], this.tldr.items[5][0][2]) }} </h4>
-                                 <h3> ({{ this.tldr.items[5][0][1] }}) </h3>
-                              </div>
-                           </div>
-                           <div class="tldr-wrapper">
-                              <img :src="itemImage(this.tldr.items[5][1][0])" alt="">
-                              <div class="image-sub">
-                                 <h4> {{ winrate(this.tldr.items[5][1][1], this.tldr.items[5][1][2]) }} </h4>
-                                 <h3> ({{ this.tldr.items[5][1][1] }}) </h3>
-                              </div>
-                           </div>
-                           <div class="tldr-wrapper">
-                              <img :src="itemImage(this.tldr.items[5][2][0])" alt="">
-                              <div class="image-sub">
-                                 <h4> {{ winrate(this.tldr.items[5][2][1], this.tldr.items[5][2][2]) }} </h4>
-                                 <h3> ({{ this.tldr.items[5][2][1] }}) </h3>
-                              </div>
-                           </div>
-
-                        </div>
+                        
                      </div>
                      <div class="tldr-abilities">
                         abilities
@@ -488,6 +407,8 @@ export default {
 
    .tldr-body {
       display: flex;
+      background: var(--tint100);
+      border-radius: 15px;
       justify-content: space-evenly;
    }
 
@@ -503,18 +424,20 @@ export default {
 
    .tldr-items {
       display: flex;
-      gap: 40px;
+      gap: 30px;
+      /* width: 545px; */
    }
 
    .tldr-items .item {
       display: flex;
       flex-direction: column;
       align-items: center;
+      width: 71px;
    }
 
    .tldr-items h4 {
       display: inline-block;
-      color: var(--light300);
+      color: var(--tint500);
       text-align: center;
       font-weight: normal;
       margin: 0;
@@ -561,10 +484,6 @@ export default {
       /* margin-top: 20px; */
    }
 
-   .section div {
-      background: var(--tint100);
-      border-radius: 15px;
-   }
    .champion-body h2 {
       color: var(--tint400);
       margin: 1rem;
@@ -573,7 +492,13 @@ export default {
       font-weight: normal;
    }
 
-   .tab {
+   .tldr-tabs {
+      display: flex;
+   }
+
+   .tldr-tabs .tab {
+      display: flex;
+      align-items: center;
       background: var(--tint100);
       font-size: 0.9rem;
       border-radius: 10px 10px 0 0;
@@ -581,9 +506,15 @@ export default {
       border-left: 1px solid var(--tint400);
       border-right: 1px solid var(--tint400);
       cursor: pointer;
-      padding: 0.5rem 1rem;
-      display: inline-block;
+      padding: 0.2rem 1rem;
+      margin-left: 1rem;
+      gap: 0.5rem;
       transition: 0.25s;
+   }
+
+   .tldr-tabs img {
+      width: 25px;
+      border: 1px solid var(--tint400);
    }
 
    .tab:hover {

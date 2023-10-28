@@ -15,7 +15,8 @@ class ChampionParser():
       match_collection_name = f"{patch}_matches"
       # match_collection_name = f"13.20_matches"
       self.champion_stats_name = "championstats"
-      self.items = util.get_items()["data"]
+      # self.items = util.get_items()["data"]
+      self.items = util.get_items()
       self.runes = util.get_runes()
 
       if match_collection_name in collection_list:
@@ -43,7 +44,7 @@ class ChampionParser():
             self.meta_document.update_one({ "name": self.champion_stats_name}, { "$set": {"index": self.index} })
                
          for participant in match["info"]["participants"]:
-            skills_timeline = list(filter(lambda x: participant["participantId"] == x["participantId"], match["timeline"][1]))
+            item_timeline = list(filter(lambda x: participant["participantId"] == x["participantId"], match["timeline"][1]))
             abilities_timeline = list(filter(lambda x: participant["participantId"] == x["participantId"], match["timeline"][0]))
 
             # <int> Win
@@ -71,20 +72,25 @@ class ChampionParser():
             # <[str]> List containing filtered (desired) items.
             filtered_items = list(filter(lambda x: util.item_filter(x, self.items), path))
             filtered_items = list(map(util.item_evolutions, filtered_items))
-            
+
             item_order = []
-            for i in skills_timeline:
+            for i in item_timeline:
                if i["type"] != "ITEM_PURCHASED" or i["itemId"] not in filtered_items or i["itemId"] in item_order: continue
                item_order.append(i["itemId"])
 
+            mythic = next(filter(lambda x: util.item_mythic(x, self.items), item_order), 0)
+            
             # <str> Build path string ID used as field in database.
-            build_path = '_'.join([str(x) for x in filtered_items])
+            build_path = '_'.join([str(x) for x in item_order])
 
             # <str> Skill path string ID used as field in database.
             skill_path = ''.join(str(x["skillSlot"]) for x in abilities_timeline)
             # skill_path = ''.join(str(x["skillSlot"]) for x in match["timeline"][0] if x["participantId"] == participant["participantId"] and x["levelUpType"] == "NORMAL")
             basic_skills = skill_path.replace('4', '')
 
+            # <spells> Summoner spel
+            # <spells> Summoner spel
+            summoner_spells = '_'.join([str(participant["summoner1Id"]), str(participant["summoner2Id"])])
             # <str> Level order of spells.
             level_order = ''
             
@@ -203,6 +209,8 @@ class ChampionParser():
                      # Builds
                      f"builds.{build_path}.games": 1,
                      f"builds.{build_path}.wins": win,
+                     f"builds.{build_path}.spells.{summoner_spells}.games": 1,
+                     f"builds.{build_path}.spells.{summoner_spells}.wins": win,
                      f"builds.{build_path}.startingItems.{starting_build}.games": 1,
                      f"builds.{build_path}.startingItems.{starting_build}.wins": win,
                   }
@@ -213,6 +221,24 @@ class ChampionParser():
                   # Totals
                   update["$inc"][f"items.{i}.games"] = 1
                   update["$inc"][f"items.{i}.wins"] = win
+                  # Mythic frequency
+                  # if i != mythic:
+                     # update["$inc"][f"items.{i}.mythic.{mythic}.games"] = 1
+                     # update["$inc"][f"items.{i}.mythic.{mythic}.wins"] = win
+                     # update["$inc"][f"items.{i}.mythic.{mythic}.{item_order.index(i)}.games"] = 1
+                     # update["$inc"][f"items.{i}.mythic.{mythic}.{item_order.index(i)}.wins"] = win
+
+                  # Mythic related data. Hopefully temporary since I think they're getting removed. (?)
+                  update["$inc"][f"mythics.{mythic}.items.{item_order.index(i)}.{i}.games"] = 1
+                  update["$inc"][f"mythics.{mythic}.items.{item_order.index(i)}.{i}.wins"] = win
+                  update["$inc"][f"mythics.{mythic}.runes.{rune_path}.games"] = 1
+                  update["$inc"][f"mythics.{mythic}.runes.{rune_path}.wins"] = win
+                  update["$inc"][f"mythics.{mythic}.spells.{summoner_spells}.games"] = 1
+                  update["$inc"][f"mythics.{mythic}.spells.{summoner_spells}.wins"] = win
+                  update["$inc"][f"mythics.{mythic}.skillPath.{skill_path}.games"] = 1
+                  update["$inc"][f"mythics.{mythic}.skillPath.{skill_path}.wins"] = win
+                  update["$inc"][f"mythics.{mythic}.levelOrder.{level_order}.games"] = 1
+                  update["$inc"][f"mythics.{mythic}.levelOrder.{level_order}.wins"] = win
                   # Position
                   update["$inc"][f"items.{i}.position.{item_order.index(i)}.games"] = 1
                   update["$inc"][f"items.{i}.position.{item_order.index(i)}.wins"] = win

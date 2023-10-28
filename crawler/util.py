@@ -91,8 +91,9 @@ def get_match_timeline(match_id, region):
          raise
 
 def get_items():
-   patch = get_latest_patch(True)
-   url = f'https://ddragon.leagueoflegends.com/cdn/{patch}/data/en_US/item.json'
+   # patch = get_latest_patch(True)
+   # url = f'https://ddragon.leagueoflegends.com/cdn/{patch}/data/en_US/item.json'
+   url = 'https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/items.json'
    res = requests.get(url).json()
    return res
 
@@ -149,17 +150,28 @@ def item_filter(i, items):
       2010, # Total Biscuit of Everlasting Will (Klepto biscuit)
       2403, # Minion dematerializer (Klepto)
       3400, # Your Cut (Pyke)
+      2424, # Broken Stopwatch
    ]
 
    if i in blacklist: return False
    item = items[str(i)]
+   return True if item["tier"] == 3 else False   
 
-   if 'requiredAlly' in item: return False
+   # Moving from ddragon to meraki
+   # if 'requiredAlly' in item: return False
+   # if "into" not in item or 'requiredAlly' in items[str(item["into"][0])]:
+   #    return True
+   # else:
+   #    return False
+   
+def item_mythic(i, items):
+   item = items[str(i)]
+   return True if "MYTHIC" in item["rank"] else False
 
-   if "into" not in item or 'requiredAlly' in items[str(item["into"][0])]:
-      return True
-   else:
-      return False
+   # if "into" in item and 'requiredAlly' in items[str(item["into"][0])]:
+   #    return True
+   # else:
+   #    return False
    
 def item_evolutions(i):
    evolutions = {
