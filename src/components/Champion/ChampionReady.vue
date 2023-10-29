@@ -12,16 +12,19 @@ export default {
          title: '',
          tab: 0,
          items: null,
+         runes: null,
          mythicBuilds: [
             /* 
             0: itemId
             1: games
             2: wins
             3: [[i0], [i1], [i2], [i3], [i4], [i5]]
-            4: levelOrder
-            5: skillPath
-            6: runes
+            4: core build
+            5: levelOrder
+            6: skillPath
             7: spells
+            8: starting items
+            9: runes
             */
          ],
       }
@@ -33,6 +36,7 @@ export default {
       this.getChampData()
       this.getMythicClusters()
       this.getItems()
+      this.getRunes()
    },
    
    mounted() {
@@ -46,11 +50,27 @@ export default {
             this.items = res.data.data
          })
       },
+
+      getRunes() {
+         const url = `https://ddragon.leagueoflegends.com/cdn/${this.patch}/data/en_US/runesReforged.json`
+         axios.get(url).then(res => {
+            this.runes = res.data
+            console.log(this.runes, 'roons')
+         })
+      },
+      
       winrate(total, win) {
          return `${Math.round( win / total * 1000) / 10}%`
       },
 
       getMythicClusters() {
+         const iter = (i, obj, container) => {
+            for (const [k, v] of Object.entries(obj)) {
+               container.push([k, v.games, v.wins])
+            }
+            container.sort((a, b) => b[1] - a[1])
+            this.mythicBuilds[i].push(container)
+         }
          
          for (const k in this.champion.mythics) {
             if (k === '0') continue
@@ -58,53 +78,40 @@ export default {
          }
          this.mythicBuilds.sort((a, b) => b[1] - a[1])
 
+         
          for (const i in this.mythicBuilds) {
             let item = this.mythicBuilds[i][0]
-            let itemPosition = [[], [], [], [], [], []]
-            let levelOrder = []
-            let skillPath = []
-            let runes = []
-            let spells = []
+            // let _itemPosition = [[], [], [], [], [], []]
+            let _itemPosition = [[], [], []]
+            let _levelOrder = []
+            let _skillPath = []
+            let _runes = []
+            let _spells = []
+            let _startingItems = []
+            let _coreBuild = []
 
-            // itemPosition
-            for (const [pos, v] of Object.entries(this.champion.mythics[item].items)) {
+            for (const [pos, v] of Object.entries(this.champion.mythics[item].items).slice(3)) {
                for (const [k2, v2] of Object.entries(v)) {
-                  itemPosition[pos].push([k2, v2.games, v2.wins])
+                  _itemPosition[pos - 3].push([k2, v2.games, v2.wins])
                }
-               itemPosition[pos].sort((a, b) => b[1] - a[1])
+               _itemPosition[pos - 3].sort((a, b) => b[1] - a[1])
             }
-            this.mythicBuilds[i].push(itemPosition)
+            this.mythicBuilds[i].push(_itemPosition)
 
-            // levelOrder
-            for (const [k, v] of Object.entries(this.champion.mythics[item].levelOrder)) {
-               levelOrder.push([k , v.games, v.wins])
-            }
-            levelOrder.sort((a, b) => b[1] - a[1])
-            this.mythicBuilds[i].push(levelOrder)
+            // for (const [pos, v] of Object.entries(this.champion.mythics[item].items)) {
+            //    for (const [k2, v2] of Object.entries(v)) {
+            //       _itemPosition[pos].push([k2, v2.games, v2.wins])
+            //    }
+            //    _itemPosition[pos].sort((a, b) => b[1] - a[1])
+            // }
+            // this.mythicBuilds[i].push(_itemPosition)
 
-            
-            // skillPath
-            for (const [k, v] of Object.entries(this.champion.mythics[item].skillPath)) {
-               skillPath.push([k , v.games, v.wins])
-            }
-            skillPath.sort((a, b) => b[1] - a[1])
-            this.mythicBuilds[i].push(skillPath)
-            
-            // runes
-            for (const [k, v] of Object.entries(this.champion.mythics[item].runes)) {
-               runes.push([k , v.games, v.wins])
-            }
-            runes.sort((a, b) => b[1] - a[1])
-            this.mythicBuilds[i].push(runes)
-            
-            // spells
-            for (const [k, v] of Object.entries(this.champion.mythics[item].spells)) {
-               spells.push([k , v.games, v.wins])
-            }
-            spells.sort((a, b) => b[1] - a[1])
-            this.mythicBuilds[i].push(spells)
-
-            
+            iter(i, this.champion.mythics[item].coreBuild, _coreBuild)
+            iter(i, this.champion.mythics[item].levelOrder, _levelOrder)
+            iter(i, this.champion.mythics[item].skillPath, _skillPath)
+            iter(i, this.champion.mythics[item].spells, _spells)
+            iter(i, this.champion.mythics[item].startingItems, _startingItems)
+            iter(i, this.champion.mythics[item].runes, _runes)
          }
          console.log('potato', this.mythicBuilds)
       },
@@ -160,6 +167,10 @@ export default {
          else {
             this.itemBin.splice(idx, 1)
          }
+      },
+
+      runeImage(path) {
+         return `https://ddragon.leagueoflegends.com/cdn/img/${path}`
       }
 
    },
@@ -176,7 +187,11 @@ export default {
 
       champIcon() {
          return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/champion/${this.backName}.png`
-      }
+      },
+
+      // getRunes() {
+      //    return new URL(`../assets/runes/${runeId}.png`, import.meta.url).href
+      // }
    },
 
    props: {
@@ -222,41 +237,77 @@ export default {
          <div class="champion-body">
             <div class="tldr section">
                <h2>tldr</h2>
-               <div class="tldr-tabs">
-                  <div class="tab" @click="this.tab = i" v-for="(mythic, i) in this.mythicBuilds.slice(0, 3)" :key="i">
+               <div class="tldr-body-wrapper">
+                  <div class="tldr-tabs">
+                     <div class="tab" @click="this.tab = i" v-for="(mythic, i) in this.mythicBuilds" :key="i">
+                        <img :src="itemImage(mythic[0])" alt="">
+                        <div class="tab-sub">
+                           <h4> {{ winrate(mythic[1], mythic[2]) }} </h4>
+                           <h3> ({{ mythic[1] }}) </h3>
+                        </div>
+                        <!-- {{ this.getItemName(mythic[0]) }} -->
+                     </div>
+                  </div>
+                  <div class="tldr-body">
+                     <div class="tldr-left">
+                        <div class="tldr-runes">
+
+                           <div class="tldr-runes-primary">
+
+                           </div>
+                           <div class="tldr-runes-secondary">
+
+                           </div>
+                           <div class="tlder-runes-tertiary">
+
+                           </div>
+
+                        </div>
+                        <div class="tldr-misc">
+                           spells & level order go here?
+                        </div>
+                     </div>
+                     <div class="tldr-right">
+                        <div class="tldr-items">
+                           <div class="core-items">
+      
+                              <h2>Core</h2>
+                              <div class="item-set" v-for="(set, i) in this.mythicBuilds[this.tab][4].slice(0, 2)" :key="i">
+                                 <img :src="itemImage(img)" alt="" v-for="(img, j) in set[0].split('_')" :key="j">
+                                 <div class="image-sub">
+                                    <h4> {{ winrate(set[1], set[2]) }} </h4>
+                                    <h3> ({{ set[1] }}) </h3>
+                                 </div>
+                              </div>
+      
+                           </div>
+                           <div class="trailing-items">
+      
+                              <div class="item" v-for="i in 3" :key="i">
+                                 <h2>{{ i + 3}}</h2>
+                                 <div class="tldr-wrapper" v-for="item in this.mythicBuilds[this.tab][3][i-1].slice(0, 3)" :key="item[0]">
+                                    <img :src="itemImage(item[0])" alt="">
+                                    <div class="image-sub">
+                                       <h4> {{ winrate(item[1], item[2]) }} </h4>
+                                       <h3> ({{ item[1] }}) </h3>
+                                    </div>
+                                 </div>
+                              </div>
+                              
+                           </div>
+                        </div>
+                        <div class="tldr-abilities">
+                           abilities go here?
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- <div class="tldr-tabs">
+                  <div class="tab" @click="this.tab = i" v-for="(mythic, i) in this.mythicBuilds" :key="i">
                      <img :src="itemImage(mythic[0])" alt="">
                      {{ this.getItemName(mythic[0]) }}
                   </div>
-               </div>
-               <div class="tldr-body">
-                  <div class="tldr-left">
-                     <div class="tldr-runes">
-                        runes go here?
-                     </div>
-                     <div class="tldr-misc">
-                        toads
-                     </div>
-                  </div>
-                  <div class="tldr-right">
-                     <div class="tldr-items">
-
-                        <div class="item" v-for="i in 6" :key="i">
-                           <h2>{{ i }}</h2>
-                           <div class="tldr-wrapper" v-for="item in this.mythicBuilds[this.tab][3][i-1].slice(0, 3)" :key="item[0]">
-                              <img :src="itemImage(item[0])" alt="">
-                              <div class="image-sub">
-                                 <h4> {{ winrate(item[1], item[2]) }} </h4>
-                                 <h3> ({{ item[1] }}) </h3>
-                              </div>
-                           </div>
-                        </div>
-                        
-                     </div>
-                     <div class="tldr-abilities">
-                        abilities
-                     </div>
-                  </div>
-               </div>
+               </div> -->
             </div>
             
             <div class="builds section">
@@ -405,8 +456,108 @@ export default {
       width: 100%;
    }
 
+   .champion-body-tabs div:first-child {
+   /* margin-left: 0.8rem; */
+   }
+
+   .champion-body-tabs div:not(:first-child) {
+      margin: 0 1rem;
+   }
+
+   .champion-body {
+      margin-top: 50px;
+      color: var(--color-font);
+   }
+
+   .champion-body h2 {
+      color: var(--tint400);
+      margin: 1rem;
+      font-size: 1.1rem;
+      font-style: italic;
+      font-weight: normal;
+   }
+
+   .tldr-body-wrapper {
+      display: flex;
+   }
+
+   .tldr-tabs {
+      /* width: 100px; */
+      overflow-y: scroll;
+      overflow-x: hidden;
+      height: 300px;
+      margin-right: 8px;
+      padding-right: 5px;
+   }
+
+   .tldr-tabs .tab {
+      display: flex;
+      align-items: center;
+      background: var(--tint100);
+      border-radius: 10px;
+      cursor: pointer;
+      padding: 0.5rem 1.5rem 0.5rem 0.5rem;
+      margin-left: 1rem;
+      gap: 0.5rem;
+      transition: 0.25s;
+   }
+
+   .tldr-tabs .tab:not(:last-child) {
+      margin-bottom: 0.25rem;
+   }
+
+   .tab h4 {
+      display: block;
+      color: var(--tint500);
+      text-align: center;
+      font-weight: normal;
+      margin: 0;
+      font-size: 0.75rem;
+   }
+   
+   .tab h3 {
+      display: block;
+      color: var(--tint400);
+      text-align: center;
+      font-weight: normal;
+      margin: 0;
+      font-size: 0.75rem;
+   }
+
+   .tldr-tabs::-webkit-scrollbar {
+      width: 4px;
+   }
+
+   /* Track */
+   .tldr-tabs::-webkit-scrollbar-track {
+      border-radius: 5px;
+   }
+
+   /* Handle */
+   .tldr-tabs::-webkit-scrollbar-thumb {
+      background: var(--tint200);
+      border-radius: 5px;
+      
+   }
+
+   /* Handle on hover */
+   .tldr-tabs::-webkit-scrollbar-thumb:hover {
+      background: var(--tint300);
+      transition: 0.25s;
+   }
+
+   .tldr-tabs img {
+      width: 30px;
+      border: 1px solid var(--tint400);
+   }
+
+   .tab:hover {
+      background: var(--hoverButton);
+   }
+
    .tldr-body {
       display: flex;
+      width: 100%;
       background: var(--tint100);
       border-radius: 15px;
       justify-content: space-evenly;
@@ -424,11 +575,32 @@ export default {
 
    .tldr-items {
       display: flex;
+      flex-direction: row;
+   }
+
+   .image-sub {
+      text-align: center;
+   }
+
+   .core-items {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+   }
+   .core-items img {
+      margin: 0 10px;
+      width: 34px;
+      border: 1px solid var(--tint400);
+   }
+   
+   .trailing-items {
+      display: flex;
       gap: 30px;
       /* width: 545px; */
    }
 
-   .tldr-items .item {
+   .trailing-items .item {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -455,7 +627,7 @@ export default {
       /* font-style: italic; */
    }
 
-   .tldr-items .item img {
+   .trailing-items .item img {
       display: block;
       margin-left: auto;
       margin-right: auto;
@@ -463,62 +635,9 @@ export default {
       /* text-align: center; */
       width: 34px;
       border: 1px solid var(--tint400);
-   }
-
-
-
-   .champion-body-tabs div:first-child {
-      /* margin-left: 0.8rem; */
-   }
-
-   .champion-body-tabs div:not(:first-child) {
-      margin: 0 1rem;
-   }
-
-   .champion-body {
-      margin-top: 50px;
-      color: var(--color-font);
-   }
-
-   .champion-body div:not(:first-child) {
-      /* margin-top: 20px; */
-   }
-
-   .champion-body h2 {
-      color: var(--tint400);
-      margin: 1rem;
-      font-size: 1.1rem;
-      font-style: italic;
-      font-weight: normal;
-   }
-
-   .tldr-tabs {
-      display: flex;
-   }
-
-   .tldr-tabs .tab {
-      display: flex;
-      align-items: center;
-      background: var(--tint100);
-      font-size: 0.9rem;
-      border-radius: 10px 10px 0 0;
-      border-top: 1px solid var(--tint400);
-      border-left: 1px solid var(--tint400);
-      border-right: 1px solid var(--tint400);
-      cursor: pointer;
-      padding: 0.2rem 1rem;
-      margin-left: 1rem;
-      gap: 0.5rem;
-      transition: 0.25s;
-   }
-
-   .tldr-tabs img {
-      width: 25px;
-      border: 1px solid var(--tint400);
-   }
-
-   .tab:hover {
-      background: var(--hoverButton);
+   }   
+   .item h2 {
+      font-size: 1rem;
    }
 
    .item-bin {
@@ -535,6 +654,7 @@ export default {
    .item-bin img {
       width: 40px;
       /* filter: brightness(0.8) saturate(0.5); */
-
    }
+
+
 </style>

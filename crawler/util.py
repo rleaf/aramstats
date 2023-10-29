@@ -151,11 +151,56 @@ def item_filter(i, items):
       2403, # Minion dematerializer (Klepto)
       3400, # Your Cut (Pyke)
       2424, # Broken Stopwatch
+
+      # # Masterworks.
+      # 7000,
+      # 7001,
+      # 7002,
+      # 7005,
+      # 7006,
+      # 7009,
+      # 7010,
+      # 7011,
+      # 7012,
+      # 7013,
+      # 7014,
+      # 7015,
+      # 7016,
+      # 7017,
+      # 7018,
+      # 7019,
+      # 7020,
+      # 7021,
+      # 7023,
+      # 7024,
+      # 7025,
+      # 7026,
+      # 7027,
+      # 7028,
+      # 7029,
+      # 7030,
+      # 7031,
+      # 7032,
+      # 7033,
+      # 7050, # Gangplank placeholder(?)
    ]
 
    if i in blacklist: return False
    item = items[str(i)]
-   return True if item["tier"] == 3 else False   
+   """
+   Meraki considerations:
+      IE: Stores as rank 2, when should be 3
+      keys are in both snake_case & camelCase
+      MYTHIC & LEGENDARY are tier 3
+      Masterworks are tier 4 but are still ranked as MYTHIC
+      Tear evolutions are t4 too
+   """
+   if "required_ally" in item:
+      if item["required_ally"] == "Ornn": return False
+   if "requiredAlly" in item:
+      if item["requiredAlly"] == "Ornn": return False
+
+   return True if ("MYTHIC" in item["rank"] or item["tier"] >= 3) or ('BOOTS' in item["rank"] and item["tier"] == 2) else False   
 
    # Moving from ddragon to meraki
    # if 'requiredAlly' in item: return False
@@ -178,8 +223,6 @@ def item_evolutions(i):
       3040: 3003, # Seraphs: Archangel's 
       3042: 3004, # Muramana: Manamune
       3121: 3119, # Fimbulwinter: Winter's Approach
-
-
    }
 
    if i in evolutions:

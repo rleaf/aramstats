@@ -82,6 +82,7 @@ class ChampionParser():
             
             # <str> Build path string ID used as field in database.
             build_path = '_'.join([str(x) for x in item_order])
+            core_build = '_'.join([str(item_order[i]) for i in range(3) if len(item_order) > 2])
 
             # <str> Skill path string ID used as field in database.
             skill_path = ''.join(str(x["skillSlot"]) for x in abilities_timeline)
@@ -221,13 +222,6 @@ class ChampionParser():
                   # Totals
                   update["$inc"][f"items.{i}.games"] = 1
                   update["$inc"][f"items.{i}.wins"] = win
-                  # Mythic frequency
-                  # if i != mythic:
-                     # update["$inc"][f"items.{i}.mythic.{mythic}.games"] = 1
-                     # update["$inc"][f"items.{i}.mythic.{mythic}.wins"] = win
-                     # update["$inc"][f"items.{i}.mythic.{mythic}.{item_order.index(i)}.games"] = 1
-                     # update["$inc"][f"items.{i}.mythic.{mythic}.{item_order.index(i)}.wins"] = win
-
                   # Mythic related data. Hopefully temporary since I think they're getting removed. (?)
                   update["$inc"][f"mythics.{mythic}.items.{item_order.index(i)}.{i}.games"] = 1
                   update["$inc"][f"mythics.{mythic}.items.{item_order.index(i)}.{i}.wins"] = win
@@ -239,6 +233,11 @@ class ChampionParser():
                   update["$inc"][f"mythics.{mythic}.skillPath.{skill_path}.wins"] = win
                   update["$inc"][f"mythics.{mythic}.levelOrder.{level_order}.games"] = 1
                   update["$inc"][f"mythics.{mythic}.levelOrder.{level_order}.wins"] = win
+                  if core_build:
+                     update["$inc"][f"mythics.{mythic}.coreBuild.{core_build}.games"] = 1
+                     update["$inc"][f"mythics.{mythic}.coreBuild.{core_build}.wins"] = win
+                  update["$inc"][f"mythics.{mythic}.startingItems.{starting_build}.games"] = 1
+                  update["$inc"][f"mythics.{mythic}.startingItems.{starting_build}.wins"] = win
                   # Position
                   update["$inc"][f"items.{i}.position.{item_order.index(i)}.games"] = 1
                   update["$inc"][f"items.{i}.position.{item_order.index(i)}.wins"] = win
