@@ -13,6 +13,11 @@ export default {
          tab: 0,
          items: null,
          runes: null,
+         runesTab: 0,
+         // tldrRunes: {
+         //    popular: null,
+         //    top: null
+         // },
          mythicBuilds: [
             /* 
             0: itemId
@@ -37,6 +42,7 @@ export default {
       this.getMythicClusters()
       this.getItems()
       this.getRunes()
+      // this.generateRuneTree()
    },
    
    mounted() {
@@ -44,6 +50,31 @@ export default {
    },
       
    methods: {
+      generateRuneTree() {
+         // const threshold = 0
+         let topWinrate = 0
+         // this.tldrRunes = this.mythicBuilds[this.tab][9]
+         // for (const i in this.mythicBuilds[this.tab][9]) {
+         //    if (this.mythicBuilds[this.tab][9][i][1] / this.mythicBuilds[this.tab][1] > threshold) {
+         //        this.tldrRunes.push(this.mythicBuilds[this.tab][9][i])
+         //    }
+         //    else {
+         //       break
+         //    }
+         // }
+         
+         this.mythicBuilds[this.tab][9].slice(0, 3).filter(i => {
+            // console.log(i, i[2] / i[1])
+            if (i[2] / i[1] > topWinrate) {
+               topWinrate = i[2] / i[1]
+               this.tldrRunes.top = i
+            }
+         })
+
+
+         console.log(this.tldrRunes)
+      },
+
       getItems() {
          const url = `https://ddragon.leagueoflegends.com/cdn/${this.patch}/data/en_US/item.json`
          axios.get(url).then(res => {
@@ -111,7 +142,13 @@ export default {
             iter(i, this.champion.mythics[item].skillPath, _skillPath)
             iter(i, this.champion.mythics[item].spells, _spells)
             iter(i, this.champion.mythics[item].startingItems, _startingItems)
-            iter(i, this.champion.mythics[item].runes, _runes)
+
+            for (const [k, v] of Object.entries(this.champion.mythics[item].runes)) {
+               _runes.push([k, v.games, v.wins])
+            }
+            _runes.sort((a, b) => b[1] - a[1])
+            this.mythicBuilds[i].push(_runes)
+            // iter(i, this.champion.mythics[item].runes, _runes)
          }
          console.log('potato', this.mythicBuilds)
       },
@@ -169,8 +206,22 @@ export default {
          }
       },
 
-      runeImage(path) {
-         return `https://ddragon.leagueoflegends.com/cdn/img/${path}`
+      runeImage(path, tree=false) {
+         const table = {
+            "8100": 0,
+            "8300": 1,
+            "8000": 2,
+            "8400": 3,
+            "8200": 4
+         }
+         let url = ''
+         if (this.runes && tree) {
+            url = this.runes[table[path]].icon
+         } else {
+            return url = ''
+         }
+
+         return `https://ddragon.leagueoflegends.com/cdn/img/${url}`
       }
 
    },
@@ -250,19 +301,27 @@ export default {
                   </div>
                   <div class="tldr-body">
                      <div class="tldr-left">
-                        <div class="tldr-runes">
 
-                           <div class="tldr-runes-primary">
-
+                        <div class="runes-tab-wrapper">
+                           <div class="tldr-runes-tab" v-for="(runes, i) in this.mythicBuilds[this.tab][9].slice(0, 3)">
+                              <img :src="runeImage(runes[0].split('|')[0], true)" alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(runes[1], runes[2]) }} </h4>
+                                 <h3> ({{ runes[1] }}) </h3>
+                              </div>
                            </div>
-                           <div class="tldr-runes-secondary">
+                        </div>
 
-                           </div>
-                           <div class="tlder-runes-tertiary">
-
-                           </div>
+                        <div class="tldr-runes-primary">
 
                         </div>
+                        <div class="tldr-runes-secondary">
+
+                        </div>
+                        <div class="tlder-runes-tertiary">
+
+                        </div>
+
                         <div class="tldr-misc">
                            spells & level order go here?
                         </div>
@@ -578,8 +637,41 @@ export default {
       flex-direction: row;
    }
 
+   .runes-tab-wrapper {
+      display: flex;
+      gap: 10px;
+   }
+
+   .tldr-runes-tab {
+      display: flex;
+      align-items: center;
+   }
+   .tldr-runes-tab img {
+      width: 26px;
+   }
+
    .image-sub {
       text-align: center;
+   }
+
+   .image-sub h4 {
+      display: inline-block;
+      color: var(--tint500);
+      text-align: center;
+      font-weight: normal;
+      margin: 0;
+      font-size: 0.75rem;
+   }
+   
+   .image-sub h3 {
+      display: inline-block;
+      color: var(--tint400);
+      text-align: center;
+      font-weight: normal;
+      margin: 0;
+      font-size: 0.75rem;
+      margin-left: 0.3rem;
+      /* font-style: italic; */
    }
 
    .core-items {
@@ -607,7 +699,7 @@ export default {
       width: 71px;
    }
 
-   .tldr-items h4 {
+   /* .tldr-items h4 {
       display: inline-block;
       color: var(--tint500);
       text-align: center;
@@ -624,8 +716,7 @@ export default {
       margin: 0;
       font-size: 0.75rem;
       margin-left: 0.3rem;
-      /* font-style: italic; */
-   }
+   } */
 
    .trailing-items .item img {
       display: block;
