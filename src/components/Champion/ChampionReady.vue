@@ -42,7 +42,6 @@ export default {
       this.getMythicClusters()
       this.getItems()
       this.getRunes()
-      // this.generateRuneTree()
    },
    
    mounted() {
@@ -50,29 +49,29 @@ export default {
    },
       
    methods: {
-      generateRuneTree() {
-         // const threshold = 0
-         let topWinrate = 0
-         // this.tldrRunes = this.mythicBuilds[this.tab][9]
-         // for (const i in this.mythicBuilds[this.tab][9]) {
-         //    if (this.mythicBuilds[this.tab][9][i][1] / this.mythicBuilds[this.tab][1] > threshold) {
-         //        this.tldrRunes.push(this.mythicBuilds[this.tab][9][i])
-         //    }
-         //    else {
-         //       break
-         //    }
-         // }
-         
-         this.mythicBuilds[this.tab][9].slice(0, 3).filter(i => {
-            // console.log(i, i[2] / i[1])
-            if (i[2] / i[1] > topWinrate) {
-               topWinrate = i[2] / i[1]
-               this.tldrRunes.top = i
-            }
-         })
+      activeRune(id) {
+         return (this.mythicBuilds[this.tab][9][this.runesTab][0].includes(id)) ? true : false
+      },
 
+      flexRune(id, j) {
+         return (this.mythicBuilds[this.tab][9][this.runesTab][0].split('|')[4].split('_')[j] == id) ? true : false
+      },
 
-         console.log(this.tldrRunes)
+      runeTree(i) {
+         const runes = {
+            8100: [[8112, 8124, 8128, 9923], [8126, 8139, 8143], [8136, 8120, 8138], [8135, 8134, 8105, 8106]],
+            8300: [[8351, 8360, 8369], [8306, 8304, 8313], [8321, 8316, 8345], [8347, 8410, 8352]],
+            8000: [[8005, 8008, 8021, 8010], [9101, 9111, 8009], [9104, 9105, 9103], [8014, 8017, 8299]],
+            8400: [[8437, 8439, 8465], [8446, 8463, 8401], [8429, 8444, 8473], [8451, 8453, 8242]],
+            8200: [[8214, 8229, 8230], [8224, 8226, 8275], [8210, 8234, 8233], [8237, 8232, 8236]]
+         }
+         const t = this.mythicBuilds[this.tab][9][this.runesTab][0].split('|')[i]
+         return runes[t]
+      },
+
+      tabClick(i) {
+         this.tab = i
+         this.runesTab = 0
       },
 
       getItems() {
@@ -86,7 +85,7 @@ export default {
          const url = `https://ddragon.leagueoflegends.com/cdn/${this.patch}/data/en_US/runesReforged.json`
          axios.get(url).then(res => {
             this.runes = res.data
-            console.log(this.runes, 'roons')
+            console.log('roons', this.runes)
          })
       },
       
@@ -112,7 +111,6 @@ export default {
          
          for (const i in this.mythicBuilds) {
             let item = this.mythicBuilds[i][0]
-            // let _itemPosition = [[], [], [], [], [], []]
             let _itemPosition = [[], [], []]
             let _levelOrder = []
             let _skillPath = []
@@ -129,14 +127,6 @@ export default {
             }
             this.mythicBuilds[i].push(_itemPosition)
 
-            // for (const [pos, v] of Object.entries(this.champion.mythics[item].items)) {
-            //    for (const [k2, v2] of Object.entries(v)) {
-            //       _itemPosition[pos].push([k2, v2.games, v2.wins])
-            //    }
-            //    _itemPosition[pos].sort((a, b) => b[1] - a[1])
-            // }
-            // this.mythicBuilds[i].push(_itemPosition)
-
             iter(i, this.champion.mythics[item].coreBuild, _coreBuild)
             iter(i, this.champion.mythics[item].levelOrder, _levelOrder)
             iter(i, this.champion.mythics[item].skillPath, _skillPath)
@@ -148,7 +138,6 @@ export default {
             }
             _runes.sort((a, b) => b[1] - a[1])
             this.mythicBuilds[i].push(_runes)
-            // iter(i, this.champion.mythics[item].runes, _runes)
          }
          console.log('potato', this.mythicBuilds)
       },
@@ -187,9 +176,7 @@ export default {
       },
 
       getItemName(i) {
-         if (this.items !== null) {
-            return this.items[i].name
-         }
+         if (this.items !== null) return this.items[i].name
       },
 
       itemImage(Id) {
@@ -198,30 +185,25 @@ export default {
 
       toggleItemBin(Id) {
          const idx = this.itemBin.indexOf(Id)
-         if (idx === -1) {
-            this.itemBin.push(Id)
-         }
-         else {
-            this.itemBin.splice(idx, 1)
-         }
+         (idx === -1) ? this.itemBin.push(Id) : this.itemBin.splice(idx, 1)
+         // if (idx === -1) {
+         //    this.itemBin.push(Id)
+         // }
+         // else {
+         //    this.itemBin.splice(idx, 1)
+         // }
       },
 
-      runeImage(path, tree=false) {
-         const table = {
-            "8100": 0,
-            "8300": 1,
-            "8000": 2,
-            "8400": 3,
-            "8200": 4
-         }
-         let url = ''
-         if (this.runes && tree) {
-            url = this.runes[table[path]].icon
-         } else {
-            return url = ''
-         }
+      runeEndpointImage(path) {
+         return `https://ddragon.leagueoflegends.com/cdn/img/${path}` 
+      },
 
-         return `https://ddragon.leagueoflegends.com/cdn/img/${url}`
+      runeImage(id) {
+         return new URL(`../../assets/runes/${id}.png`, import.meta.url).href
+      },
+      
+      flexRuneImage(id) {
+         return new URL(`../../assets/runes/flex/${id}.png`, import.meta.url).href
       }
 
    },
@@ -240,9 +222,14 @@ export default {
          return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/champion/${this.backName}.png`
       },
 
-      // getRunes() {
-      //    return new URL(`../assets/runes/${runeId}.png`, import.meta.url).href
-      // }
+      keystone() {
+         console.log(this.mythicBuilds[this.tab][9][0][0].split('|'))
+         return this.mythicBuilds[this.tab][9][0][0].split('|')[1].split('_')[0]
+      },
+
+      flexRunes() {
+         return [[5008, 5005, 5007], [5008, 5002, 5003], [5001, 5002, 5003]]
+      }
    },
 
    props: {
@@ -290,37 +277,53 @@ export default {
                <h2>tldr</h2>
                <div class="tldr-body-wrapper">
                   <div class="tldr-tabs">
-                     <div class="tab" @click="this.tab = i" v-for="(mythic, i) in this.mythicBuilds" :key="i">
-                        <img :src="itemImage(mythic[0])" alt="">
+                     <div class="tab" @click="tabClick(i)" v-for="(mythic, i) in this.mythicBuilds" :key="i">
+                        <img rel="preload" :src="itemImage(mythic[0])" alt="">
                         <div class="tab-sub">
                            <h4> {{ winrate(mythic[1], mythic[2]) }} </h4>
                            <h3> ({{ mythic[1] }}) </h3>
                         </div>
-                        <!-- {{ this.getItemName(mythic[0]) }} -->
                      </div>
                   </div>
+
                   <div class="tldr-body">
                      <div class="tldr-left">
 
                         <div class="runes-tab-wrapper">
-                           <div class="tldr-runes-tab" v-for="(runes, i) in this.mythicBuilds[this.tab][9].slice(0, 3)">
-                              <img :src="runeImage(runes[0].split('|')[0], true)" alt="">
-                              <div class="image-sub">
+                           <div class="tldr-runes-tab" @click="this.runesTab = i" v-for="(runes, i) in this.mythicBuilds[this.tab][9].slice(0, 3)">
+                              <div class="rune-images">
+                                 <img class="main" rel="preload" :src="runeImage(runes[0].split('|')[1].split('_')[0])" alt="">
+                                 <img class="secondary" rel="preload" :src="runeImage(runes[0].split('|')[2])" alt="">
+                              </div>
+                              <div class="tab-sub">
                                  <h4> {{ winrate(runes[1], runes[2]) }} </h4>
                                  <h3> ({{ runes[1] }}) </h3>
                               </div>
                            </div>
                         </div>
+                        
+                        <div class="tldr-runes-wrapper">
 
-                        <div class="tldr-runes-primary">
-
+                           <div class="tldr-primary-runes">
+                              <div class="tldr-rune-row" v-for="(row, i) in this.runeTree(0)" :key="i">
+                                 <img rel="preload" :class="{ 'active-rune': activeRune(rune) }" :src="runeImage(rune)" alt="" v-for="(rune, i) in row" :key="i">
+                              </div>
+                           </div>
+                           
+                           <div class="tldr-minors">
+                              <div class="tldr-secondary-runes">
+                                 <div class="tldr-rune-row" v-for="(row, i) in this.runeTree(2).slice(1, 4)" :key="i">
+                                    <img rel="preload" :class="{ 'active-rune': activeRune(rune) }" :src="runeImage(rune)" alt="" v-for="(rune, i) in row" :key="i">
+                                 </div>
+                              </div>
+                              <div class="tldr-flex-runes">
+                                 <div class="tldr-rune-row" v-for="(row, i) in flexRunes" :key="i">
+                                    <img rel="preload" :class="{ 'active-rune': flexRune(rune, i) }" :src="flexRuneImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
+                                 </div>
+                              </div>
+                           </div>
                         </div>
-                        <div class="tldr-runes-secondary">
 
-                        </div>
-                        <div class="tlder-runes-tertiary">
-
-                        </div>
 
                         <div class="tldr-misc">
                            spells & level order go here?
@@ -361,12 +364,6 @@ export default {
                      </div>
                   </div>
                </div>
-               <!-- <div class="tldr-tabs">
-                  <div class="tab" @click="this.tab = i" v-for="(mythic, i) in this.mythicBuilds" :key="i">
-                     <img :src="itemImage(mythic[0])" alt="">
-                     {{ this.getItemName(mythic[0]) }}
-                  </div>
-               </div> -->
             </div>
             
             <div class="builds section">
@@ -385,11 +382,6 @@ export default {
             <div class="runes section">
                <h2>Runes</h2>
             </div>
-            <!-- <div class="builds" v-if="this.tab === 1">
-            </div>
-
-            <div class="items" v-if="this.tab === 2">
-            </div> -->
          </div>
    
       </div>
@@ -565,7 +557,7 @@ export default {
       margin-bottom: 0.25rem;
    }
 
-   .tab h4 {
+   .tab-sub h4 {
       display: block;
       color: var(--tint500);
       text-align: center;
@@ -574,7 +566,7 @@ export default {
       font-size: 0.75rem;
    }
    
-   .tab h3 {
+   .tab-sub h3 {
       display: block;
       color: var(--tint400);
       text-align: center;
@@ -624,6 +616,8 @@ export default {
 
    .tldr-left {
       display: flex;
+      align-items: center;
+      gap: 10px;
       flex-direction: column;
    }
    
@@ -635,9 +629,11 @@ export default {
    .tldr-items {
       display: flex;
       flex-direction: row;
+      gap: 10px;
    }
 
    .runes-tab-wrapper {
+      margin-top: 10px;
       display: flex;
       gap: 10px;
    }
@@ -645,9 +641,104 @@ export default {
    .tldr-runes-tab {
       display: flex;
       align-items: center;
+      background: var(--hoverButton);
+      border-radius: 8px;
+      padding: 0.15rem .35rem;
+      cursor: pointer;
    }
+   .rune-images {
+      position: relative;
+      width: 35px;
+      height: 24px;
+   }
+
    .tldr-runes-tab img {
-      width: 26px;
+      width: 24px;
+   }
+
+   .tldr-runes-tab img.main {
+      filter: drop-shadow(0px 0px 2px rgba(0,0,0,1));
+   }
+
+   .tldr-runes-tab img.secondary {
+      position: absolute;
+      filter: drop-shadow(0px 0px 2px rgba(0,0,0,.8)) saturate(1.25);
+      bottom: 0;
+      left: 16px;
+      width: 18px;
+   }
+
+   .tldr-runes-wrapper {
+      display: flex;
+      gap: 40px;
+      /* align-items: center; */
+   }
+
+   .tldr-primary-runes {
+      width: 120px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+   }
+
+   .tldr-minors {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: center;
+   }
+
+   .tldr-secondary-runes {
+      display: flex;
+      width: 110px;
+      flex-direction: column;
+      gap: 8px;
+   }
+   .tldr-flex-runes {
+      display: flex;
+      width: 110px;
+      flex-direction: column;
+      gap: 3px;
+   }
+
+   .tldr-rune-row {
+      display: flex;
+      justify-content: space-around;
+   }
+   .tldr-primary-runes .tldr-rune-row:first-child img {
+      width: 36px;
+      border: none;
+   }
+
+   .tldr-flex-runes img {
+      width: 25px;
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 100%;
+      filter: saturate(0);
+   }
+   
+   .tldr-secondary-runes img {
+      width: 30px;
+      filter: saturate(0);
+      border-radius: 100%;
+      border: 1px solid var(--color-background);
+   }
+   
+   .tldr-primary-runes img {
+      width: 30px;
+      filter: saturate(0);
+      border-radius: 100%;
+      border: 1px solid var(--color-background);
+   }
+   .tldr-primary-runes img.active-rune, .tldr-secondary-runes img.active-rune {
+      filter: saturate(1);
+      border: 1px solid var(--tint400);
+   }
+
+   .tldr-flex-runes img.active-rune {
+      filter: saturate(1.25);
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--tint400);
    }
 
    .image-sub {
@@ -680,6 +771,7 @@ export default {
       align-items: center;
       justify-content: center;
    }
+
    .core-items img {
       margin: 0 10px;
       width: 34px;
@@ -688,7 +780,7 @@ export default {
    
    .trailing-items {
       display: flex;
-      gap: 30px;
+      gap: 10px;
       /* width: 545px; */
    }
 
@@ -697,6 +789,7 @@ export default {
       flex-direction: column;
       align-items: center;
       width: 71px;
+      gap: 5px;
    }
 
    /* .tldr-items h4 {

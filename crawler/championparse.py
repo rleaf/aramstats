@@ -135,22 +135,41 @@ class ChampionParser():
                   level_order += table[arr[0]]
 
             # <str> Rune path string ID used as field in database.
+            # rune_order = {
+            #    8100: ['8112', '8124', '8128', '9923', '8126', '8139', '8143', '8136', '8120', '8138', '8135', '8134', '8105', '8106'],
+            #    8300: ['8351', '8360', '8369', '8306', '8304', '8313', '8321', '8316', '8345', '8347', '8410', '8352'],
+            #    8000: ['8005', '8008', '8021', '8010', '9101', '9111', '8009', '9104', '9105', '9103', '8014', '8017', '8299'],
+            #    8400: ['8437', '8439', '8465', '8446', '8463', '8401', '8429', '8444', '8473', '8451', '8453', '8242'],
+            #    8200: ['8214', '8229', '8230', '8224', '8226', '8275', '8210', '8234', '8233', '8237', '8232', '8236']
+            # }
+            rune_order = [
+               '8112', '8124', '8128', '9923', '8126', '8139', '8143', '8136', '8120', '8138', '8135', '8134', '8105', '8106',
+               '8351', '8360', '8369', '8306', '8304', '8313', '8321', '8316', '8345', '8347', '8410', '8352',
+               '8005', '8008', '8021', '8010', '9101', '9111', '8009', '9104', '9105', '9103', '8014', '8017', '8299',
+               '8437', '8439', '8465', '8446', '8463', '8401', '8429', '8444', '8473', '8451', '8453', '8242',
+               '8214', '8229', '8230', '8224', '8226', '8275', '8210', '8234', '8233', '8237', '8232', '8236'
+            ]
+
             for x in match["info"]["participants"]:
                if x["participantId"] == participant["participantId"]:
                   primary_runes = [str(y["perk"]) for y in x["perks"]["styles"][0]["selections"]]
                   key_stone = primary_runes[0]
-                  primary = f'{x["perks"]["styles"][0]["style"]}|' + '_'.join(primary_runes) + '|'
+                  primary_tree = x["perks"]["styles"][0]["style"]
+                  primary_runes.sort(key=lambda x: rune_order.index(x))
+                  primary = f'{primary_tree}|' + '_'.join(primary_runes) + '|'
 
                   secondary_runes = [str(y["perk"]) for y in x["perks"]["styles"][1]["selections"]]
-                  secondary = f'{x["perks"]["styles"][1]["style"]}|' + '_'.join(secondary_runes) + '|'
+                  secondary_tree = x["perks"]["styles"][1]["style"]
+                  secondary_runes.sort(key=lambda x: rune_order.index(x))
+                  secondary = f'{secondary_tree}|' + '_'.join(secondary_runes) + '|'
 
-                  tertiary = f'{x["perks"]["statPerks"]["defense"]}_{x["perks"]["statPerks"]["flex"]}_{x["perks"]["statPerks"]["offense"]}'
+                  tertiary = f'{x["perks"]["statPerks"]["offense"]}_{x["perks"]["statPerks"]["flex"]}_{x["perks"]["statPerks"]["defense"]}'
             rune_path = primary + secondary + tertiary
 
 
             # <str> Starting items string ID used as field in database. 
             starting_build = []
-            for x in abilities_timeline:
+            for x in item_timeline:
                if x["timestamp"] < 60000:
                   if x["type"] == "ITEM_PURCHASED":
                      starting_build.append(x["itemId"])
@@ -158,7 +177,6 @@ class ChampionParser():
                      if x["beforeId"] in starting_build: starting_build.remove(x["beforeId"])
             starting_build = '_'.join(str(x) for x in starting_build)
             if starting_build == '': starting_build = '0000'
-
             # <[str]> List containing friendly championIds in each match
             f = [str(x["championId"]) for x in match["info"]["participants"] if x["teamId"] == participant["teamId"] and x["championId"] != id]
 
