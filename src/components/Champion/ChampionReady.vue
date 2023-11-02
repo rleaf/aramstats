@@ -9,27 +9,29 @@ export default {
          itemBin: [],
          backName: champions.imageName[this.champion.id],
          abilities: [],
+         thresholds: {
+            core: 0.10,
+            trail: 0.10,
+         },
          title: '',
          tab: 0,
          items: null,
          runes: null,
          runesTab: 0,
-         // tldrRunes: {
-         //    popular: null,
-         //    top: null
-         // },
-         mythicBuilds: [
+         tldrBuilds: [],
+         mythicData: [
             /* 
             0: itemId
             1: games
             2: wins
             3: [[i0], [i1], [i2], [i3], [i4], [i5]]
-            4: core build
-            5: levelOrder
-            6: skillPath
-            7: spells
-            8: starting items
-            9: runes
+            4: item total games
+            5: core build 
+            6: levelOrder
+            7: skillPath
+            8: spells
+            9: starting items
+           10: runes
             */
          ],
       }
@@ -40,6 +42,7 @@ export default {
       console.log(this.champion)
       this.getChampData()
       this.getMythicClusters()
+      console.log('potato', this.mythicData)
       this.getItems()
       this.getRunes()
    },
@@ -50,11 +53,11 @@ export default {
       
    methods: {
       activeRune(id) {
-         return (this.mythicBuilds[this.tab][9][this.runesTab][0].includes(id)) ? true : false
+         return (this.mythicData[this.tab].runes[this.runesTab][0].includes(id)) ? true : false
       },
 
       flexRune(id, j) {
-         return (this.mythicBuilds[this.tab][9][this.runesTab][0].split('|')[4].split('_')[j] == id) ? true : false
+         return (this.mythicData[this.tab].runes[this.runesTab][0].split('|')[4].split('_')[j] == id) ? true : false
       },
 
       runeTree(i) {
@@ -65,12 +68,12 @@ export default {
             8400: [[8437, 8439, 8465], [8446, 8463, 8401], [8429, 8444, 8473], [8451, 8453, 8242]],
             8200: [[8214, 8229, 8230], [8224, 8226, 8275], [8210, 8234, 8233], [8237, 8232, 8236]]
          }
-         const t = this.mythicBuilds[this.tab][9][this.runesTab][0].split('|')[i]
+         const t = this.mythicData[this.tab].runes[this.runesTab][0].split('|')[i]
          return runes[t]
       },
 
       tabClick(i) {
-         this.tab = i
+         this.tab = this.mythicData.findIndex(el => i === el.id)
          this.runesTab = 0
       },
 
@@ -85,7 +88,7 @@ export default {
          const url = `https://ddragon.leagueoflegends.com/cdn/${this.patch}/data/en_US/runesReforged.json`
          axios.get(url).then(res => {
             this.runes = res.data
-            console.log('roons', this.runes)
+            // console.log('roons', this.runes)
          })
       },
       
@@ -93,25 +96,94 @@ export default {
          return `${Math.round( win / total * 1000) / 10}%`
       },
 
+      getTldrBuilds(i, mode) {
+         const sum = this.mythicData[i].coreBuild.reduce((c, a) => c + a[1], 0)
+         let core
+         if (mode) {
+            core = this.mythicData[i].coreBuild.filter(o => (o[1] / sum) > this.thresholds.core).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
+         } else {
+            core = this.mythicData[i].coreBuild[0]
+         }
+
+         let container = []
+         let blacklist = []
+
+         blacklist.push(core[0].split('_'))
+
+         for (let u = 3; u < 6; u++) {
+            const trailSum = this.mythicData[i].itemPosition[u].reduce((c, a) => c + a[1], 0)
+            const filtered = this.mythicData[i].itemPosition[u].filter(o => !blacklist.includes(o[0]))
+            const trailing = filtered.filter(o => (o[1] / trailSum) > this.thresholds.trail).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1])).slice(0, 2)
+            
+            for (const v in trailing) {
+               blacklist.push(trailing[v][0])
+            }
+            
+            container.push(trailing)
+         }
+         
+         this.mythicData[i].tldrBuilds[mode] = [core, container]
+         // if (mode) {
+         // } else {
+         //    this.mythicData[i].tldrBuilds[1] = [core, container]
+         // }
+      },
+
       getMythicClusters() {
-         const iter = (i, obj, container) => {
+         
+         const iter = (i, obj, name, container) => {
             for (const [k, v] of Object.entries(obj)) {
                container.push([k, v.games, v.wins])
             }
             container.sort((a, b) => b[1] - a[1])
-            this.mythicBuilds[i].push(container)
+            this.mythicData[i][name] = container
+         }
+
+         const tldrBuilds = (i, mode) => {
+            const sum = this.mythicData[i].coreBuild.reduce((c, a) => c + a[1], 0)
+            let core
+            if (mode) {
+               core = this.mythicData[i].coreBuild.filter(o => (o[1] / sum) > this.thresholds.core).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
+            } else {
+               core = this.mythicData[i].coreBuild[0]
+            }
+
+            let container = []
+            let blacklist = []
+
+            blacklist.push(core[0].split('_'))
+
+            for (let u = 3; u < 6; u++) {
+               const trailSum = this.mythicData[i].itemPosition[u].reduce((c, a) => c + a[1], 0)
+               const filtered = this.mythicData[i].itemPosition[u].filter(o => !blacklist.includes(o[0]))
+               const trailing = filtered.filter(o => (o[1] / trailSum) > this.thresholds.trail).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1])).slice(0, 2)
+
+               for (const v in trailing) {
+                  blacklist.push(trailing[v][0])
+               }
+
+               container.push(trailing)
+            }
+
+            this.mythicData[i].tldrBuilds[mode] = [core, container]
          }
          
          for (const k in this.champion.mythics) {
             if (k === '0') continue
-            this.mythicBuilds.push([k, this.champion.items[k].games, this.champion.items[k].wins])
+            const mythicWrapper = {
+               id: k,
+               games: this.champion.items[k].games,
+               wins: this.champion.items[k].wins
+            }
+            this.mythicData.push(mythicWrapper)
          }
-         this.mythicBuilds.sort((a, b) => b[1] - a[1])
 
+         this.mythicData.sort((a, b) => b.games - a.games)
          
-         for (const i in this.mythicBuilds) {
-            let item = this.mythicBuilds[i][0]
-            let _itemPosition = [[], [], []]
+         for (const i in this.mythicData) {
+            let item = this.mythicData[i].id
+            let _itemPosition = [[], [], [], [], [], []]
+            let _positionMeta = [[], [], [], [], [], []]
             let _levelOrder = []
             let _skillPath = []
             let _runes = []
@@ -119,27 +191,75 @@ export default {
             let _startingItems = []
             let _coreBuild = []
 
-            for (const [pos, v] of Object.entries(this.champion.mythics[item].items).slice(3)) {
-               for (const [k2, v2] of Object.entries(v)) {
-                  _itemPosition[pos - 3].push([k2, v2.games, v2.wins])
-               }
-               _itemPosition[pos - 3].sort((a, b) => b[1] - a[1])
-            }
-            this.mythicBuilds[i].push(_itemPosition)
+            let _highestWinrate = []
+            let _mostPopular = []
 
-            iter(i, this.champion.mythics[item].coreBuild, _coreBuild)
-            iter(i, this.champion.mythics[item].levelOrder, _levelOrder)
-            iter(i, this.champion.mythics[item].skillPath, _skillPath)
-            iter(i, this.champion.mythics[item].spells, _spells)
-            iter(i, this.champion.mythics[item].startingItems, _startingItems)
+            for (const [pos, v] of Object.entries(this.champion.mythics[item].items)) {
+               let sum = 0
+               for (const [k2, v2] of Object.entries(v)) {
+                  sum += v2.games
+                  _itemPosition[pos].push([k2, v2.games, v2.wins])
+               }
+
+               _itemPosition[pos].sort((a, b) => b[1] - a[1])
+               // const thresholdItems = _itemPosition[pos].filter(o => (o[1] / sum) > this.threshold).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))
+               // console.log(pos, _itemPosition[pos], sum)
+               // console.log('threshold', thresholdItems)
+
+               // if (pos < 3) {
+               //    // Highest winrate
+               //    for (const u in thresholdItems) {
+               //       if (_tldrBuilds[0][0].flat().includes(thresholdItems[u][0])) {
+               //          continue
+               //       } else {
+               //          _tldrBuilds[0][0].push(thresholdItems[u])
+               //          break
+               //       }
+               //    }
+                  
+               //    // Most popular
+               //    for (const u in _itemPosition[pos]) {
+               //       if (_tldrBuilds[1][0].flat().includes(_itemPosition[pos][u][0])) {
+               //          continue
+               //       } else {
+               //          _tldrBuilds[1][0].push(_itemPosition[pos][u][0])
+               //          break
+               //       }
+               //    }
+               // } else {
+               //    let trailingItems = thresholdItems.filter(i => !_tldrBuilds[0][0].slice(0, 3).flat().includes(i[0]))
+               //    // console.log('yer', trailingItems)
+               //    if (trailingItems.length < 3) {
+               //       const diff = 3 - trailingItems.length
+
+               //    }
+               //    _tldrBuilds[0][0].push(thresholdItems)
+               //    _tldrBuilds[1][0].push(_itemPosition[pos])
+                  
+               // }
+
+               _positionMeta[pos].push(sum)
+            }
+
+            this.mythicData[i].itemPosition = _itemPosition
+            this.mythicData[i].positionMeta = _positionMeta
+
+            iter(i, this.champion.mythics[item].coreBuild, 'coreBuild', _coreBuild)
+            iter(i, this.champion.mythics[item].levelOrder, 'levelOrder', _levelOrder)
+            iter(i, this.champion.mythics[item].skillPath, 'skillPath', _skillPath)
+            iter(i, this.champion.mythics[item].spells, 'spells', _spells)
+            iter(i, this.champion.mythics[item].startingItems, 'startingItems', _startingItems)
 
             for (const [k, v] of Object.entries(this.champion.mythics[item].runes)) {
                _runes.push([k, v.games, v.wins])
             }
             _runes.sort((a, b) => b[1] - a[1])
-            this.mythicBuilds[i].push(_runes)
+            this.mythicData[i].runes = _runes
+            this.mythicData[i].tldrBuilds = [[], []]
+            
+            tldrBuilds(i, 0)
+            tldrBuilds(i, 1)
          }
-         console.log('potato', this.mythicBuilds)
       },
 
       abilityLetter(idx) {
@@ -223,8 +343,8 @@ export default {
       },
 
       keystone() {
-         console.log(this.mythicBuilds[this.tab][9][0][0].split('|'))
-         return this.mythicBuilds[this.tab][9][0][0].split('|')[1].split('_')[0]
+         console.log(this.mythicData[this.tab][9][0][0].split('|'))
+         return this.mythicData[this.tab][9][0][0].split('|')[1].split('_')[0]
       },
 
       flexRunes() {
@@ -274,14 +394,26 @@ export default {
 
          <div class="champion-body">
             <div class="tldr section">
+
                <h2>tldr</h2>
+               <div class="tldr-top">
+                  <div class="tldr-top-tabs">
+                     <div class="tab">
+                        Highest winrate
+                     </div>
+                     <div class="tab">
+                        Most popular
+                     </div>
+                  </div>
+               </div>
+
                <div class="tldr-body-wrapper">
                   <div class="tldr-tabs">
-                     <div class="tab" @click="tabClick(i)" v-for="(mythic, i) in this.mythicBuilds" :key="i">
-                        <img rel="preload" :src="itemImage(mythic[0])" alt="">
+                     <div class="tab" @click="tabClick(mythic.id)" v-for="mythic in this.mythicData" :key="mythic[0]">
+                        <img rel="preload" :src="itemImage(mythic.id)" alt="">
                         <div class="tab-sub">
-                           <h4> {{ winrate(mythic[1], mythic[2]) }} </h4>
-                           <h3> ({{ mythic[1] }}) </h3>
+                           <h4> {{ winrate(mythic.games, mythic.wins) }} </h4>
+                           <h3> ({{ mythic.games }}) </h3>
                         </div>
                      </div>
                   </div>
@@ -290,7 +422,7 @@ export default {
                      <div class="tldr-left">
 
                         <div class="runes-tab-wrapper">
-                           <div class="tldr-runes-tab" @click="this.runesTab = i" v-for="(runes, i) in this.mythicBuilds[this.tab][9].slice(0, 3)">
+                           <div class="tldr-runes-tab" @click="this.runesTab = i" v-for="(runes, i) in this.mythicData[this.tab].runes.slice(0, 3)">
                               <div class="rune-images">
                                  <img class="main" rel="preload" :src="runeImage(runes[0].split('|')[1].split('_')[0])" alt="">
                                  <img class="secondary" rel="preload" :src="runeImage(runes[0].split('|')[2])" alt="">
@@ -331,10 +463,10 @@ export default {
                      </div>
                      <div class="tldr-right">
                         <div class="tldr-items">
-                           <div class="core-items">
+                           <!-- <div class="core-items">
       
                               <h2>Core</h2>
-                              <div class="item-set" v-for="(set, i) in this.mythicBuilds[this.tab][4].slice(0, 2)" :key="i">
+                              <div class="item-set" v-for="(set, i) in this.mythicData[this.tab][4].slice(0, 2)" :key="i">
                                  <img :src="itemImage(img)" alt="" v-for="(img, j) in set[0].split('_')" :key="j">
                                  <div class="image-sub">
                                     <h4> {{ winrate(set[1], set[2]) }} </h4>
@@ -342,12 +474,22 @@ export default {
                                  </div>
                               </div>
       
-                           </div>
+                           </div> -->
                            <div class="trailing-items">
       
-                              <div class="item" v-for="i in 3" :key="i">
+                              <!-- <div class="item" v-for="i in 3" :key="i">
                                  <h2>{{ i + 3}}</h2>
-                                 <div class="tldr-wrapper" v-for="item in this.mythicBuilds[this.tab][3][i-1].slice(0, 3)" :key="item[0]">
+                                 <div class="tldr-wrapper" v-for="item in this.mythicData[this.tab][3][i-1].slice(0, 3)" :key="item[0]">
+                                    <img :src="itemImage(item[0])" alt="">
+                                    <div class="image-sub">
+                                       <h4> {{ winrate(item[1], item[2]) }} </h4>
+                                       <h3> ({{ item[1] }}) </h3>
+                                    </div>
+                                 </div>
+                              </div> -->
+                              <div class="item" v-for="i in 6" :key="i">
+                                 <h2>{{ i }}</h2>
+                                 <div class="tldr-wrapper" v-for="item in this.mythicData[this.tab].itemPosition[i-1].slice(0, 3)" :key="item[0]">
                                     <img :src="itemImage(item[0])" alt="">
                                     <div class="image-sub">
                                        <h4> {{ winrate(item[1], item[2]) }} </h4>
@@ -527,6 +669,30 @@ export default {
       font-style: italic;
       font-weight: normal;
    }
+   
+   .section > h2 {   
+      color: var(--light400);
+      display: inline-block;
+      width: 113px;
+      margin: 1rem 0;
+      text-align: center;
+   }
+   
+   .tldr-top {
+      display: inline-block;
+      flex-direction: row;
+   }
+   
+   .tldr-top-tabs {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+   }
+   .tldr-top-tabs .tab {
+      font-size: 0.85rem;
+      padding: 0.5rem 1rem;
+
+   }
 
    .tldr-body-wrapper {
       display: flex;
@@ -541,14 +707,13 @@ export default {
       padding-right: 5px;
    }
 
-   .tldr-tabs .tab {
+   .tab {
       display: flex;
       align-items: center;
       background: var(--tint100);
       border-radius: 10px;
       cursor: pointer;
       padding: 0.5rem 1.5rem 0.5rem 0.5rem;
-      margin-left: 1rem;
       gap: 0.5rem;
       transition: 0.25s;
    }
@@ -781,7 +946,6 @@ export default {
    .trailing-items {
       display: flex;
       gap: 10px;
-      /* width: 545px; */
    }
 
    .trailing-items .item {
@@ -792,31 +956,10 @@ export default {
       gap: 5px;
    }
 
-   /* .tldr-items h4 {
-      display: inline-block;
-      color: var(--tint500);
-      text-align: center;
-      font-weight: normal;
-      margin: 0;
-      font-size: 0.75rem;
-   }
-   
-   .tldr-items h3 {
-      display: inline-block;
-      color: var(--tint400);
-      text-align: center;
-      font-weight: normal;
-      margin: 0;
-      font-size: 0.75rem;
-      margin-left: 0.3rem;
-   } */
-
    .trailing-items .item img {
       display: block;
       margin-left: auto;
       margin-right: auto;
-      /* margin: auto; */
-      /* text-align: center; */
       width: 34px;
       border: 1px solid var(--tint400);
    }   
@@ -825,19 +968,15 @@ export default {
    }
 
    .item-bin {
-      /* margin: 1rem 0; */
-      /* text-align: center; */
       padding: 1rem 0;
       border-radius: 15px;
       background: var(--tint100);
       justify-content: center;
-      /* align-items: center; */
       width: 100%;
    }
 
    .item-bin img {
       width: 40px;
-      /* filter: brightness(0.8) saturate(0.5); */
    }
 
 
