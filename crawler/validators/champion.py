@@ -1,7 +1,7 @@
 champion_schema = {
       "$jsonSchema": {
          "bsonType": "object",
-         "required": ["name", "id", "games", "wins", "skills", "runes", "builds", "items"],
+         "required": ["name", "id", "games", "wins", "skills", "runes", "builds", "items", "mythics", "primaryRunes", "secondaryRunes", "flexRunes"],
          "properties": {
             "name": {
                "bsonType": "string",
@@ -33,6 +33,22 @@ champion_schema = {
             "items": {
                "bsonType": "object",
                "description": "items dict",
+            },
+            "mythics": {
+               "bsonType": "object",
+               "description": "mythics dict",
+            },
+            "primaryRunes": {
+               "bsonType": "object",
+               "description": "primaryRunes dict",
+            },
+            "secondaryRunes": {
+               "bsonType": "object",
+               "description": "secondaryRunes dict",
+            },
+            "flexRunes": {
+               "bsonType": "object",
+               "description": "flexRunes dict",
             },
          }
       }

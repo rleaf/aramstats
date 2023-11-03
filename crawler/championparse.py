@@ -220,24 +220,28 @@ class ChampionParser():
                      # Runes
                      f"runes.{rune_path}.games": 1,
                      f"runes.{rune_path}.wins": win,
-                     f"primaryRunes.row0.{primary_runes[0]}.games": 1,
-                     f"primaryRunes.row0.{primary_runes[0]}.wins": win,
-                     f"primaryRunes.row1.{primary_runes[1]}.games": 1,
-                     f"primaryRunes.row1.{primary_runes[1]}.wins": win,
-                     f"primaryRunes.row2.{primary_runes[2]}.games": 1,
-                     f"primaryRunes.row2.{primary_runes[2]}.wins": win,
-                     f"primaryRunes.row3.{primary_runes[3]}.games": 1,
-                     f"primaryRunes.row3.{primary_runes[3]}.wins": win,
-                     f"secondaryRunes.row{secondary_rune_one_tier}.{secondary_runes[0]}.games": 1,
-                     f"secondaryRunes.row{secondary_rune_one_tier}.{secondary_runes[0]}.wins": win,
-                     f"secondaryRunes.row{secondary_rune_two_tier}.{secondary_runes[1]}.games": 1,
-                     f"secondaryRunes.row{secondary_rune_two_tier}.{secondary_runes[1]}.wins": win,
-                     f"flexRunes.row{tertiary_offense}.games": 1,
-                     f"flexRunes.row{tertiary_offense}.wins": win,
-                     f"flexRunes.row{tertiary_flex}.games": 1,
-                     f"flexRunes.row{tertiary_flex}.wins": win,
-                     f"flexRunes.row{tertiary_defense}.games": 1,
-                     f"flexRunes.row{tertiary_defense}.wins": win,
+                     f"primaryRunes.{primary_tree}.games": 1,
+                     f"primaryRunes.{primary_tree}.wins": win,
+                     f"primaryRunes.{primary_tree}.row0.{primary_runes[0]}.games": 1,
+                     f"primaryRunes.{primary_tree}.row0.{primary_runes[0]}.wins": win,
+                     f"primaryRunes.{primary_tree}.row1.{primary_runes[1]}.games": 1,
+                     f"primaryRunes.{primary_tree}.row1.{primary_runes[1]}.wins": win,
+                     f"primaryRunes.{primary_tree}.row2.{primary_runes[2]}.games": 1,
+                     f"primaryRunes.{primary_tree}.row2.{primary_runes[2]}.wins": win,
+                     f"primaryRunes.{primary_tree}.row3.{primary_runes[3]}.games": 1,
+                     f"primaryRunes.{primary_tree}.row3.{primary_runes[3]}.wins": win,
+                     f"secondaryRunes.{secondary_tree}.games": 1,
+                     f"secondaryRunes.{secondary_tree}.wins": win,
+                     f"secondaryRunes.{secondary_tree}.row{secondary_rune_one_tier}.{secondary_runes[0]}.games": 1,
+                     f"secondaryRunes.{secondary_tree}.row{secondary_rune_one_tier}.{secondary_runes[0]}.wins": win,
+                     f"secondaryRunes.{secondary_tree}.row{secondary_rune_two_tier}.{secondary_runes[1]}.games": 1,
+                     f"secondaryRunes.{secondary_tree}.row{secondary_rune_two_tier}.{secondary_runes[1]}.wins": win,
+                     f"flexRunes.row6.{tertiary_offense}.games": 1,
+                     f"flexRunes.row6.{tertiary_offense}.wins": win,
+                     f"flexRunes.row7.{tertiary_flex}.games": 1,
+                     f"flexRunes.row7.{tertiary_flex}.wins": win,
+                     f"flexRunes.row8.{tertiary_defense}.games": 1,
+                     f"flexRunes.row8.{tertiary_defense}.wins": win,
                      # Builds
                      f"builds.{build_path}.games": 1,
                      f"builds.{build_path}.wins": win,
@@ -258,18 +262,22 @@ class ChampionParser():
                   update["$inc"][f"mythics.{mythic}.items.{item_order.index(i)}.{i}.wins"] = win
                   update["$inc"][f"mythics.{mythic}.runes.{rune_path}.games"] = 1
                   update["$inc"][f"mythics.{mythic}.runes.{rune_path}.wins"] = win
-                  update["$inc"][f"mythics.{mythic}.primaryRunes.row0.{primary_runes[0]}.games"] = 1
-                  update["$inc"][f"mythics.{mythic}.primaryRunes.row0.{primary_runes[0]}.wins"] = win
-                  update["$inc"][f"mythics.{mythic}.primaryRunes.row1.{primary_runes[1]}.games"] = 1
-                  update["$inc"][f"mythics.{mythic}.primaryRunes.row1.{primary_runes[1]}.wins"] = win
-                  update["$inc"][f"mythics.{mythic}.primaryRunes.row2.{primary_runes[2]}.games"] = 1
-                  update["$inc"][f"mythics.{mythic}.primaryRunes.row2.{primary_runes[2]}.wins"] = win
-                  update["$inc"][f"mythics.{mythic}.primaryRunes.row3.{primary_runes[3]}.games"] = 1
-                  update["$inc"][f"mythics.{mythic}.primaryRunes.row3.{primary_runes[3]}.wins"] = win
-                  update["$inc"][f"mythics.{mythic}.secondaryRunes.row{secondary_rune_one_tier}.{secondary_runes[0]}.games"] = 1
-                  update["$inc"][f"mythics.{mythic}.secondaryRunes.row{secondary_rune_one_tier}.{secondary_runes[0]}.wins"] = win
-                  update["$inc"][f"mythics.{mythic}.secondaryRunes.row{secondary_rune_two_tier}.{secondary_runes[1]}.games"] = 1
-                  update["$inc"][f"mythics.{mythic}.secondaryRunes.row{secondary_rune_two_tier}.{secondary_runes[1]}.wins"] = win
+                  update["$inc"][f"mythics.{mythic}.primaryRunes.{primary_tree}.games"] = 1
+                  update["$inc"][f"mythics.{mythic}.primaryRunes.{primary_tree}.wins"] = win
+                  update["$inc"][f"mythics.{mythic}.primaryRunes.{primary_tree}.row0.{primary_runes[0]}.games"] = 1
+                  update["$inc"][f"mythics.{mythic}.primaryRunes.{primary_tree}.row0.{primary_runes[0]}.wins"] = win
+                  update["$inc"][f"mythics.{mythic}.primaryRunes.{primary_tree}.row1.{primary_runes[1]}.games"] = 1
+                  update["$inc"][f"mythics.{mythic}.primaryRunes.{primary_tree}.row1.{primary_runes[1]}.wins"] = win
+                  update["$inc"][f"mythics.{mythic}.primaryRunes.{primary_tree}.row2.{primary_runes[2]}.games"] = 1
+                  update["$inc"][f"mythics.{mythic}.primaryRunes.{primary_tree}.row2.{primary_runes[2]}.wins"] = win
+                  update["$inc"][f"mythics.{mythic}.primaryRunes.{primary_tree}.row3.{primary_runes[3]}.games"] = 1
+                  update["$inc"][f"mythics.{mythic}.primaryRunes.{primary_tree}.row3.{primary_runes[3]}.wins"] = win
+                  update["$inc"][f"mythics.{mythic}.secondaryRunes.{secondary_tree}.games"] = 1
+                  update["$inc"][f"mythics.{mythic}.secondaryRunes.{secondary_tree}.wins"] = win
+                  update["$inc"][f"mythics.{mythic}.secondaryRunes.{secondary_tree}.row{secondary_rune_one_tier}.{secondary_runes[0]}.games"] = 1
+                  update["$inc"][f"mythics.{mythic}.secondaryRunes.{secondary_tree}.row{secondary_rune_one_tier}.{secondary_runes[0]}.wins"] = win
+                  update["$inc"][f"mythics.{mythic}.secondaryRunes.{secondary_tree}.row{secondary_rune_two_tier}.{secondary_runes[1]}.games"] = 1
+                  update["$inc"][f"mythics.{mythic}.secondaryRunes.{secondary_tree}.row{secondary_rune_two_tier}.{secondary_runes[1]}.wins"] = win
                   update["$inc"][f"mythics.{mythic}.flexRunes.row6.{tertiary_offense}.games"] = 1
                   update["$inc"][f"mythics.{mythic}.flexRunes.row6.{tertiary_offense}.wins"] = win
                   update["$inc"][f"mythics.{mythic}.flexRunes.row7.{tertiary_flex}.games"] = 1
@@ -291,11 +299,11 @@ class ChampionParser():
                   update["$inc"][f"items.{i}.position.{item_order.index(i)}.games"] = 1
                   update["$inc"][f"items.{i}.position.{item_order.index(i)}.wins"] = win
                   # Keystone
-                  update["$inc"][f"items.{i}.keystone.{key_stone}.games"] = 1
-                  update["$inc"][f"items.{i}.keystone.{key_stone}.wins"] = win
+                  # update["$inc"][f"items.{i}.keystone.{key_stone}.games"] = 1
+                  # update["$inc"][f"items.{i}.keystone.{key_stone}.wins"] = win
                   # Skillpath
-                  update["$inc"][f"items.{i}.skillPath.{skill_path}.games"] = 1
-                  update["$inc"][f"items.{i}.skillPath.{skill_path}.wins"] = win
+                  # update["$inc"][f"items.{i}.skillPath.{skill_path}.games"] = 1
+                  # update["$inc"][f"items.{i}.skillPath.{skill_path}.wins"] = win
                   # Friendlies
                   update["$inc"][f"items.{i}.friends.{f[0]}"] = 1
                   update["$inc"][f"items.{i}.friends.{f[1]}"] = 1

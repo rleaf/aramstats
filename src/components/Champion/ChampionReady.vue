@@ -91,9 +91,8 @@ export default {
          return `${Math.round( win / total * 1000) / 10}%`
       },
 
-      tldrRunes(mythic) {
+      tldrRunes(mythic, item) {
          const sum = mythic.runes.reduce((c, a) => c + a[1], 0)
-
          const winrate = mythic.runes.filter(o => (o[1] / sum) > this.parameters.thresholds.core).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
          const popular = mythic.runes[0]
 
@@ -101,21 +100,168 @@ export default {
 
          /* 
             Parse individual rune winrate???
+            1. iter through keystones in each tree and find highest winrate keystone within threshold
+            2. Find highest winrate rune on each row
          */
+
+
+
+
+         let maxRuneCombination = [[], [], [], []] // trees, primary, secondary, flex
+         let popularRuneCombination = [[], [], [], []]
+
+         let primaryTree
+         let popularTreeGames = 0
+         let primaryTreeWinrate = 0
+         let popularTree
+         // Primary Tree highest winrate & most popular
+         for (const [lorax, v] of Object.entries(this.champion.mythics[item].primaryRunes)) {
+            if ((v.games / mythic.games) >= this.parameters.thresholds.core && (v.wins / v.games) > primaryTreeWinrate) {
+               primaryTreeWinrate = (v.wins / v.games)
+               primaryTree = lorax
+            }
+
+            if (v.games > popularTreeGames) {
+               popularTreeGames = v.games
+               popularTree = lorax
+            }
+         }
          
-         // let winrateStr = '_'
-         // let popularStr = '_'
-         // // Keystone
-         // for (const p in this.champion.mythics[item].primaryRunes) {
-         //    const rowSum = Object.values(this.champion.mythics[item].primaryRunes[p]).reduce((c, a) => c + a.games, 0)
+         if (!primaryTree) return // better err handling later
+         maxRuneCombination[0].push(primaryTree)
+         popularRuneCombination[0].push(popularTree)
 
-         //    const topRowRune = Object.entries(this.champion.mythics[item].primaryRunes[p])
-         //       .filter(o => (o[1].games / rowSum) > this.parameters.thresholds.core)
-         //       .sort((a, b) => (b[1].wins / b[1].games) - (a[1].wins / a[1].games))[0][0]
+         
 
-         //       winrateStr += topRowRune + '_'
-         // }
-         // console.log(winrateStr)
+         // Primary most popular
+         for (const [k, v] of Object.entries(this.champion.mythics[item].primaryRunes[popularTree])) {
+            if (k === 'games' || k === 'wins') continue
+            let popularRune
+            let maxGames = 0
+            for (const [k2, v2] of Object.entries(v)) {
+               if (v2.games > maxGames) {
+                  maxGames = v2.games
+                  popularRune = k2
+               }
+            }
+            popularRuneCombination[1].push(popularRune)
+         }
+
+
+         let primaryGames = this.champion.mythics[item].primaryRunes[primaryTree].games
+         // Primary highest winrate
+         for (const [k, v] of Object.entries(this.champion.mythics[item].primaryRunes[primaryTree])) {
+            if (k === 'games' || k === 'wins') continue
+            let rune
+            let max = 0
+            for (const [k2, v2] of Object.entries(v)) {
+               if ((v2.games / primaryGames) >= this.parameters.thresholds.core && (v2.wins / v2.games) > max) {
+                  max = (v2.wins / v2.games)
+                  rune = k2
+               }
+            }
+
+            maxRuneCombination[1].push(rune)
+         }
+
+         
+         let secondaryTree
+         let secondaryTreeWinrate = 0
+         // Secondary tree highest winrate
+         for (const [lorax, v] of Object.entries(this.champion.mythics[item].secondaryRunes)) {
+            if (lorax === primaryTree) continue
+            if ((v.games / (mythic.games - primaryGames)) >= this.parameters.thresholds.core && (v.wins / v.games) > secondaryTreeWinrate) {
+               secondaryTreeWinrate = (v.wins / v.games)
+               secondaryTree = lorax
+            }
+            
+         }
+         
+         let secondaryPopularTreeWinrate = 0
+         let secondaryTreePopular
+         // Secondary tree most popular
+         for (const [lorax, v] of Object.entries(this.champion.mythics[item].secondaryRunes)) {
+            if (lorax === popularTree) continue
+            if (v.games > secondaryPopularTreeWinrate) {
+               secondaryPopularTreeWinrate = v.games
+               secondaryTreePopular = lorax
+            }
+         }
+
+         popularRuneCombination[0].push(secondaryTreePopular)
+
+         // Secondary most popular
+         let popularSecondaryRunes = []
+         for (const [k, v] of Object.entries(this.champion.mythics[item].secondaryRunes[secondaryTreePopular])) {
+            if (k === 'games' || k === 'wins') continue
+            let popularRune
+            let maxGames = 0
+            for (const [k2, v2] of Object.entries(v)) {
+               if (v2.games > maxGames) {
+                  maxGames = v2.games
+                  popularRune = k2
+               }
+            }
+            popularSecondaryRunes.push([popularRune, maxGames])
+         }
+
+         if (popularSecondaryRunes.length > 2) {
+            const winrates = popularSecondaryRunes.map(y => y[1])
+            const idx = winrates.indexOf(Math.min(...winrates))
+            popularSecondaryRunes.splice(idx, 1)
+         }
+
+         popularRuneCombination[2].push(...popularSecondaryRunes.map(x => x[0]))
+
+         let secondaryGames = this.champion.mythics[item].secondaryRunes[secondaryTree].games
+         let maxSecondaryRunes = []
+         // Secondary highest winrate
+         for (const [k, v] of Object.entries(this.champion.mythics[item].secondaryRunes[secondaryTree])) {
+            if (k == 'games' || k === 'wins') continue
+            let rowContender 
+            let contenderWinrate = 0
+            for (const [k2, v2] of Object.entries(v)) {
+               if (v2.games / secondaryGames >= this.parameters.thresholds.core && (v2.wins / v2.games) > contenderWinrate) {
+                  contenderWinrate = (v2.wins / v2.games)
+                  rowContender = k2
+               }
+            }
+            maxSecondaryRunes.push([rowContender, contenderWinrate])        
+         }
+
+         if (maxSecondaryRunes.length > 2) {
+            const winrates = maxSecondaryRunes.map(y => y[1])
+            const idx = winrates.indexOf(Math.min(...winrates))
+            maxSecondaryRunes.splice(idx, 1)
+         }
+
+         maxRuneCombination[0].push(secondaryTree)
+         maxRuneCombination[2].push(...maxSecondaryRunes.map(x => x[0])) 
+         
+
+         console.log('max',maxRuneCombination)
+         console.log('popular', popularRuneCombination)
+
+         // Flexies
+         for (const v of Object.values(this.champion.mythics[item].flexRunes)) {
+            let winrateFlexwinrate = 0
+            let winrateFlexRune
+            let popularFlexWins = 0
+            let popularFlexRune
+            for (const [k2, v2] of Object.entries(v)) {
+               if ((v2.games / mythic.games) >= this.parameters.thresholds.core && (v2.wins / v2.games) > winrateFlexwinrate) {
+                  winrateFlexwinrate = (v2.wins / v2.games)
+                  winrateFlexRune = k2
+               }
+
+               if (v2.games > popularFlexWins) {
+                  popularFlexWins = v2.games
+                  popularFlexRune = k2
+               }
+            }
+            maxRuneCombination[3].push(winrateFlexRune)
+            popularRuneCombination[3].push(popularFlexRune)
+         }
 
          // Get most popular rune combination
 
@@ -254,7 +400,7 @@ export default {
             
             this.tldrBuilds(mythic, 0)
             this.tldrBuilds(mythic, 1)
-            this.tldrRunes(mythic)
+            this.tldrRunes(mythic, item)
          }
       },
 
