@@ -9,31 +9,27 @@ export default {
          itemBin: [],
          backName: champions.imageName[this.champion.id],
          abilities: [],
-         thresholds: {
-            core: 0.10,
-            trail: 0.10,
+         parameters: {
+            thresholds: {
+               core: 0.10,
+               trail: 0.10,
+            },
+            trailingDuplicates: false,
+            trailingExtended: 2,
          },
          title: '',
-         tab: 0,
+         mythicTab: 0,
+         tldrTab: 0,
          items: null,
+         runesTable: {
+            8100: [[8112, 8124, 8128, 9923], [8126, 8139, 8143], [8136, 8120, 8138], [8135, 8134, 8105, 8106]],
+            8300: [[8351, 8360, 8369], [8306, 8304, 8313], [8321, 8316, 8345], [8347, 8410, 8352]],
+            8000: [[8005, 8008, 8021, 8010], [9101, 9111, 8009], [9104, 9105, 9103], [8014, 8017, 8299]],
+            8400: [[8437, 8439, 8465], [8446, 8463, 8401], [8429, 8444, 8473], [8451, 8453, 8242]],
+            8200: [[8214, 8229, 8230], [8224, 8226, 8275], [8210, 8234, 8233], [8237, 8232, 8236]]
+         },
          runes: null,
-         runesTab: 0,
-         tldrBuilds: [],
-         mythicData: [
-            /* 
-            0: itemId
-            1: games
-            2: wins
-            3: [[i0], [i1], [i2], [i3], [i4], [i5]]
-            4: item total games
-            5: core build 
-            6: levelOrder
-            7: skillPath
-            8: spells
-            9: starting items
-           10: runes
-            */
-         ],
+         mythicData: [],
       }
    },
 
@@ -53,28 +49,27 @@ export default {
       
    methods: {
       activeRune(id) {
-         return (this.mythicData[this.tab].runes[this.runesTab][0].includes(id)) ? true : false
+         // console.log(this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0], id, this.mythicData[this.mythicTab].tldr.runes[this.runesTab][0].includes(id))
+         // if (this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0].includes(id)) {
+         //    return true
+         // } else {
+         //    return false
+         // }
+         return (this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0].includes(id.toString())) ? true : false
       },
 
       flexRune(id, j) {
-         return (this.mythicData[this.tab].runes[this.runesTab][0].split('|')[4].split('_')[j] == id) ? true : false
+         return (this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0].split('|')[4].split('_')[j] == id) ? true : false
       },
 
       runeTree(i) {
-         const runes = {
-            8100: [[8112, 8124, 8128, 9923], [8126, 8139, 8143], [8136, 8120, 8138], [8135, 8134, 8105, 8106]],
-            8300: [[8351, 8360, 8369], [8306, 8304, 8313], [8321, 8316, 8345], [8347, 8410, 8352]],
-            8000: [[8005, 8008, 8021, 8010], [9101, 9111, 8009], [9104, 9105, 9103], [8014, 8017, 8299]],
-            8400: [[8437, 8439, 8465], [8446, 8463, 8401], [8429, 8444, 8473], [8451, 8453, 8242]],
-            8200: [[8214, 8229, 8230], [8224, 8226, 8275], [8210, 8234, 8233], [8237, 8232, 8236]]
-         }
-         const t = this.mythicData[this.tab].runes[this.runesTab][0].split('|')[i]
-         return runes[t]
+         // const t = this.mythicData[this.mythicTab].runes[this.runesTab][0].split('|')[i]
+         const t = this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0].split('|')[i]
+         return this.runesTable[t]
       },
 
       tabClick(i) {
-         this.tab = this.mythicData.findIndex(el => i === el.id)
-         this.runesTab = 0
+         this.mythicTab = this.mythicData.findIndex(el => i === el.id)
       },
 
       getItems() {
@@ -96,78 +91,87 @@ export default {
          return `${Math.round( win / total * 1000) / 10}%`
       },
 
-      getTldrBuilds(i, mode) {
-         const sum = this.mythicData[i].coreBuild.reduce((c, a) => c + a[1], 0)
+      tldrRunes(mythic) {
+         const sum = mythic.runes.reduce((c, a) => c + a[1], 0)
+
+         const winrate = mythic.runes.filter(o => (o[1] / sum) > this.parameters.thresholds.core).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
+         const popular = mythic.runes[0]
+
+         mythic.tldr.runes.push(winrate, popular)
+
+         /* 
+            Parse individual rune winrate???
+         */
+         
+         // let winrateStr = '_'
+         // let popularStr = '_'
+         // // Keystone
+         // for (const p in this.champion.mythics[item].primaryRunes) {
+         //    const rowSum = Object.values(this.champion.mythics[item].primaryRunes[p]).reduce((c, a) => c + a.games, 0)
+
+         //    const topRowRune = Object.entries(this.champion.mythics[item].primaryRunes[p])
+         //       .filter(o => (o[1].games / rowSum) > this.parameters.thresholds.core)
+         //       .sort((a, b) => (b[1].wins / b[1].games) - (a[1].wins / a[1].games))[0][0]
+
+         //       winrateStr += topRowRune + '_'
+         // }
+         // console.log(winrateStr)
+
+         // Get most popular rune combination
+
+      },
+
+      tldrBuilds(mythic, mode) {
+         const sum = mythic.coreBuild.reduce((c, a) => c + a[1], 0)
          let core
-         if (mode) {
-            core = this.mythicData[i].coreBuild.filter(o => (o[1] / sum) > this.thresholds.core).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
+         if (!mode) {
+            /* 
+               Some champs like jarvan present too uniform of a distribution to use this.parameters.thresolds.core (0.10) as a demarcation; needs to be set dynamically.
+               Can compute variance of the of the top ~4 highest playrate and then use that as a weight for threshold?
+            */
+            core = mythic.coreBuild.filter(o => (o[1] / sum) > .05).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
          } else {
-            core = this.mythicData[i].coreBuild[0]
+            core = mythic.coreBuild[0]
          }
 
          let container = []
          let blacklist = []
-
-         blacklist.push(core[0].split('_'))
+         blacklist = core[0].split('_')
 
          for (let u = 3; u < 6; u++) {
-            const trailSum = this.mythicData[i].itemPosition[u].reduce((c, a) => c + a[1], 0)
-            const filtered = this.mythicData[i].itemPosition[u].filter(o => !blacklist.includes(o[0]))
-            const trailing = filtered.filter(o => (o[1] / trailSum) > this.thresholds.trail).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1])).slice(0, 2)
-            
+            const trailSum = mythic.itemPosition[u].reduce((c, a) => c + a[1], 0)
+            const filtered = (this.parameters.trailingDuplicates) ? mythic.itemPosition[u] : mythic.itemPosition[u].filter(o => !blacklist.includes(o[0]))
+            const trailing = filtered.filter(o => (o[1] / trailSum) > this.parameters.thresholds.trail).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1])).slice(0, this.parameters.trailingExtended)
+
             for (const v in trailing) {
                blacklist.push(trailing[v][0])
             }
-            
+
             container.push(trailing)
          }
-         
-         this.mythicData[i].tldrBuilds[mode] = [core, container]
-         // if (mode) {
-         // } else {
-         //    this.mythicData[i].tldrBuilds[1] = [core, container]
-         // }
+
+         mythic.tldr.builds.push([core, container])
       },
 
       getMythicClusters() {
          
-         const iter = (i, obj, name, container) => {
+         const iter = (mythic, obj, name, container) => {
             for (const [k, v] of Object.entries(obj)) {
                container.push([k, v.games, v.wins])
             }
             container.sort((a, b) => b[1] - a[1])
-            this.mythicData[i][name] = container
+            mythic[name] = container
          }
 
-         const tldrBuilds = (i, mode) => {
-            const sum = this.mythicData[i].coreBuild.reduce((c, a) => c + a[1], 0)
-            let core
-            if (mode) {
-               core = this.mythicData[i].coreBuild.filter(o => (o[1] / sum) > this.thresholds.core).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
-            } else {
-               core = this.mythicData[i].coreBuild[0]
-            }
-
+         const runeIter = (obj) => {
             let container = []
-            let blacklist = []
-
-            blacklist.push(core[0].split('_'))
-
-            for (let u = 3; u < 6; u++) {
-               const trailSum = this.mythicData[i].itemPosition[u].reduce((c, a) => c + a[1], 0)
-               const filtered = this.mythicData[i].itemPosition[u].filter(o => !blacklist.includes(o[0]))
-               const trailing = filtered.filter(o => (o[1] / trailSum) > this.thresholds.trail).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1])).slice(0, 2)
-
-               for (const v in trailing) {
-                  blacklist.push(trailing[v][0])
-               }
-
-               container.push(trailing)
+            for (const [k, v] of Object.entries(obj)) {
+               container.push([k, v.games, v.wins])
             }
-
-            this.mythicData[i].tldrBuilds[mode] = [core, container]
+            container.sort((a, b) => b[1] - a[1])
+            return container
          }
-         
+
          for (const k in this.champion.mythics) {
             if (k === '0') continue
             const mythicWrapper = {
@@ -179,9 +183,10 @@ export default {
          }
 
          this.mythicData.sort((a, b) => b.games - a.games)
-         
+
          for (const i in this.mythicData) {
-            let item = this.mythicData[i].id
+            const mythic = this.mythicData[i]
+            let item = mythic.id
             let _itemPosition = [[], [], [], [], [], []]
             let _positionMeta = [[], [], [], [], [], []]
             let _levelOrder = []
@@ -191,9 +196,6 @@ export default {
             let _startingItems = []
             let _coreBuild = []
 
-            let _highestWinrate = []
-            let _mostPopular = []
-
             for (const [pos, v] of Object.entries(this.champion.mythics[item].items)) {
                let sum = 0
                for (const [k2, v2] of Object.entries(v)) {
@@ -202,63 +204,57 @@ export default {
                }
 
                _itemPosition[pos].sort((a, b) => b[1] - a[1])
-               // const thresholdItems = _itemPosition[pos].filter(o => (o[1] / sum) > this.threshold).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))
-               // console.log(pos, _itemPosition[pos], sum)
-               // console.log('threshold', thresholdItems)
-
-               // if (pos < 3) {
-               //    // Highest winrate
-               //    for (const u in thresholdItems) {
-               //       if (_tldrBuilds[0][0].flat().includes(thresholdItems[u][0])) {
-               //          continue
-               //       } else {
-               //          _tldrBuilds[0][0].push(thresholdItems[u])
-               //          break
-               //       }
-               //    }
-                  
-               //    // Most popular
-               //    for (const u in _itemPosition[pos]) {
-               //       if (_tldrBuilds[1][0].flat().includes(_itemPosition[pos][u][0])) {
-               //          continue
-               //       } else {
-               //          _tldrBuilds[1][0].push(_itemPosition[pos][u][0])
-               //          break
-               //       }
-               //    }
-               // } else {
-               //    let trailingItems = thresholdItems.filter(i => !_tldrBuilds[0][0].slice(0, 3).flat().includes(i[0]))
-               //    // console.log('yer', trailingItems)
-               //    if (trailingItems.length < 3) {
-               //       const diff = 3 - trailingItems.length
-
-               //    }
-               //    _tldrBuilds[0][0].push(thresholdItems)
-               //    _tldrBuilds[1][0].push(_itemPosition[pos])
-                  
-               // }
-
                _positionMeta[pos].push(sum)
             }
 
-            this.mythicData[i].itemPosition = _itemPosition
-            this.mythicData[i].positionMeta = _positionMeta
+            mythic.itemPosition = _itemPosition
+            mythic.positionMeta = _positionMeta
 
-            iter(i, this.champion.mythics[item].coreBuild, 'coreBuild', _coreBuild)
-            iter(i, this.champion.mythics[item].levelOrder, 'levelOrder', _levelOrder)
-            iter(i, this.champion.mythics[item].skillPath, 'skillPath', _skillPath)
-            iter(i, this.champion.mythics[item].spells, 'spells', _spells)
-            iter(i, this.champion.mythics[item].startingItems, 'startingItems', _startingItems)
+            iter(mythic, this.champion.mythics[item].coreBuild, 'coreBuild', _coreBuild)
+            iter(mythic, this.champion.mythics[item].levelOrder, 'levelOrder', _levelOrder)
+            iter(mythic, this.champion.mythics[item].skillPath, 'skillPath', _skillPath)
+            iter(mythic, this.champion.mythics[item].spells, 'spells', _spells)
+            iter(mythic, this.champion.mythics[item].startingItems, 'startingItems', _startingItems)
+            iter(mythic, this.champion.mythics[item].runes, 'runes', _runes)
 
-            for (const [k, v] of Object.entries(this.champion.mythics[item].runes)) {
-               _runes.push([k, v.games, v.wins])
-            }
-            _runes.sort((a, b) => b[1] - a[1])
-            this.mythicData[i].runes = _runes
-            this.mythicData[i].tldrBuilds = [[], []]
+            // mythic.runeTotals = {
+            //    keystone: {},
+            //    primary: {}, 
+            //    secondary: {},
+            //    tertiary: {
+            //       offense: {},
+            //       flex: {},
+            //       defense: {},
+            //    },
+            // }
+            // mythic.runeTotals = {
+            //    keystone: this.champion.mythics[item].runesTotals.keystone,
+            //    primary: this.champion.mythics[item].runesTotals.primary,
+            //    secondary: this.champion.mythics[item].runesTotals.secondary,
+            //    tertiary: {
+            //       offense: this.champion.mythics[item].runesTotals.tertiary.offense,
+            //       flex: this.champion.mythics[item].runesTotals.tertiary.flex,
+            //       defense: this.champion.mythics[item].runesTotals.tertiary.defense,
+            //    },
+            // }
+
+            // mythic.runeTotals.keystone = runeIter(this.champion.mythics[item].runesTotals.keystone)
+            // mythic.runeTotals.primary = runeIter(this.champion.mythics[item].runesTotals.primary)
+            // mythic.runeTotals.secondary = runeIter(this.champion.mythics[item].runesTotals.secondary)
+            // mythic.runeTotals.tertiary.offense = runeIter(this.champion.mythics[item].runesTotals.tertiary.offense)
+            // mythic.runeTotals.tertiary.flex = runeIter(this.champion.mythics[item].runesTotals.tertiary.flex)
+            // mythic.runeTotals.tertiary.defense = runeIter(this.champion.mythics[item].runesTotals.tertiary.defense)
+
+            /* 
+               TLDR
+            */
+            mythic.tldr = {}
+            mythic.tldr.builds = []
+            mythic.tldr.runes = []
             
-            tldrBuilds(i, 0)
-            tldrBuilds(i, 1)
+            this.tldrBuilds(mythic, 0)
+            this.tldrBuilds(mythic, 1)
+            this.tldrRunes(mythic)
          }
       },
 
@@ -343,8 +339,8 @@ export default {
       },
 
       keystone() {
-         console.log(this.mythicData[this.tab][9][0][0].split('|'))
-         return this.mythicData[this.tab][9][0][0].split('|')[1].split('_')[0]
+         console.log(this.mythicData[this.mythicTab][9][0][0].split('|'))
+         return this.mythicData[this.mythicTab][9][0][0].split('|')[1].split('_')[0]
       },
 
       flexRunes() {
@@ -398,10 +394,10 @@ export default {
                <h2>tldr</h2>
                <div class="tldr-top">
                   <div class="tldr-top-tabs">
-                     <div class="tab">
+                     <div class="tab" @click="this.tldrTab = 0">
                         Highest winrate
                      </div>
-                     <div class="tab">
+                     <div class="tab" @click="this.tldrTab = 1">
                         Most popular
                      </div>
                   </div>
@@ -421,8 +417,8 @@ export default {
                   <div class="tldr-body">
                      <div class="tldr-left">
 
-                        <div class="runes-tab-wrapper">
-                           <div class="tldr-runes-tab" @click="this.runesTab = i" v-for="(runes, i) in this.mythicData[this.tab].runes.slice(0, 3)">
+                        <!-- <div class="runes-tab-wrapper">
+                            <div class="tldr-runes-tab" @click="this.runesTab = i" v-for="(runes, i) in this.mythicData[this.mythicTab].runes.slice(0, 3)">
                               <div class="rune-images">
                                  <img class="main" rel="preload" :src="runeImage(runes[0].split('|')[1].split('_')[0])" alt="">
                                  <img class="secondary" rel="preload" :src="runeImage(runes[0].split('|')[2])" alt="">
@@ -432,20 +428,20 @@ export default {
                                  <h3> ({{ runes[1] }}) </h3>
                               </div>
                            </div>
-                        </div>
+                        </div> -->
                         
                         <div class="tldr-runes-wrapper">
 
                            <div class="tldr-primary-runes">
                               <div class="tldr-rune-row" v-for="(row, i) in this.runeTree(0)" :key="i">
-                                 <img rel="preload" :class="{ 'active-rune': activeRune(rune) }" :src="runeImage(rune)" alt="" v-for="(rune, i) in row" :key="i">
+                                 <img rel="preload" :class="{ 'active-rune': activeRune(rune) }" :src="runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
                               </div>
                            </div>
                            
                            <div class="tldr-minors">
                               <div class="tldr-secondary-runes">
                                  <div class="tldr-rune-row" v-for="(row, i) in this.runeTree(2).slice(1, 4)" :key="i">
-                                    <img rel="preload" :class="{ 'active-rune': activeRune(rune) }" :src="runeImage(rune)" alt="" v-for="(rune, i) in row" :key="i">
+                                    <img rel="preload" :class="{ 'active-rune': activeRune(rune) }" :src="runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
                                  </div>
                               </div>
                               <div class="tldr-flex-runes">
@@ -466,7 +462,7 @@ export default {
                            <!-- <div class="core-items">
       
                               <h2>Core</h2>
-                              <div class="item-set" v-for="(set, i) in this.mythicData[this.tab][4].slice(0, 2)" :key="i">
+                              <div class="item-set" v-for="(set, i) in this.mythicData[this.mythicTab][4].slice(0, 2)" :key="i">
                                  <img :src="itemImage(img)" alt="" v-for="(img, j) in set[0].split('_')" :key="j">
                                  <div class="image-sub">
                                     <h4> {{ winrate(set[1], set[2]) }} </h4>
@@ -475,25 +471,28 @@ export default {
                               </div>
       
                            </div> -->
-                           <div class="trailing-items">
-      
-                              <!-- <div class="item" v-for="i in 3" :key="i">
-                                 <h2>{{ i + 3}}</h2>
-                                 <div class="tldr-wrapper" v-for="item in this.mythicData[this.tab][3][i-1].slice(0, 3)" :key="item[0]">
-                                    <img :src="itemImage(item[0])" alt="">
+                           <div class="item" v-for="(item, i) in this.mythicData[this.mythicTab].tldr.builds[this.tldrTab]" :key="i">
+                              
+                              <div v-if="i === 0" class="core-items">
+                                 <h2>Core</h2>
+                                 <div class="tldr-wrapper">
+                                    <img :src="itemImage(id)" alt="" v-for="id in item[0].split('_')" :key="id">
                                     <div class="image-sub">
                                        <h4> {{ winrate(item[1], item[2]) }} </h4>
                                        <h3> ({{ item[1] }}) </h3>
                                     </div>
                                  </div>
-                              </div> -->
-                              <div class="item" v-for="i in 6" :key="i">
-                                 <h2>{{ i }}</h2>
-                                 <div class="tldr-wrapper" v-for="item in this.mythicData[this.tab].itemPosition[i-1].slice(0, 3)" :key="item[0]">
-                                    <img :src="itemImage(item[0])" alt="">
-                                    <div class="image-sub">
-                                       <h4> {{ winrate(item[1], item[2]) }} </h4>
-                                       <h3> ({{ item[1] }}) </h3>
+                              </div>
+                                 
+                              <div v-else class="trailing-items">
+                                 <div class="item" v-for="(item, j) in item" :key="j">
+                                    <h2>{{ j + 4  }}</h2>
+                                    <div class="tldr-wrapper" v-for="(id, k) in item" :key="k">
+                                       <img :src="itemImage(id[0])"  alt="">
+                                       <div class="image-sub">
+                                          <h4> {{ winrate(id[1], id[2]) }} </h4>
+                                          <h3> ({{ id[1] }}) </h3>
+                                       </div>
                                     </div>
                                  </div>
                               </div>
@@ -794,6 +793,7 @@ export default {
    .tldr-items {
       display: flex;
       flex-direction: row;
+      align-items: center;
       gap: 10px;
    }
 
@@ -942,6 +942,7 @@ export default {
       width: 34px;
       border: 1px solid var(--tint400);
    }
+
    
    .trailing-items {
       display: flex;
