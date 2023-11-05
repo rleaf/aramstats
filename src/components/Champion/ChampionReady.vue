@@ -16,11 +16,16 @@ export default {
             },
             trailingDuplicates: false,
             trailingExtended: 2,
+            levelCutoff: 10
          },
          title: '',
          mythicTab: 0,
          tldrTab: 0,
          items: null,
+         testo: {
+            'a': 5,
+            'b': 10
+         },
          runesTable: {
             8100: [[8112, 8124, 8128, 9923], [8126, 8139, 8143], [8136, 8120, 8138], [8135, 8134, 8105, 8106]],
             8300: [[8351, 8360, 8369], [8306, 8304, 8313], [8321, 8316, 8345], [8347, 8410, 8352]],
@@ -41,6 +46,7 @@ export default {
       console.log('potato', this.mythicData)
       this.getItems()
       this.getRunes()
+      console.log(this.testo)
    },
    
    mounted() {
@@ -288,34 +294,51 @@ export default {
       },
 
       tldrLevels(mythic, item) {
-         const list = Object.entries(this.champion.mythics[item].skillPath).sort((a, b) => b[0].length - a[0].length)
          const reg = /(.).*\1/
-         const cutoff = 9
-         console.log(list)
          let regulars = []
          let weirdos = []
+         // console.log(mythic.skillPath)
+         for (const s in mythic.skillPath) {
+            const levels = mythic.skillPath[s]
 
-         for (const y in list) {
-            // console.log(list[y])
-            let dup = list[y][0].slice(0, 3).match(reg)
-            if (dup) {
-               dup = dup.pop()
-            }
-            const str = list[y][0].slice(3)
-            if (str.length >= cutoff) {
-               regulars.forEach(r => {
-                  if (r[0].includes(str.slice(0, cutoff))) {
-                     r[1].games += str[1].games
-                     r[1].wins += str[1].wins
+            if (reg.test(levels[0].slice(0, 3))) {
+
+               // Do weirdos pls
+               if (weirdos.length === 0) weirdos.push(levels)
+
+            } else {
+               // normals
+               const path = levels[0].slice(3)
+               const data = [path, levels[1], levels[2]]
+               let push = true
+               
+               if (regulars.length === 0) {
+                  regulars.push(data)
+                  continue
+               }
+
+               for (const j in regulars) {
+                  if (regulars[j][0].includes(path) && path.length >= this.parameters.levelCutoff) {
+                     // console.log(`${path} is inside ${regulars[j][0]}`)
+                     // console.log('Before: ', regulars[j][1], regulars[j][2])
+                     regulars[j][1] += levels[1]
+                     regulars[j][2] += levels[2]
+                     // console.log('After: ', regulars[j][1], regulars[j][2])
+                     push = false
+                     break
                   }
-                  
-
-               })
-            }
-            console.log(str, str.length)
-            // console.log(dup)
+               }
+               if (push && path.length >= this.parameters.levelCutoff) regulars.push(data)
+            } 
          }
-         // (.)[1-3]\1|([1-3])\2[1-3] test if starting levels are weird (double level a skill like azir)
+         console.log('weirdos', weirdos)
+         console.log('regular', regulars)
+         const popular = regulars.sort((a, b) => b[1] - a[1])[0]
+         const max = regulars.filter(a => (a[1] / mythic.games) >= this.parameters.thresholds.core).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
+         console.log('max', max)
+         console.log('popular', popular)
+         // mythic.tldr.levels.push(max, popualr)
+         // console.log(this.champion.mythics[item].skillPath)
       },
 
       getMythicClusters() {
@@ -388,6 +411,7 @@ export default {
             mythic.tldr = {}
             mythic.tldr.builds = []
             mythic.tldr.runes = []
+            mythic.tldr.levels = []
             
             this.tldrBuilds(mythic, 0)
             this.tldrBuilds(mythic, 1)
