@@ -22,10 +22,6 @@ export default {
          mythicTab: 0,
          tldrTab: 0,
          items: null,
-         testo: {
-            'a': 5,
-            'b': 10
-         },
          runesTable: {
             8100: [[8112, 8124, 8128, 9923], [8126, 8139, 8143], [8136, 8120, 8138], [8135, 8134, 8105, 8106]],
             8300: [[8351, 8360, 8369], [8306, 8304, 8313], [8321, 8316, 8345], [8347, 8410, 8352]],
@@ -46,7 +42,6 @@ export default {
       console.log('potato', this.mythicData)
       this.getItems()
       this.getRunes()
-      console.log(this.testo)
    },
    
    mounted() {
@@ -59,6 +54,23 @@ export default {
          if (tab === 1) return (id = this.mythicTab) ? true : false
       },
 
+      activeSkill(i, j) {
+         return (this.mythicData[this.mythicTab].tldr.levels[this.tldrTab][0][i-1] == j) ? true : false
+      },
+
+      activeSkillKey(i, j) {
+         const table = {
+            1: 'q',
+            2: 'w',
+            3: 'e',
+            4: 'r',
+         }
+         if (this.mythicData[this.mythicTab].tldr.levels[this.tldrTab][0][i - 1] == j) {
+            return i
+         }
+         // (this.mythicData[this.mythicTab].tldr.levels[this.tldrTab][0][i-1] == j) ? true : false
+      },
+      
       activeRune(id, idx) {
          // console.log(this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0], id, this.mythicData[this.mythicTab].tldr.runes[this.runesTab][0].includes(id))
          // if (this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0].includes(id)) {
@@ -293,52 +305,62 @@ export default {
          mythic.tldr.builds.push([core, container])
       },
 
-      tldrLevels(mythic, item) {
+      tldrLevels(mythic) {
          const reg = /(.).*\1/
-         let regulars = []
-         let weirdos = []
-         // console.log(mythic.skillPath)
-         for (const s in mythic.skillPath) {
-            const levels = mythic.skillPath[s]
+         const uniqueReg = /(.)(?<!\1.+)(?!.*\1)/
+         const data = [...mythic.skillPath]
+         let cleanedData = []
+         
+         for (const s in data.sort((a, b) => b[0].length - a[0].length)) {
+            const levels = data[s]
+            const path = levels[0].slice(3)
+            const discriminator = levels[0].slice(0, 3).match(reg)
+            let push = true
+            let preLevels = ''
 
-            if (reg.test(levels[0].slice(0, 3))) {
+            if (this.champion.id === 221) preLevels += '1' // Zeri starts w/ point in q
+            if (this.champion.id === 268) preLevels += '2' // Azir starts w/ point in q
 
-               // Do weirdos pls
-               if (weirdos.length === 0) weirdos.push(levels)
-
+            if (discriminator) {
+               // Standardize abnormal starting skill levels
+               const one = levels[0].slice(0, 3).match(uniqueReg)[0]
+               const two = discriminator[discriminator.length - 1]
+               preLevels += one + two.repeat(2)
             } else {
-               // normals
-               const path = levels[0].slice(3)
-               const data = [path, levels[1], levels[2]]
-               let push = true
-               
-               if (regulars.length === 0) {
-                  regulars.push(data)
-                  continue
-               }
+               // Standardize normal skill levels
+               preLevels += '123'
+            }
 
-               for (const j in regulars) {
-                  if (regulars[j][0].includes(path) && path.length >= this.parameters.levelCutoff) {
-                     // console.log(`${path} is inside ${regulars[j][0]}`)
-                     // console.log('Before: ', regulars[j][1], regulars[j][2])
-                     regulars[j][1] += levels[1]
-                     regulars[j][2] += levels[2]
-                     // console.log('After: ', regulars[j][1], regulars[j][2])
-                     push = false
-                     break
-                  }
+            const datum = [preLevels + path, levels[1], levels[2]]
+            
+            if (cleanedData.length === 0) {
+               cleanedData.push(datum)
+               continue
+            }
+
+            for (const w in cleanedData) {
+               if (cleanedData[w][0].includes(path) && path.length >= this.parameters.levelCutoff) {
+                  cleanedData[w][1] += levels[1]
+                  cleanedData[w][2] += levels[2]
+                  push = false
+                  break
                }
-               if (push && path.length >= this.parameters.levelCutoff) regulars.push(data)
-            } 
+            }
+
+            if (push && path.length >= this.parameters.levelCutoff) cleanedData.push(datum)
          }
-         console.log('weirdos', weirdos)
-         console.log('regular', regulars)
-         const popular = regulars.sort((a, b) => b[1] - a[1])[0]
-         const max = regulars.filter(a => (a[1] / mythic.games) >= this.parameters.thresholds.core).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
-         console.log('max', max)
-         console.log('popular', popular)
-         // mythic.tldr.levels.push(max, popualr)
-         // console.log(this.champion.mythics[item].skillPath)
+
+         const popular = cleanedData.sort((a, b) => b[1] - a[1])[0]
+         const max = cleanedData.filter(a => (a[1] / mythic.games) >= this.parameters.thresholds.core).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
+         mythic.tldr.levels.push(max, popular)
+      },
+
+      tlderLevelOrder(mythic) {
+         const turkey = mythic.levelOrder
+         const max = turkey.filter(o => (o[1] / mythic.games) >= this.parameters.thresholds.core)
+            .sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
+         const popular = turkey[0]
+         mythic.tldr.levelOrder.push(max, popular)
       },
 
       getMythicClusters() {
@@ -406,17 +428,19 @@ export default {
             iter(mythic, this.champion.mythics[item].runes, 'runes', _runes)
 
             /* 
-               TLDR
+               TLDR. 0th el of each value in object is highest winrate version. 1st el is most popular
             */
             mythic.tldr = {}
             mythic.tldr.builds = []
             mythic.tldr.runes = []
             mythic.tldr.levels = []
+            mythic.tldr.levelOrder = []
             
             this.tldrBuilds(mythic, 0)
             this.tldrBuilds(mythic, 1)
             this.tldrRunes(mythic, item)
-            this.tldrLevels(mythic, item)
+            this.tldrLevels(mythic)
+            this.tlderLevelOrder(mythic)
          }
       },
 
@@ -510,8 +534,10 @@ export default {
       },
 
       getPrimaryRuneTable() {
-         const t = this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0][0]
-         return this.runesTable[t]
+         if (this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0]) {
+            const t = this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0][0]
+            return this.runesTable[t]
+         }
       },
       
       getSecondaryRuneTable() {
@@ -630,8 +656,19 @@ export default {
                         </div>
 
 
-                        <div class="tldr-misc">
-                           spells & level order go here?
+                        <div class="tldr-levels">
+                           <!-- <div class="legend">
+                              <div>q</div>
+                              <div>w</div>
+                              <div>e</div>
+                              <div>r</div>
+                           </div> -->
+                           <div class="columns" v-for="i in 18" :key="i">
+                              <div class="cell" :class="{ 'active-skill': activeSkill(i, j) }" v-for="j in 4" :key="j">
+                                 {{ activeSkillKey(i, j) }}
+                              </div>
+                           </div>
+
                         </div>
                      </div>
                      <div class="tldr-right">
@@ -965,6 +1002,7 @@ export default {
       justify-content: center;
       align-items: center;
       gap: 10px;
+      margin: 20px 0;
       flex-direction: column;
    }
    
@@ -978,6 +1016,47 @@ export default {
       flex-direction: row;
       align-items: center;
       gap: 10px;
+   }
+
+   .tldr-levels {
+      display: flex;
+      gap: 5px;
+   }
+
+   .tldr-levels .legend {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      gap: 3px;
+      width: 20px;
+   }
+
+   .tldr-levels .legend div {
+      height: 22px;
+   }
+
+   .tldr-levels .columns {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+   }
+
+   .tldr-levels .cell {
+      width: 22px;
+      height: 22px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      text-align: center;
+      line-height: 1.5rem;
+      font-size: 0.8rem;
+      border: 1px solid transparent;
+      content: '1'
+   }
+
+   .tldr-levels .active-skill {
+      border: 1px solid var(--tint400);
+      background: rgba(255, 255, 255, 0.25);
+      /* background: var(--color-background); */
    }
 
    .runes-tab-wrapper {

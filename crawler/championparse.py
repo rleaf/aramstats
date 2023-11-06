@@ -182,6 +182,7 @@ class ChampionParser():
                      starting_build.append(x["itemId"])
                   if x["type"] == "ITEM_UNDO":
                      if x["beforeId"] in starting_build: starting_build.remove(x["beforeId"])
+            starting_build.sort()
             starting_build = '_'.join(str(x) for x in starting_build)
             if starting_build == '': starting_build = '0000'
             # <[str]> List containing friendly championIds in each match
