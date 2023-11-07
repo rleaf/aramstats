@@ -82,7 +82,9 @@ export default {
       },
 
       flexRune(id, j) {
-         return (this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][3][j] == id) ? true : false
+         if (this.mythicData[this.mythicTab].tldr.runes.length > 0) {
+            return (this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][3][j] == id) ? true : false
+         }
          // return (this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][3].includes(id.toString())) ? true : false
       },
 
@@ -122,12 +124,18 @@ export default {
 
 
          let maxRuneCombination = [[], [], [], []] // trees, primary, secondary, flex
+         let maxRuneWinrates = [] // primary tree, ...primary runes, secondary tree, ...secondary runes, flex runes
+
          let popularRuneCombination = [[], [], [], []]
+         let popularRuneWinrates = []
          
          let primaryTree
-         let popularTreeGames = 0
-         let primaryTreeWinrate = 0
          let popularTree
+
+         let popularTreeWinrate = 0
+         let primaryTreeWinrate = 0
+
+         let popularTreeGames = 0
 
          // Get the primary tree for the highest winrate and the most popular
          for (const [lorax, v] of Object.entries(this.champion.mythics[item].primaryRunes)) {
@@ -137,72 +145,90 @@ export default {
             }
 
             if (v.games > popularTreeGames) {
+               popularTreeWinrate = (v.wins / v.games)
                popularTreeGames = v.games
                popularTree = lorax
             }
          }
-         
-         if (!primaryTree) return // better err handling later
+         maxRuneWinrates.push(primaryTreeWinrate)
+         popularRuneWinrates.push(popularTreeWinrate)
+
+
+         if (!primaryTree) {
+            // mythic.tldr.runes.push([[], [], [], [], []], [[], [], [], [], []])
+            return
+         } // better err handling later
          maxRuneCombination[0].push(primaryTree)
          popularRuneCombination[0].push(popularTree)
          const primaryGames = this.champion.mythics[item].primaryRunes[primaryTree].games
 
-         const getPrimaries = (tree, container) => {
+         const getPrimaries = (tree, container, winrateContainer) => {
             for (const [k, v] of Object.entries(this.champion.mythics[item].primaryRunes[tree])) {
                if (k === 'games' || k === 'wins') continue
                let rune
-               let iter = 0
-
+               let winrate = 0
+               
                if (tree = popularTree) {
+                  let games = 0
                   for (const [k2, v2] of Object.entries(v)) {
-                     if (v2.games > iter) {
-                        iter = v2.games
+                     if (v2.games > games) {
+                        games = v2.games
+                        winrate = (v2.wins / v2.games)
                         rune = k2
                      }
                   }
                } else {
                   for (const [k2, v2] of Object.entries(v)) {
-                     if ((v2.games / primaryGames) >= this.parameters.thresholds.core && (v2.wins / v2.games) > iter) {
-                        iter = (v2.wins / v2.games)
+                     if ((v2.games / primaryGames) >= this.parameters.thresholds.core && (v2.wins / v2.games) > winrate) {
+                        winrate = (v2.wins / v2.games)
                         rune = k2
                      }
                   }
                }
+
                container[1].push(rune)
+               winrateContainer.push(winrate)
             }
          }
 
-         const getSecondaryTree = (_primaryTree) => {
+         const getSecondaryTree = (_primaryTree, winrateContainer) => {
             let tree
-            let iter = 0
+            let winrate = 0
             if (_primaryTree === primaryTree) { 
                for (const [lorax, v] of Object.entries(this.champion.mythics[item].secondaryRunes)) {
                   if (lorax === _primaryTree) continue
-                  if ((v.games / (mythic.games - primaryGames)) >= this.parameters.thresholds.core && (v.wins / v.games) > iter) {
-                     iter = (v.wins / v.games)
+                  if ((v.games / (mythic.games - primaryGames)) >= this.parameters.thresholds.core && (v.wins / v.games) > winrate) {
+                     winrate = (v.wins / v.games)
                      tree = lorax
                   }
 
                }
             } else {
+               let iter = 0
                for (const [lorax, v] of Object.entries(this.champion.mythics[item].secondaryRunes)) {
                   if (lorax === _primaryTree) continue
                   if (v.games > iter) {
+                     winrate = (v.wins / v.games)
                      iter = v.games
                      tree = lorax
                   }
                }
             }
+            winrateContainer.push(winrate)
             return tree
          }
 
-         const getSecondaries = (_secondaryTree, container) => {
+         const getSecondaries = (_secondaryTree, container, winrateContainer) => {
+            /* 
+               this is so ugly. pls fix
+            */
+
             let bin = []
             // Secondary highest winrate
-            if (_secondaryTree === secondaryTreePrimary) {
+            if (_secondaryTree === secondaryTreeMax) {
                let secondaryGames = this.champion.mythics[item].secondaryRunes[_secondaryTree].games
                for (const [k, v] of Object.entries(this.champion.mythics[item].secondaryRunes[_secondaryTree])) {
-                  if (k == 'games' || k === 'wins') continue
+                  if (k === 'games' || k === 'wins') continue
                   let contender
                   let iter = 0
                   for (const [k2, v2] of Object.entries(v)) {
@@ -218,57 +244,70 @@ export default {
                   if (k === 'games' || k === 'wins') continue
                   let contender
                   let iter = 0
+                  let winrate = 0
                   for (const [k2, v2] of Object.entries(v)) {
                      if (v2.games > iter) {
                         iter = v2.games
+                        winrate = (v2.wins / v2.games)
                         contender = k2
                      }
                   }
-                  bin.push([contender, iter])
+                  bin.push([contender, iter, winrate])
                }
             }
 
             if (bin.length > 2) {
-               const winrates = bin.map(y => y[1])
-               const idx = winrates.indexOf(Math.min(...winrates))
+               const val = bin.map(y => y[1])
+               const idx = val.indexOf(Math.min(...val))
                bin.splice(idx, 1)
             }
 
-
+            winrateContainer.push(...bin.map(x => x[x.length - 1]))
             container[2].push(...bin.map(x => x[0]))
          }
 
          
-         getPrimaries(popularTree, popularRuneCombination) // Get highest winrate or most popular primary runes
-         const secondaryTreePrimary = getSecondaryTree(primaryTree) // Get highest winrate or most popular secondary tree
-         maxRuneCombination[0].push(secondaryTreePrimary)
-         getSecondaries(secondaryTreePrimary, maxRuneCombination) // Get highest winrate or most popular secondary runes
-
-         getPrimaries(primaryTree, maxRuneCombination)
-         const secondaryTreePopular = getSecondaryTree(popularTree)
+         getPrimaries(primaryTree, maxRuneCombination, maxRuneWinrates) // Get highest winrate or most popular primary runes
+         const secondaryTreeMax = getSecondaryTree(primaryTree, maxRuneWinrates) // Get highest winrate or most popular secondary tree
+         maxRuneCombination[0].push(secondaryTreeMax)
+         getSecondaries(secondaryTreeMax, maxRuneCombination, maxRuneWinrates) // Get highest winrate or most popular secondary runes
+         
+         getPrimaries(popularTree, popularRuneCombination, popularRuneWinrates)
+         const secondaryTreePopular = getSecondaryTree(popularTree, popularRuneWinrates)
          popularRuneCombination[0].push(secondaryTreePopular)
-         getSecondaries(secondaryTreePopular, popularRuneCombination)
+         getSecondaries(secondaryTreePopular, popularRuneCombination, popularRuneWinrates)
 
          // Flex runes
          for (const v of Object.values(this.champion.mythics[item].flexRunes)) {
-            let winrateFlexwinrate = 0
-            let winrateFlexRune
+            let maxFlexWinrate = 0
+            let maxFlexRune
             let popularFlexWins = 0
+            let popularFlexWinrate = 0
             let popularFlexRune
             for (const [k2, v2] of Object.entries(v)) {
-               if ((v2.games / mythic.games) >= this.parameters.thresholds.core && (v2.wins / v2.games) > winrateFlexwinrate) {
-                  winrateFlexwinrate = (v2.wins / v2.games)
-                  winrateFlexRune = k2
+               if ((v2.games / mythic.games) >= this.parameters.thresholds.core && (v2.wins / v2.games) > maxFlexWinrate) {
+                  maxFlexWinrate = (v2.wins / v2.games)
+                  maxFlexRune = k2
                }
 
                if (v2.games > popularFlexWins) {
+                  popularFlexWinrate = (v2.wins / v2.games)
                   popularFlexWins = v2.games
                   popularFlexRune = k2
                }
             }
-            maxRuneCombination[3].push(winrateFlexRune)
+            maxRuneWinrates.push(maxFlexWinrate)
+            popularRuneWinrates.push(popularFlexWinrate)
+
+            
+            maxRuneCombination[3].push(maxFlexRune)
             popularRuneCombination[3].push(popularFlexRune)
          }
+         const maxAverage = Math.round(maxRuneWinrates.reduce((c, a) => c + a, 0) / maxRuneWinrates.length * 10000) / 100
+         const popularAverage = Math.round(popularRuneWinrates.reduce((c, a) => c + a, 0) / popularRuneWinrates.length * 10000) / 100
+
+         maxRuneCombination.push(maxAverage)
+         popularRuneCombination.push(popularAverage)
 
          mythic.tldr.runes.push(maxRuneCombination, popularRuneCombination)
       },
@@ -319,7 +358,7 @@ export default {
             let preLevels = ''
 
             if (this.champion.id === 221) preLevels += '1' // Zeri starts w/ point in q
-            if (this.champion.id === 268) preLevels += '2' // Azir starts w/ point in q
+            if (this.champion.id === 268) preLevels += '2' // Azir starts w/ point in w
 
             if (discriminator) {
                // Standardize abnormal starting skill levels
@@ -355,7 +394,7 @@ export default {
          mythic.tldr.levels.push(max, popular)
       },
 
-      tlderLevelOrder(mythic) {
+      tldrLevelOrder(mythic) {
          const turkey = mythic.levelOrder
          const max = turkey.filter(o => (o[1] / mythic.games) >= this.parameters.thresholds.core)
             .sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
@@ -440,7 +479,9 @@ export default {
             this.tldrBuilds(mythic, 1)
             this.tldrRunes(mythic, item)
             this.tldrLevels(mythic)
-            this.tlderLevelOrder(mythic)
+            this.tldrLevelOrder(mythic)
+            // this.tldrStarting(mythic) done in computed getStartingItems
+            // summonerSpells() done in computed getSpells
          }
       },
 
@@ -503,6 +544,10 @@ export default {
       runeImage(id) {
          return new URL(`../../assets/runes/${id}.png`, import.meta.url).href
       },
+
+      spellImage(id) {
+         return new URL(`../../assets/spells/${id}.webp`, import.meta.url).href
+      },
       
       flexRuneImage(id) {
          return new URL(`../../assets/runes/flex/${id}.png`, import.meta.url).href
@@ -511,6 +556,27 @@ export default {
    },
 
    computed: {
+      getSpells() {
+         const a = this.mythicData[this.mythicTab].spells
+         if (this.tldrTab === 0) {
+            return a.filter(r => (r[1] / this.mythicData[this.mythicTab].games) >= this.parameters.thresholds.core)
+               .sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
+         } else {
+            return a.sort((a, b) => b[1] - a[1])[0]
+         }
+         
+      },
+
+      getStartingItems() {
+         const y = this.mythicData[this.mythicTab].startingItems
+         if (this.tldrTab === 0) {
+            return y.filter(a => (a[1] / this.mythicData[this.mythicTab].games) >= this.parameters.thresholds.core)
+               .sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
+         } else {
+            return y.sort((a, b) => b[1] - a[1])[0]
+         }
+      },
+
       background() {
          const img = new URL(`../../assets/champion_splash/${this.backName.toLowerCase()}.webp`, import.meta.url).href
          return `linear-gradient(to right, rgba(var(--tint100RGB), 1.0), rgba(var(--tint100RGB), 0.9) 10%, rgba(var(--tint100RGB), .8) 60%, rgba(var(--tint100RGB), .7) 90%), no-repeat -20% 15%/100% url('${img}')`
@@ -534,20 +600,30 @@ export default {
       },
 
       getPrimaryRuneTable() {
-         if (this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0]) {
+         if (this.mythicData[this.mythicTab].tldr.runes.length > 0 && this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0]) {
             const t = this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0][0]
             return this.runesTable[t]
          }
       },
       
       getSecondaryRuneTable() {
-         const t = this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0][1]
-         return this.runesTable[t]
+         if (this.mythicData[this.mythicTab].tldr.runes.length > 0) {
+            const t = this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0][1]
+            return this.runesTable[t].slice(1, 4)
+         }
       },
 
       getFlexRunes() {
-         const t = this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][3]
-         return t
+         if (this.mythicData[this.mythicTab].tldr.runes.length > 0) {
+            const t = this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][3]
+            return t
+         }
+      },
+
+      getRuneWinrate() {
+         if (this.mythicData[this.mythicTab].tldr.runes.length > 0) {
+            return this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][4]
+         }
       }
    },
 
@@ -563,6 +639,11 @@ export default {
 <template>
    <div class="champion-ready-main">
       <div class="champion-wrapper">
+         <div class="test">
+            <p>
+               This page not finished. Check out the 11/7 update in <router-link to="/updates">updates</router-link>
+            </p>
+         </div>
          <div class="champion-head" :style="{ background: background }">
             <div class="champion-profile">
                <div class="champion-image">
@@ -620,71 +701,7 @@ export default {
                   <div class="tldr-body">
                      <div class="tldr-left">
 
-                        <!-- <div class="runes-tab-wrapper">
-                            <div class="tldr-runes-tab" @click="this.runesTab = i" v-for="(runes, i) in this.mythicData[this.mythicTab].runes.slice(0, 3)">
-                              <div class="rune-images">
-                                 <img class="main" rel="preload" :src="runeImage(runes[0].split('|')[1].split('_')[0])" alt="">
-                                 <img class="secondary" rel="preload" :src="runeImage(runes[0].split('|')[2])" alt="">
-                              </div>
-                              <div class="tab-sub">
-                                 <h4> {{ winrate(runes[1], runes[2]) }} </h4>
-                                 <h3> ({{ runes[1] }}) </h3>
-                              </div>
-                           </div>
-                        </div> -->
-                        
-                        <div class="tldr-runes-wrapper">
-
-                           <div class="tldr-primary-runes">
-                              <div class="tldr-rune-row" v-for="(row, i) in getPrimaryRuneTable" :key="i">
-                                 <img rel="preload" :class="{ 'active-rune': activeRune(rune, 1) }" :src="runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
-                              </div>
-                           </div>
-                           
-                           <div class="tldr-minors">
-                              <div class="tldr-secondary-runes">
-                                 <div class="tldr-rune-row" v-for="(row, i) in getSecondaryRuneTable.slice(1, 4)" :key="i">
-                                    <img rel="preload" :class="{ 'active-rune': activeRune(rune, 2) }" :src="runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
-                                 </div>
-                              </div>
-                              <div class="tldr-flex-runes">
-                                 <div class="tldr-rune-row" v-for="(row, i) in flexRunes" :key="i">
-                                    <img rel="preload" :class="{ 'active-rune': flexRune(rune, i) }" :src="flexRuneImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-
-
-                        <div class="tldr-levels">
-                           <!-- <div class="legend">
-                              <div>q</div>
-                              <div>w</div>
-                              <div>e</div>
-                              <div>r</div>
-                           </div> -->
-                           <div class="columns" v-for="i in 18" :key="i">
-                              <div class="cell" :class="{ 'active-skill': activeSkill(i, j) }" v-for="j in 4" :key="j">
-                                 {{ activeSkillKey(i, j) }}
-                              </div>
-                           </div>
-
-                        </div>
-                     </div>
-                     <div class="tldr-right">
                         <div class="tldr-items">
-                           <!-- <div class="core-items">
-      
-                              <h2>Core</h2>
-                              <div class="item-set" v-for="(set, i) in this.mythicData[this.mythicTab][4].slice(0, 2)" :key="i">
-                                 <img :src="itemImage(img)" alt="" v-for="(img, j) in set[0].split('_')" :key="j">
-                                 <div class="image-sub">
-                                    <h4> {{ winrate(set[1], set[2]) }} </h4>
-                                    <h3> ({{ set[1] }}) </h3>
-                                 </div>
-                              </div>
-      
-                           </div> -->
                            <div class="item" v-for="(item, i) in this.mythicData[this.mythicTab].tldr.builds[this.tldrTab]" :key="i">
                               
                               <div v-if="i === 0" class="core-items">
@@ -713,9 +730,80 @@ export default {
                               
                            </div>
                         </div>
-                        <div class="tldr-abilities">
-                           abilities go here?
+                        
+                        <div class="tldr-runes-wrapper">
+                           <div class="tldr-runes-right">
+                              <div class="tldr-rune-row" v-for="(row, i) in getPrimaryRuneTable" :key="i">
+                                 <img rel="preload" :class="{ 'active-rune': activeRune(rune, 1) }" :src="runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
+                              </div>
+                           </div>
+                           
+                           <div class="tldr-runes-left">
+                              <div class="tldr-secondary-flex-runes">
+                                 <div class="tldr-secondary-runes">
+                                    <div class="tldr-rune-row" v-for="(row, i) in getSecondaryRuneTable" :key="i">
+                                       <img rel="preload" :class="{ 'active-rune': activeRune(rune, 2) }" :src="runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
+                                    </div>
+                                 </div>
+                                 <div class="tldr-flex-runes">
+                                    <div class="tldr-rune-row" v-for="(row, i) in flexRunes" :key="i">
+                                       <img rel="preload" :class="{ 'active-rune': flexRune(rune, i) }" :src="flexRuneImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="tldr-rune-winrate">
+                                 Runes: 
+                                 <h4>
+                                    {{ getRuneWinrate }}%
+                                 </h4>
+                              </div>
+                              <div class="tldr-level-winrate">
+                                 Leveling:
+                                 <h4>{{ winrate(this.mythicData[this.mythicTab].tldr.levels[this.tldrTab][1], this.mythicData[this.mythicTab].tldr.levels[this.tldrTab][2]) }}</h4>
+                                 <h3>({{ this.mythicData[this.mythicTab].tldr.levels[this.tldrTab][1] }})</h3>
+                              </div>
+                           </div>
                         </div>
+                     </div>
+                     <div class="tldr-right">
+                        
+                        <div class="tldr-starting">
+                           <h2>
+                              Starting
+                           </h2>
+                           <img :src="itemImage(id)" alt="" v-for="(id, i) in getStartingItems[0].split('_')" :key="i">
+                           <div class="image-sub">
+                              <h4> {{ winrate(getStartingItems[1], getStartingItems[2]) }} </h4>
+                              <h3> ({{ getStartingItems[1] }}) </h3>
+                           </div>
+                        </div>
+                        
+                        <div class="tldr-spells">
+                           <h2>
+                              Spells
+                           </h2>
+                           <img :src="this.spellImage(id)" alt="" v-for="(id, i) in getSpells[0].split('_')" :key="i">
+                           <div class="image-sub">
+                              <h4> {{ winrate(getSpells[1], getSpells[2]) }} </h4>
+                              <h3> ({{ getSpells[1] }}) </h3>
+                           </div>
+                        </div>
+
+                        <div class="tldr-levels">
+                           <!-- <div class="legend">
+                              <div>q</div>
+                              <div>w</div>
+                              <div>e</div>
+                              <div>r</div>
+                           </div> -->
+                           <div class="columns" v-for="i in 18" :key="i">
+                              <div class="cell" :class="{ 'active-skill': activeSkill(i, j) }" v-for="j in 4" :key="j">
+                                 {{ activeSkillKey(i, j) }}
+                              </div>
+                           </div>
+   
+                        </div>
+
                      </div>
                   </div>
                </div>
@@ -912,7 +1000,6 @@ export default {
    }
 
    .tldr-tabs {
-      /* width: 100px; */
       overflow-y: scroll;
       overflow-x: hidden;
       height: 300px;
@@ -991,24 +1078,28 @@ export default {
 
    .tldr-body {
       display: flex;
+      flex-direction: column;
       width: 100%;
+      gap: 20px;
       background: var(--tint100);
       border-radius: 15px;
-      justify-content: space-evenly;
    }
 
    .tldr-left {
       display: flex;
-      justify-content: center;
+      margin: 0 50px;
+      justify-content: space-between;
       align-items: center;
       gap: 10px;
-      margin: 20px 0;
-      flex-direction: column;
+      margin-top: 20px;
    }
    
    .tldr-right {
       display: flex;
-      flex-direction: column;
+      margin: 0 50px;
+      margin-bottom: 20px;
+      justify-content: space-between;
+      /* flex-direction: column; */
    }
 
    .tldr-items {
@@ -1018,9 +1109,15 @@ export default {
       gap: 10px;
    }
 
+   .tldr-items h2 {
+      margin-top: 0;
+      font-size: 0.9rem;
+   }
+
    .tldr-levels {
       display: flex;
-      gap: 5px;
+      gap: 3px;
+      /* margin-bottom: 20px; */
    }
 
    .tldr-levels .legend {
@@ -1042,13 +1139,13 @@ export default {
    }
 
    .tldr-levels .cell {
-      width: 22px;
-      height: 22px;
+      width: 18px;
+      height: 20px;
       background: rgba(255, 255, 255, 0.1);
       border-radius: 3px;
       text-align: center;
-      line-height: 1.5rem;
-      font-size: 0.8rem;
+      line-height: 1.3rem;
+      font-size: 0.7rem;
       border: 1px solid transparent;
       content: '1'
    }
@@ -1059,105 +1156,95 @@ export default {
       /* background: var(--color-background); */
    }
 
-   .runes-tab-wrapper {
-      margin-top: 10px;
-      display: flex;
-      gap: 10px;
-   }
-
-   .tldr-runes-tab {
-      display: flex;
-      align-items: center;
-      background: var(--hoverButton);
-      border-radius: 8px;
-      padding: 0.15rem .35rem;
-      cursor: pointer;
-   }
-   .rune-images {
-      position: relative;
-      width: 35px;
-      height: 24px;
-   }
-
-   .tldr-runes-tab img {
-      width: 24px;
-   }
-
-   .tldr-runes-tab img.main {
-      filter: drop-shadow(0px 0px 2px rgba(0,0,0,1));
-   }
-
-   .tldr-runes-tab img.secondary {
-      position: absolute;
-      filter: drop-shadow(0px 0px 2px rgba(0,0,0,.8)) saturate(1.25);
-      bottom: 0;
-      left: 16px;
-      width: 18px;
-   }
-
    .tldr-runes-wrapper {
       display: flex;
       gap: 40px;
-      /* align-items: center; */
    }
 
-   .tldr-primary-runes {
+   .tldr-runes-right {
+      text-align: center;
       width: 130px;
       display: flex;
       flex-direction: column;
+      gap: 10px;
+   }
+
+   .tldr-runes-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      /* align-items: center; */
+   }
+
+   .tldr-secondary-flex-runes {
+      display: flex;
+      /* flex-direction: column; */
       gap: 8px;
    }
-
-   .tldr-minors {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      align-items: center;
-   }
-
-   .tldr-secondary-runes {
-      display: flex;
-      width: 125px;
-      flex-direction: column;
-      gap: 5px;
-   }
-   .tldr-flex-runes {
+   .tldr-secondary-runes, .tldr-flex-runes {
       display: flex;
       width: 110px;
       flex-direction: column;
-      gap: 3px;
+      gap: 5px;
+   }
+
+   .tldr-runes-left h4 {
+      margin: 0;
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: normal;
+   }
+   
+   .tldr-runes-left h3 {
+      font-size: 0.75rem;
+      margin: 0;
+      color: var(--tint400);
+      margin-left: 0.3rem;
+      display: inline-block;
+      font-weight: normal;
+   }
+
+   .tldr-rune-winrate {
+      text-align: left;
+      font-size: 0.9rem;
+   }
+   .tldr-level-winrate {
+      text-align: left;
+      font-size: 0.9rem;
    }
 
    .tldr-rune-row {
       display: flex;
       justify-content: space-around;
    }
-   .tldr-primary-runes .tldr-rune-row:first-child img {
-      width: 44px;
+   .tldr-runes-right .tldr-rune-row:first-child img {
+      width: 43px;
       border: none;
    }
 
    .tldr-flex-runes img {
-      width: 26px;
+      width: 28px;
       background: rgba(0, 0, 0, 0.15);
       border-radius: 100%;
       filter: saturate(0);
    }
    
-   .tldr-secondary-runes img {
-      width: 32px;
+   .tldr-secondary-flex-runes img {
+      width: 28px;
       filter: saturate(0);
       border-radius: 100%;
       border: 1px solid var(--color-background);
+      
    }
    
-   .tldr-primary-runes img {
-      width: 32px;
+   .tldr-runes-right img {
+      width: 30px;
       filter: saturate(0);
       border-radius: 100%;
       border: 1px solid var(--color-background);
    }
-   .tldr-primary-runes img.active-rune, .tldr-secondary-runes img.active-rune {
+   .tldr-runes-right img.active-rune, .tldr-secondary-flex-runes img.active-rune {
       filter: saturate(1);
       border: 1px solid var(--tint400);
    }
@@ -1200,15 +1287,33 @@ export default {
    }
 
    .core-items img {
-      margin: 0 10px;
       width: 34px;
       border: 1px solid var(--tint400);
+      margin: 0 5px;
    }
 
+   .tldr-right h2 {
+      text-align: center;
+      margin-top: 0;
+      font-size: 0.9rem;
+      color: var(--light300);
+   }
+
+   .tldr-spells img {
+      border: 1px solid var(--tint400);
+      width: 34px;
+      margin: 0 5px;
+   }
+   
+   .tldr-starting img {
+      width: 34px;
+      border: 1px solid var(--tint400);
+      margin: 0 5px;
+   }
    
    .trailing-items {
       display: flex;
-      gap: 10px;
+      gap: 4px;
    }
 
    .trailing-items .item {
@@ -1227,7 +1332,8 @@ export default {
       border: 1px solid var(--tint400);
    }   
    .item h2 {
-      font-size: 1rem;
+      font-size: 0.95rem;
+      color: var(--light200);
    }
 
    .item-bin {
@@ -1242,5 +1348,14 @@ export default {
       width: 40px;
    }
 
+   .test {
+      background: rgb(120, 161, 199);
+      border: 1px solid rgb(63, 100, 201);
+      width: 100%;
+      text-align: center;
+      margin: 1rem 0;
+      border-radius: 15px;
+   }
 
+   
 </style>

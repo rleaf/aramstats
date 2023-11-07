@@ -90,8 +90,9 @@ class ChampionParser():
             basic_skills = skill_path.replace('4', '')
 
             # <spells> Summoner spel
-            # <spells> Summoner spel
-            summoner_spells = '_'.join([str(participant["summoner1Id"]), str(participant["summoner2Id"])])
+            summoner_spells = [str(participant["summoner1Id"]), str(participant["summoner2Id"])]
+            summoner_spells.sort()
+            summoner_spells = '_'.join(summoner_spells)
             # <str> Level order of spells.
             level_order = ''
             

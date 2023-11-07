@@ -10,6 +10,13 @@
 
 const updates = [
    {
+      title: "Champion stats",
+      date: "11/7/23",
+      body: [
+         `I've been working on developing a page to view champion stats and am pushing it to production to see if I can get another API key for it. It is *very* far from done, however there is some base functionality with the play data to give a sneak peek.`
+      ]
+   },
+   {
       title: "Intermittent database freezing.",
       date: "10/13/23",
       body: [
