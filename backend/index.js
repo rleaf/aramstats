@@ -27,6 +27,8 @@ const championInfo = require('./routes/champion')
 app.use('/api/summoners', summoners)
 app.use('/api/matchInfo', matchInfo)
 app.use('/api/champions', championInfo)
+console.log(__dirname + '/public')
+app.use(express.static(__dirname + '/public'))
 
 let server
 
