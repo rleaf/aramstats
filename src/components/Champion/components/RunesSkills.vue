@@ -32,6 +32,9 @@ export default {
 
 <template>
    <h2>Runes & Skills</h2>
+   <div class="runes-skills-body">
+      pancakes
+   </div>
 </template>
 
 <style scoped>
@@ -41,7 +44,7 @@ export default {
       display: inline-block;
       font-style: italic;
       font-weight: 400;
-      width: 113px;
+      /* width: 113px; */
       margin: 1rem 0;
       text-align: center;
    }

@@ -4,13 +4,15 @@
          return {
             mythicTab: 0,
             tldrTab: 0,
+            itemTab: 0,
+            renderKey: 0,
             runesTable: {
                8100: [[8112, 8124, 8128, 9923], [8126, 8139, 8143], [8136, 8120, 8138], [8135, 8134, 8105, 8106]],
                8300: [[8351, 8360, 8369], [8306, 8304, 8313], [8321, 8316, 8345], [8347, 8410, 8352]],
                8000: [[8005, 8008, 8021, 8010], [9101, 9111, 8009], [9104, 9105, 9103], [8014, 8017, 8299]],
                8400: [[8437, 8439, 8465], [8446, 8463, 8401], [8429, 8444, 8473], [8451, 8453, 8242]],
                8200: [[8214, 8229, 8230], [8224, 8226, 8275], [8210, 8234, 8233], [8237, 8232, 8236]]
-            },            
+            },      
          }
       },
 
@@ -32,6 +34,32 @@
       },
 
       methods: {
+         getTreeStuff(tree, mode) {
+            const o = this.champion.mythics[this.mythicData[this.mythicTab].id].primaryRunes[tree]
+            if (o) {
+               return (mode === 0) ? o.games : o.wins
+            }
+         },
+         getRuneGames(tree, j, rune) {
+            const o = this.champion.mythics[this.mythicData[this.mythicTab].id].primaryRunes[tree]
+            if (o) {
+               if (o[`row${j}`][rune]) {
+                  return o[`row${j}`][rune].games
+               }
+            }
+         },
+         getRuneWins(tree, j, rune) {
+            const o = this.champion.mythics[this.mythicData[this.mythicTab].id].primaryRunes[tree]
+            if (o) { 
+               if (o[`row${j}`][rune]) {
+                  return o[`row${j}`][rune].wins
+               }
+            }
+         },
+         toggleVerbose() {
+            this.parameters.trailingDuplicates = true
+            this.renderKey ++
+         },
          getItemName(i) {
             if (this.items !== null) return this.items[i].name
          },
@@ -287,33 +315,52 @@
          },
 
          tldrBuilds(mythic, mode) {
+            /* 
+               make nice later. is ugly
+            */
             const sum = mythic.coreBuild.reduce((c, a) => c + a[1], 0)
             let core
-            if (!mode) {
+            let container = []
+            let blacklist = []
+
+            if (mode === 0) {
                /* 
                   Some champs like jarvan present too uniform of a distribution to use this.parameters.thresolds.core (0.10) as a demarcation; needs to be set dynamically.
                   Can compute variance of the of the top ~4 highest playrate and then use that as a weight for threshold?
                */
                core = mythic.coreBuild.filter(o => (o[1] / sum) >= .05).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
+               // core = mythic.coreBuild.sort((a, b) => b[1] - a[1])[0]
+               blacklist = core[0].split('_')
+   
+               for (let u = 3; u < 6; u++) {
+                  const trailSum = mythic.itemPosition[u].reduce((c, a) => c + a[1], 0)
+                  const filtered = (this.parameters.trailingDuplicates) ? mythic.itemPosition[u] : mythic.itemPosition[u].filter(o => !blacklist.includes(o[0]))
+                  const trailing = filtered.filter(o => (o[1] / trailSum) > this.parameters.thresholds.trail).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1])).slice(0, this.parameters.trailingExtended)
+   
+                  for (const v in trailing) {
+                     blacklist.push(trailing[v][0])
+                  }
+   
+                  container.push(trailing)
+               }
             } else {
                core = mythic.coreBuild[0]
-            }
-
-            let container = []
-            let blacklist = []
-            blacklist = core[0].split('_')
-
-            for (let u = 3; u < 6; u++) {
-               const trailSum = mythic.itemPosition[u].reduce((c, a) => c + a[1], 0)
-               const filtered = (this.parameters.trailingDuplicates) ? mythic.itemPosition[u] : mythic.itemPosition[u].filter(o => !blacklist.includes(o[0]))
-               const trailing = filtered.filter(o => (o[1] / trailSum) > this.parameters.thresholds.trail).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1])).slice(0, this.parameters.trailingExtended)
-
-               for (const v in trailing) {
-                  blacklist.push(trailing[v][0])
+               blacklist = core[0].split('_')
+   
+               for (let u = 3; u < 6; u++) {
+                  // const trailSum = mythic.itemPosition[u].reduce((c, a) => c + a[1], 0)
+                  const filtered = (this.parameters.trailingDuplicates) ? mythic.itemPosition[u] : mythic.itemPosition[u].filter(o => !blacklist.includes(o[0]))
+                  const trailing = filtered.sort((a, b) => b[1] - a[1]).slice(0, this.parameters.trailingExtended)
+                  // const trailing = filtered.filter(o => (o[1] / trailSum) > this.parameters.thresholds.trail).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1])).slice(0, this.parameters.trailingExtended)
+   
+                  for (const v in trailing) {
+                     blacklist.push(trailing[v][0])
+                  }
+   
+                  container.push(trailing)
                }
-
-               container.push(trailing)
             }
+
 
             mythic.tldr.builds.push([core, container])
          },
@@ -426,7 +473,11 @@
             if (this.mythicData[this.mythicTab].tldr.runes.length > 0) {
                return this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][4]
             }
-         }
+         },
+         // this.mythicData[this.mythicTab].tldr.builds[this.tldrTab]() {
+         //    console.log(this.mythicData[this.mythicTab].tldr.builds[this.tldrTab])
+         //    return this.mythicData[this.mythicTab].tldr.builds[this.tldrTab]
+         // }
       },
 
       props: {
@@ -442,15 +493,24 @@
 </script>
 
 <template>
-   <h2>tldr</h2>
-   <div class="tldr-top">
-      <div class="tldr-top-tabs">
-         <div class="tab" :class="{ 'tab-focus': this.tldrTab === 0 }" @click="this.tldrTab = 0">
-            Highest winrate
+   <div class="section-top">
+      <h2>tldr</h2>
+      <div class="section-top-right-wrapper">
+
+         <div class="section-top-right">
+            <div class="section-top-tabs">
+               <div class="tab" :class="{ 'tab-focus': this.tldrTab === 0 }" @click="this.tldrTab = 0">
+                  Highest winrate
+               </div>
+               <div class="tab" :class="{ 'tab-focus': this.tldrTab === 1 }" @click="this.tldrTab = 1">
+                  Most popular
+               </div>
+            </div>
+            <!-- <div class="tldr-toggle">
+               <div @click="this.toggleVerbose()" class="tab">Verbose</div>
+            </div> -->
          </div>
-         <div class="tab" :class="{ 'tab-focus': this.tldrTab === 1 }" @click="this.tldrTab = 1">
-            Most popular
-         </div>
+
       </div>
    </div>
 
@@ -469,7 +529,7 @@
          <div class="tldr-left">
 
             <div class="tldr-items">
-               <div class="item" v-for="(item, i) in this.mythicData[this.mythicTab].tldr.builds[this.tldrTab]" :key="i">
+               <div class="item" v-for="(item, i) in this.mythicData[this.mythicTab].tldr.builds[this.tldrTab]" :key="i + this.renderKey">
                
                   <div v-if="i === 0" class="core-items">
                      <h2>Core</h2>
@@ -483,7 +543,7 @@
                   </div>
                   
                   <div v-else class="trailing-items">
-                     <div class="item" v-for="(item, j) in item" :key="j">
+                     <div class="item" v-for="(item, j) in item" :key="j + this.renderKey">
                         <h2>{{ j + 4 }}</h2>
                         <div class="tldr-wrapper" v-for="(id, k) in item" :key="k">
                            <img :src="itemImage(id[0])"  alt="">
@@ -519,7 +579,7 @@
                      </div>
                   </div>
                   <div class="tldr-rune-winrate">
-                     Runes: 
+                     Mean winrate: 
                      <h4>
                         {{ getRuneWinrate }}%
                      </h4>
@@ -569,14 +629,151 @@
       </div>
    </div>
 
-   <h2>Mythics</h2>
-   <h3>({{ getItemName(this.mythicData[this.mythicTab].id) }})</h3>
-   <div class="mythic-body-wrapper">
+   <div class="mythic-item-wrapper">
+      <div class="section-top">
 
+         <h2>not tldr</h2>
+         <div class="section-top-right-wrapper">
+   
+            <div class="section-top-right">
+               <div class="section-top-tabs">
+                  <div :class="{ 'tab-focus': this.itemTab === 0 }" @click="this.itemTab = 0" class="tab">Runes</div>
+                  <div :class="{ 'tab-focus': this.itemTab === 1 }" @click="this.itemTab = 1" class="tab">Items</div>
+                  <div :class="{ 'tab-focus': this.itemTab === 2 }" @click="this.itemTab = 2" class="tab">Starting Items</div>
+               </div>
+               <!-- <div class="tldr-toggle">
+               <div @click="this.toggleVerbose()" class="tab">Verbose</div>
+            </div> -->
+            <h3>({{ getItemName(this.mythicData[this.mythicTab].id) }})</h3>
+            </div>
+   
+         </div>
+      </div>
+      <!-- <div class="item-tabs-wrapper">
+         <div class="item-tabs">
+         </div>
+      </div> -->
+      <div class="mythic-items">
+
+         <div class="items-body">
+
+            <div v-if="this.itemTab === 0" class="runes">
+               <div class="rune-tree" v-for="(tree, i) in Object.entries(this.runesTable)" :key="i">
+                  <img rel="preload" :src="runeImage(tree[0])" alt="">
+                  <div class="image-sub">
+                     <h4 v-if="this.getTreeStuff(tree[0], 0)">{{ winrate(this.getTreeStuff(tree[0], 0), this.getTreeStuff(tree[0], 1))}}</h4>
+                     <h4 v-else>-</h4>
+                     <h3>{{ this.getTreeStuff(tree[0], 0) || '-' }}</h3>
+                  </div>
+                  <div class="rune-row" v-for="(row, j) in tree[1]" :key="j">
+                     <div class="rune"  v-for="(rune, k) in row" :key="k">
+                        <img rel="preload" :class="{ 'keystones': j === 0 }" :src="runeImage(rune)" alt="">
+                        <div class="image-sub-block">
+                           <h4 v-if="this.getRuneGames(tree[0], j, rune)">{{ this.winrate(this.getRuneGames(tree[0], j, rune), this.getRuneWins(tree[0], j, rune)) }}</h4>
+                           <h4 v-else>-</h4>
+                           <h3>{{ this.getRuneGames(tree[0], j, rune) || '-' }}</h3>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+            </div>
+            <div v-if="this.itemTab === 1" class="all-items">
+               <div class="item-row" v-for="i in 6" :key="i">
+                  <h2>
+                     {{ i }}
+                  </h2>
+                  <div class="item" v-for="(id, j) in this.mythicData[this.mythicTab].itemPosition[i-1]" :key="j">
+                     <img rel="preload" :src="itemImage(id[0])" alt="">
+                     <div class="image-sub-block">
+                        <h4 class="block-header"> {{ winrate(id[1], id[2]) }} </h4>
+                        <h3> ({{ id[1] }}) </h3>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            
+            <div v-if="this.itemTab === 2">
+               <div class="item-row" v-for="(el, i) in this.mythicData[this.mythicTab].startingItems" :key="i">
+                  <div class="image-sub-block">
+                     <h4> {{ winrate(el[1], el[2]) }} </h4>
+                     <h3> ({{ el[1] }}) </h3>
+                  </div>
+                  <div v-if="el[0] != '0000'" class="item" v-for="(id, j) in el[0].split('_')" :key="j">
+                     <img :src="itemImage(id)" alt="">
+                  </div>
+                  <div v-else style="margin-left: 20px;" class="null">
+                     No starting item
+                  </div>
+               </div>
+
+            </div>
+         </div>
+      </div>
    </div>
 </template>
 
 <style scoped>
+   .rune img {
+      width: 40px;
+   }
+   .rune-row {
+      display: flex;
+      gap: 5px;
+      justify-content: center;
+   }
+   img.keystones {
+      width: 50px;
+      margin-bottom: -5px;
+   }
+   .runes {
+      display: flex;
+      justify-content: space-evenly;
+   }
+
+   .rune-tree {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+   }
+
+   .rune-tree > img {
+      width: 30px;
+      margin-bottom: 10px;
+   }
+   .item-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+
+   }
+   .item {
+      display: inline-block;
+      text-align: center;
+   }
+
+   .item img {
+      width: 34px;
+      margin: 0 5px;
+      border: 1px solid var(--tint400);
+   }
+
+   
+   .mythic-items {
+      padding: 30px 0;
+      background: var(--tint100);
+      border-radius: 15px;
+   }
+
+   .item-tabs-wrapper {
+      display: inline-block;
+   }
+
+   .item-tabs {
+      display: flex;
+   }
+
    h3 {
       margin: 0;
       display: inline-block;
@@ -585,6 +782,10 @@
       font-style: italic;
       font-size: 1rem;
    }
+
+   .mythic-item-wrapper > h2 {
+      width: 200px;
+   }   
    
    h2 {   
       color: var(--light400);
@@ -592,34 +793,54 @@
       display: inline-block;
       font-style: italic;
       font-weight: 400;
-      width: 113px;
-      margin: 1rem 0;
+      width: 116px;
+      margin: 0;
       text-align: center;
    }
-   .tldr-top {
-      display: inline-block;
+   .section-top {
+      /* display: flex; */
       flex-direction: row;
+      margin-bottom: 8px;
    }
-   
-   .tldr-top-tabs {
+
+   .tldr-toggle {
+      font-size: 0.85rem;
+      text-align: center;
+   }
+
+   .tldr-toggle .tab {
+      padding: 0.5rem 1rem;
+   }
+
+   .section-top-right-wrapper {
+      display: inline-block;
+      width: calc(100% - 120px);
+   }
+
+   .section-top-right {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+   }
+   .section-top-tabs, .item-tabs {
       display: flex;
       flex-direction: row;
       gap: 10px;
       /* margin-left: 116px; */
    }
-   .tldr-top-tabs .tab {
+   .section-top-tabs .tab, .item-tabs .tab {
       font-size: 0.85rem;
       padding: 0.5rem 1rem;
-
    }
 
    .tldr-body-wrapper {
       display: flex;
+      margin-bottom: 40px;
    }
    .tldr-tabs {
       overflow-y: scroll;
       overflow-x: hidden;
-      height: 300px;
+      height: 326px;
       margin-right: 8px;
       padding-right: 5px;
    }
@@ -895,6 +1116,27 @@
       margin-left: 0.3rem;
       /* font-style: italic; */
    }
+   .image-sub-block {
+      text-align: center;
+   }
+
+   .image-sub-block h4 {
+      display: block;
+      color: var(--tint500);
+      text-align: center;
+      font-weight: normal;
+      margin: 0;
+      font-size: 0.75rem;
+   }
+   
+   .image-sub-block h3 {
+      display: block;
+      color: var(--tint400);
+      text-align: center;
+      font-weight: normal;
+      margin-top: 0.2rem;
+      font-size: 0.75rem;
+   }
 
    .core-items {
       display: flex;
@@ -910,6 +1152,7 @@
    }
 
    .tldr-right h2 {
+      display: block;
       text-align: center;
       margin-top: 0;
       font-size: 0.9rem;

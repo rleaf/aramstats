@@ -23,8 +23,8 @@ export default {
                core: 0.10,
                trail: 0.10,
             },
-            trailingDuplicates: false,
-            trailingExtended: 2,
+            trailingDuplicates: true,
+            trailingExtended: 3,
             levelCutoff: 10
          },
          title: '',
@@ -102,6 +102,11 @@ export default {
       
       getMythicClusters() {
          
+         /* ***************************************************************
+         
+            Soraka has no coreBuild in mythic 3084, so it breaks. pls figure out why
+
+         *************************************************************** */
          const iter = (mythic, obj, name, container) => {
             for (const [k, v] of Object.entries(obj)) {
                container.push([k, v.games, v.wins])

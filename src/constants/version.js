@@ -12,6 +12,17 @@
 
 const version = [
    {
+      version: "2.2.2",
+      date: "11/8/23",
+      notes: "",
+      add: [],
+      remove: [],
+      fix: [],
+      adjust: [
+         'Added more to champion stats sneak peek'
+      ]
+   }, 
+   {
       version: "2.2.1",
       date: "11/7/23",
       notes: "Pushing champion stats for api key showcase",
