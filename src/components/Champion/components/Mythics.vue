@@ -25,8 +25,10 @@
             mythic.tldr.runes = []
             mythic.tldr.levels = []
             mythic.tldr.levelOrder = []
-            this.tldrBuilds(mythic, 0)
-            this.tldrBuilds(mythic, 1)
+            if (mythic.coreBuild) {
+               this.tldrBuilds(mythic, 0)
+               this.tldrBuilds(mythic, 1)
+            }
             this.tldrRunes(mythic, mythic.id)
             this.tldrLevels(mythic)
             this.tldrLevelOrder(mythic)
@@ -328,7 +330,7 @@
                   Some champs like jarvan present too uniform of a distribution to use this.parameters.thresolds.core (0.10) as a demarcation; needs to be set dynamically.
                   Can compute variance of the of the top ~4 highest playrate and then use that as a weight for threshold?
                */
-               core = mythic.coreBuild.filter(o => (o[1] / sum) >= .05).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
+               core = mythic.coreBuild.filter(o => (o[1] / sum) >= .02).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
                // core = mythic.coreBuild.sort((a, b) => b[1] - a[1])[0]
                blacklist = core[0].split('_')
    
@@ -665,7 +667,7 @@
                      <h4 v-else>-</h4>
                      <h3>{{ this.getTreeStuff(tree[0], 0) || '-' }}</h3>
                   </div>
-                  <div class="rune-row" v-for="(row, j) in tree[1]" :key="j">
+                  <div class="rune-row" :class="{ 'keystone-row': j === 0}" v-for="(row, j) in tree[1]" :key="j">
                      <div class="rune"  v-for="(rune, k) in row" :key="k">
                         <img rel="preload" :class="{ 'keystones': j === 0 }" :src="runeImage(rune)" alt="">
                         <div class="image-sub-block">
@@ -715,15 +717,18 @@
 
 <style scoped>
    .rune img {
-      width: 40px;
+      width: 35px;
    }
    .rune-row {
       display: flex;
-      gap: 5px;
+      gap: 8px;
       justify-content: center;
    }
+   .keystone-row {
+      gap: 2px;
+   }
    img.keystones {
-      width: 50px;
+      width: 45px;
       margin-bottom: -5px;
    }
    .runes {
@@ -739,8 +744,9 @@
    }
 
    .rune-tree > img {
-      width: 30px;
-      margin-bottom: 10px;
+      width: 35px;
+      /* margin-bottom: 10px; */
+      /* padding-bottom: -10px; */
    }
    .item-row {
       display: flex;

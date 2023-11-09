@@ -149,8 +149,10 @@ export default {
             }
 
             mythic.itemPosition = _itemPosition
-
-            iter(mythic, this.champion.mythics[item].coreBuild, 'coreBuild', _coreBuild)
+            console.log(mythic, this.champion.mythics[item].coreBuild)
+            if (this.champion.mythics[item].coreBuild) {
+               iter(mythic, this.champion.mythics[item].coreBuild, 'coreBuild', _coreBuild)
+            }
             iter(mythic, this.champion.mythics[item].levelOrder, 'levelOrder', _levelOrder)
             iter(mythic, this.champion.mythics[item].skillPath, 'skillPath', _skillPath)
             iter(mythic, this.champion.mythics[item].spells, 'spells', _spells)
