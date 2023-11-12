@@ -14,6 +14,11 @@ export default {
       itemImage(Id) {
          return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/item/${Id}.png`
       },
+      
+      toggleItemBin(Id) {
+         const idx = this.itemBin.indexOf(Id)
+            (idx === -1) ? this.itemBin.push(Id) : this.itemBin.splice(idx, 1)
+      },
    },
 
    computed: {

@@ -33,6 +33,13 @@ export default {
          tldrTab: 0,
          items: null,
          runes: null,
+         runesTable: {
+            8100: [[8112, 8124, 8128, 9923], [8126, 8139, 8143], [8136, 8120, 8138], [8135, 8134, 8105, 8106]],
+            8300: [[8351, 8360, 8369], [8306, 8304, 8313], [8321, 8316, 8345], [8347, 8410, 8352]],
+            8000: [[8005, 8008, 8021, 8010], [9101, 9111, 8009], [9104, 9105, 9103], [8014, 8017, 8299]],
+            8400: [[8437, 8439, 8465], [8446, 8463, 8401], [8429, 8444, 8473], [8451, 8453, 8242]],
+            8200: [[8214, 8229, 8230], [8224, 8226, 8275], [8210, 8234, 8233], [8237, 8232, 8236]]
+         },
          mythicData: [],
       }
    },
@@ -149,7 +156,6 @@ export default {
             }
 
             mythic.itemPosition = _itemPosition
-            console.log(mythic, this.champion.mythics[item].coreBuild)
             if (this.champion.mythics[item].coreBuild) {
                iter(mythic, this.champion.mythics[item].coreBuild, 'coreBuild', _coreBuild)
             }
@@ -193,11 +199,6 @@ export default {
                this.abilities.push(spell.id)
             }
          })
-      },
-
-      toggleItemBin(Id) {
-         const idx = this.itemBin.indexOf(Id)
-         (idx === -1) ? this.itemBin.push(Id) : this.itemBin.splice(idx, 1)
       },
    },
 
@@ -310,7 +311,7 @@ export default {
 
          <div class="master-tabs">
             <div :class="{'tab-focus' : this.masterTab === 0 }" @click="this.masterTab = 0" class="tab">
-               Mythics
+               Tldr
             </div>
             <div :class="{'tab-focus' : this.masterTab === 1 }" @click="this.masterTab = 1" class="tab">
                Items
@@ -324,17 +325,18 @@ export default {
 
             <div v-if="this.masterTab === 0" class="mythics section">
                <Mythics
-                  :mythicData="this.mythicData"
+                  :mythic-data="this.mythicData"
                   :champion="this.champion"
                   :patch="this.patch"
                   :parameters="this.parameters"
                   :items="this.items"
-                  :runes="this.runes"/>
+                  :runes="this.runes"
+                  :runes-table="this.runesTable"/>
             </div>
 
             <div v-if="this.masterTab === 1" class="items section">
                <Items
-                  :mythicData="this.mythicData"
+                  :mythic-data="this.mythicData"
                   :champion="this.champion"
                   :patch="this.patch"
                   :parameters="this.parameters"
@@ -343,11 +345,12 @@ export default {
                
             <div v-if="this.masterTab === 2" class="runes section">
                <RunesSkills
-                  :mythicData="this.mythicData"
+                  :mythic-data="this.mythicData"
                   :champion="this.champion"
                   :patch="this.patch"
                   :parameters="this.parameters"
-                  :items="this.items" />
+                  :items="this.items"
+                  :runes-table="this.runesTable"/>
             </div>
 
          </div>

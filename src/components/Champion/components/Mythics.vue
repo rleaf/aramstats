@@ -5,14 +5,7 @@
             mythicTab: 0,
             tldrTab: 0,
             itemTab: 0,
-            renderKey: 0,
-            runesTable: {
-               8100: [[8112, 8124, 8128, 9923], [8126, 8139, 8143], [8136, 8120, 8138], [8135, 8134, 8105, 8106]],
-               8300: [[8351, 8360, 8369], [8306, 8304, 8313], [8321, 8316, 8345], [8347, 8410, 8352]],
-               8000: [[8005, 8008, 8021, 8010], [9101, 9111, 8009], [9104, 9105, 9103], [8014, 8017, 8299]],
-               8400: [[8437, 8439, 8465], [8446, 8463, 8401], [8429, 8444, 8473], [8451, 8453, 8242]],
-               8200: [[8214, 8229, 8230], [8224, 8226, 8275], [8210, 8234, 8233], [8237, 8232, 8236]]
-            },      
+            renderKey: 0,   
          }
       },
 
@@ -488,7 +481,8 @@
          champion: null,
          parameters: null,
          items: null,
-         runes: null
+         runes: null,
+         runesTable: null,
       }
    }
 
@@ -631,7 +625,7 @@
       </div>
    </div>
 
-   <div class="mythic-item-wrapper">
+   <!-- <div class="mythic-item-wrapper">
       <div class="section-top">
 
          <h2>not tldr</h2>
@@ -643,18 +637,11 @@
                   <div :class="{ 'tab-focus': this.itemTab === 1 }" @click="this.itemTab = 1" class="tab">Items</div>
                   <div :class="{ 'tab-focus': this.itemTab === 2 }" @click="this.itemTab = 2" class="tab">Starting Items</div>
                </div>
-               <!-- <div class="tldr-toggle">
-               <div @click="this.toggleVerbose()" class="tab">Verbose</div>
-            </div> -->
             <h3>({{ getItemName(this.mythicData[this.mythicTab].id) }})</h3>
             </div>
    
          </div>
       </div>
-      <!-- <div class="item-tabs-wrapper">
-         <div class="item-tabs">
-         </div>
-      </div> -->
       <div class="mythic-items">
 
          <div class="items-body">
@@ -712,48 +699,12 @@
             </div>
          </div>
       </div>
-   </div>
+   </div> -->
 </template>
 
 <style scoped>
-   .rune img {
-      width: 35px;
-   }
-   .rune-row {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-   }
-   .keystone-row {
-      gap: 2px;
-   }
-   img.keystones {
-      width: 45px;
-      margin-bottom: -5px;
-   }
-   .runes {
-      display: flex;
-      justify-content: space-evenly;
-   }
+   
 
-   .rune-tree {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-   }
-
-   .rune-tree > img {
-      width: 35px;
-      /* margin-bottom: 10px; */
-      /* padding-bottom: -10px; */
-   }
-   .item-row {
-      display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-
-   }
    .item {
       display: inline-block;
       text-align: center;
@@ -791,7 +742,12 @@
 
    .mythic-item-wrapper > h2 {
       width: 200px;
-   }   
+   }
+
+   .tldr-body h2 {
+      margin-bottom: 0.5rem;
+      width: auto;
+   }
    
    h2 {   
       color: var(--light400);
@@ -846,7 +802,7 @@
    .tldr-tabs {
       overflow-y: scroll;
       overflow-x: hidden;
-      height: 326px;
+      height: 367px;
       margin-right: 8px;
       padding-right: 5px;
    }
@@ -1120,7 +1076,6 @@
       margin: 0;
       font-size: 0.75rem;
       margin-left: 0.3rem;
-      /* font-style: italic; */
    }
    .image-sub-block {
       text-align: center;
