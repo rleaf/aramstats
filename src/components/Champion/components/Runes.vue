@@ -114,28 +114,6 @@ export default {
          }
          this.mythicRuneLoop()
       },
-      getTreeStuff(tree, mode) {
-         const o = this.champion.mythics[this.mythicData[0].id].primaryRunes[tree]
-         if (o) {
-            return (mode === 0) ? o.games : o.wins
-         }
-      },
-      getRuneGames(tree, j, rune) {
-         const o = this.champion.mythics[this.mythicData[0].id].primaryRunes[tree]
-         if (o) {
-            if (o[`row${j}`][rune]) {
-               return o[`row${j}`][rune].games
-            }
-         }
-      },
-      getRuneWins(tree, j, rune) {
-         const o = this.champion.mythics[this.mythicData[0].id].primaryRunes[tree]
-         if (o) {
-            if (o[`row${j}`][rune]) {
-               return o[`row${j}`][rune].wins
-            }
-         }
-      },
       itemImage(Id) {
          return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/item/${Id}.png`
       },
@@ -370,6 +348,11 @@ export default {
       display: flex;
       justify-content: space-evenly;
    }
+
+   .flex-runes img {
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 100%;
+   }
    /* .secondary-runes .rune-tree:first-child {
       width: 186px;
    } */
@@ -412,7 +395,9 @@ export default {
       font-style: italic;
       font-weight: 400;
       margin: 1rem 0;
+      margin-top: 0;
       text-align: center;
+      width: 116px;
    }
    .image-sub h4 {
       display: inline-block;

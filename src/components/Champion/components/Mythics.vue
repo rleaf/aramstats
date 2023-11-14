@@ -165,17 +165,17 @@
                   let rune
                   let winrate = 0
                   if (mode === 0) {
-                     let games = 0
                      for (const [k2, v2] of Object.entries(v)) {
-                        if (v2.games > games) {
-                           games = v2.games
+                        if ((v2.games / primaryGames) >= this.parameters.thresholds.core && (v2.wins / v2.games) > winrate) {
                            winrate = (v2.wins / v2.games)
                            rune = k2
                         }
                      }
                   } else {
+                     let games = 0
                      for (const [k2, v2] of Object.entries(v)) {
-                        if ((v2.games / primaryGames) >= this.parameters.thresholds.core && (v2.wins / v2.games) > winrate) {
+                        if (v2.games > games) {
+                           games = v2.games
                            winrate = (v2.wins / v2.games)
                            rune = k2
                         }
@@ -190,12 +190,10 @@
             const getSecondaryTree = (_primaryTree, winrateContainer, mode) => {
                let tree
                let winrate = 0
-               console.log('myth', mythic.id)
                if (mode === 0) {
                   for (const [lorax, v] of Object.entries(this.champion.mythics[item].secondaryRunes)) {
                      if (lorax === _primaryTree) continue
                      if ((v.games / mythic.games) >= this.parameters.thresholds.core && (v.wins / v.games) > winrate) {
-                        console.log(lorax)
                         winrate = (v.wins / v.games)
                         tree = lorax
                      }
@@ -789,7 +787,6 @@
       display: flex;
       flex-direction: row;
       gap: 10px;
-      /* margin-left: 116px; */
    }
    .section-top-tabs .tab, .item-tabs .tab {
       font-size: 0.85rem;
