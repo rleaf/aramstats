@@ -3,14 +3,14 @@ import axios from 'axios'
 import champions from '../../constants/champions'
 import Mythics from './components/Mythics.vue'
 import Items from './components/Items.vue'
-import RunesSkills from './components/RunesSkills.vue'
+import Runes from './components/Runes.vue'
 
 
 export default {
    components: {
       Mythics,
       Items,
-      RunesSkills
+      Runes
    },
    data() {
       return {
@@ -324,7 +324,7 @@ export default {
                Items
             </div>
             <div :class="{'tab-focus' : this.masterTab === 2 }" @click="this.masterTab = 2" class="tab">
-               Runes & Skills
+               Runes
             </div>
          </div>
 
@@ -351,7 +351,7 @@ export default {
             </div>
                
             <div v-if="this.masterTab === 2" class="runes section">
-               <RunesSkills
+               <Runes
                   :mythic-data="this.mythicData"
                   :champion="this.champion"
                   :patch="this.patch"

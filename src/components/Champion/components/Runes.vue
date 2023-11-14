@@ -18,6 +18,11 @@ export default {
                8400: [[0, 0], [[0, 0], [0, 0], [0, 0]], [[0, 0], [0, 0], [0, 0]], [[0, 0], [0, 0], [0, 0]]],
                8200: [[0, 0], [[0, 0], [0, 0], [0, 0]], [[0, 0], [0, 0], [0, 0]], [[0, 0], [0, 0], [0, 0]]],
             },
+            flexRunes: [
+               [[0, 0], [0, 0], [0, 0]],
+               [[0, 0], [0, 0], [0, 0]],
+               [[0, 0], [0, 0], [0, 0]]
+            ]
          }
       }
    },
@@ -32,13 +37,6 @@ export default {
 
    methods: {
       mythicRuneLoop() {
-         /* runesTable: {
-            8100: [[8112, 8124, 8128, 9923], [8126, 8139, 8143], [8136, 8120, 8138], [8135, 8134, 8105, 8106]],
-            8300: [[8351, 8360, 8369], [8306, 8304, 8313], [8321, 8316, 8345], [8347, 8410, 8352]],
-            8000: [[8005, 8008, 8021, 8010], [9101, 9111, 8009], [9104, 9105, 9103], [8014, 8017, 8299]],
-            8400: [[8437, 8439, 8465], [8446, 8463, 8401], [8429, 8444, 8473], [8451, 8453, 8242]],
-            8200: [[8214, 8229, 8230], [8224, 8226, 8275], [8210, 8234, 8233], [8237, 8232, 8236]]
-         }, */
          this.runesData = {
             primaryRunes: {
                // [games,wins]
@@ -55,7 +53,11 @@ export default {
                8400: [[0,0], [[0,0], [0,0], [0,0]], [[0,0], [0,0], [0,0]], [[0,0], [0,0], [0,0]]],
                8200: [[0,0], [[0,0], [0,0], [0,0]], [[0,0], [0,0], [0,0]], [[0,0], [0,0], [0,0]]],
             },
-            flexRunes: {}
+            flexRunes: [
+               [[0,0], [0,0], [0,0]],
+               [[0,0], [0,0], [0,0]],
+               [[0,0], [0,0], [0,0]]
+            ]
          }
          for (const i in this.mythicSelection) {
             // Primary Runes
@@ -90,9 +92,18 @@ export default {
                   }
                }  
             }
-            
+
+            for (const j in this.champion.mythics[this.mythicSelection[i]].flexRunes) {
+               const tree = this.champion.mythics[this.mythicSelection[i]].flexRunes[j]
+               const row = parseInt(j.slice(3)) - 6 // row6, row7, row8...
+               for (const [k, v] of Object.entries(tree)) {
+                  const idx = this.flexRunes[row].indexOf(k)
+                  this.runesData.flexRunes[row][idx][0] += v.games
+                  this.runesData.flexRunes[row][idx][1] += v.wins
+               }
+
+            }
          }
-         console.log('runesdata', this.runesData)
       },
       mythicToggle(i) {
          if (this.mythicSelection.includes(i)) {
@@ -131,13 +142,18 @@ export default {
       runeImage(id) {
          return new URL(`../../../assets/runes/${id}.png`, import.meta.url).href
       },
+      flexRuneImage(id) {
+         return new URL(`../../../assets/runes/flex/${id}.png`, import.meta.url).href
+      },
       winrate(total, win) {
          return `${Math.round(win / total * 1000) / 10}%`
       },
    },
 
    computed: {
-
+      flexRunes() {
+         return [['5008', '5005', '5007'], ['5008', '5002', '5003'], ['5001', '5002', '5003']]
+      }
    },
 
    props: {
@@ -167,7 +183,7 @@ export default {
 
          <div class="primary-runes">
             <div class="rune-tree" v-for="(tree, i) in Object.entries(this.runesTable)" :key="i">
-               <img rel="preload" :class="{ 'dead-rune': !this.runesData.primaryRunes[tree[0]][0][0] }" :src="runeImage(tree[0])" alt="">
+               <img class="primary-tree" rel="preload" :class="{ 'dead-rune': !this.runesData.primaryRunes[tree[0]][0][0] }" :src="runeImage(tree[0])" alt="">
                <div class="image-sub">
                   <h4 v-if="this.runesData.primaryRunes[tree[0]][0][0]">{{ winrate(this.runesData.primaryRunes[tree[0]][0][0], this.runesData.primaryRunes[tree[0].toString()][0][1]) }}</h4>
                   <h4 v-else>-</h4>
@@ -188,7 +204,7 @@ export default {
 
          <div class="secondary-runes">
             <div class="rune-tree" v-for="(tree, i) in Object.entries(this.runesTable)" :key="i">
-               <img rel="preload" :class="{ 'dead-rune': !this.runesData.secondaryRunes[tree[0]][0][0] }" :src="runeImage(tree[0])" alt="">
+               <img class="secondary-tree" rel="preload" :class="{ 'dead-rune': !this.runesData.secondaryRunes[tree[0]][0][0] }" :src="runeImage(tree[0])" alt="">
                <div class="image-sub">
                   <h4 v-if="this.runesData.secondaryRunes[tree[0]][0][0]">{{ winrate(this.runesData.secondaryRunes[tree[0]][0][0], this.runesData.secondaryRunes[tree[0].toString()][0][1]) }}</h4>
                   <h4 v-else>-</h4>
@@ -203,6 +219,19 @@ export default {
                         <h4 v-else>-</h4>
                         <h3>{{ this.runesData.secondaryRunes[tree[0]][j + 1][k][0] }}</h3>
                      </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         
+         <div class="flex-runes">
+            <div class="flex-rune-tree" v-for="(row, i) in flexRunes" :key="i">
+               <div class="rune-row" v-for="(rune, j) in row" :key="j">
+                  <img rel="preload" :class="{ 'dead-rune': !this.runesData.flexRunes[i][j][0] }" :src="flexRuneImage(rune)" alt="">
+                  <div class="image-sub-block">
+                     <h4 v-if="this.runesData.flexRunes[i][j][0]">{{ this.winrate(this.runesData.flexRunes[i][j][0], this.runesData.flexRunes[i][j][1]) }}</h4>
+                     <h4 v-else>-</h4>
+                     <h3>{{ this.runesData.flexRunes[i][j][0] }}</h3>
                   </div>
                </div>
             </div>
@@ -295,11 +324,18 @@ export default {
       transition: 0.25s;
    }
    
-   .rune img {
+   .rune img, .flex-runes img {
       width: 35px;
    }
+
    .rune-row {
       display: flex;
+      gap: 8px;
+      justify-content: center;
+   }
+   .flex-runes .rune-row {
+      display: flex;
+      flex-direction: column;
       gap: 8px;
       justify-content: center;
    }
@@ -318,7 +354,7 @@ export default {
       padding: 30px 0;
       background: var(--tint100);
       border-radius: 15px;
-      gap: 10px;
+      gap: 20px;
    }
    .primary-runes {
       display: flex;
@@ -328,7 +364,11 @@ export default {
    .secondary-runes {
       display: flex;
       justify-content: space-evenly;
-      
+   }
+
+   .flex-runes {
+      display: flex;
+      justify-content: space-evenly;
    }
    /* .secondary-runes .rune-tree:first-child {
       width: 186px;
@@ -338,6 +378,14 @@ export default {
       flex-direction: column;
       align-items: center;
       gap: 5px;
+      width: 186px;
+   }
+   .flex-rune-tree {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      
+      /* width: 186px; */
    }
 
 
@@ -349,8 +397,12 @@ export default {
       text-align: center;
    }
 
-   .rune-tree > img {
+   img.primary-tree {
       width: 35px;
+   }
+
+   img.secondary-tree {
+      width: 30px;
    }
    
    h2 {   

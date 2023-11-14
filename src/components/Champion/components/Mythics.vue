@@ -159,13 +159,12 @@
             popularRuneCombination[0].push(popularTree)
             const primaryGames = this.champion.mythics[item].primaryRunes[primaryTree].games
 
-            const getPrimaries = (tree, container, winrateContainer) => {
+            const getPrimaries = (tree, container, winrateContainer, mode) => {
                for (const [k, v] of Object.entries(this.champion.mythics[item].primaryRunes[tree])) {
                   if (k === 'games' || k === 'wins') continue
                   let rune
                   let winrate = 0
-
-                  if (tree = popularTree) {
+                  if (mode === 0) {
                      let games = 0
                      for (const [k2, v2] of Object.entries(v)) {
                         if (v2.games > games) {
@@ -188,13 +187,15 @@
                }
             }
 
-            const getSecondaryTree = (_primaryTree, winrateContainer) => {
+            const getSecondaryTree = (_primaryTree, winrateContainer, mode) => {
                let tree
                let winrate = 0
-               if (_primaryTree === primaryTree) {
+               console.log('myth', mythic.id)
+               if (mode === 0) {
                   for (const [lorax, v] of Object.entries(this.champion.mythics[item].secondaryRunes)) {
                      if (lorax === _primaryTree) continue
-                     if ((v.games / (mythic.games - primaryGames)) >= this.parameters.thresholds.core && (v.wins / v.games) > winrate) {
+                     if ((v.games / mythic.games) >= this.parameters.thresholds.core && (v.wins / v.games) > winrate) {
+                        console.log(lorax)
                         winrate = (v.wins / v.games)
                         tree = lorax
                      }
@@ -215,14 +216,14 @@
                return tree
             }
 
-            const getSecondaries = (_secondaryTree, container, winrateContainer) => {
+            const getSecondaries = (_secondaryTree, container, winrateContainer, mode) => {
                /* 
                   this is so ugly. pls fix
                */
 
                let bin = []
                // Secondary highest winrate
-               if (_secondaryTree === secondaryTreeMax) {
+               if (mode === 0) {
                   let secondaryGames = this.champion.mythics[item].secondaryRunes[_secondaryTree].games
                   for (const [k, v] of Object.entries(this.champion.mythics[item].secondaryRunes[_secondaryTree])) {
                      if (k === 'games' || k === 'wins') continue
@@ -264,15 +265,15 @@
             }
 
 
-            getPrimaries(primaryTree, maxRuneCombination, maxRuneWinrates) // Get highest winrate or most popular primary runes
-            const secondaryTreeMax = getSecondaryTree(primaryTree, maxRuneWinrates) // Get highest winrate or most popular secondary tree
+            getPrimaries(primaryTree, maxRuneCombination, maxRuneWinrates, 0) // Get highest winrate or most popular primary runes
+            const secondaryTreeMax = getSecondaryTree(primaryTree, maxRuneWinrates, 0) // Get highest winrate or most popular secondary tree
             maxRuneCombination[0].push(secondaryTreeMax)
-            getSecondaries(secondaryTreeMax, maxRuneCombination, maxRuneWinrates) // Get highest winrate or most popular secondary runes
+            getSecondaries(secondaryTreeMax, maxRuneCombination, maxRuneWinrates, 0) // Get highest winrate or most popular secondary runes
 
-            getPrimaries(popularTree, popularRuneCombination, popularRuneWinrates)
-            const secondaryTreePopular = getSecondaryTree(popularTree, popularRuneWinrates)
+            getPrimaries(popularTree, popularRuneCombination, popularRuneWinrates, 1)
+            const secondaryTreePopular = getSecondaryTree(popularTree, popularRuneWinrates, 1)
             popularRuneCombination[0].push(secondaryTreePopular)
-            getSecondaries(secondaryTreePopular, popularRuneCombination, popularRuneWinrates)
+            getSecondaries(secondaryTreePopular, popularRuneCombination, popularRuneWinrates, 1)
 
             // Flex runes
             for (const v of Object.values(this.champion.mythics[item].flexRunes)) {
