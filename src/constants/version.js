@@ -12,6 +12,22 @@
 
 const version = [
    {
+      version: "2.2.3",
+      date: "11/15/23",
+      notes: "Pushing new features to champion stats for UX/UI guinea pigs",
+      add: [
+         'Runes tab',
+         'Items tab'
+      ],
+      remove: [],
+      fix: [
+         'Showing wrong itemization in Tldr tab'
+      ],
+      adjust: [
+         'Mythic tab -> Tldr tab'
+      ]
+   }, 
+   {
       version: "2.2.2",
       date: "11/8/23",
       notes: "",

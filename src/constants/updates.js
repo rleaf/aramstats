@@ -12,9 +12,11 @@ const updates = [
    {
       title: "Champion stats",
       date: "11/7/23 - today",
+      version: "2.2.1+",
       body: [
          `I've been working on developing a page to view champion stats and am pushing it to production to try and get an API key for the crawler it uses. The data you do see is not representative of live patch data.`,
          `A lot of work still needs to be done on both the front and backend, however there is some base functionality with the play data to give a sneak peek. I plan to give a better write up of the bells & whistles if this gets greenlit.`,
+         `(11/15/23) - Keeping incremental updates localized to here. Each one is described in more detail in the versioning tab.`,
          `Bugs are expected atm.`
       ]
    },

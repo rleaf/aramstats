@@ -289,7 +289,7 @@ export default {
       <div class="champion-wrapper">
          <div class="test">
             <p>
-               This page not finished. Check out the 11/7 update in <router-link to="/updates">updates</router-link>
+               This page not finished. Check out the <i>"11/7 - today"</i> <router-link to="/updates">update</router-link> for rolling update info.
             </p>
          </div>
          <div class="champion-head" :style="{ background: background }">

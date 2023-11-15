@@ -195,11 +195,13 @@ def item_filter(i, items):
       MYTHIC & LEGENDARY are tier 3
       Masterworks are tier 4 but are still ranked as MYTHIC
       Tear evolutions are t4 too
+      Some masterwork items (inf convergence, equinox, prim dawn) have empty "requiredAlly" field.
    """
-   if "required_ally" in item:
-      if item["required_ally"] == "Ornn": return False
-   if "requiredAlly" in item:
-      if item["requiredAlly"] == "Ornn": return False
+   if i > 7000 and item["tier"] == 4: return False # masterwork filter
+   # if "required_ally" in item:
+   #    if item["required_ally"] == "Ornn": return False
+   # if "requiredAlly" in item:
+   #    if item["requiredAlly"] == "Ornn": return False
 
    return True if ("MYTHIC" in item["rank"] or item["tier"] >= 3) or ('BOOTS' in item["rank"] and item["tier"] == 2) else False   
 
