@@ -116,6 +116,7 @@ export default {
       
       getMythicClusters() {
          const iter = (mythic, obj, name, container) => {
+            if (!obj) return
             for (const [k, v] of Object.entries(obj)) {
                container.push([k, v.games, v.wins])
             }
@@ -124,11 +125,20 @@ export default {
          }
 
          for (const k in this.champion.mythics) {
-            if (k === '0') continue
-            const mythicWrapper = {
-               id: k,
-               games: this.champion.items[k].games,
-               wins: this.champion.items[k].wins
+            // if (k === '0') continue
+            let mythicWrapper
+            if (k === '0') {
+               mythicWrapper = {
+                  id: k,
+                  games: this.champion.mythics[k].games,
+                  wins: this.champion.mythics[k].wins
+               }
+            } else {
+               mythicWrapper = {
+                  id: k,
+                  games: this.champion.items[k].games,
+                  wins: this.champion.items[k].wins
+               }
             }
             this.mythicData.push(mythicWrapper)
          }
@@ -312,7 +322,7 @@ export default {
 
          <div class="master-tabs">
             <div :class="{'tab-focus' : this.masterTab === 0 }" @click="this.masterTab = 0" class="tab">
-               Tldr
+               tldr
             </div>
             <div :class="{'tab-focus' : this.masterTab === 1 }" @click="this.masterTab = 1" class="tab">
                Items

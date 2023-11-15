@@ -151,6 +151,7 @@ def item_filter(i, items):
       2403, # Minion dematerializer (Klepto)
       3400, # Your Cut (Pyke)
       2424, # Broken Stopwatch
+      3600, # Kalista's Black Spear
 
       # # Masterworks.
       # 7000,

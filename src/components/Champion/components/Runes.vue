@@ -29,7 +29,6 @@ export default {
 
    created() {
       for (const m in this.champion.mythics) {
-         if (m === '0') continue
          this.mythicSelection.push(m)
       }
       this.mythicRuneLoop()
@@ -95,7 +94,7 @@ export default {
 
             for (const j in this.champion.mythics[this.mythicSelection[i]].flexRunes) {
                const tree = this.champion.mythics[this.mythicSelection[i]].flexRunes[j]
-               const row = parseInt(j.slice(3)) - 6 // row6, row7, row8...
+               const row = parseInt(j.slice(3))
                for (const [k, v] of Object.entries(tree)) {
                   const idx = this.flexRunes[row].indexOf(k)
                   this.runesData.flexRunes[row][idx][0] += v.games
@@ -104,6 +103,16 @@ export default {
 
             }
          }
+      },
+      toggleAll() {
+         if (this.mythicSelection.length > 0) {
+            this.mythicSelection = []
+         } else {
+            for (const m in this.champion.mythics) {
+               this.mythicSelection.push(m)
+            }
+         }
+         this.mythicRuneLoop()
       },
       mythicToggle(i) {
          if (this.mythicSelection.includes(i)) {
@@ -131,7 +140,10 @@ export default {
    computed: {
       flexRunes() {
          return [['5008', '5005', '5007'], ['5008', '5002', '5003'], ['5001', '5002', '5003']]
-      }
+      },
+      noMythicImage() {
+         return new URL(`../../../assets/no_mythic.jpg`, import.meta.url).href
+      },
    },
 
    props: {
@@ -146,11 +158,25 @@ export default {
 </script>
 
 <template>
-   <h2>Runes</h2>    
+   <div class="section-top">
+      <h2>Runes</h2>
+      <div class="section-top-right-wrapper">
+
+         <div class="section-top-right">
+            <div class="section-top-tabs">
+               <div class="tab" @click="this.toggleAll()">
+                  Toggle All
+               </div>
+            </div>
+         </div>
+
+      </div>
+   </div>
    <div class="rune-wrapper">
       <div class="mythic-tabs">
          <div class="tab" :class="{ 'tab-focus': this.mythicSelection.includes(mythic.id) }"  @click="this.mythicToggle(mythic.id)" v-for="(mythic, i) in this.mythicData" :key="i">
-            <img rel="preload" :src="itemImage(mythic.id)" alt="">
+            <img v-if="mythic.id == 0" rel="preload" :src="noMythicImage" alt="">
+            <img v-else rel="preload" :src="itemImage(mythic.id)" alt="">
             <div class="tab-sub">
                <h4> {{ winrate(mythic.games, mythic.wins) }} </h4>
                <h3> ({{ mythic.games }}) </h3>
@@ -219,6 +245,32 @@ export default {
 </template>
 
 <style scoped>
+   .section-top {
+      height: 42px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 3px;
+   }
+   .section-top-right-wrapper {
+      display: inline-block;
+      width: calc(100% - 120px);
+   }
+
+   .section-top-right {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+   }
+   .section-top-tabs, .item-tabs {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+   }
+   .section-top-tabs .tab, .item-tabs .tab {
+      font-size: 0.85rem;
+      padding: 0.5rem 1rem;
+   }
 
    .dead-rune {
       filter: saturate(0);
@@ -394,8 +446,7 @@ export default {
       display: inline-block;
       font-style: italic;
       font-weight: 400;
-      margin: 1rem 0;
-      margin-top: 0;
+      margin: 0;
       text-align: center;
       width: 116px;
    }

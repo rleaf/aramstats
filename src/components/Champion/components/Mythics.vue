@@ -52,8 +52,16 @@
             }
          },
          toggleVerbose() {
-            this.parameters.trailingDuplicates = true
-            this.renderKey ++
+            this.parameters.trailingDuplicates = !this.parameters.trailingDuplicates
+
+            for (const i in this.mythicData) {
+               const mythic = this.mythicData[i]
+               mythic.tldr.builds = []
+               if (mythic.coreBuild) {
+                  this.tldrBuilds(mythic, 0)
+                  this.tldrBuilds(mythic, 1)
+            }
+         }
          },
          getItemName(i) {
             if (this.items !== null) return this.items[i].name
@@ -424,6 +432,7 @@
          },
          getStartingItems() {
             const y = this.mythicData[this.mythicTab].startingItems
+            if (!y) return 'toad'
             if (this.tldrTab === 0) {
                return y.filter(a => (a[1] / this.mythicData[this.mythicTab].games) >= this.parameters.thresholds.core)
                   .sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
@@ -433,9 +442,9 @@
          },
 
          getSpells() {
-            const a = this.mythicData[this.mythicTab].spells
+            const a = this.mythicFilter[this.mythicTab].spells
             if (this.tldrTab === 0) {
-               return a.filter(r => (r[1] / this.mythicData[this.mythicTab].games) >= this.parameters.thresholds.core)
+               return a.filter(r => (r[1] / this.mythicFilter[this.mythicTab].games) >= this.parameters.thresholds.core)
                   .sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
             } else {
                return a.sort((a, b) => b[1] - a[1])[0]
@@ -443,35 +452,34 @@
 
          },
          getPrimaryRuneTable() {
-            if (this.mythicData[this.mythicTab].tldr.runes.length > 0 && this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0]) {
-               const t = this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0][0]
+            if (this.mythicFilter[this.mythicTab].tldr.runes.length > 0 && this.mythicFilter[this.mythicTab].tldr.runes[this.tldrTab][0]) {
+               const t = this.mythicFilter[this.mythicTab].tldr.runes[this.tldrTab][0][0]
                return this.runesTable[t]
             }
          },
 
          getSecondaryRuneTable() {
-            if (this.mythicData[this.mythicTab].tldr.runes.length > 0) {
-               const t = this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0][1]
+            if (this.mythicFilter[this.mythicTab].tldr.runes.length > 0) {
+               const t = this.mythicFilter[this.mythicTab].tldr.runes[this.tldrTab][0][1]
                return this.runesTable[t].slice(1, 4)
             }
          },
 
          getFlexRunes() {
-            if (this.mythicData[this.mythicTab].tldr.runes.length > 0) {
-               const t = this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][3]
+            if (this.mythicFilter[this.mythicTab].tldr.runes.length > 0) {
+               const t = this.mythicFilter[this.mythicTab].tldr.runes[this.tldrTab][3]
                return t
             }
          },
 
          getRuneWinrate() {
-            if (this.mythicData[this.mythicTab].tldr.runes.length > 0) {
-               return this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][4]
+            if (this.mythicFilter[this.mythicTab].tldr.runes.length > 0) {
+               return this.mythicFilter[this.mythicTab].tldr.runes[this.tldrTab][4]
             }
          },
-         // this.mythicData[this.mythicTab].tldr.builds[this.tldrTab]() {
-         //    console.log(this.mythicData[this.mythicTab].tldr.builds[this.tldrTab])
-         //    return this.mythicData[this.mythicTab].tldr.builds[this.tldrTab]
-         // }
+         mythicFilter() {
+            return this.mythicData.filter(e => e.id != '0')
+         },
       },
 
       props: {
@@ -501,9 +509,9 @@
                   Most popular
                </div>
             </div>
-            <!-- <div class="tldr-toggle">
-               <div @click="this.toggleVerbose()" class="tab">Verbose</div>
-            </div> -->
+            <div class="tldr-toggle">
+               <div :class="{ 'tab-focus': this.parameters.trailingDuplicates }" @click="this.toggleVerbose()" class="tab">Duplicate Items</div>
+            </div>
          </div>
 
       </div>
@@ -511,7 +519,7 @@
 
    <div class="tldr-body-wrapper">
       <div class="tldr-tabs">
-         <div class="tab" :class="{ 'tab-focus': this.mythicTab === i }"  @click="this.mythicTab = i" v-for="(mythic, i) in this.mythicData" :key="i">
+         <div class="tab" :class="{ 'tab-focus': this.mythicTab === i }"  @click="this.mythicTab = i" v-for="(mythic, i) in mythicFilter" :key="i">
             <img rel="preload" :src="itemImage(mythic.id)" alt="">
             <div class="tab-sub">
                <h4> {{ winrate(mythic.games, mythic.wins) }} </h4>
@@ -524,7 +532,7 @@
          <div class="tldr-left">
 
             <div class="tldr-items">
-               <div class="item" v-for="(item, i) in this.mythicData[this.mythicTab].tldr.builds[this.tldrTab]" :key="i + this.renderKey">
+               <div class="item" v-for="(item, i) in mythicFilter[this.mythicTab].tldr.builds[this.tldrTab]" :key="i">
                
                   <div v-if="i === 0" class="core-items">
                      <h2>Core</h2>
@@ -538,7 +546,7 @@
                   </div>
                   
                   <div v-else class="trailing-items">
-                     <div class="item" v-for="(item, j) in item" :key="j + this.renderKey">
+                     <div class="item" v-for="(item, j) in item" :key="j">
                         <h2>{{ j + 4 }}</h2>
                         <div class="tldr-wrapper" v-for="(id, k) in item" :key="k">
                            <img :src="itemImage(id[0])"  alt="">
@@ -581,8 +589,8 @@
                   </div>
                   <div class="tldr-level-winrate">
                      Leveling:
-                     <h4>{{ winrate(this.mythicData[this.mythicTab].tldr.levels[this.tldrTab][1], this.mythicData[this.mythicTab].tldr.levels[this.tldrTab][2]) }}</h4>
-                     <h3>({{ this.mythicData[this.mythicTab].tldr.levels[this.tldrTab][1] }})</h3>
+                     <h4>{{ winrate(mythicFilter[this.mythicTab].tldr.levels[this.tldrTab][1], mythicFilter[this.mythicTab].tldr.levels[this.tldrTab][2]) }}</h4>
+                     <h3>({{ mythicFilter[this.mythicTab].tldr.levels[this.tldrTab][1] }})</h3>
                   </div>
                </div>
             </div>
@@ -759,9 +767,11 @@
       text-align: center;
    }
    .section-top {
-      /* display: flex; */
+      display: flex;
+      height: 42px;
+      align-items: center;
       flex-direction: row;
-      margin-bottom: 8px;
+      margin-bottom: 3px;
    }
 
    .tldr-toggle {
@@ -858,8 +868,6 @@
       gap: 0.5rem;
       transition: 0.25s;
    }
-
-   
 
    .tab-focus {
       border: 1px solid var(--tint400);
