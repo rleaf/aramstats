@@ -203,7 +203,7 @@ def item_filter(i, items):
    # if "requiredAlly" in item:
    #    if item["requiredAlly"] == "Ornn": return False
 
-   return True if ("MYTHIC" in item["rank"] or item["tier"] >= 3) or ('BOOTS' in item["rank"] and item["tier"] == 2) else False   
+   return True if "LEGENDARY" in item["rank"] or ("MYTHIC" in item["rank"] or item["tier"] >= 3) or ('BOOTS' in item["rank"] and item["tier"] == 2) else False   
 
    # Moving from ddragon to meraki
    # if 'requiredAlly' in item: return False

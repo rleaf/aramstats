@@ -37,7 +37,6 @@ export default {
                }
             }
          }
-         // console.log(this.itemSlots)
       },
       deselectSlot(i) {
          this.activeSelection[i - 1] = 0
@@ -61,9 +60,22 @@ export default {
       winrate(total, win) {
          return `${Math.round(win / total * 1000) / 10}%`
       },
+      slotWinrate(total) {
+         if (total) {
+            return `${Math.round(total.wins / total.games * 1000) / 10}%`
+         } else {
+            return 0
+         }
+      },
+      slotGames(i, l) {
+         return (i[1].position[l - 1]) ? i[1].position[l - 1].games: 0
+      }
    },
-
+   
    computed: {
+      iterItems() {
+         return Object.entries(this.champion.items).sort((a, b) => b[1].games - a[1].games)
+      },
 
    },
 
@@ -102,12 +114,11 @@ export default {
    <div class="item-wrapper">
 
       <div v-if="this.itemTab === 0" class="builds section">
-         <div class="meta-info">
+         <!-- <div class="meta-info">
             toad
-         </div>
+         </div> -->
          <div class="builder">
             <div class="slot" v-for="i in 6" :key="i">
-               <!-- {{ i-1 }} -->
                <div class="placeholder" v-if="this.activeSelection[i-1] === 0" @click=""></div>
                <img class="master-img" v-else @click="this.deselectSlot(i)" :src="this.itemImage(this.activeSelection[i-1])" alt="">
                <div class="carousel">
@@ -125,7 +136,41 @@ export default {
       </div>
 
       <div v-if="this.itemTab === 1" class="items section">
-         <img :src="itemImage(i)" @click="this.toggleItemBin(i)" rel="preload" v-for="i in Object.keys(this.champion.items)">
+         <div class="header">
+            <div class="cell">Item</div>
+            <div class="cell">Winrate</div>
+            <div class="cell">Position</div>
+            <div class="cell">Encounters</div>
+         </div>
+         <div class="items-rows" v-for="i in iterItems" :key="i">
+            <!-- {{ i[1].position }} -->
+            <div class="cell">
+               <img :src="itemImage(i[0])" rel="preload" >
+            </div>
+            <div class="cell">
+               <h4> {{ winrate(i[1].games, i[1].wins) }} </h4>
+               <h3> ({{ i[1].games }}) </h3>
+            </div>
+            <div class="cell">
+               <!-- <div v-for="l in 1" :key="l">
+                  {{ this.slotGames(i, l) }}
+               </div> -->
+               <div>
+                  <span v-for="l in 6" :key="l">
+                     <h4>
+                        {{ this.slotWinrate(i[1].position[l - 1]) }}
+                     </h4>
+                     {{ (i[1].position[l - 1]) ? i[1].position[l - 1].games : 0 }}
+                  </span>
+               </div>
+               <!-- <div>
+                  <span v-for="l in 6" :key="l"></span>
+               </div> -->
+            </div>
+            <div class="cell">
+               encounters
+            </div>
+         </div>
       </div>
 
    </div>
@@ -219,11 +264,6 @@ export default {
       transition: 0.25s;
    }
 
-   .master-img {
-      width: 40px;
-      border: 1px solid  var(--tint400);
-      cursor: pointer;
-   }
    .tab-sub h4 {
       display: block;
       color: var(--tint500);
@@ -269,6 +309,7 @@ export default {
       height: 34px;
       border: 1px solid  var(--tint400);
    }
+
    .carousel::-webkit-scrollbar {
       width: 4px;
    }
@@ -302,5 +343,78 @@ export default {
 
    .tab:hover {
       background: var(--hoverButton);
+   }
+   .items {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+   }
+
+   .items img {
+      margin-left: 10px;
+      width: 36px;
+      border: 1px solid  var(--tint400);
+   }
+   img.master-img {
+      width: 40px;
+      border: 1px solid  var(--tint400);
+      cursor: pointer;
+      margin: 0;
+   }
+
+   .items .header {
+      display: flex;
+      height: 30px;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--tint400);
+   }
+
+   .items-rows {
+      display: flex;
+      font-size: 0.9rem;
+      align-items: center;
+   }
+
+   .items-rows span {
+      width: 30px;
+      height: 30px;
+      margin-left: 3px;
+      display: inline-block;
+      background: var(--hoverButton);
+      font-size: 0.75rem;
+   }
+
+
+   .cell h4 {
+      display: block;
+      color: var(--tint500);
+      text-align: center;
+      font-weight: normal;
+      margin: 0;
+      font-size: 0.75rem;
+   }
+   
+   .cell h3 {
+      display: block;
+      color: var(--tint400);
+      text-align: center;
+      font-weight: normal;
+      margin: 0;
+      font-size: 0.75rem;
+   }
+   .header .cell, .items-rows .cell:not(:first-child) {
+      text-align: center;
+   }
+   .header .cell:nth-child(1), .items-rows .cell:nth-child(1) {
+      width: 60px;
+   }
+   .header .cell:nth-child(2), .items-rows .cell:nth-child(2) {
+      width: 60px;
+   }
+   .header .cell:nth-child(3), .items-rows .cell:nth-child(3) {
+      width: 250px;
+   }
+   .header .cell:nth-child(4), .items-rows .cell:nth-child(4) {
+      width: auto;
    }
 </style>
