@@ -52,7 +52,7 @@ export default {
       },
       itemImage(Id) {
          return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/item/${Id}.png`
-      },  
+      },
       toggleItemBin(Id) {
          const idx = this.itemBin.indexOf(Id)
             (idx === -1) ? this.itemBin.push(Id) : this.itemBin.splice(idx, 1)
@@ -69,6 +69,19 @@ export default {
       },
       slotGames(i, l) {
          return (i[1].position[l - 1]) ? i[1].position[l - 1].games: 0
+      },
+      svgPositionHeight(i, pos) {
+         // https://stats.stackexchange.com/questions/70801/how-to-normalize-data-to-0-1-range
+         const games = Object.values(pos).map(x => x.games)
+         const max = Math.max(...games)
+         const min = Math.min(...games)
+         // const datum = (pos[i]) ? pos[i].games : 0
+         // const datum = pos[i].games || 0 
+         if (max - min === 0 || !pos[i]) return 0
+         const datum = pos[i].games
+         let val = (datum - min) / (max - min)
+         console.log(i, games, val)
+         return val * 100
       }
    },
    
@@ -143,8 +156,14 @@ export default {
             <div class="cell">Encounters</div>
          </div>
          <div class="items-rows" v-for="i in iterItems" :key="i">
-            <!-- {{ i[1].position }} -->
-            <div class="cell">
+            <img :src="itemImage(i[0])" rel="preload" >
+            <div>{{ this.items[i[0]].name }}</div>
+            {{ i[1].position }}
+            <svg>
+               <rect :x="`${(j-1) * 16.5}%`" width="20" :height="this.svgPositionHeight(j-1,  i[1].position)" v-for="j in 6" :key="j"></rect>
+               <!-- <rect width="20" height="40" style="fill:tomato;" ></rect> -->
+            </svg>
+            <!-- <div class="cell">
                <img :src="itemImage(i[0])" rel="preload" >
             </div>
             <div class="cell">
@@ -152,9 +171,6 @@ export default {
                <h3> ({{ i[1].games }}) </h3>
             </div>
             <div class="cell">
-               <!-- <div v-for="l in 1" :key="l">
-                  {{ this.slotGames(i, l) }}
-               </div> -->
                <div>
                   <span v-for="l in 6" :key="l">
                      <h4>
@@ -163,13 +179,10 @@ export default {
                      {{ (i[1].position[l - 1]) ? i[1].position[l - 1].games : 0 }}
                   </span>
                </div>
-               <!-- <div>
-                  <span v-for="l in 6" :key="l"></span>
-               </div> -->
             </div>
             <div class="cell">
                encounters
-            </div>
+            </div> -->
          </div>
       </div>
 
@@ -370,7 +383,7 @@ export default {
    }
 
    .items-rows {
-      display: flex;
+      /* display: flex; */
       font-size: 0.9rem;
       align-items: center;
    }
@@ -382,6 +395,17 @@ export default {
       display: inline-block;
       background: var(--hoverButton);
       font-size: 0.75rem;
+   }
+
+   .items-rows svg {
+      width: 170px;
+   }
+
+   .items-rows rect {
+      fill: var(--tint200);
+      transform: rotate(180deg) scaleX(-1);
+      transform-origin: center center;
+      transition: height 0.5s;
    }
 
 
