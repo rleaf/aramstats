@@ -5,6 +5,7 @@ export default {
          itemTab: 0,
          slotFocus: null,
          activeSelection: [0, 0, 0, 0, 0, 0],
+         mouseo: null,
          itemSlots: [{},{},{},{},{},{}]
       }
    },
@@ -71,17 +72,16 @@ export default {
          return (i[1].position[l - 1]) ? i[1].position[l - 1].games: 0
       },
       svgPositionHeight(i, pos) {
+         console.log('firing')
          // https://stats.stackexchange.com/questions/70801/how-to-normalize-data-to-0-1-range
          const games = Object.values(pos).map(x => x.games)
          const max = Math.max(...games)
-         const min = Math.min(...games)
-         // const datum = (pos[i]) ? pos[i].games : 0
-         // const datum = pos[i].games || 0 
-         if (max - min === 0 || !pos[i]) return 0
-         const datum = pos[i].games
-         let val = (datum - min) / (max - min)
-         console.log(i, games, val)
-         return val * 100
+         if (max === 0 || !pos[i]) return 0
+
+         const val = pos[i].games / max
+
+         // console.log(i, games, val)
+         return val * 90
       }
    },
    
@@ -89,6 +89,9 @@ export default {
       iterItems() {
          return Object.entries(this.champion.items).sort((a, b) => b[1].games - a[1].games)
       },
+      itemPositionSort() {
+         return
+      }
 
    },
 
@@ -149,40 +152,42 @@ export default {
       </div>
 
       <div v-if="this.itemTab === 1" class="items section">
-         <div class="header">
+         <!-- <div class="header">
             <div class="cell">Item</div>
             <div class="cell">Winrate</div>
             <div class="cell">Position</div>
             <div class="cell">Encounters</div>
-         </div>
-         <div class="items-rows" v-for="i in iterItems" :key="i">
-            <img :src="itemImage(i[0])" rel="preload" >
-            <div>{{ this.items[i[0]].name }}</div>
-            {{ i[1].position }}
-            <svg>
-               <rect :x="`${(j-1) * 16.5}%`" width="20" :height="this.svgPositionHeight(j-1,  i[1].position)" v-for="j in 6" :key="j"></rect>
-               <!-- <rect width="20" height="40" style="fill:tomato;" ></rect> -->
-            </svg>
-            <!-- <div class="cell">
+         </div> -->
+         <div class="items-rows" v-for="(i, k) in iterItems" :key="k">
+            <div class="item-header">
                <img :src="itemImage(i[0])" rel="preload" >
-            </div>
-            <div class="cell">
-               <h4> {{ winrate(i[1].games, i[1].wins) }} </h4>
-               <h3> ({{ i[1].games }}) </h3>
-            </div>
-            <div class="cell">
-               <div>
-                  <span v-for="l in 6" :key="l">
-                     <h4>
-                        {{ this.slotWinrate(i[1].position[l - 1]) }}
-                     </h4>
-                     {{ (i[1].position[l - 1]) ? i[1].position[l - 1].games : 0 }}
-                  </span>
+               <div class="tab-sub">
+                  
+                  <h4> {{ winrate(i[1].games, i[1].wins) }} </h4>
+                  <h3> ({{ i[1].games }}) </h3>
                </div>
+               <h5>
+                  {{ this.items[i[0]].name }}
+               </h5>
+               
             </div>
-            <div class="cell">
-               encounters
-            </div> -->
+            <div class="item-body">
+               <svg>
+                  <g  v-for="j in 6" :key="j">
+                     <!-- <rect @mouseover="mouseo = k" @mouseleave="mouseo = null" class="backdrop" :x="`${(j-1) * 16.5}%`" y="20" width="20" :height="65" /> -->
+                     <text class="slot" :x="`${(j - 1) * 16.5 + 7}%`" y="11" text-anchor="middle">{{ j }}</text>
+                     <rect class="backdrop" :x="`${(j-1) * 16.5}%`" y="40" width="34" :height="90" />
+                     <rect class="value" :x="`${(j-1) * 16.5}%`" y="40" width="34" :height="this.svgPositionHeight(j-1,  i[1].position)" />
+
+                     <text class="winrate" :x="`${(j - 1) * 16.5 + 8}%`" y="125" text-anchor="middle">
+                        {{ (i[1].position[j - 1]) ? winrate(i[1].position[j - 1].games, i[1].position[j - 1].wins) : '-' }}
+                     </text>
+                     <text class="games" :x="`${(j-1) * 16.5 + 7}%`" y="140" text-anchor="middle">
+                        ({{ (i[1].position[j-1]) ? i[1].position[j-1].games : 0 }})
+                     </text>
+                  </g>
+               </svg>
+            </div>
          </div>
       </div>
 
@@ -386,6 +391,28 @@ export default {
       /* display: flex; */
       font-size: 0.9rem;
       align-items: center;
+      /* border-bottom: 1px solid var(--tint400); */
+   }
+
+   .item-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+   }
+
+   .item-body {
+      display: flex;
+      height: 200px;
+      gap: 40px;
+      align-items: center;
+      margin-left: 30px;
+   }
+
+   .items-rows h5 {
+      display: inline-block;
+      font-weight: normal;
+      font-size: 0.9rem;
+      margin: 0;
    }
 
    .items-rows span {
@@ -398,47 +425,36 @@ export default {
    }
 
    .items-rows svg {
-      width: 170px;
+      width: 250px;
+      height: 150px;
    }
 
-   .items-rows rect {
-      fill: var(--tint200);
+   text.slot {
+      fill: var(--color-font);
+      font-size: 13px;
+   }
+
+   text.winrate {
+      fill: var(--color-font);
+      font-size: 12px;
+   }
+   
+   text.games {
+      fill: var(--tint400);
+      font-size: 12px;
+   }
+   
+   rect.value {
+      fill: var(--tint400);
       transform: rotate(180deg) scaleX(-1);
       transform-origin: center center;
       transition: height 0.5s;
    }
-
-
-   .cell h4 {
-      display: block;
-      color: var(--tint500);
-      text-align: center;
-      font-weight: normal;
-      margin: 0;
-      font-size: 0.75rem;
-   }
    
-   .cell h3 {
-      display: block;
-      color: var(--tint400);
-      text-align: center;
-      font-weight: normal;
-      margin: 0;
-      font-size: 0.75rem;
-   }
-   .header .cell, .items-rows .cell:not(:first-child) {
-      text-align: center;
-   }
-   .header .cell:nth-child(1), .items-rows .cell:nth-child(1) {
-      width: 60px;
-   }
-   .header .cell:nth-child(2), .items-rows .cell:nth-child(2) {
-      width: 60px;
-   }
-   .header .cell:nth-child(3), .items-rows .cell:nth-child(3) {
-      width: 250px;
-   }
-   .header .cell:nth-child(4), .items-rows .cell:nth-child(4) {
-      width: auto;
+   rect.backdrop {
+      fill: var(--hoverButton);
+      transform: rotate(180deg) scaleX(-1);
+      transform-origin: center center;
+      transition: height 0.5s;
    }
 </style>

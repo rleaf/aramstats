@@ -31,8 +31,8 @@ class Seed():
    def __init__(self, patch: str, region: str, puuid_collection, match_collection) -> None:
       
       self.seed_user = {
-         # Night Owl on DEV_KEY
-         "puuid": "KGN0ZR8dNoUTFk57zZEsnmevV5mBiVc0Kpzn5IbMbiCM3BvrqWAXcrEj73tHS71YYSOmVz7SH75aDg",
+         # Night Owl on CRAWLER_KEY
+         "puuid": "B844TbCd9LJScvYhWf3Tpbl9xVrNO6cfPJRrXX0GDPPHO2cjKH9GuQ_3B_pocz6iWGIzcHw7XFiRAQ",
          "region": "na1"
       }
       self.puuid_collection = puuid_collection

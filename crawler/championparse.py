@@ -13,9 +13,7 @@ class ChampionParser():
       collection_list = db.list_collection_names()
       patch = util.get_latest_patch()
       match_collection_name = f"{patch}_matches"
-      # match_collection_name = f"13.20_matches"
       self.champion_stats_name = "championstats"
-      # self.items = util.get_items()["data"]
       self.items = util.get_items()
       self.runes = util.get_runes()
 

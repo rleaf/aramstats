@@ -51,7 +51,6 @@ class Propagate():
          # champions_data =  [[p["participantId"], p["championName"], p["win"], p["teamId"], p["championId"], [str(p[f"item{y}"]) for y in range(6)] ] for p in match["info"]["participants"]]
          # self.match_data_cache.append([match_id, champions_data])
 
-         # match_batch.append(match)
          match_batch.append({ 'metadata': match['metadata'], 'info': match['info'], 'timeline': timeline_bin})
          [puuid_batch.append({ 'puuid': participant, 'region': doc['region']}) \
             for participant in match['metadata']['participants']]
@@ -68,7 +67,7 @@ class Propagate():
 
          errors = list(filter(lambda x: x['code'] != 11000, e.details['writeErrors']))
          if len(errors) > 0:
-            raise Exception(f'Non-11000 errors in insertmany operation for TEST{self.patch}_matches')
+            raise Exception(f'Non-11000 errors in insertmany operation for TEST{self.patch}_matches', errors[0]['code'], errors[0]['errmsg'])
          else:
             print(f"Inserted {e.details['nInserted']}/{len(match_batch)} matches")
             pass
@@ -78,7 +77,7 @@ class Propagate():
       except pymongo.errors.BulkWriteError as e:
          errors = list(filter(lambda x: x['code'] != 11000, e.details['writeErrors']))
          if len(errors) > 0:
-            raise Exception(f"Non-11000 errors in insertmany operation for TEST{self.region}_puuids")
+            raise Exception(f"Non-11000 errors in insertmany operation for TEST{self.region}_puuids", errors[0]['code'], errors[0]['errmsg'])
          else:
             print(f"Inserted {e.details['nInserted']}/{len(puuid_batch)} puuids")
             pass

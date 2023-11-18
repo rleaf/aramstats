@@ -5,7 +5,7 @@ import requests
 import time
 
 load_dotenv()
-lol_watcher = LolWatcher(os.environ['DEV_RIOT_API_KEY'])
+lol_watcher = LolWatcher(os.environ['CRAWLER_RIOT_API_KEY'])
 
 class Timer():
    def __init__(self, name) -> None:
@@ -55,6 +55,8 @@ def get_summoner_matches_on_patch(puuid: str, region: str, current_patch: str) -
          print(e, '@@@')
 
       if current_patch != trailing_patch: return bin
+      
+   return bin
 
 def get_matchlist(puuid: str, region: str, start: int, count: int) -> list[str]:
    try:
@@ -70,12 +72,15 @@ def get_match(match_id, region):
    try:
       return lol_watcher.match.by_id(match_id=match_id, region=region)
    except ApiError as e:
+
       # print(e.response.text)
       print(e, '2'*20)
       if e.response.status_code == 429:
          print('We should retry in {} seconds.'.format(e.response.headers['Retry-After']))
       else:
-         raise
+         print('trying again')
+         return lol_watcher.match.by_id(match_id=match_id, region=region)
+         # raise
 
 
 def get_match_timeline(match_id, region):
