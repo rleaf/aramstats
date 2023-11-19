@@ -21,7 +21,7 @@ class Crawler():
       region = config.region
       patch = util.get_latest_patch()
       puuid_collection_name = f"{region.upper()}_puuids"
-      match_collection_name = f"{patch}_matches"
+      match_collection_name = f"{patch}_match"
 
       # Check if existing collection of puuids for REGION
       if puuid_collection_name in collection_list:

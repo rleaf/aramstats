@@ -3,20 +3,26 @@ import pymongo
 
 class Propagate():
    def __init__(self, patch: str, region: str, puuid_collection, match_collection, meta_collection, config_index) -> None:
-      _index = 0
       start = config_index if config_index is not None else meta_collection.find_one({ "name": "crawler"})["index"]
       batch_size = 50
       self.puuid_collection = puuid_collection
       self.match_collection = match_collection
       self.patch = patch
       self.region = region
-      for doc in self.puuid_collection.find(skip=start):
-         if _index % 20 == 0: print(f"{'@' * 5} INDEX: {_index + start} {'@' * 20}")
-         print(f"on puuid: {doc['puuid']}")
-         self.propagate(doc, 0, batch_size)
-         _index += 1
-         meta_collection.update_one({ "name": "crawler"}, { "$set": {"index": _index + start} })
-      print('fin')
+      self.generate_cursor(meta_collection, 0, batch_size, start)
+
+   def generate_cursor(self, meta_collection, index, batch_size, start):
+      cursor = self.puuid_collection.find(skip=start)
+      while (cursor.next()):
+         for doc in cursor:
+            if index % 20 == 0: print(f"{'@' * 5} INDEX: {index + start} {'@' * 20}")
+            print(f"on puuid: {doc['puuid']}")
+            self.propagate(doc, 0, batch_size)
+            index += 1
+            meta_collection.update_one({ "name": "crawler"}, { "$set": {"index": index + start} })
+      cursor.close()
+      self.generate_cursor(meta_collection, index, batch_size, start + 10)
+   
 
    def propagate(self, doc: object, start: int, batch_size: int) -> None:
       matchlist = util.get_matchlist(doc['puuid'], doc['region'], start, batch_size)
