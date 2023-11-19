@@ -20,8 +20,8 @@ export default {
          abilities: [],
          parameters: {
             thresholds: {
-               core: 0.10,
-               trail: 0.10,
+               core: 0.05,
+               trail: 0.05,
             },
             trailingDuplicates: true,
             trailingExtended: 3,

@@ -4,7 +4,7 @@ import pymongo
 class Propagate():
    def __init__(self, patch: str, region: str, puuid_collection, match_collection, meta_collection, config_index) -> None:
       start = config_index if config_index is not None else meta_collection.find_one({ "name": "crawler"})["index"]
-      batch_size = 50
+      batch_size = 50 # batch_size for cursor batch & matchlist batch
       self.puuid_collection = puuid_collection
       self.match_collection = match_collection
       self.patch = patch
@@ -12,7 +12,7 @@ class Propagate():
       self.generate_cursor(meta_collection, 0, batch_size, start)
 
    def generate_cursor(self, meta_collection, index, batch_size, start):
-      cursor = self.puuid_collection.find(skip=start)
+      cursor = self.puuid_collection.find(skip=start, batch_size=batch_size)
       while (cursor.next()):
          for doc in cursor:
             if index % 20 == 0: print(f"{'@' * 5} INDEX: {index + start} {'@' * 20}")

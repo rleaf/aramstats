@@ -174,7 +174,6 @@ export default {
             <div class="item-body">
                <svg>
                   <g  v-for="j in 6" :key="j">
-                     <!-- <rect @mouseover="mouseo = k" @mouseleave="mouseo = null" class="backdrop" :x="`${(j-1) * 16.5}%`" y="20" width="20" :height="65" /> -->
                      <text class="slot" :x="`${(j - 1) * 16.5 + 7}%`" y="11" text-anchor="middle">{{ j }}</text>
                      <rect class="backdrop" :x="`${(j-1) * 16.5}%`" y="40" width="34" :height="90" />
                      <rect class="value" :x="`${(j-1) * 16.5}%`" y="40" width="34" :height="this.svgPositionHeight(j-1,  i[1].position)" />

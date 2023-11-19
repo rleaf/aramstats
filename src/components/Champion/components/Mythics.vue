@@ -30,13 +30,13 @@
 
       methods: {
          getTreeStuff(tree, mode) {
-            const o = this.champion.mythics[this.mythicData[this.mythicTab].id].primaryRunes[tree]
+            const o = this.champion.mythics[this.mythicFilter[this.mythicTab].id].primaryRunes[tree]
             if (o) {
                return (mode === 0) ? o.games : o.wins
             }
          },
          getRuneGames(tree, j, rune) {
-            const o = this.champion.mythics[this.mythicData[this.mythicTab].id].primaryRunes[tree]
+            const o = this.champion.mythics[this.mythicFilter[this.mythicTab].id].primaryRunes[tree]
             if (o) {
                if (o[`row${j}`][rune]) {
                   return o[`row${j}`][rune].games
@@ -44,7 +44,7 @@
             }
          },
          getRuneWins(tree, j, rune) {
-            const o = this.champion.mythics[this.mythicData[this.mythicTab].id].primaryRunes[tree]
+            const o = this.champion.mythics[this.mythicFilter[this.mythicTab].id].primaryRunes[tree]
             if (o) { 
                if (o[`row${j}`][rune]) {
                   return o[`row${j}`][rune].wins
@@ -54,8 +54,8 @@
          toggleVerbose() {
             this.parameters.trailingDuplicates = !this.parameters.trailingDuplicates
 
-            for (const i in this.mythicData) {
-               const mythic = this.mythicData[i]
+            for (const i in this.mythicFilter) {
+               const mythic = this.mythicFilter[i]
                mythic.tldr.builds = []
                if (mythic.coreBuild) {
                   this.tldrBuilds(mythic, 0)
@@ -67,7 +67,7 @@
             if (this.items !== null) return this.items[i].name
          },
          activeSkill(i, j) {
-            return (this.mythicData[this.mythicTab].tldr.levels[this.tldrTab][0][i - 1] == j) ? true : false
+            return (this.mythicFilter[this.mythicTab].tldr.levels[this.tldrTab][0][i - 1] == j) ? true : false
          },
 
          activeSkillKey(i, j) {
@@ -77,25 +77,24 @@
                3: 'e',
                4: 'r',
             }
-            if (this.mythicData[this.mythicTab].tldr.levels[this.tldrTab][0][i - 1] == j) {
+            if (this.mythicFilter[this.mythicTab].tldr.levels[this.tldrTab][0][i - 1] == j) {
                return i
             }
-            // (this.mythicData[this.mythicTab].tldr.levels[this.tldrTab][0][i-1] == j) ? true : false
          },
          activeRune(id, idx) {
-            return (this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][idx].includes(id.toString())) ? true : false
+            return (this.mythicFilter[this.mythicTab].tldr.runes[this.tldrTab][idx].includes(id.toString())) ? true : false
          },
 
          flexRune(id, j) {
-            if (this.mythicData[this.mythicTab].tldr.runes.length > 0) {
-               return (this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][3][j] == id) ? true : false
+            if (this.mythicFilter[this.mythicTab].tldr.runes.length > 0) {
+               return (this.mythicFilter[this.mythicTab].tldr.runes[this.tldrTab][3][j] == id) ? true : false
             }
             // return (this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][3].includes(id.toString())) ? true : false
          },
 
          runeTree(i) {
             // const t = this.mythicData[this.mythicTab].runes[this.runesTab][0].split('|')[i]
-            const t = this.mythicData[this.mythicTab].tldr.runes[this.tldrTab][0][i]
+            const t = this.mythicFilter[this.mythicTab].tldr.runes[this.tldrTab][0][i]
             return this.runesTable[t]
          },
          runeEndpointImage(path) {
@@ -431,10 +430,10 @@
             return [[5008, 5005, 5007], [5008, 5002, 5003], [5001, 5002, 5003]]
          },
          getStartingItems() {
-            const y = this.mythicData[this.mythicTab].startingItems
+            const y = this.mythicFilter[this.mythicTab].startingItems
             if (!y) return 'toad'
             if (this.tldrTab === 0) {
-               return y.filter(a => (a[1] / this.mythicData[this.mythicTab].games) >= this.parameters.thresholds.core)
+               return y.filter(a => (a[1] / this.mythicFilter[this.mythicTab].games) >= this.parameters.thresholds.core)
                   .sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
             } else {
                return y.sort((a, b) => b[1] - a[1])[0]
