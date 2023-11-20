@@ -10,8 +10,26 @@
 
 const updates = [
    {
+      title: "Champion stats cont...",
+      version: "3.0.0",
+      date: "11/20/23",
+      body: [
+         `* I am only crawling through NA due to hardware constraints. If I can, I'll expand into EU -> KR -> etc...`,
+
+         `I got a production key for the crawler a couple days ago and although there's still a lot of work to be done, the champion stats page is at a "good enough" point for me to comfortable with how it looks on the front end. Champion pages are currently broken into 3 tabs: "tldr", "Items", and "Runes".`,
+
+         `The "tldr" tab is intended to show any relevant data for some champion as if a user was in champ select. There is a synopsis on itemization, runes, spells, and level path. All of this information is filtered by what mythic a user wants to build and then by whether that user is interested in data that yields the most popular selection or data that yields the highest winrate. There are some settings currently available to mutate the information shown such as "Duplicate Items" that toggle...duplicate items. I plan to add more so that people can cater the displayed data to their preferences.`,
+
+         `The "Items" tab has two sub tabs: "Builds" and "Individual Items". "Builds" focuses on allowing users to filter through observed builds by distributing items to the slot in which they were purchased. Users can click on any item in any slot and view all combinations of items (and winrate) which correspond to some observed build.
+         Individual Items shows data about a particular item. Currently it shows slot popularity: the frequency by slot in which that item is purchased, and encounters: observed friendly and enemy champion encounters where that item was purchased. I will probably remove/change the latter.`,
+         `The "Runes" tab displays every rune winrate and is filterable by mythic.`,
+         `Bugs aren't expected, but there may be some lingering.`
+      ],
+      img: []
+   },
+   {
       title: "Champion stats",
-      date: "11/7/23 - today",
+      date: "11/7/23 - 11/20/23",
       version: "2.2.1+",
       body: [
          `I've been working on developing a page to view champion stats and am pushing it to production to try and get an API key for the crawler it uses. The data you do see is not representative of live patch data.`,
@@ -36,7 +54,7 @@ const updates = [
       ],
    },
    {
-      title: "Redesigning backend. Inted to wipe all data.",
+      title: "Redesigning backend. Intend to wipe all data.",
       date: "9/2/23",
       body: [
          `There are two main reasons for doing this:`,

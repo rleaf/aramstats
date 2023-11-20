@@ -170,19 +170,20 @@ export default {
          <div class="items-rows" v-for="(i, k) in iterItems" :key="k">
             <div class="item-header">
                <img :src="itemImage(i[0])" rel="preload" >
+               <h1>
+                  {{ this.items[i[0]].name }}
+               </h1>
+
                <div class="tab-sub">
-                  
                   <h4> {{ winrate(i[1].games, i[1].wins) }} </h4>
                   <h3> ({{ i[1].games }}) </h3>
                </div>
-               <h5>
-                  {{ this.items[i[0]].name }}
-               </h5>
-               
             </div>
             <div class="item-body">
                <div>
-                  <h3>Slot popularity</h3>
+                  <div class="stat-header">
+                     <h3>Slot popularity</h3>
+                  </div>
                   <svg>
                      <g  v-for="j in 6" :key="j">
                         <text class="slot" :x="`${(j - 1) * 16.5 + 7}%`" y="11" text-anchor="middle">{{ j }}</text>
@@ -200,7 +201,9 @@ export default {
                </div>
                <div class="encounters">
                   <div class="friendly">
-                     <h3>Friendly encounters</h3>
+                     <div class="stat-header">
+                        <h3>Friendly encounters</h3>
+                     </div>
                      <div class="cell" v-for="i in Object.entries(i[1].friends).sort((a, b) => b[1] - a[1]).slice(0, 20)" :key="i">
                         <img :src="this.champIcon(this.idTable[i[0]])" alt="">
                         <div class="tab-sub">
@@ -209,7 +212,9 @@ export default {
                      </div>
                   </div>
                   <div class="enemy" >
-                     <h3>Enemy encounters</h3>
+                     <div class="stat-header">
+                        <h3>Enemy encounters</h3>
+                     </div>
                      <div class="cell" v-for="i in Object.entries(i[1].enemies).sort((a, b) => b[1] - a[1]).slice(0, 20)" :key="i">
                         <img :src="this.champIcon(this.idTable[i[0]])" alt="">
                         <div class="tab-sub">
@@ -438,6 +443,19 @@ export default {
       align-items: center;
       justify-content: space-around;
       /* margin-left: 30px; */
+      /* border-bottom: 1px solid tomato; */
+   }
+
+   .stat-header {
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px solid var(--tint400);
+   }
+
+   .item-body h3 {
+      font-size: 0.9rem;
+      font-weight: normal;
+      margin-bottom: 0;
    }
    .encounters {
       display: flex;
@@ -479,10 +497,10 @@ export default {
       transition: 0.25s;
    }
 
-   .items-rows h5 {
+   .items-rows h1 {
       display: inline-block;
       font-weight: normal;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       margin: 0;
    }
 

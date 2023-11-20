@@ -287,11 +287,11 @@ export default {
 <template>
    <div class="champion-ready-main">
       <div class="champion-wrapper">
-         <div class="test">
+         <!-- <div class="test">
             <p>
                This page not finished. Check out the <i>"11/7 - today"</i> <router-link to="/updates">update</router-link> for rolling update info.
             </p>
-         </div>
+         </div> -->
          <div class="champion-head" :style="{ background: background }">
             <div class="champion-profile">
                <div class="champion-image">
@@ -473,7 +473,7 @@ export default {
    }
 
    .champion-ready-main {
-      margin-top: 10vh;
+      margin-top: 6vh;
       display: flex;
       align-items: center;
       flex-direction: column;

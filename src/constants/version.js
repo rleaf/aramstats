@@ -12,9 +12,25 @@
 
 const version = [
    {
+      version: "3.0.0",
+      date: "11/20/23",
+      notes: "Finished champion stats.",
+      add: [
+         'Individual items sub tab'
+      ],
+      remove: [],
+      fix: [
+         'Backend masterwork item handling',
+         'Rune tree in Riot response returning 0'
+      ],
+      adjust: [
+         'Champion stats UI'
+      ]
+   },
+   {
       version: "2.2.3",
       date: "11/15/23",
-      notes: "Pushing new features to champion stats for UX/UI guinea pigs",
+      notes: "Pushing new features to champion stats for UX/UI guinea pigs.",
       add: [
          'Runes tab',
          'Items tab'

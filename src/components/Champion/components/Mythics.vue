@@ -534,99 +534,118 @@
 
       <div class="tldr-body">
          <div class="tldr-left">
-
             <div class="tldr-items">
-               <div class="item" v-for="(item, i) in mythicFilter[this.mythicTab].tldr.builds[this.tldrTab]" :key="i">
-               
-                  <div v-if="i === 0" class="core-items">
-                     <h2>Core</h2>
-                     <div class="tldr-wrapper">
-                        <img :src="itemImage(id)" alt="" v-for="id in item[0].split('_')" :key="id">
-                        <div class="image-sub">
-                           <h4> {{ winrate(item[1], item[2]) }} </h4>
-                           <h3> ({{ item[1] }}) </h3>
-                        </div>
-                     </div>
-                  </div>
+               <div class="tldr-header">
+                  <h1>Items</h1>
+               </div>
+               <div class="items">
+
+                  <div class="item" v-for="(item, i) in mythicFilter[this.mythicTab].tldr.builds[this.tldrTab]" :key="i">
                   
-                  <div v-else class="trailing-items">
-                     <div class="item" v-for="(item, j) in item" :key="j">
-                        <h2>{{ j + 4 }}</h2>
-                        <div class="tldr-wrapper" v-for="(id, k) in item" :key="k">
-                           <img :src="itemImage(id[0])"  alt="">
+                     <div v-if="i === 0" class="core-items">
+                        <h2>Core</h2>
+                        <div class="tldr-wrapper">
+                           <img :src="itemImage(id)" alt="" v-for="id in item[0].split('_')" :key="id">
                            <div class="image-sub">
-                              <h4> {{ winrate(id[1], id[2]) }} </h4>
-                              <h3> ({{ id[1] }}) </h3>
+                              <h4> {{ winrate(item[1], item[2]) }} </h4>
+                              <h3> ({{ item[1] }}) </h3>
                            </div>
                         </div>
                      </div>
+                  
+                     <div v-else class="trailing-items">
+                        <div class="item" v-for="(item, j) in item" :key="j">
+                           <!-- <h2>{{ j + 4 }}</h2> -->
+                           <div class="tldr-wrapper" v-for="(id, k) in item" :key="k">
+                              <img :src="itemImage(id[0])"  alt="">
+                              <div class="image-sub">
+                                 <h4> {{ winrate(id[1], id[2]) }} </h4>
+                                 <h3> ({{ id[1] }}) </h3>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  
                   </div>
-               
                </div>
             </div>
          
             <div class="tldr-runes-wrapper">
-               <div class="tldr-runes-right">
-                  <div class="tldr-rune-row" v-for="(row, i) in getPrimaryRuneTable" :key="i">
-                     <img rel="preload" :class="{ 'active-rune': activeRune(rune, 1) }" :src="runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
+               <div class="tldr-header">
+                  <h1>Runes</h1>
+                  <div class="header-stats">
+                     <h2>
+                        {{ getRuneWinrate }}%
+                     </h2>
+                     <h3>(Mean winrate)</h3>
                   </div>
                </div>
-            
-               <div class="tldr-runes-left">
-                  <div class="tldr-secondary-flex-runes">
-                     <div class="tldr-secondary-runes">
-                        <div class="tldr-rune-row" v-for="(row, i) in getSecondaryRuneTable" :key="i">
-                           <img rel="preload" :class="{ 'active-rune': activeRune(rune, 2) }" :src="runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
-                        </div>
-                     </div>
-                     <div class="tldr-flex-runes">
-                        <div class="tldr-rune-row" v-for="(row, i) in flexRunes" :key="i">
-                           <img rel="preload" :class="{ 'active-rune': flexRune(rune, i) }" :src="flexRuneImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
-                        </div>
+               <div class="tldr-runes">
+                  <div class="tldr-runes-right">
+                     <div class="tldr-rune-row" v-for="(row, i) in getPrimaryRuneTable" :key="i">
+                        <img rel="preload" :class="{ 'active-rune': activeRune(rune, 1) }" :src="runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
                      </div>
                   </div>
-                  <div class="tldr-rune-winrate">
-                     Mean winrate: 
-                     <h4>
-                        {{ getRuneWinrate }}%
-                     </h4>
+               
+                  <div class="tldr-runes-left">
+                     <div class="tldr-secondary-flex-runes">
+                        <div class="tldr-secondary-runes">
+                           <div class="tldr-rune-row" v-for="(row, i) in getSecondaryRuneTable" :key="i">
+                              <img rel="preload" :class="{ 'active-rune': activeRune(rune, 2) }" :src="runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
+                           </div>
+                        </div>
+                        <div class="tldr-flex-runes">
+                           <div class="tldr-rune-row" v-for="(row, i) in flexRunes" :key="i">
+                              <img rel="preload" :class="{ 'active-rune': flexRune(rune, i) }" :src="flexRuneImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
+                           </div>
+                        </div>
+                     </div>
                   </div>
-                  <div class="tldr-level-winrate">
-                     Leveling:
-                     <h4>{{ winrate(mythicFilter[this.mythicTab].tldr.levels[this.tldrTab][1], mythicFilter[this.mythicTab].tldr.levels[this.tldrTab][2]) }}</h4>
-                     <h3>({{ mythicFilter[this.mythicTab].tldr.levels[this.tldrTab][1] }})</h3>
-                  </div>
+
                </div>
             </div>
          </div>
          <div class="tldr-right">
          
             <div class="tldr-starting">
-               <h2>
-                  Starting
-               </h2>
-               <img :src="itemImage(id)" alt="" v-for="(id, i) in getStartingItems[0].split('_')" :key="i">
-               <div class="image-sub">
-                  <h4> {{ winrate(getStartingItems[1], getStartingItems[2]) }} </h4>
-                  <h3> ({{ getStartingItems[1] }}) </h3>
+               <div class="tldr-header">
+                  <h1>Starting</h1>
+                  <div class="header-stats">
+                     <h2> {{ winrate(getStartingItems[1], getStartingItems[2]) }} </h2>
+                     <h3> ({{ getStartingItems[1] }}) </h3>
+                  </div>
+               </div>
+               <div class="starting">
+                  <img :src="itemImage(id)" alt="" v-for="(id, i) in getStartingItems[0].split('_')" :key="i">
                </div>
             </div>
          
             <div class="tldr-spells">
-               <h2>
-                  Spells
-               </h2>
-               <img :src="this.spellImage(id)" alt="" v-for="(id, i) in getSpells[0].split('_')" :key="i">
-               <div class="image-sub">
-                  <h4> {{ winrate(getSpells[1], getSpells[2]) }} </h4>
-                  <h3> ({{ getSpells[1] }}) </h3>
+               <div class="tldr-header">
+                  <h1>Spells</h1>
+                  <div class="header-stats">
+                     <h2>{{ winrate(getSpells[1], getSpells[2]) }}</h2>
+                     <h3>({{ getSpells[1] }})</h3>
+                  </div>
+               </div>
+               <div class="spells">
+                  <img :src="this.spellImage(id)" alt="" v-for="(id, i) in getSpells[0].split('_')" :key="i">
                </div>
             </div>
 
             <div class="tldr-levels">
-               <div class="columns" v-for="i in 18" :key="i">
-                  <div class="cell" :class="{ 'active-skill': activeSkill(i, j) }" v-for="j in 4" :key="j">
-                     {{ activeSkillKey(i, j) }}
+               <div class="tldr-header">
+                  <h1>Leveling</h1>
+                  <div class="header-stats">
+                     <h2>{{ winrate(mythicFilter[this.mythicTab].tldr.levels[this.tldrTab][1], mythicFilter[this.mythicTab].tldr.levels[this.tldrTab][2]) }}</h2>
+                     <h3>({{ mythicFilter[this.mythicTab].tldr.levels[this.tldrTab][1] }})</h3>
+                  </div>
+               </div>
+               <div class="levels">
+                  <div class="columns" v-for="i in 18" :key="i">
+                     <div class="cell" :class="{ 'active-skill': activeSkill(i, j) }" v-for="j in 4" :key="j">
+                        {{ activeSkillKey(i, j) }}
+                     </div>
                   </div>
                </div>
 
@@ -759,6 +778,10 @@
       margin-bottom: 0.5rem;
       width: auto;
    }
+
+   .tldr-body h1 {
+      display: block;
+   }
    
    h2 {   
       color: var(--light400);
@@ -814,7 +837,7 @@
    .tldr-tabs {
       overflow-y: scroll;
       overflow-x: hidden;
-      height: 367px;
+      height: 410px;
       margin-right: 8px;
       padding-right: 5px;
    }
@@ -895,11 +918,50 @@
       border-radius: 15px;
    }
 
+   .tldr-header {
+      display: flex;
+      align-items: flex-end;
+      gap: 15px;
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px solid var(--tint400);
+   }
+
+   .tldr-body h1 {
+      display: inline-block;
+      font-size: 0.95rem;
+      margin: 0;
+   }
+
+   .header-stats {
+      display: inline-block;
+      font-size: 0.8rem;
+      color: var(--light400);
+   }
+   
+   .tldr-right h2 {
+      display: block;
+      text-align: center;
+      margin-top: 0;
+      font-size: 0.9rem;
+      color: var(--light300);
+   }
+   .header-stats h2 {
+      display: inline-block;
+      margin: 0;
+      font-size: 0.8rem;
+   }
+
+   .header-stats h3 {
+      margin-left: 0.3rem;
+      font-size: 0.75rem;
+   }
+
    .tldr-left {
       display: flex;
       margin: 0 50px;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
       margin-top: 20px;
    }
@@ -914,9 +976,16 @@
 
    .tldr-items {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
+      min-width: 360px;
+   }
+   
+   .tldr-items .items {
+      display: flex;
+      /* flex-direction: column; */
       align-items: center;
       gap: 10px;
+      
    }
 
    .tldr-items h2 {
@@ -926,8 +995,12 @@
 
    .tldr-levels {
       display: flex;
+      flex-direction: column;
+   }
+   
+   .tldr-levels .levels {  
+      display: flex;
       gap: 3px;
-      /* margin-bottom: 20px; */
    }
 
    .tldr-levels .legend {
@@ -966,9 +1039,11 @@
       /* background: var(--color-background); */
    }
 
-   .tldr-runes-wrapper {
+
+   .tldr-runes {
       display: flex;
       gap: 40px;
+
    }
 
    .tldr-runes-right {
@@ -1013,15 +1088,6 @@
       margin-left: 0.3rem;
       display: inline-block;
       font-weight: normal;
-   }
-
-   .tldr-rune-winrate {
-      text-align: left;
-      font-size: 0.9rem;
-   }
-   .tldr-level-winrate {
-      text-align: left;
-      font-size: 0.9rem;
    }
 
    .tldr-rune-row {
@@ -1122,21 +1188,24 @@
       margin: 0 5px;
    }
 
-   .tldr-right h2 {
-      display: block;
-      text-align: center;
-      margin-top: 0;
-      font-size: 0.9rem;
-      color: var(--light300);
+   .tldr-spells {
+      display: flex;
+      flex-direction: column;
    }
 
-   .tldr-spells img {
+   .spells img {
       border: 1px solid var(--tint400);
       width: 34px;
       margin: 0 5px;
    }
+
+   .tldr-starting {
+      display: flex;
+      flex-direction: column;
+      /* min-width: 184px; */
+   }
    
-   .tldr-starting img {
+   .starting img {
       width: 34px;
       border: 1px solid var(--tint400);
       margin: 0 5px;

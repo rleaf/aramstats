@@ -4,8 +4,7 @@
 
 <template>
    <div class="header-main">
-      <!-- <p>The database is intermittently crashing & am looking for a fix. (Oct 12)</p> -->
-      <RouterLink to="/updates">Intermittent database freezing.</RouterLink>
+      <RouterLink to="/updates">Champion stats available (NA data).</RouterLink>
    </div>
 </template>
 

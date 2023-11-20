@@ -61,6 +61,7 @@ export default {
          for (const i in this.mythicSelection) {
             // Primary Runes
             for (const j in this.champion.mythics[this.mythicSelection[i]].primaryRunes) {
+               if (j === '0') continue
                const tree = this.champion.mythics[this.mythicSelection[i]].primaryRunes[j]
                this.runesData.primaryRunes[j][0][0] += tree.games
                this.runesData.primaryRunes[j][0][1] += tree.wins
@@ -77,6 +78,7 @@ export default {
             }
 
             for (const j in this.champion.mythics[this.mythicSelection[i]].secondaryRunes) {
+               if (j === '0') continue // Some responses from riot gives 0 as the tree
                const tree = this.champion.mythics[this.mythicSelection[i]].secondaryRunes[j]
                this.runesData.secondaryRunes[j][0][0] += tree.games
                this.runesData.secondaryRunes[j][0][1] += tree.wins
@@ -93,6 +95,7 @@ export default {
             }
 
             for (const j in this.champion.mythics[this.mythicSelection[i]].flexRunes) {
+               if (j === '0') continue
                const tree = this.champion.mythics[this.mythicSelection[i]].flexRunes[j]
                const row = parseInt(j.slice(3))
                for (const [k, v] of Object.entries(tree)) {
