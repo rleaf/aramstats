@@ -202,7 +202,7 @@ def item_filter(i, items):
       Tear evolutions are t4 too
       Some masterwork items (inf convergence, equinox, prim dawn) have empty "requiredAlly" field.
    """
-   if i > 7000 and item["tier"] == 4: return False # masterwork filter
+   # if i > 7000 and item["tier"] == 4: return False # masterwork filter
    # if "required_ally" in item:
    #    if item["required_ally"] == "Ornn": return False
    # if "requiredAlly" in item:
@@ -228,6 +228,37 @@ def item_mythic(i, items):
    
 def item_evolutions(i):
    evolutions = {
+      # Masterworks
+      7000: 6693,
+      7001: 6692,
+      7002: 6691,
+      7005: 6662,
+      7006: 6671,
+      7009: 4633,
+      7010: 4636,
+      7011: 3152,
+      7012: 6653,
+      7013: 6655,
+      7014: 6656,
+      7015: 6630,
+      7016: 6631,
+      7017: 6632,
+      7018: 3078,
+      7019: 3190,
+      7020: 2065,
+      7021: 6617,
+      7022: 3001,
+      7024: 4644,
+      7025: 3084,
+      7026: 6665,
+      7027: 6667,
+      7028: 6657,
+      7029: 3142,
+      7030: 3124,
+      7031: 3031,
+      7032: 6675,
+      7033: 6620, 
+      # Tear evolutions
       3040: 3003, # Seraphs: Archangel's 
       3042: 3004, # Muramana: Manamune
       3121: 3119, # Fimbulwinter: Winter's Approach

@@ -1,4 +1,6 @@
 <script>
+import champions from '../../../constants/champions'
+
 export default {
    data() {
       return {
@@ -6,7 +8,8 @@ export default {
          slotFocus: null,
          activeSelection: [0, 0, 0, 0, 0, 0],
          mouseo: null,
-         itemSlots: [{},{},{},{},{},{}]
+         itemSlots: [{},{},{},{},{},{}],
+         idTable: champions.imageName
       }
    },
 
@@ -72,7 +75,6 @@ export default {
          return (i[1].position[l - 1]) ? i[1].position[l - 1].games: 0
       },
       svgPositionHeight(i, pos) {
-         console.log('firing')
          // https://stats.stackexchange.com/questions/70801/how-to-normalize-data-to-0-1-range
          const games = Object.values(pos).map(x => x.games)
          const max = Math.max(...games)
@@ -82,7 +84,10 @@ export default {
 
          // console.log(i, games, val)
          return val * 90
-      }
+      },
+      champIcon(name) {
+         return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/champion/${name}.png`
+      },
    },
    
    computed: {
@@ -90,6 +95,10 @@ export default {
          return Object.entries(this.champion.items).sort((a, b) => b[1].games - a[1].games)
       },
       itemPositionSort() {
+         return
+      },
+      friendlyEncounters() {
+         Object.entries(i[1].friends).sort((a, b) =>a[1] - b[1])
          return
       }
 
@@ -172,20 +181,43 @@ export default {
                
             </div>
             <div class="item-body">
-               <svg>
-                  <g  v-for="j in 6" :key="j">
-                     <text class="slot" :x="`${(j - 1) * 16.5 + 7}%`" y="11" text-anchor="middle">{{ j }}</text>
-                     <rect class="backdrop" :x="`${(j-1) * 16.5}%`" y="40" width="34" :height="90" />
-                     <rect class="value" :x="`${(j-1) * 16.5}%`" y="40" width="34" :height="this.svgPositionHeight(j-1,  i[1].position)" />
-
-                     <text class="winrate" :x="`${(j - 1) * 16.5 + 8}%`" y="125" text-anchor="middle">
-                        {{ (i[1].position[j - 1]) ? winrate(i[1].position[j - 1].games, i[1].position[j - 1].wins) : '-' }}
-                     </text>
-                     <text class="games" :x="`${(j-1) * 16.5 + 7}%`" y="140" text-anchor="middle">
-                        ({{ (i[1].position[j-1]) ? i[1].position[j-1].games : 0 }})
-                     </text>
-                  </g>
-               </svg>
+               <div>
+                  <h3>Slot popularity</h3>
+                  <svg>
+                     <g  v-for="j in 6" :key="j">
+                        <text class="slot" :x="`${(j - 1) * 16.5 + 7}%`" y="11" text-anchor="middle">{{ j }}</text>
+                        <rect class="backdrop" :x="`${(j-1) * 16.5}%`" y="40" width="34" :height="90" />
+                        <rect class="value" :x="`${(j-1) * 16.5}%`" y="40" width="34" :height="this.svgPositionHeight(j-1,  i[1].position)" />
+   
+                        <text class="winrate" :x="`${(j - 1) * 16.5 + 8}%`" y="125" text-anchor="middle">
+                           {{ (i[1].position[j - 1]) ? winrate(i[1].position[j - 1].games, i[1].position[j - 1].wins) : '-' }}
+                        </text>
+                        <text class="games" :x="`${(j-1) * 16.5 + 7}%`" y="140" text-anchor="middle">
+                           ({{ (i[1].position[j-1]) ? i[1].position[j-1].games : 0 }})
+                        </text>
+                     </g>
+                  </svg>
+               </div>
+               <div class="encounters">
+                  <div class="friendly">
+                     <h3>Friendly encounters</h3>
+                     <div class="cell" v-for="i in Object.entries(i[1].friends).sort((a, b) => b[1] - a[1]).slice(0, 20)" :key="i">
+                        <img :src="this.champIcon(this.idTable[i[0]])" alt="">
+                        <div class="tab-sub">
+                           <h3> ({{ i[1] }}) </h3>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="enemy" >
+                     <h3>Enemy encounters</h3>
+                     <div class="cell" v-for="i in Object.entries(i[1].enemies).sort((a, b) => b[1] - a[1]).slice(0, 20)" :key="i">
+                        <img :src="this.champIcon(this.idTable[i[0]])" alt="">
+                        <div class="tab-sub">
+                           <h3> ({{ i[1] }}) </h3>
+                        </div>
+                     </div>
+                  </div>
+               </div>
             </div>
          </div>
       </div>
@@ -352,7 +384,7 @@ export default {
    .builds {
       display: flex;
       flex-direction: column;
-      height: 400px;
+      height: 700px;
    }
    .tab-focus {
       border: 1px solid var(--tint400);
@@ -401,10 +433,50 @@ export default {
 
    .item-body {
       display: flex;
-      height: 200px;
+      /* height: 200px; */
       gap: 40px;
       align-items: center;
-      margin-left: 30px;
+      justify-content: space-around;
+      /* margin-left: 30px; */
+   }
+   .encounters {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+   }
+
+   .encounters .cell {
+      display: inline-block;
+   }
+
+   .cell img {
+      width: 42px;
+      margin: 0 7px;
+   }
+
+   .friendly, .enemy {
+      overflow-x: scroll;
+      white-space: nowrap;
+      padding-bottom: 5px;
+      width: 600px;
+   }
+
+   .friendly::-webkit-scrollbar, .enemy::-webkit-scrollbar{
+      height: 8px;
+   }
+
+   .friendly::-webkit-scrollbar-track, .enemy::-webkit-scrollbar-track{
+      border-radius: 5px;
+   }
+
+   .friendly::-webkit-scrollbar-thumb, .enemy::-webkit-scrollbar-thumb{
+      background: var(--tint200);
+      border-radius: 5px;
+      
+   }
+   .friendly::-webkit-scrollbar-thumb:hover, .enemy::-webkit-scrollbar-thumb:hover{
+      background: var(--tint300);
+      transition: 0.25s;
    }
 
    .items-rows h5 {

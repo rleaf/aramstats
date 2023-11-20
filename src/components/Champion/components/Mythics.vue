@@ -384,9 +384,14 @@
 
                if (discriminator) {
                   // Standardize abnormal starting skill levels
-                  const one = levels[0].slice(0, 3).match(uniqueReg)[0]
-                  const two = discriminator[discriminator.length - 1]
-                  preLevels += one + two.repeat(2)
+                  if (levels[0].slice(0, 3).match(uniqueReg)) {
+                     const one = levels[0].slice(0, 3).match(uniqueReg)[0]
+                     const two = discriminator[discriminator.length - 1]
+                     preLevels += one + two.repeat(2)
+                  } else {
+                     // Only procs when levels 1-3 are identical (soraka triple pointing W).
+                     preLevels = levels[0].slice(0, 3)
+                  }
                } else {
                   // Standardize normal skill levels
                   preLevels += '123'
@@ -1139,14 +1144,13 @@
    
    .trailing-items {
       display: flex;
-      gap: 4px;
+      gap: 15px;
    }
 
    .trailing-items .item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 71px;
       gap: 5px;
    }
 

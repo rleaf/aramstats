@@ -12,16 +12,20 @@ class Propagate():
       self.generate_cursor(meta_collection, 0, batch_size, start)
 
    def generate_cursor(self, meta_collection, index, batch_size, start):
-      cursor = self.puuid_collection.find(skip=start, batch_size=batch_size)
-      while (cursor.next()):
+      limit_size = 20
+      cursor = self.puuid_collection.find(skip=start, limit=limit_size)
+      if (cursor.next()):
          for doc in cursor:
             if index % 20 == 0: print(f"{'@' * 5} INDEX: {index + start} {'@' * 20}")
             print(f"on puuid: {doc['puuid']}")
             self.propagate(doc, 0, batch_size)
             index += 1
             meta_collection.update_one({ "name": "crawler"}, { "$set": {"index": index + start} })
+      else:
+         print('fin')
+         return
       cursor.close()
-      self.generate_cursor(meta_collection, index, batch_size, start + 10)
+      self.generate_cursor(meta_collection, index, batch_size, start+(limit_size-1))
    
 
    def propagate(self, doc: object, start: int, batch_size: int) -> None:

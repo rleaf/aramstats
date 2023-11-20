@@ -277,6 +277,8 @@ export default {
    }
    .rune-wrapper {
       display: flex;
+      height: 837px;
+      margin-bottom: 50px;
    }
    .mythic-tabs {
       overflow-y: scroll;
