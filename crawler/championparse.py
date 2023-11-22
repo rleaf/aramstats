@@ -14,17 +14,19 @@ class ChampionParser():
       patch = util.get_latest_patch()
       match_collection_name = f"{patch}_matches"
       self.champion_stats_name = "championstats"
+      champion_collection = f"{patch}_{self.champion_stats_name}"
       self.items = util.get_items()
       self.runes = util.get_runes()
 
       if match_collection_name in collection_list:
          self.match_collection = db[match_collection_name]
-      if self.champion_stats_name in collection_list:
-         self.champion_stats_collection = db[self.champion_stats_name]
+      if champion_collection in collection_list:
+         self.champion_stats_collection = db[champion_collection]
       else:
-         self.champion_stats_collection = db.create_collection(self.champion_stats_name, validator=V.champion_schema)
+         self.champion_stats_collection = db.create_collection(champion_collection, validator=V.champion_schema)
       if "meta" in collection_list:
          self.meta_document = db["meta"]
+         self.meta_document.update_one({ "name": self.champion_stats_name }, { "$set": {"patch": patch} })
          self.index = self.meta_document.find_one({ "name": self.champion_stats_name })["index"]
       print("Starting champion parser")
       self.forward()

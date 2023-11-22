@@ -29,7 +29,6 @@ router.get('/:region/:gameName/:tagLine', async (req, res) => {
       riotId = await twisted.getAccount(req.params.gameName, req.params.tagLine)
       summoner = await twisted.getSummoner(riotId.puuid, req.params.region)
    } catch (e) {
-      console.log(e)
       if (e.status === 429) {
          console.log(`Hit rate limit on getSummoner for ${req.params.summonerURI} (${req.params.region})`)
       }

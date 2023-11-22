@@ -12,7 +12,8 @@ router.get('/:champion', async (req, res) => {
 
 async function loadChampionStatsCollection() {
    const client = await mongodb.MongoClient.connect(process.env.DB_CONNECTION_STRING)
-   return client.db('aramstats').collection('championstats')
+   const dbPatch = (await client.db('aramstats').collection('meta').findOne( {'name': 'championstats'})).patch
+   return client.db('aramstats').collection(`${dbPatch}_championstats`)
 }
 
 module.exports = router
