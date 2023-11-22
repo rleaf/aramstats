@@ -119,7 +119,7 @@ async function getMatchInfo(matchId, region) {
    try {
       return (await lolApi.MatchV5.get(matchId, REGION_GROUPS[region])).response
    } catch (e) {
-      return e.body.status
+      throw e.body.status
    }
 }
 

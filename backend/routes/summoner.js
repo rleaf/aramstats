@@ -299,71 +299,75 @@ async function matchParser(summoner, region, matchlist, summonerDocument, update
       }
 
       const game = await twisted.getMatchInfo(matchlist[i], region)
-         .catch((e) => {
+         .catch(e => {
             if (e.status == 429) {
                console.log(`(${e.status}) @ matchParse. Recycling same game.`,)
                i--
             }
-         })
-      
-      if (game) {
-         const puuidIndex = game.metadata.participants.findIndex(x => x === summoner.puuid)
-         const player = game.info.participants[puuidIndex]
-
-         if (puuidIndex === -1 || !player) continue 
-
-         if (updateArr) updateArr.push(player.championName)
-         const match = new summonerMatchesModel({
-            _master: summonerDocument._id,
-            matchId: game.metadata.matchId,
-            gameCreation: game.info.gameCreation,
-            gameDuration: getGameDuration(game.info),
-            gameVersion: game.info.gameVersion,
-            win: player.win,
-            kills: player.kills,
-            deaths: player.deaths,
-            assists: player.assists,
-            assists: player.assists,
-            killParticipation: getKillParticipation(player, game.info.participants),
-            damageShare: getDamageShare(player, game.info.participants),
-            items: getItems(player),
-            summoner1Id: player.summoner1Id,
-            summoner2Id: player.summoner2Id,
-            primaryRune: player.perks.styles[0].selections[0].perk,
-            secondaryRune: player.perks.styles[1].style,
-            totals: {
-               damageDealtToChampions: player.totalDamageDealtToChampions,
-               damageTaken: player.totalDamageTaken,
-               selfMitigated: player.damageSelfMitigated,
-               healed: player.totalHeal,
-               healsOnTeammates: player.totalHealsOnTeammates,
-               gold: player.goldEarned
-            },
-            multikills: {
-               triple: player.tripleKills,
-               quadra: player.quadraKills,
-               penta: player.pentaKills,
-            },
-         })
-
-         for (const participant of game.info.participants) {
-            if (participant.puuid != player.puuid) {
-               match.summonerEncounters.push(participant.summonerName)
+            if (e.status_code === 404) {
+               console.log(`404 on ${matchlist[i]}`)
+               return
             }
-         }
+         })
 
-         await match.save()
-         const championEmbed = summonerDocument.championData.find(e => e.name === player.championName)
-         if (championEmbed) {
-            championEmbed.matches.push(match._id)
-         } else {
-            summonerDocument.championData.push(
-               {
-                  name: player.championName, 
-                  matches: match._id
-               }
-            )
+      if (!game) continue
+
+      const puuidIndex = game.metadata.participants.findIndex(x => x === summoner.puuid)
+      const player = game.info.participants[puuidIndex]
+
+      if (puuidIndex === -1 || !player) continue 
+
+      if (updateArr) updateArr.push(player.championName)
+      const match = new summonerMatchesModel({
+         _master: summonerDocument._id,
+         matchId: game.metadata.matchId,
+         gameCreation: game.info.gameCreation,
+         gameDuration: getGameDuration(game.info),
+         gameVersion: game.info.gameVersion,
+         win: player.win,
+         kills: player.kills,
+         deaths: player.deaths,
+         assists: player.assists,
+         assists: player.assists,
+         killParticipation: getKillParticipation(player, game.info.participants),
+         damageShare: getDamageShare(player, game.info.participants),
+         items: getItems(player),
+         summoner1Id: player.summoner1Id,
+         summoner2Id: player.summoner2Id,
+         primaryRune: player.perks.styles[0].selections[0].perk,
+         secondaryRune: player.perks.styles[1].style,
+         totals: {
+            damageDealtToChampions: player.totalDamageDealtToChampions,
+            damageTaken: player.totalDamageTaken,
+            selfMitigated: player.damageSelfMitigated,
+            healed: player.totalHeal,
+            healsOnTeammates: player.totalHealsOnTeammates,
+            gold: player.goldEarned
+         },
+         multikills: {
+            triple: player.tripleKills,
+            quadra: player.quadraKills,
+            penta: player.pentaKills,
+         },
+      })
+
+      for (const participant of game.info.participants) {
+         if (participant.puuid != player.puuid) {
+            match.summonerEncounters.push(participant.summonerName)
          }
+      }
+
+      await match.save()
+      const championEmbed = summonerDocument.championData.find(e => e.name === player.championName)
+      if (championEmbed) {
+         championEmbed.matches.push(match._id)
+      } else {
+         summonerDocument.championData.push(
+            {
+               name: player.championName, 
+               matches: match._id
+            }
+         )
       }
    }
 
