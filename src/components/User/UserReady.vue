@@ -80,7 +80,9 @@ export default {
    methods: {
       async updateSummoner() {
          this.isDisabled = true
-         const url = `/api/summoners/update/${this.$route.params.region}/${this.$route.params.username}`
+         const url = `/api/summoners/update/${this.$route.params.region}/${this.$route.params.gameName}/${this.$route.params.tagLine}`
+         // console.log(url)
+         // return
 
          this.refresh = 'Updating...'
          const res = await axios.put(url)

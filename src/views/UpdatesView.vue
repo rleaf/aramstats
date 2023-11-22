@@ -36,6 +36,12 @@ export default {
             </div>
             <hr>
             <p v-for="p in u.body">{{ p }}</p>
+            <div class="update-links" v-if="u.links && u.links.length">
+               <h4>Links</h4>
+               <ul>
+                  <li v-for="a in u.links"><a :href="a[1]" target="_blank">{{ a[0] }}</a></li>
+               </ul>
+            </div>
             <img v-if="u.img" :src="getImage(u.img)" alt="">
             <p class="sub" v-if="u.imgCaption">{{ u.imgCaption }}</p>
          </div>
@@ -122,6 +128,21 @@ h4 {
    color: var(--light800);
    font-style: italic;
    margin-bottom: 3vh;
+}
+
+.update-links {
+   text-align: left;
+}
+
+.update-links li {
+   color: var(--light300);
+   display: block;
+   text-decoration: none;
+}
+
+.update-links h4 {
+   font-size: 1rem;
+   /* text-decoration: underline; */
 }
 
 .update-tabs > div {

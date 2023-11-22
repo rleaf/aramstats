@@ -2,7 +2,6 @@
 import UserLoading from '../components/User/UserLoading.vue'
 import UserError from '../components/User/UserError.vue'
 import UserReady from '../components/User/UserReady.vue'
-import regions from '../constants/regions'
 import axios from 'axios'
 
    export default {
@@ -13,6 +12,7 @@ import axios from 'axios'
       },
       data() {
          return {
+            regionOptions: ['na', 'euw', 'eune', 'kr', 'lan', 'las', 'oce', 'tr', 'ru', 'jp', 'br', 'vn', 'tw', 'th', 'sg', 'ph'],
             response: null,
             responseStatus: null,
             error: null,
@@ -55,9 +55,8 @@ import axios from 'axios'
          },
 
          lookup() {
-            const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
-
-            if (!regions.includes(this.$route.params.region)) {
+            const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.gameName}/${this.$route.params.tagLine}`
+            if (!this.regionOptions.includes(this.$route.params.region)) {
                this.responseStatus = 2
                this.error = 404
                return
@@ -112,7 +111,8 @@ import axios from 'axios'
       <UserError
          v-if="responseStatus === 2"
          :user="{
-            name: this.$route.params.username,
+            name: this.$route.params.gameName,
+            tagLine: this.$route.params.tagLine,
             region: this.$route.params.region
          }"
          :error="error"/>

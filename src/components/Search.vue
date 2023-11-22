@@ -1,6 +1,5 @@
 <script>
 import Dropdown from '../components/Dropdown.vue'
-import regions from '../constants/regions'
 import champions from '../constants/champions'
 import axios from 'axios'
 
@@ -14,10 +13,11 @@ export default {
    data() {
       return {
          input: '',
+         tagLine: '',
          region: 'rg',
          inputAlert: false,
-         alertMessage: String,
-         regionOptions: regions,
+         alertMessage: '',
+         regionOptions: ['na','euw','eune','kr','lan','las','oce','tr','ru','jp','br','vn','tw','th','sg','ph'],
          showRegions: false,
          containerFocus: false,
          championNames: null,
@@ -27,22 +27,13 @@ export default {
    },
 
    created() {
-      // this.getCurrentPatch()
 
       const localRegion = localStorage.getItem('region')
       if (localRegion) this.region = localRegion
 
-      // for (const champion of champions.names) {
-      //    let x = {}
-      //    x.backName = champion
-      //    x.frontName = (champion in champions.table) ? champions.table[champion] : champion
-      //    x.image = `https://ddragon.leagueoflegends.com/cdn/13.20.1/img/champion/${champion}.png`
-      //    this.champions.push(x)
-      // }
       for (const champion of champions.names) {
          let x = {}
          x.back = (champion[1] === "MonkeyKing") ? 'wukong' : champion[1].toLowerCase()
-         // x.back = champion[1].toLowerCase()
          x.front = champion[2]
          x.image = `https://ddragon.leagueoflegends.com/cdn/13.20.1/img/champion/${champion[1]}.png`
          this.champions.push(x)
@@ -65,27 +56,64 @@ export default {
          this.containerFocus = true
          this.showRegions = false
       },
-      championSearch() {
-         console.log('tomatoes')
-      },
 
       summonerSearch() {
-         if (this.region === 'rg' || this.input == '') {
-            this.alertMessage = 'Enter a summoner name and/or region.'
-            this.inputAlert = true
-            setTimeout(() => {
-               this.inputAlert = false
-            }, 1200)
+         const table = {
+            'na': 'NA1',
+            'euw': 'EUW',
+            'eune': 'EUNE',
+            'kr': 'KR1',
+            'lan': 'LAN',
+            'las': 'LAS',
+            'oce': 'OCE',
+            'tr': 'TR1',
+            'ru': 'RU1',
+            'jp': 'JP1',
+            'br': 'BR1',
+            'vn': 'VN2',
+            'tw': 'TW2',
+            'th': 'TH2',
+            'sg': 'SG2',
+            'ph': 'PH2',
+         }
+         if (this.input === '' || !this.regionOptions.includes(this.region)) {
+            const str = 'Enter a summoner name and/or region.'
+            this.showAlert(str)
             return
+         }
+
+         const identifiers = this.input.split('#')
+         let _gameName = identifiers[0]
+         let _tagLine
+         if (identifiers.length === 2) {
+            _tagLine = identifiers[1]
+         } else {
+            if (!this.regionOptions.includes(this.region)) {
+               const str = `Click a region or enter a tagLine. Having a region selected will default to that region's tagline.`
+               this.showAlert(str)
+               return
+            }
+
+            _tagLine = table[this.region]
          }
 
          this.$router.push({ name: `user`, params: {
             region: this.region,
-            username: encodeURI(this.input),
+            gameName: encodeURI(_gameName),
+            tagLine: _tagLine
          }})
       },
 
+      showAlert(str) {
+         this.alertMessage = str
+         this.inputAlert = true
+         setTimeout(() => {
+            this.inputAlert = false
+         }, 1200)
+      },
+
       regionSelect(region) {
+         
          this.region = region
          localStorage.setItem('region', this.region)
          this.$refs.input.focus()
@@ -116,7 +144,7 @@ export default {
          <input ref="input" type="text" spellcheck="false" autocomplete="off"
             @focus="inputFocus"
             @keyup.enter="summonerSearch"
-            placeholder="Summoner or Champion"
+            placeholder="(づ｡◕‿‿◕｡)づ   gamename#tagline "
             v-model="input">
          <button class="region" @click="this.showRegions = true, this.containerFocus = false">
             {{ this.region.toUpperCase() }}

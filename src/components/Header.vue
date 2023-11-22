@@ -4,7 +4,7 @@
 
 <template>
    <div class="header-main">
-      <RouterLink to="/updates">Champion stats available (NA data).</RouterLink>
+      <RouterLink to="/updates">Transitioning to "gamename#tagline" lookups</RouterLink>
    </div>
 </template>
 
@@ -14,7 +14,8 @@
       justify-content: center;
       align-items: center;
       height: 35px;
-      background: var(--hoverButton);
+      /* background: var(--hoverButton); */
+      background: rgba(82, 32, 32, 0.5);
    }
 
    a, p {

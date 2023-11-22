@@ -5,10 +5,23 @@
       date: "",
       body: [],
       img: [] # Expected webp format
-   }
+   },
 */
 
 const updates = [
+      {
+      title: `Transitioning to "gamename#tagline" lookups`,
+      version: "3.0.1",
+      date: "11/21/23",
+      body: [
+         `Hello. Following suit of Riot's name changes, Aramstats has transitioned to summoner lookups via searching using a game name & tagline versus the now deprecated(?) summoner name. This means it's "Hide on bush#kr1" as opposed to "Hide on bush". You'll still have to select a region.`,
+         `For the lazys: If you've the default tagline you can omit entering a tagline and the selected region will spot you. So "Hide on bush" with KR selected as a region is equivalent to "Hide on bush#kr1" with KR as a region selected.`,
+      ],
+      links: [
+         ['Riot post discussing name changes', `https://www.riotgames.com/en/DevRel/summoner-names-to-riot-id`],
+      ],
+      img: []
+   },
    {
       title: "Champion stats cont...",
       version: "3.0.0",

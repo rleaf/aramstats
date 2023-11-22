@@ -555,7 +555,7 @@
                   
                      <div v-else class="trailing-items">
                         <div class="item" v-for="(item, j) in item" :key="j">
-                           <!-- <h2>{{ j + 4 }}</h2> -->
+                           <h2>Item {{ j + 4 }}</h2>
                            <div class="tldr-wrapper" v-for="(id, k) in item" :key="k">
                               <img :src="itemImage(id[0])"  alt="">
                               <div class="image-sub">

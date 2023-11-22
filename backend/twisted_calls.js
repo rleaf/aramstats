@@ -1,10 +1,8 @@
 const twisted = require('twisted')
 const { RegionGroups } = require('twisted/dist/constants')
-const api = new twisted.LolApi({
-   debug: {
-      logRatelimits: true
-   }
-})
+const lolApi = new twisted.LolApi()
+const riotApi = new twisted.RiotApi()
+
 
 const REGION_CONSTANTS = {
    na: twisted.Constants.Regions.AMERICA_NORTH,
@@ -45,19 +43,32 @@ const REGION_GROUPS = {
    ph: RegionGroups.SEA,
 }
 
+/*
+* Summoner info w/ account-v1
+* Tethered to AMERICAS region rn because closest to backend server. Can move if need to balance rate limits
+*/
+async function getAccount(gameName, tagLine) {
+   console.log(gameName, tagLine)
+   return (await riotApi.Account.getByRiotId(gameName, tagLine, RegionGroups.AMERICAS)).response
+}
+
 /* 
 * Summoner info.
 */
-async function getSummoner(summoner, region) {
-   return (await api.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
+async function getSummoner(puuid, region) {
+   return (await lolApi.Summoner.getByPUUID(puuid, REGION_CONSTANTS[region])).response
 }
+// async function getSummoner(summoner, region) {
+//    return (await lolApi.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
+// }
+
 
 /* 
 * Variable match history for ARAM (450). Used for utility.
 */
 async function getSummonerMatches(puuid, region, start, count) {
-   // const summonerGet = (await api.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
-   return (await api.MatchV5.list(puuid, REGION_GROUPS[region], { queue: 450, start: start, count: count })).response
+   // const summonerGet = (await lolApi.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
+   return (await lolApi.MatchV5.list(puuid, REGION_GROUPS[region], { queue: 450, start: start, count: count })).response
 }
 
 /* 
@@ -68,7 +79,7 @@ async function getAllSummonerMatches(puuid, region) {
    let stop = true
 
    for (let i = 0; stop; i=i+100) {
-      const pull = await api.MatchV5.list(puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })
+      const pull = await lolApi.MatchV5.list(puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })
       matchList.push(pull.response)
 
       if (pull.response.length === 0) {
@@ -89,7 +100,7 @@ async function getSummonerMatchesOnPatch(puuid, region, patch) {
    let stop = true
 
    for (let i = 0; stop; i+=100) {
-      const pull = (await api.MatchV5.list(puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })).response
+      const pull = (await lolApi.MatchV5.list(puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })).response
       matchlist.push(pull)
 
       const lastMatch = await getMatchInfo(pull[pull.length - 1], region)
@@ -107,7 +118,7 @@ async function getSummonerMatchesOnPatch(puuid, region, patch) {
 */
 async function getMatchInfo(matchId, region) {
    try {
-      return (await api.MatchV5.get(matchId, REGION_GROUPS[region])).response
+      return (await lolApi.MatchV5.get(matchId, REGION_GROUPS[region])).response
    } catch (e) {
       return e.body.status
    }
@@ -117,11 +128,12 @@ async function getMatchInfo(matchId, region) {
 * Player Challenges.
 */
 async function playerChallenges(puuid, region) {
-   return (await api.Challenges.PlayerChallenges(puuid, REGION_CONSTANTS[region])).response
+   return (await lolApi.Challenges.PlayerChallenges(puuid, REGION_CONSTANTS[region])).response
 }
 
 
 module.exports = {
+   getAccount,
    getSummoner,
    getSummonerMatches,
    getAllSummonerMatches,

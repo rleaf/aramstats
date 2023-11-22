@@ -19,7 +19,7 @@ export default {
    <div class="dne-main">
       <div v-if="this.error === 404">
          <h2>
-            Summoner <i>{{ this.user.name }} ({{ this.user.region }})</i> does not exist.
+            Summoner <i>{{ this.user.name }}#{{ this.user.tagLine }} on {{ this.user.region }}</i> does not exist.
          </h2>
          <br>
          <img src="https://i.redd.it/6p956lq5yiq81.jpg" alt="">

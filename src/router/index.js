@@ -29,7 +29,7 @@ const router = createRouter({
       }
     },
     {
-      path: '/:region/:username',
+      path: '/:region/:gameName-:tagLine',
       name: 'user',
       component: () => import('../views/UserView.vue')
     },

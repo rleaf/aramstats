@@ -12,6 +12,20 @@
 
 const version = [
    {
+      version: "3.0.1",
+      date: "11/21/23",
+      notes: "Summoner names -> gameName#tagLine",
+      add: [
+         `Twisted account-v1 endpoints`
+      ],
+      remove: [],
+      fix: [],
+      adjust: [
+         `Summoner search`,
+         `Backend to handle RiotId`
+      ]
+   }, 
+   {
       version: "3.0.0",
       date: "11/20/23",
       notes: "Finished champion stats.",

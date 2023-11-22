@@ -11,7 +11,8 @@ dotenv.config()
 const router = express.Router()
 
 // Get summoner information from database or write summoner to db
-router.get('/:region/:summonerURI', async (req, res) => {
+router.get('/:region/:gameName/:tagLine', async (req, res) => {
+// router.get('/:region/:summonerURI', async (req, res) => {
 
    /*
       0. Check to see if summoner exists in Riot DB, if not return DNE
@@ -20,13 +21,15 @@ router.get('/:region/:summonerURI', async (req, res) => {
       3. If summoner DNE in Aramstats DB, start init pull
    */
 
-   let summoner
+   let riotId
 
    // 0.
    try {
-      console.log(`Searching for ${req.params.summonerURI} (${req.params.region})`)
-      summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
+      console.log(`Searching for ${req.params.gameName}#${req.params.tagLine} (${req.params.region})`)
+      riotId = await twisted.getAccount(req.params.gameName, req.params.tagLine)
+      summoner = await twisted.getSummoner(riotId.puuid, req.params.region)
    } catch (e) {
+      console.log(e)
       if (e.status === 429) {
          console.log(`Hit rate limit on getSummoner for ${req.params.summonerURI} (${req.params.region})`)
       }
@@ -50,7 +53,7 @@ router.get('/:region/:summonerURI', async (req, res) => {
          }
 
          const summonerResponse = await aggregateSummoner(summoner.puuid)
-         console.log(`Summoner ${summoner.name} (${req.params.region}) already parsed.`)
+         console.log(`Summoner ${req.params.gameName}#${req.params.tagLine} (${req.params.region}) already parsed.`)
          res.send(summonerResponse[0])
          return
       }
@@ -105,7 +108,8 @@ router.get('/:region/:summonerURI', async (req, res) => {
 })
 
 // Update summoner
-router.put('/update/:region/:summonerURI', async (req, res) => {
+router.put('/update/:region/:gameName/:tagLine', async (req, res) => {
+// router.put('/update/:region/:summonerURI', async (req, res) => {
 
    /* 
       1. Get the lastMatchID field for summoner document & their match history from Riot.
@@ -113,9 +117,11 @@ router.put('/update/:region/:summonerURI', async (req, res) => {
          proceeding match data.
    */ 
    let summoner
+   let riotId
    // I prefer to only use puuid to query aramstats db, so I need to get it from Riot again.
    try {
-      summoner = await twisted.getSummoner(req.params.summonerURI, req.params.region)
+      riotId = await twisted.getAccount(req.params.gameName, req.params.tagLine)
+      summoner = await twisted.getSummoner(riotId.puuid, req.params.region)
    } catch (e) {
       if (e.status === 429) {
          console.log(`Hit rate limit on getSummoner for ${req.params.summonerURI} (${req.params.region})`)
