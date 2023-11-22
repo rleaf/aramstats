@@ -48,7 +48,6 @@ const REGION_GROUPS = {
 * Tethered to AMERICAS region rn because closest to backend server. Can move if need to balance rate limits
 */
 async function getAccount(gameName, tagLine) {
-   console.log(gameName, tagLine)
    return (await riotApi.Account.getByRiotId(gameName, tagLine, RegionGroups.AMERICAS)).response
 }
 
