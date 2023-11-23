@@ -4,6 +4,7 @@ import champions from '../../constants/champions'
 import Mythics from './components/Mythics.vue'
 import Items from './components/Items.vue'
 import Runes from './components/Runes.vue'
+import { championParametersStore } from '../../stores/championParameters'
 
 
 export default {
@@ -18,15 +19,16 @@ export default {
          itemBin: [],
          backName: champions.imageName[this.champion.id],
          abilities: [],
-         parameters: {
-            thresholds: {
-               core: 0.05,
-               trail: 0.05,
-            },
-            trailingDuplicates: true,
-            trailingExtended: 3,
-            levelCutoff: 10
-         },
+         // parameters: {
+         //    thresholds: {
+         //       core: 0.05,
+         //       trail: 0.05,
+         //    },
+         //    trailingDuplicates: true,
+         //    trailingExtended: 2,
+         //    levelCutoff: 10
+         // },
+         parameters: championParametersStore(),
          title: '',
          masterTab: 0,
          mythicTab: 0,
@@ -339,7 +341,6 @@ export default {
                   :mythic-data="this.mythicData"
                   :champion="this.champion"
                   :patch="this.patch"
-                  :parameters="this.parameters"
                   :items="this.items"
                   :runes="this.runes"
                   :runes-table="this.runesTable"/>
@@ -402,8 +403,9 @@ export default {
       display: flex;
       border-radius: 15px;
       align-items: center;
-      height: 200px;
-      padding: 0;
+      /* height: 200px; */
+      /* padding: 0; */
+      padding: 30px 0;
       gap: 4rem;
       width: 100%;
       font-size: 1.3rem;
@@ -521,6 +523,12 @@ export default {
       padding: 0.5rem 1.5rem 0.5rem 0.5rem;
       gap: 0.5rem;
       transition: 0.25s;
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+      -khtml-user-select: none; /* Konqueror HTML */
+      -moz-user-select: none; /* Old versions of Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+      user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
    }
 
    .tab-focus {

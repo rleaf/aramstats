@@ -1,34 +1,40 @@
 <script>
+import { championParametersStore } from '../../../stores/championParameters'
+
    export default {
       data() {
          return {
             mythicTab: 0,
             tldrTab: 0,
             itemTab: 0,
-            renderKey: 0,   
+            renderKey: 0,
+            settings: false,
+            parameters: championParametersStore(),
          }
       },
 
       created() {
-         for (const i in this.mythicData) {
-            const mythic = this.mythicData[i]
-
-            mythic.tldr = {}
-            mythic.tldr.builds = []
-            mythic.tldr.runes = []
-            mythic.tldr.levels = []
-            mythic.tldr.levelOrder = []
-            if (mythic.coreBuild) {
-               this.tldrBuilds(mythic, 0)
-               this.tldrBuilds(mythic, 1)
-            }
-            this.tldrRunes(mythic, mythic.id)
-            this.tldrLevels(mythic)
-            this.tldrLevelOrder(mythic)
-         }
+         this.computeTLDR()
       },
 
       methods: {
+         computeTLDR() {
+            for (const i in this.mythicFilter) {
+               const mythic = this.mythicFilter[i]
+               mythic.tldr = {}
+               mythic.tldr.builds = []
+               mythic.tldr.runes = []
+               mythic.tldr.levels = []
+               mythic.tldr.levelOrder = []
+               if (mythic.coreBuild) {
+                  this.tldrBuilds(mythic, 0)
+                  this.tldrBuilds(mythic, 1)
+               }
+               this.tldrRunes(mythic, mythic.id)
+               this.tldrLevels(mythic)
+               this.tldrLevelOrder(mythic)
+            }
+         },
          getTreeStuff(tree, mode) {
             const o = this.champion.mythics[this.mythicFilter[this.mythicTab].id].primaryRunes[tree]
             if (o) {
@@ -51,8 +57,8 @@
                }
             }
          },
-         toggleVerbose() {
-            this.parameters.trailingDuplicates = !this.parameters.trailingDuplicates
+         toggleVerbose(bool) {
+            this.parameters.trailingDuplicates = bool
 
             for (const i in this.mythicFilter) {
                const mythic = this.mythicFilter[i]
@@ -60,8 +66,8 @@
                if (mythic.coreBuild) {
                   this.tldrBuilds(mythic, 0)
                   this.tldrBuilds(mythic, 1)
+               }
             }
-         }
          },
          getItemName(i) {
             if (this.items !== null) return this.items[i].name
@@ -336,7 +342,7 @@
                for (let u = 3; u < 6; u++) {
                   const trailSum = mythic.itemPosition[u].reduce((c, a) => c + a[1], 0)
                   const filtered = (this.parameters.trailingDuplicates) ? mythic.itemPosition[u] : mythic.itemPosition[u].filter(o => !blacklist.includes(o[0]))
-                  const trailing = filtered.filter(o => (o[1] / trailSum) > this.parameters.thresholds.trail).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1])).slice(0, this.parameters.trailingExtended)
+                  const trailing = filtered.filter(o => (o[1] / trailSum) > this.parameters.thresholds.core).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1])).slice(0, 3)
    
                   for (const v in trailing) {
                      blacklist.push(trailing[v][0])
@@ -351,7 +357,7 @@
                for (let u = 3; u < 6; u++) {
                   // const trailSum = mythic.itemPosition[u].reduce((c, a) => c + a[1], 0)
                   const filtered = (this.parameters.trailingDuplicates) ? mythic.itemPosition[u] : mythic.itemPosition[u].filter(o => !blacklist.includes(o[0]))
-                  const trailing = filtered.sort((a, b) => b[1] - a[1]).slice(0, this.parameters.trailingExtended)
+                  const trailing = filtered.sort((a, b) => b[1] - a[1]).slice(0, 3)
                   // const trailing = filtered.filter(o => (o[1] / trailSum) > this.parameters.thresholds.trail).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1])).slice(0, this.parameters.trailingExtended)
    
                   for (const v in trailing) {
@@ -403,9 +409,9 @@
                   cleanedData.push(datum)
                   continue
                }
-
+               // console.log(cleanedData)
                for (const w in cleanedData) {
-                  if (cleanedData[w][0].includes(path) && path.length >= this.parameters.levelCutoff) {
+                  if (cleanedData[w][0].includes(path) && path.length >= (this.parameters.levelCutoff - 3)) {
                      cleanedData[w][1] += levels[1]
                      cleanedData[w][2] += levels[2]
                      push = false
@@ -428,6 +434,13 @@
             const popular = turkey[0]
             mythic.tldr.levelOrder.push(max, popular)
          },
+
+         refireMethods(mode, val) {
+            if (mode === 0) this.parameters.thresholds.core = val
+            if (mode === 1) this.parameters.levelCutoff = val
+
+            this.computeTLDR()
+         }
       },
       
       computed: {
@@ -490,7 +503,7 @@
          patch: null,
          mythicData: null,
          champion: null,
-         parameters: null,
+         // parameters: null,
          items: null,
          runes: null,
          runesTable: null,
@@ -514,8 +527,50 @@
                </div>
             </div>
             <div class="tldr-toggle">
-               <div :class="{ 'tab-focus': this.parameters.trailingDuplicates }" @click="this.toggleVerbose()" class="tab">Duplicate Items</div>
+               <div class="tab" @click="this.settings = true">Settings</div>
             </div>
+            <div v-if="this.settings" class="modal">
+               <div class="settings">
+                  <div class="cog">
+                     <div class="cog-head">
+                        <h4>Duplicate items</h4>
+                        <p>"I have this <u>on</u> because I want to see duplicate items in the build path."</p>
+                     </div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.trailingDuplicates }" @click="this.toggleVerbose(true)">On</div>
+                     <div class="tab" :class="{ 'tab-focus': !this.parameters.trailingDuplicates }" @click="this.toggleVerbose(false)">Off</div>
+                  </div>
+                  <div class="cog">
+                     <div class="cog-head">
+                        <h4>Trailing items count</h4>
+                        <p>"I only want to see <u>2</u> items per slot in trailing items."</p>
+                     </div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.trailingExtended === 2 }" @click="this.parameters.trailingExtended = 2">2</div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.trailingExtended === 3 }" @click="this.parameters.trailingExtended = 3">3</div>
+                  </div>
+                  <div class="cog">
+                     <div class="cog-head">
+                        <h4>Highest winrate threshold</h4>
+                        <p>"I only want to see the highest winrate datum/combination that <br> is greater than or equal to <u>5%</u> of that data's sample space."</p>
+                     </div>
+                     <!-- <input v-model="winrateThreshold" type="text"> -->
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.thresholds.core === 0.02 }" @click="this.refireMethods(0, 0.02)">2%</div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.thresholds.core === 0.05 }" @click="this.refireMethods(0, 0.05)">5%</div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.thresholds.core === 0.10 }" @click="this.refireMethods(0, 0.10)">10%</div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.thresholds.core === 0.15 }" @click="this.refireMethods(0, 0.15)">15%</div>
+                  </div>
+                  <div class="cog">
+                     <div class="cog-head">
+                        <h4>Level cutoff</h4>
+                        <p>"I want to ignore games where the champion has not made it past level <u>10</u>."</p>
+                     </div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.levelCutoff === 10 }" @click="this.refireMethods(1, 10)">10</div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.levelCutoff === 13 }" @click="this.refireMethods(1, 13)">13</div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.levelCutoff === 16 }" @click="this.refireMethods(1, 16)">16</div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.levelCutoff === 18 }" @click="this.refireMethods(1, 18)">18</div>
+                  </div>
+               </div>
+            </div>
+            <div class="modal-back" v-if="this.settings" @click="this.settings = false"></div>
          </div>
 
       </div>
@@ -543,7 +598,7 @@
                   <div class="item" v-for="(item, i) in mythicFilter[this.mythicTab].tldr.builds[this.tldrTab]" :key="i">
                   
                      <div v-if="i === 0" class="core-items">
-                        <h2>Core</h2>
+                        <h2>Core Items</h2>
                         <div class="tldr-wrapper">
                            <img :src="itemImage(id)" alt="" v-for="id in item[0].split('_')" :key="id">
                            <div class="image-sub">
@@ -555,8 +610,8 @@
                   
                      <div v-else class="trailing-items">
                         <div class="item" v-for="(item, j) in item" :key="j">
-                           <h2>Item {{ j + 4 }}</h2>
-                           <div class="tldr-wrapper" v-for="(id, k) in item" :key="k">
+                           <!-- <h2>Item {{ j + 4 }}</h2> -->
+                           <div class="tldr-wrapper" v-for="(id, k) in item.slice(0, this.parameters.trailingExtended)" :key="k">
                               <img :src="itemImage(id[0])"  alt="">
                               <div class="image-sub">
                                  <h4> {{ winrate(id[1], id[2]) }} </h4>
@@ -733,32 +788,69 @@
 </template>
 
 <style scoped>
-   
 
-   .item {
-      display: inline-block;
-      text-align: center;
-   }
-
-   .item img {
-      width: 34px;
-      margin: 0 5px;
-      border: 1px solid var(--tint400);
-   }
-
-   
-   .mythic-items {
-      padding: 30px 0;
+   .modal {
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      width: max-content;
       background: var(--tint100);
       border-radius: 15px;
+      padding: 2rem;
+      z-index: 2;
    }
 
-   .item-tabs-wrapper {
+   .cog {
+      padding: 1rem 0;
+   }
+
+   .cog .tab {
       display: inline-block;
+      /* margin-left: 10px; */
    }
 
-   .item-tabs {
-      display: flex;
+   .cog div:not(:nth-child(2)), .cog div:not(:nth-child(1)) {
+      margin-left: 10px;
+   }
+
+   .cog-head {
+      display: block;
+   }
+
+   .cog-head p {
+      margin-left: 0rem;
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+      font-style: italic;
+      color: var(--tint400);
+   }
+
+   .modal h4 {
+      font-weight: normal;
+      margin: 0;
+      /* color: tomato; */
+   }
+
+   .modal .settings {
+      font-size: 0.85rem;
+      /* width: 100px; */
+   }
+   
+   .modal .tab {
+      padding: 0.5rem 1rem;
+      width: max-content;
+      background: rgba(255, 255, 255, 0.05);
+   }
+
+   .modal-back {
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.35);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
    }
 
    h3 {
@@ -770,9 +862,6 @@
       font-size: 1rem;
    }
 
-   .mythic-item-wrapper > h2 {
-      width: 200px;
-   }
 
    .tldr-body h2 {
       margin-bottom: 0.5rem;
@@ -894,6 +983,12 @@
       padding: 0.5rem 1.5rem 0.5rem 0.5rem;
       gap: 0.5rem;
       transition: 0.25s;
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+      -khtml-user-select: none; /* Konqueror HTML */
+      -moz-user-select: none; /* Old versions of Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+      user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
    }
 
    .tab-focus {
@@ -959,8 +1054,8 @@
 
    .tldr-left {
       display: flex;
-      margin: 0 50px;
-      justify-content: space-between;
+      /* margin: 0 50px; */
+      justify-content: space-around;
       align-items: flex-start;
       gap: 10px;
       margin-top: 20px;
@@ -968,9 +1063,9 @@
    
    .tldr-right {
       display: flex;
-      margin: 0 50px;
+      /* margin: 0 50px; */
       margin-bottom: 20px;
-      justify-content: space-between;
+      justify-content: space-around;
       /* flex-direction: column; */
    }
 
@@ -1030,7 +1125,13 @@
       line-height: 1.3rem;
       font-size: 0.7rem;
       border: 1px solid transparent;
-      content: '1'
+      content: '1';
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+      -khtml-user-select: none; /* Konqueror HTML */
+      -moz-user-select: none; /* Old versions of Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+      user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
    }
 
    .tldr-levels .active-skill {
@@ -1220,7 +1321,17 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
+      width: 75px;
+      padding: 0.5rem .5rem;
+      border-radius: 8px;
+      gap: 10px;
+   }
+
+   .trailing-items .item:nth-child(1),
+   .trailing-items .item:nth-child(3) {
+      /* background: var(--hoverButton); */
+      background: rgba(127, 127, 127, 0.1);
+      
    }
 
    .trailing-items .item img {
@@ -1231,7 +1342,8 @@
       border: 1px solid var(--tint400);
    }   
    .item h2 {
-      font-size: 0.95rem;
-      color: var(--light200);
+      font-size: 0.85rem;
+      /* font-style: normal; */
+      color: var(--tint400);
    }
 </style>

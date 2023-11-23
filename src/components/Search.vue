@@ -3,7 +3,7 @@ import Dropdown from '../components/Dropdown.vue'
 import champions from '../constants/champions'
 import axios from 'axios'
 
-import { globalsStore } from '../stores/globals'
+// import { globalsStore } from '../stores/globals'
 
 export default {
    components: {
@@ -22,7 +22,7 @@ export default {
          containerFocus: false,
          championNames: null,
          champions: [],
-         store: globalsStore()
+         // store: globalsStore()
       }
    },
 
@@ -41,16 +41,16 @@ export default {
    },
 
    methods: {
-      async getCurrentPatch() {
-         const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
+      // async getCurrentPatch() {
+      //    const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
 
-         try {
-            // this.currentPatch = (await axios.get(url)).data[0].split('.').slice(0, 2).join('.')
-            this.store.patch = (await axios.get(url)).data[0]
-         } catch (e) {
-            console.log(e, 'getCurrentPatch')
-         }
-      },
+      //    try {
+      //       // this.currentPatch = (await axios.get(url)).data[0].split('.').slice(0, 2).join('.')
+      //       this.store.patch = (await axios.get(url)).data[0]
+      //    } catch (e) {
+      //       console.log(e, 'getCurrentPatch')
+      //    }
+      // },
 
       inputFocus() {
          this.containerFocus = true

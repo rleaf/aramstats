@@ -4,12 +4,13 @@
       version: "",
       date: "",
       body: [],
-      img: [] # Expected webp format
+      links: [],
+      img: [] // Expected webp format
    },
 */
 
 const updates = [
-      {
+   {
       title: `Transitioning to "gamename#tagline" lookups`,
       version: "3.0.1",
       date: "11/21/23",

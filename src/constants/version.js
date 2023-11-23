@@ -12,6 +12,19 @@
 
 const version = [
    {
+      version: "3.1.0",
+      date: "",
+      notes: "General improvements to UX for the champion stat pages",
+      add: [
+         `Settings. Users can customize the information they want to see in the 'tldr' tab in champion stats`
+      ],
+      remove: [],
+      fix: [],
+      adjust: [
+         `Cleaning up styles`
+      ]
+   }, 
+   {
       version: "3.0.1",
       date: "11/21/23",
       notes: "Summoner names -> gameName#tagLine",
