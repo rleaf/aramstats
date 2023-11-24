@@ -10,6 +10,7 @@ import { championParametersStore } from '../../../stores/championParameters'
             renderKey: 0,
             settings: false,
             parameters: championParametersStore(),
+            noData: `No data with current settings/observations.`
          }
       },
 
@@ -49,23 +50,19 @@ import { championParametersStore } from '../../../stores/championParameters'
             for (const i in this.mythicFilter) {
                const mythic = this.mythicFilter[i]
                mythic.tldr = {}
-               mythic.tldr.builds = []
-               /* 
-                  make it so it's mythic.tldr.builds = [[], []]
-               */
-               mythic.tldr.runes = []
+               mythic.tldr.builds = [[], []]
+               mythic.tldr.runes = [[], []]
                mythic.tldr.levels = []
                mythic.tldr.levelOrder = []
-               console.log(this.mythicFilter[i].id)
-               console.log(mythic.tldr.builds)
                if (mythic.coreBuild) {
                   this.tldrBuilds(mythic, 0)
                   this.tldrBuilds(mythic, 1)
                }
-               this.tldrRunes(mythic, mythic.id)
+               this.tldrRunes(mythic, 0)
+               this.tldrRunes(mythic, 1)
                this.tldrLevels(mythic)
                this.tldrLevelOrder(mythic)
-               console.log('tldr', mythic.tldr.builds)
+               // console.log(mythic.id, mythic.tldr.runes)
             }
          },
          getTreeStuff(tree, mode) {
@@ -95,7 +92,7 @@ import { championParametersStore } from '../../../stores/championParameters'
 
             for (const i in this.mythicFilter) {
                const mythic = this.mythicFilter[i]
-               mythic.tldr.builds = []
+               mythic.tldr.builds = [[], []]
                if (mythic.coreBuild) {
                   this.tldrBuilds(mythic, 0)
                   this.tldrBuilds(mythic, 1)
@@ -159,13 +156,161 @@ import { championParametersStore } from '../../../stores/championParameters'
             return `${Math.round(win / total * 1000) / 10}%`
          },
 
-         tldrRunes(mythic, item) {
-            // const sum = mythic.runes.reduce((c, a) => c + a[1], 0)
-            // const winrate = mythic.runes.filter(o => (o[1] / sum) > this.parameters.tldr.coreThreshold).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
-            // const popular = mythic.runes[0]
-            // mythic.tldr.runes.push(winrate, popular)
+         tldrRunes(mythic, mode) {
+            let runeCombination = [[], [], [], []]
+            let runeWinrates = []
 
+            let primaryTree
+            let primaryTreeWinrate = 0
 
+            let secondaryTree
+            let secondaryTreeWinrate = 0
+
+            // Get the primary tree
+            let primaryRoller = 0
+            for (const [lorax, v] of Object.entries(this.champion.mythics[mythic.id].primaryRunes)) {
+               // highest winrate
+               if (mode === 0) {
+                  if ((v.games / mythic.games) >= this.parameters.tldr.coreThreshold && (v.wins / v.games) > primaryTreeWinrate) {
+                     primaryTreeWinrate = (v.wins / v.games)
+                     primaryTree = lorax
+                  }
+               } else {
+                  if (v.games > primaryRoller) {
+                     primaryTreeWinrate = (v.wins / v.games)
+                     primaryRoller = v.games
+                     primaryTree = lorax
+                  }
+               }
+            }
+            runeCombination[0].push(primaryTree)
+            
+            if (!primaryTree) {
+               mythic.tldr.runes[mode] = undefined
+               return
+            }
+            
+            runeWinrates.push(primaryTreeWinrate)
+
+            const primaryGames = this.champion.mythics[mythic.id].primaryRunes[primaryTree].games
+
+            // Populate primary runes
+            for (const [k, v] of Object.entries(this.champion.mythics[mythic.id].primaryRunes[primaryTree])) {
+               if (k === 'games' || k === 'wins') continue
+               let rune
+               let winrate = 0
+               if (mode === 0) {
+                  for (const [k2, v2] of Object.entries(v)) {
+                     if ((v2.games / primaryGames) >= this.parameters.tldr.coreThreshold && (v2.wins / v2.games) > winrate) {
+                        winrate = (v2.wins / v2.games)
+                        rune = k2
+                     }
+                  }
+               } else {
+                  let roller = 0
+                  for (const [k2, v2] of Object.entries(v)) {
+                     if (v2.games > roller) {
+                        roller = v2.games
+                        winrate = (v2.wins / v2.games)
+                        rune = k2
+                     }
+                  }
+               }
+
+               runeCombination[1].push(rune)
+               runeWinrates.push(winrate)
+            }
+
+            // Get the secondary tree
+            for (const [lorax, v] of Object.entries(this.champion.mythics[mythic.id].secondaryRunes)) {
+               if (lorax === primaryTree) continue
+               if (mode === 0) {
+                  if ((v.games / mythic.games) >= this.parameters.tldr.coreThreshold && (v.wins / v.games) > secondaryTreeWinrate) {
+                     secondaryTreeWinrate = (v.wins / v.games)
+                     secondaryTree = lorax
+                  }
+
+               } else {
+                  let roller = 0
+                  if (v.games > roller) {
+                     secondaryTreeWinrate = (v.wins / v.games)
+                     roller = v.games
+                     secondaryTree = lorax
+                  }
+               }
+            }
+
+            runeWinrates.push(secondaryTreeWinrate)
+            runeCombination[0].push(secondaryTree)
+
+            // Populate secondary runes
+            let secondaryBin = []
+            const secondaryGames = this.champion.mythics[mythic.id].secondaryRunes[secondaryTree].games
+            for (const [k, v] of Object.entries(this.champion.mythics[mythic.id].secondaryRunes[secondaryTree])) {
+               if (k === 'games' || k === 'wins') continue
+               let contender
+               let roller = 0
+               if (mode === 0) {
+                  for (const [k2, v2] of Object.entries(v)) {
+                     if ((v2.games / secondaryGames) >= this.parameters.tldr.coreThreshold && (v2.wins / v2.games) > roller) {
+                        roller = (v2.wins / v2.games)
+                        contender = k2
+                     }
+                  }
+                  secondaryBin.push([contender, roller])
+               } else {
+                  let winrate = 0
+                  for (const [k2, v2] of Object.entries(v)) {
+
+                     if (v2.games > roller) {
+                        roller = v2.games
+                        winrate = (v2.wins / v2.games)
+                        contender = k2
+                     }
+                  }
+                  secondaryBin.push([contender, roller, winrate])
+               }
+            }
+
+            if (secondaryBin.length > 2) {
+               const val = secondaryBin.map(y => y[1])
+               const idx = val.indexOf(Math.min(...val))
+               secondaryBin.splice(idx, 1)
+            }
+            runeWinrates.push(...secondaryBin.map(o => o[o.length - 1]))
+            runeCombination[2].push(...secondaryBin.map(o => o[0]))
+
+            // Flex runes
+            for (const v of Object.values(this.champion.mythics[mythic.id].flexRunes)) {
+               let flexWinrate = 0
+               let flexRune
+               let roller = 0
+               for (const [k2, v2] of Object.entries(v)) {
+                  if (mode === 0) {
+                     if ((v2.games / mythic.games) >= this.parameters.tldr.coreThreshold && (v2.wins / v2.games) > flexWinrate) {
+                        flexWinrate = (v2.wins / v2.games)
+                        flexRune = k2
+                     }
+                  } else {
+                     if (v2.games > roller) {
+                        roller = v2.games
+                        flexWinrate = (v2.wins / v2.games)
+                        flexRune = k2
+                     }
+                  }
+               }
+
+               runeCombination[3].push(flexRune)
+               runeWinrates.push(flexWinrate)
+            }
+
+            const average = Math.round(runeWinrates.reduce((c, a) => c + a, 0) / runeWinrates.length * 10000) / 100
+            runeCombination.push(average)
+
+            mythic.tldr.runes[mode] = runeCombination
+         },
+
+         tldrRunesOld(mythic, mode) {
             let maxRuneCombination = [[], [], [], []] // trees, primary, secondary, flex
             let maxRuneWinrates = [] // primary tree, ...primary runes, secondary tree, ...secondary runes, flex runes
 
@@ -181,7 +326,7 @@ import { championParametersStore } from '../../../stores/championParameters'
             let popularTreeGames = 0
 
             // Get the primary tree for the highest winrate and the most popular
-            for (const [lorax, v] of Object.entries(this.champion.mythics[item].primaryRunes)) {
+            for (const [lorax, v] of Object.entries(this.champion.mythics[mythic.id].primaryRunes)) {
                if ((v.games / mythic.games) >= this.parameters.tldr.coreThreshold && (v.wins / v.games) > primaryTreeWinrate) {
                   primaryTreeWinrate = (v.wins / v.games)
                   primaryTree = lorax
@@ -198,15 +343,16 @@ import { championParametersStore } from '../../../stores/championParameters'
 
 
             if (!primaryTree) {
-               // mythic.tldr.runes.push([[], [], [], [], []], [[], [], [], [], []])
+               mythic.tldr.runes[0] = undefined
+               mythic.tldr.runes[1] = undefined
                return
             } // better err handling later
             maxRuneCombination[0].push(primaryTree)
             popularRuneCombination[0].push(popularTree)
-            const primaryGames = this.champion.mythics[item].primaryRunes[primaryTree].games
+            const primaryGames = this.champion.mythics[mythic.id].primaryRunes[primaryTree].games
 
             const getPrimaries = (tree, container, winrateContainer, mode) => {
-               for (const [k, v] of Object.entries(this.champion.mythics[item].primaryRunes[tree])) {
+               for (const [k, v] of Object.entries(this.champion.mythics[mythic.id].primaryRunes[tree])) {
                   if (k === 'games' || k === 'wins') continue
                   let rune
                   let winrate = 0
@@ -237,7 +383,7 @@ import { championParametersStore } from '../../../stores/championParameters'
                let tree
                let winrate = 0
                if (mode === 0) {
-                  for (const [lorax, v] of Object.entries(this.champion.mythics[item].secondaryRunes)) {
+                  for (const [lorax, v] of Object.entries(this.champion.mythics[mythic.id].secondaryRunes)) {
                      if (lorax === _primaryTree) continue
                      if ((v.games / mythic.games) >= this.parameters.tldr.coreThreshold && (v.wins / v.games) > winrate) {
                         winrate = (v.wins / v.games)
@@ -247,7 +393,7 @@ import { championParametersStore } from '../../../stores/championParameters'
                   }
                } else {
                   let iter = 0
-                  for (const [lorax, v] of Object.entries(this.champion.mythics[item].secondaryRunes)) {
+                  for (const [lorax, v] of Object.entries(this.champion.mythics[mythic.id].secondaryRunes)) {
                      if (lorax === _primaryTree) continue
                      if (v.games > iter) {
                         winrate = (v.wins / v.games)
@@ -261,15 +407,11 @@ import { championParametersStore } from '../../../stores/championParameters'
             }
 
             const getSecondaries = (_secondaryTree, container, winrateContainer, mode) => {
-               /* 
-                  this is so ugly. pls fix
-               */
-
                let bin = []
                // Secondary highest winrate
                if (mode === 0) {
-                  let secondaryGames = this.champion.mythics[item].secondaryRunes[_secondaryTree].games
-                  for (const [k, v] of Object.entries(this.champion.mythics[item].secondaryRunes[_secondaryTree])) {
+                  let secondaryGames = this.champion.mythics[mythic.id].secondaryRunes[_secondaryTree].games
+                  for (const [k, v] of Object.entries(this.champion.mythics[mythic.id].secondaryRunes[_secondaryTree])) {
                      if (k === 'games' || k === 'wins') continue
                      let contender
                      let iter = 0
@@ -282,7 +424,7 @@ import { championParametersStore } from '../../../stores/championParameters'
                      bin.push([contender, iter])
                   }
                } else {
-                  for (const [k, v] of Object.entries(this.champion.mythics[item].secondaryRunes[_secondaryTree])) {
+                  for (const [k, v] of Object.entries(this.champion.mythics[mythic.id].secondaryRunes[_secondaryTree])) {
                      if (k === 'games' || k === 'wins') continue
                      let contender
                      let iter = 0
@@ -308,7 +450,6 @@ import { championParametersStore } from '../../../stores/championParameters'
                container[2].push(...bin.map(x => x[0]))
             }
 
-
             getPrimaries(primaryTree, maxRuneCombination, maxRuneWinrates, 0) // Get highest winrate or most popular primary runes
             const secondaryTreeMax = getSecondaryTree(primaryTree, maxRuneWinrates, 0) // Get highest winrate or most popular secondary tree
             maxRuneCombination[0].push(secondaryTreeMax)
@@ -320,7 +461,7 @@ import { championParametersStore } from '../../../stores/championParameters'
             getSecondaries(secondaryTreePopular, popularRuneCombination, popularRuneWinrates, 1)
 
             // Flex runes
-            for (const v of Object.values(this.champion.mythics[item].flexRunes)) {
+            for (const v of Object.values(this.champion.mythics[mythic.id].flexRunes)) {
                let maxFlexWinrate = 0
                let maxFlexRune
                let popularFlexWins = 0
@@ -351,7 +492,9 @@ import { championParametersStore } from '../../../stores/championParameters'
             maxRuneCombination.push(maxAverage)
             popularRuneCombination.push(popularAverage)
 
-            mythic.tldr.runes.push(maxRuneCombination, popularRuneCombination)
+            mythic.tldr.runes[0] = maxRuneCombination
+            mythic.tldr.runes[1] = popularRuneCombination
+            // mythic.tldr.runes.push(maxRuneCombination, popularRuneCombination)
          },
 
          tldrBuilds(mythic, mode) {
@@ -364,7 +507,7 @@ import { championParametersStore } from '../../../stores/championParameters'
                core = mythic.coreBuild.filter(o => (o[1] / sum) >= this.parameters.tldr.coreThreshold).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
                // core = mythic.coreBuild.sort((a, b) => b[1] - a[1])[0]
                if (!core) {
-                  console.log('no data on ', mythic.id)
+                  mythic.tldr.builds[mode] = undefined
                   return
                }
                blacklist = core[0].split('_')
@@ -398,8 +541,7 @@ import { championParametersStore } from '../../../stores/championParameters'
                }
             }
 
-
-            mythic.tldr.builds.push([core, container])
+            mythic.tldr.builds[mode] = [core, container]
          },
 
          tldrLevels(mythic) {
@@ -479,11 +621,11 @@ import { championParametersStore } from '../../../stores/championParameters'
          },
          getStartingItems() {
             const y = this.mythicFilter[this.mythicTab].startingItems
-            if (!y) return 'toad'
+            // if (!y) return 'toad'
             if (this.tldrTab === 0) {
                const k = y.filter(a => (a[1] / this.mythicFilter[this.mythicTab].games) >= this.parameters.tldr.coreThreshold)
                .sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
-               if (!k) return 'frog'
+               if (!k) return undefined
                return y.filter(a => (a[1] / this.mythicFilter[this.mythicTab].games) >= this.parameters.tldr.coreThreshold)
                   .sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
             } else {
@@ -502,14 +644,14 @@ import { championParametersStore } from '../../../stores/championParameters'
 
          },
          getPrimaryRuneTable() {
-            if (this.mythicFilter[this.mythicTab].tldr.runes.length > 0 && this.mythicFilter[this.mythicTab].tldr.runes[this.tldrTab][0]) {
+            if (this.mythicFilter[this.mythicTab].tldr.runes[this.tldrTab][0]) {
                const t = this.mythicFilter[this.mythicTab].tldr.runes[this.tldrTab][0][0]
                return this.runesTable[t]
             }
          },
 
          getSecondaryRuneTable() {
-            if (this.mythicFilter[this.mythicTab].tldr.runes.length > 0) {
+            if (this.mythicFilter[this.mythicTab].tldr.runes[this.tldrTab].length != 0) {
                const t = this.mythicFilter[this.mythicTab].tldr.runes[this.tldrTab][0][1]
                return this.runesTable[t].slice(1, 4)
             }
@@ -523,8 +665,10 @@ import { championParametersStore } from '../../../stores/championParameters'
          },
 
          getRuneWinrate() {
-            if (this.mythicFilter[this.mythicTab].tldr.runes.length > 0) {
-               return this.mythicFilter[this.mythicTab].tldr.runes[this.tldrTab][4]
+            if (this.mythicFilter[this.mythicTab].tldr.runes[this.tldrTab]) {
+               return `${this.mythicFilter[this.mythicTab].tldr.runes[this.tldrTab][4]}%`
+            } else {
+               return '-'
             }
          },
          mythicFilter() {
@@ -536,7 +680,6 @@ import { championParametersStore } from '../../../stores/championParameters'
          patch: null,
          mythicData: null,
          champion: null,
-         // parameters: null,
          items: null,
          runes: null,
          runesTable: null,
@@ -592,7 +735,6 @@ import { championParametersStore } from '../../../stores/championParameters'
                         <h4>Highest winrate threshold</h4>
                         <p>"I only want to see the highest winrate datum/combination that <br> is greater than or equal to <u>5%</u> of that data's sample space."</p>
                      </div>
-                     <!-- <input v-model="winrateThreshold" type="text"> -->
                      <div class="tab" :class="{ 'tab-focus': this.parameters.tldr.coreThreshold === 0.02 }" @click="this.refireMethods(0, 0.02)">2%</div>
                      <div class="tab" :class="{ 'tab-focus': this.parameters.tldr.coreThreshold === 0.05 }" @click="this.refireMethods(0, 0.05)">5%</div>
                      <div class="tab" :class="{ 'tab-focus': this.parameters.tldr.coreThreshold === 0.10 }" @click="this.refireMethods(0, 0.10)">10%</div>
@@ -635,7 +777,7 @@ import { championParametersStore } from '../../../stores/championParameters'
                </div>
                <div class="items">
 
-                  <div class="item" v-for="(item, i) in mythicFilter[this.mythicTab].tldr.builds[this.tldrTab]" :key="i">
+                  <div class="item" v-if="mythicFilter[this.mythicTab].tldr.builds[this.tldrTab]" v-for="(item, i) in mythicFilter[this.mythicTab].tldr.builds[this.tldrTab]" :key="i">
                   
                      <div v-if="i === 0" class="core-items">
                         <h2>Core Items</h2>
@@ -662,6 +804,10 @@ import { championParametersStore } from '../../../stores/championParameters'
                      </div>
                   
                   </div>
+                  <div class="no-data" v-else>
+                     <!-- <img src="https://i.imgur.com/o90ZKCq.jpeg" alt=""> -->
+                     {{this.noData }}
+                  </div>
                </div>
             </div>
          
@@ -670,16 +816,17 @@ import { championParametersStore } from '../../../stores/championParameters'
                   <h1>Runes</h1>
                   <div class="header-stats">
                      <h2>
-                        {{ getRuneWinrate }}%
+                        {{ getRuneWinrate }}
                      </h2>
                      <h3>(Mean winrate)</h3>
                   </div>
                </div>
-               <div class="tldr-runes">
+               <div v-if="mythicFilter[this.mythicTab].tldr.runes[this.tldrTab]" class="tldr-runes">
                   <div class="tldr-runes-right">
                      <div class="tldr-rune-row" v-for="(row, i) in getPrimaryRuneTable" :key="i">
                         <img rel="preload" :class="{ 'active-rune': activeRune(rune, 1) }" :src="runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
                      </div>
+                     
                   </div>
                
                   <div class="tldr-runes-left">
@@ -698,6 +845,9 @@ import { championParametersStore } from '../../../stores/championParameters'
                   </div>
 
                </div>
+               <div class="no-runes-data" v-else>
+                  {{ this.noData }}
+               </div>
             </div>
          </div>
          <div class="tldr-right">
@@ -705,13 +855,16 @@ import { championParametersStore } from '../../../stores/championParameters'
             <div class="tldr-starting">
                <div class="tldr-header">
                   <h1>Starting</h1>
-                  <div class="header-stats">
+                  <div v-if="getStartingItems" class="header-stats">
                      <h2> {{ winrate(getStartingItems[1], getStartingItems[2]) }} </h2>
-                     <h3> ({{ getStartingItems[1] }}) </h3>
+                     <h3> ({{ getStartingItems[1]  }}) </h3>
                   </div>
                </div>
-               <div class="starting">
+               <div v-if="getStartingItems" class="starting">
                   <img :src="itemImage(id)" alt="" v-for="(id, i) in getStartingItems[0].split('_')" :key="i">
+               </div>
+               <div class="no-data" v-else>
+                  {{ this.noData }}
                </div>
             </div>
          
@@ -1161,7 +1314,7 @@ import { championParametersStore } from '../../../stores/championParameters'
    .tldr-runes {
       display: flex;
       gap: 40px;
-
+      
    }
 
    .tldr-runes-right {
@@ -1342,6 +1495,17 @@ import { championParametersStore } from '../../../stores/championParameters'
       padding: 0.5rem .5rem;
       border-radius: 8px;
       gap: 10px;
+   }
+
+   .no-data, .no-runes-data {
+      color: var(--tint400);
+      font-style: italic;
+      font-size: 0.9rem;
+   }
+
+   .no-runes-data {
+      min-width: 398px;
+      min-height: 170px;
    }
 
    .trailing-items .item:nth-child(1),
