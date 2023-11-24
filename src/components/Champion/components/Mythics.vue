@@ -14,18 +14,50 @@ import { championParametersStore } from '../../../stores/championParameters'
       },
 
       created() {
+         this.checkStorage()
          this.computeTLDR()
       },
 
       methods: {
+         checkStorage() {
+            if (!localStorage.getItem('useLocalStorage')) return
+            
+            this.parameters.tldr.useLocalStorage = localStorage.getItem('useLocalStorage')
+            this.parameters.tldr.coreThreshold = Number(localStorage.getItem('coreThreshold'))
+            this.parameters.tldr.trailingDuplicates = (localStorage.getItem('trailingDuplicates') === 'true')
+            this.parameters.tldr.trailingExtended = Number(localStorage.getItem('trailingExtended'))
+            this.parameters.tldr.levelCutoff = Number(localStorage.getItem('levelCutoff'))
+         },
+         closeModal() {
+            this.settings = false
+
+            if (this.parameters.tldr.useLocalStorage) {
+               localStorage.setItem('useLocalStorage', this.parameters.tldr.useLocalStorage)
+               localStorage.setItem('coreThreshold', this.parameters.tldr.coreThreshold)
+               localStorage.setItem('trailingDuplicates', this.parameters.tldr.trailingDuplicates)
+               localStorage.setItem('trailingExtended', this.parameters.tldr.trailingExtended)
+               localStorage.setItem('levelCutoff', this.parameters.tldr.levelCutoff)
+            } else {
+               // purge storage
+               for (const p in this.parameters.tldr) {
+                  localStorage.removeItem(p)
+               }
+            }
+
+         },
          computeTLDR() {
             for (const i in this.mythicFilter) {
                const mythic = this.mythicFilter[i]
                mythic.tldr = {}
                mythic.tldr.builds = []
+               /* 
+                  make it so it's mythic.tldr.builds = [[], []]
+               */
                mythic.tldr.runes = []
                mythic.tldr.levels = []
                mythic.tldr.levelOrder = []
+               console.log(this.mythicFilter[i].id)
+               console.log(mythic.tldr.builds)
                if (mythic.coreBuild) {
                   this.tldrBuilds(mythic, 0)
                   this.tldrBuilds(mythic, 1)
@@ -33,6 +65,7 @@ import { championParametersStore } from '../../../stores/championParameters'
                this.tldrRunes(mythic, mythic.id)
                this.tldrLevels(mythic)
                this.tldrLevelOrder(mythic)
+               console.log('tldr', mythic.tldr.builds)
             }
          },
          getTreeStuff(tree, mode) {
@@ -58,7 +91,7 @@ import { championParametersStore } from '../../../stores/championParameters'
             }
          },
          toggleVerbose(bool) {
-            this.parameters.trailingDuplicates = bool
+            this.parameters.tldr.trailingDuplicates = bool
 
             for (const i in this.mythicFilter) {
                const mythic = this.mythicFilter[i]
@@ -128,7 +161,7 @@ import { championParametersStore } from '../../../stores/championParameters'
 
          tldrRunes(mythic, item) {
             // const sum = mythic.runes.reduce((c, a) => c + a[1], 0)
-            // const winrate = mythic.runes.filter(o => (o[1] / sum) > this.parameters.thresholds.core).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
+            // const winrate = mythic.runes.filter(o => (o[1] / sum) > this.parameters.tldr.coreThreshold).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
             // const popular = mythic.runes[0]
             // mythic.tldr.runes.push(winrate, popular)
 
@@ -149,7 +182,7 @@ import { championParametersStore } from '../../../stores/championParameters'
 
             // Get the primary tree for the highest winrate and the most popular
             for (const [lorax, v] of Object.entries(this.champion.mythics[item].primaryRunes)) {
-               if ((v.games / mythic.games) >= this.parameters.thresholds.core && (v.wins / v.games) > primaryTreeWinrate) {
+               if ((v.games / mythic.games) >= this.parameters.tldr.coreThreshold && (v.wins / v.games) > primaryTreeWinrate) {
                   primaryTreeWinrate = (v.wins / v.games)
                   primaryTree = lorax
                }
@@ -179,7 +212,7 @@ import { championParametersStore } from '../../../stores/championParameters'
                   let winrate = 0
                   if (mode === 0) {
                      for (const [k2, v2] of Object.entries(v)) {
-                        if ((v2.games / primaryGames) >= this.parameters.thresholds.core && (v2.wins / v2.games) > winrate) {
+                        if ((v2.games / primaryGames) >= this.parameters.tldr.coreThreshold && (v2.wins / v2.games) > winrate) {
                            winrate = (v2.wins / v2.games)
                            rune = k2
                         }
@@ -206,7 +239,7 @@ import { championParametersStore } from '../../../stores/championParameters'
                if (mode === 0) {
                   for (const [lorax, v] of Object.entries(this.champion.mythics[item].secondaryRunes)) {
                      if (lorax === _primaryTree) continue
-                     if ((v.games / mythic.games) >= this.parameters.thresholds.core && (v.wins / v.games) > winrate) {
+                     if ((v.games / mythic.games) >= this.parameters.tldr.coreThreshold && (v.wins / v.games) > winrate) {
                         winrate = (v.wins / v.games)
                         tree = lorax
                      }
@@ -241,7 +274,7 @@ import { championParametersStore } from '../../../stores/championParameters'
                      let contender
                      let iter = 0
                      for (const [k2, v2] of Object.entries(v)) {
-                        if (v2.games / secondaryGames >= this.parameters.thresholds.core && (v2.wins / v2.games) > iter) {
+                        if (v2.games / secondaryGames >= this.parameters.tldr.coreThreshold && (v2.wins / v2.games) > iter) {
                            iter = (v2.wins / v2.games)
                            contender = k2
                         }
@@ -294,7 +327,7 @@ import { championParametersStore } from '../../../stores/championParameters'
                let popularFlexWinrate = 0
                let popularFlexRune
                for (const [k2, v2] of Object.entries(v)) {
-                  if ((v2.games / mythic.games) >= this.parameters.thresholds.core && (v2.wins / v2.games) > maxFlexWinrate) {
+                  if ((v2.games / mythic.games) >= this.parameters.tldr.coreThreshold && (v2.wins / v2.games) > maxFlexWinrate) {
                      maxFlexWinrate = (v2.wins / v2.games)
                      maxFlexRune = k2
                   }
@@ -322,27 +355,24 @@ import { championParametersStore } from '../../../stores/championParameters'
          },
 
          tldrBuilds(mythic, mode) {
-            /* 
-               make nice later. is ugly
-            */
             const sum = mythic.coreBuild.reduce((c, a) => c + a[1], 0)
             let core
             let container = []
             let blacklist = []
 
             if (mode === 0) {
-               /* 
-                  Some champs like jarvan present too uniform of a distribution to use this.parameters.thresolds.core (0.10) as a demarcation; needs to be set dynamically.
-                  Can compute variance of the of the top ~4 highest playrate and then use that as a weight for threshold?
-               */
-               core = mythic.coreBuild.filter(o => (o[1] / sum) >= .02).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
+               core = mythic.coreBuild.filter(o => (o[1] / sum) >= this.parameters.tldr.coreThreshold).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
                // core = mythic.coreBuild.sort((a, b) => b[1] - a[1])[0]
+               if (!core) {
+                  console.log('no data on ', mythic.id)
+                  return
+               }
                blacklist = core[0].split('_')
    
                for (let u = 3; u < 6; u++) {
                   const trailSum = mythic.itemPosition[u].reduce((c, a) => c + a[1], 0)
-                  const filtered = (this.parameters.trailingDuplicates) ? mythic.itemPosition[u] : mythic.itemPosition[u].filter(o => !blacklist.includes(o[0]))
-                  const trailing = filtered.filter(o => (o[1] / trailSum) > this.parameters.thresholds.core).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1])).slice(0, 3)
+                  const filtered = (this.parameters.tldr.trailingDuplicates) ? mythic.itemPosition[u] : mythic.itemPosition[u].filter(o => !blacklist.includes(o[0]))
+                  const trailing = filtered.filter(o => (o[1] / trailSum) >= this.parameters.tldr.coreThreshold).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1])).slice(0, 3)
    
                   for (const v in trailing) {
                      blacklist.push(trailing[v][0])
@@ -356,9 +386,9 @@ import { championParametersStore } from '../../../stores/championParameters'
    
                for (let u = 3; u < 6; u++) {
                   // const trailSum = mythic.itemPosition[u].reduce((c, a) => c + a[1], 0)
-                  const filtered = (this.parameters.trailingDuplicates) ? mythic.itemPosition[u] : mythic.itemPosition[u].filter(o => !blacklist.includes(o[0]))
+                  const filtered = (this.parameters.tldr.trailingDuplicates) ? mythic.itemPosition[u] : mythic.itemPosition[u].filter(o => !blacklist.includes(o[0]))
                   const trailing = filtered.sort((a, b) => b[1] - a[1]).slice(0, 3)
-                  // const trailing = filtered.filter(o => (o[1] / trailSum) > this.parameters.thresholds.trail).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1])).slice(0, this.parameters.trailingExtended)
+                  // const trailing = filtered.filter(o => (o[1] / trailSum) > this.parameters.tldr.trailingThreshold).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1])).slice(0, this.parameters.tldr.trailingExtended)
    
                   for (const v in trailing) {
                      blacklist.push(trailing[v][0])
@@ -411,7 +441,7 @@ import { championParametersStore } from '../../../stores/championParameters'
                }
                // console.log(cleanedData)
                for (const w in cleanedData) {
-                  if (cleanedData[w][0].includes(path) && path.length >= (this.parameters.levelCutoff - 3)) {
+                  if (cleanedData[w][0].includes(path) && path.length >= (this.parameters.tldr.levelCutoff - 3)) {
                      cleanedData[w][1] += levels[1]
                      cleanedData[w][2] += levels[2]
                      push = false
@@ -419,25 +449,25 @@ import { championParametersStore } from '../../../stores/championParameters'
                   }
                }
 
-               if (push && path.length >= this.parameters.levelCutoff) cleanedData.push(datum)
+               if (push && path.length >= this.parameters.tldr.levelCutoff) cleanedData.push(datum)
             }
 
             const popular = cleanedData.sort((a, b) => b[1] - a[1])[0]
-            const max = cleanedData.filter(a => (a[1] / mythic.games) >= this.parameters.thresholds.core).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
+            const max = cleanedData.filter(a => (a[1] / mythic.games) >= this.parameters.tldr.coreThreshold).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
             mythic.tldr.levels.push(max, popular)
          },
 
          tldrLevelOrder(mythic) {
             const turkey = mythic.levelOrder
-            const max = turkey.filter(o => (o[1] / mythic.games) >= this.parameters.thresholds.core)
+            const max = turkey.filter(o => (o[1] / mythic.games) >= this.parameters.tldr.coreThreshold)
                .sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
             const popular = turkey[0]
             mythic.tldr.levelOrder.push(max, popular)
          },
 
          refireMethods(mode, val) {
-            if (mode === 0) this.parameters.thresholds.core = val
-            if (mode === 1) this.parameters.levelCutoff = val
+            if (mode === 0) this.parameters.tldr.coreThreshold = val
+            if (mode === 1) this.parameters.tldr.levelCutoff = val
 
             this.computeTLDR()
          }
@@ -451,7 +481,10 @@ import { championParametersStore } from '../../../stores/championParameters'
             const y = this.mythicFilter[this.mythicTab].startingItems
             if (!y) return 'toad'
             if (this.tldrTab === 0) {
-               return y.filter(a => (a[1] / this.mythicFilter[this.mythicTab].games) >= this.parameters.thresholds.core)
+               const k = y.filter(a => (a[1] / this.mythicFilter[this.mythicTab].games) >= this.parameters.tldr.coreThreshold)
+               .sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
+               if (!k) return 'frog'
+               return y.filter(a => (a[1] / this.mythicFilter[this.mythicTab].games) >= this.parameters.tldr.coreThreshold)
                   .sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
             } else {
                return y.sort((a, b) => b[1] - a[1])[0]
@@ -461,7 +494,7 @@ import { championParametersStore } from '../../../stores/championParameters'
          getSpells() {
             const a = this.mythicFilter[this.mythicTab].spells
             if (this.tldrTab === 0) {
-               return a.filter(r => (r[1] / this.mythicFilter[this.mythicTab].games) >= this.parameters.thresholds.core)
+               return a.filter(r => (r[1] / this.mythicFilter[this.mythicTab].games) >= this.parameters.tldr.coreThreshold)
                   .sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))[0]
             } else {
                return a.sort((a, b) => b[1] - a[1])[0]
@@ -531,21 +564,28 @@ import { championParametersStore } from '../../../stores/championParameters'
             </div>
             <div v-if="this.settings" class="modal">
                <div class="settings">
+                  <div class="local">
+                     <svg @click="this.parameters.tldr.useLocalStorage = !this.parameters.tldr.useLocalStorage" fill="none">
+                        <rect x="0.5" y="0.5" rx="13"/>
+                        <circle :class="{ 'storage-active': this.parameters.tldr.useLocalStorage }" cx="25%" cy="50%" r="22%" rx="12"/>
+                     </svg>
+                     <p>Save settings to local storage? Data auto-purges when toggled off.</p>
+                  </div>
                   <div class="cog">
                      <div class="cog-head">
                         <h4>Duplicate items</h4>
                         <p>"I have this <u>on</u> because I want to see duplicate items in the build path."</p>
                      </div>
-                     <div class="tab" :class="{ 'tab-focus': this.parameters.trailingDuplicates }" @click="this.toggleVerbose(true)">On</div>
-                     <div class="tab" :class="{ 'tab-focus': !this.parameters.trailingDuplicates }" @click="this.toggleVerbose(false)">Off</div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.tldr.trailingDuplicates }" @click="this.toggleVerbose(true)">On</div>
+                     <div class="tab" :class="{ 'tab-focus': !this.parameters.tldr.trailingDuplicates }" @click="this.toggleVerbose(false)">Off</div>
                   </div>
                   <div class="cog">
                      <div class="cog-head">
                         <h4>Trailing items count</h4>
                         <p>"I only want to see <u>2</u> items per slot in trailing items."</p>
                      </div>
-                     <div class="tab" :class="{ 'tab-focus': this.parameters.trailingExtended === 2 }" @click="this.parameters.trailingExtended = 2">2</div>
-                     <div class="tab" :class="{ 'tab-focus': this.parameters.trailingExtended === 3 }" @click="this.parameters.trailingExtended = 3">3</div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.tldr.trailingExtended === 2 }" @click="this.parameters.tldr.trailingExtended = 2">2</div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.tldr.trailingExtended === 3 }" @click="this.parameters.tldr.trailingExtended = 3">3</div>
                   </div>
                   <div class="cog">
                      <div class="cog-head">
@@ -553,24 +593,24 @@ import { championParametersStore } from '../../../stores/championParameters'
                         <p>"I only want to see the highest winrate datum/combination that <br> is greater than or equal to <u>5%</u> of that data's sample space."</p>
                      </div>
                      <!-- <input v-model="winrateThreshold" type="text"> -->
-                     <div class="tab" :class="{ 'tab-focus': this.parameters.thresholds.core === 0.02 }" @click="this.refireMethods(0, 0.02)">2%</div>
-                     <div class="tab" :class="{ 'tab-focus': this.parameters.thresholds.core === 0.05 }" @click="this.refireMethods(0, 0.05)">5%</div>
-                     <div class="tab" :class="{ 'tab-focus': this.parameters.thresholds.core === 0.10 }" @click="this.refireMethods(0, 0.10)">10%</div>
-                     <div class="tab" :class="{ 'tab-focus': this.parameters.thresholds.core === 0.15 }" @click="this.refireMethods(0, 0.15)">15%</div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.tldr.coreThreshold === 0.02 }" @click="this.refireMethods(0, 0.02)">2%</div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.tldr.coreThreshold === 0.05 }" @click="this.refireMethods(0, 0.05)">5%</div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.tldr.coreThreshold === 0.10 }" @click="this.refireMethods(0, 0.10)">10%</div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.tldr.coreThreshold === 0.15 }" @click="this.refireMethods(0, 0.15)">15%</div>
                   </div>
                   <div class="cog">
                      <div class="cog-head">
                         <h4>Level cutoff</h4>
                         <p>"I want to ignore games where the champion has not made it past level <u>10</u>."</p>
                      </div>
-                     <div class="tab" :class="{ 'tab-focus': this.parameters.levelCutoff === 10 }" @click="this.refireMethods(1, 10)">10</div>
-                     <div class="tab" :class="{ 'tab-focus': this.parameters.levelCutoff === 13 }" @click="this.refireMethods(1, 13)">13</div>
-                     <div class="tab" :class="{ 'tab-focus': this.parameters.levelCutoff === 16 }" @click="this.refireMethods(1, 16)">16</div>
-                     <div class="tab" :class="{ 'tab-focus': this.parameters.levelCutoff === 18 }" @click="this.refireMethods(1, 18)">18</div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.tldr.levelCutoff === 10 }" @click="this.refireMethods(1, 10)">10</div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.tldr.levelCutoff === 13 }" @click="this.refireMethods(1, 13)">13</div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.tldr.levelCutoff === 16 }" @click="this.refireMethods(1, 16)">16</div>
+                     <div class="tab" :class="{ 'tab-focus': this.parameters.tldr.levelCutoff === 18 }" @click="this.refireMethods(1, 18)">18</div>
                   </div>
                </div>
             </div>
-            <div class="modal-back" v-if="this.settings" @click="this.settings = false"></div>
+            <div class="modal-back" v-if="this.settings" @click="this.closeModal()"></div>
          </div>
 
       </div>
@@ -611,7 +651,7 @@ import { championParametersStore } from '../../../stores/championParameters'
                      <div v-else class="trailing-items">
                         <div class="item" v-for="(item, j) in item" :key="j">
                            <!-- <h2>Item {{ j + 4 }}</h2> -->
-                           <div class="tldr-wrapper" v-for="(id, k) in item.slice(0, this.parameters.trailingExtended)" :key="k">
+                           <div class="tldr-wrapper" v-for="(id, k) in item.slice(0, this.parameters.tldr.trailingExtended)" :key="k">
                               <img :src="itemImage(id[0])"  alt="">
                               <div class="image-sub">
                                  <h4> {{ winrate(id[1], id[2]) }} </h4>
@@ -710,81 +750,6 @@ import { championParametersStore } from '../../../stores/championParameters'
       </div>
    </div>
 
-   <!-- <div class="mythic-item-wrapper">
-      <div class="section-top">
-
-         <h2>not tldr</h2>
-         <div class="section-top-right-wrapper">
-   
-            <div class="section-top-right">
-               <div class="section-top-tabs">
-                  <div :class="{ 'tab-focus': this.itemTab === 0 }" @click="this.itemTab = 0" class="tab">Runes</div>
-                  <div :class="{ 'tab-focus': this.itemTab === 1 }" @click="this.itemTab = 1" class="tab">Items</div>
-                  <div :class="{ 'tab-focus': this.itemTab === 2 }" @click="this.itemTab = 2" class="tab">Starting Items</div>
-               </div>
-            <h3>({{ getItemName(this.mythicData[this.mythicTab].id) }})</h3>
-            </div>
-   
-         </div>
-      </div>
-      <div class="mythic-items">
-
-         <div class="items-body">
-
-            <div v-if="this.itemTab === 0" class="runes">
-               <div class="rune-tree" v-for="(tree, i) in Object.entries(this.runesTable)" :key="i">
-                  <img rel="preload" :src="runeImage(tree[0])" alt="">
-                  <div class="image-sub">
-                     <h4 v-if="this.getTreeStuff(tree[0], 0)">{{ winrate(this.getTreeStuff(tree[0], 0), this.getTreeStuff(tree[0], 1))}}</h4>
-                     <h4 v-else>-</h4>
-                     <h3>{{ this.getTreeStuff(tree[0], 0) || '-' }}</h3>
-                  </div>
-                  <div class="rune-row" :class="{ 'keystone-row': j === 0}" v-for="(row, j) in tree[1]" :key="j">
-                     <div class="rune"  v-for="(rune, k) in row" :key="k">
-                        <img rel="preload" :class="{ 'keystones': j === 0 }" :src="runeImage(rune)" alt="">
-                        <div class="image-sub-block">
-                           <h4 v-if="this.getRuneGames(tree[0], j, rune)">{{ this.winrate(this.getRuneGames(tree[0], j, rune), this.getRuneWins(tree[0], j, rune)) }}</h4>
-                           <h4 v-else>-</h4>
-                           <h3>{{ this.getRuneGames(tree[0], j, rune) || '-' }}</h3>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-
-            </div>
-            <div v-if="this.itemTab === 1" class="all-items">
-               <div class="item-row" v-for="i in 6" :key="i">
-                  <h2>
-                     {{ i }}
-                  </h2>
-                  <div class="item" v-for="(id, j) in this.mythicData[this.mythicTab].itemPosition[i-1]" :key="j">
-                     <img rel="preload" :src="itemImage(id[0])" alt="">
-                     <div class="image-sub-block">
-                        <h4 class="block-header"> {{ winrate(id[1], id[2]) }} </h4>
-                        <h3> ({{ id[1] }}) </h3>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            
-            <div v-if="this.itemTab === 2">
-               <div class="item-row" v-for="(el, i) in this.mythicData[this.mythicTab].startingItems" :key="i">
-                  <div class="image-sub-block">
-                     <h4> {{ winrate(el[1], el[2]) }} </h4>
-                     <h3> ({{ el[1] }}) </h3>
-                  </div>
-                  <div v-if="el[0] != '0000'" class="item" v-for="(id, j) in el[0].split('_')" :key="j">
-                     <img :src="itemImage(id)" alt="">
-                  </div>
-                  <div v-else style="margin-left: 20px;" class="null">
-                     No starting item
-                  </div>
-               </div>
-
-            </div>
-         </div>
-      </div>
-   </div> -->
 </template>
 
 <style scoped>
@@ -801,6 +766,58 @@ import { championParametersStore } from '../../../stores/championParameters'
       z-index: 2;
    }
 
+   .local {
+      display: flex;
+      flex-direction: row-reverse;
+      gap: 10px;
+      align-items: center;
+      /* margin-bottom: 20px; */
+   }
+
+   .local svg {
+      width: 50px;
+      height: 26px;
+      overflow: hidden;
+      cursor: pointer;
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+      -khtml-user-select: none; /* Konqueror HTML */
+      -moz-user-select: none; /* Old versions of Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+      user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+   }
+   
+   .local rect {
+      width: calc(100% - 1px);
+      height: calc(100% - 1px);
+      /* height: 100%; */
+      stroke: var(--tint400);
+      /* stroke-width: 2; */
+   }
+
+   .local circle {
+      fill: var(--tint200);
+      height: calc(100% - 8px);
+      transition: 0.2s cubic-bezier(.25,.52,.64,.84);
+   }
+
+   .local p {
+      /* display: inline-block; */
+      color: var(--tint400);
+      font-size: 0.8rem;
+      font-style: italic;
+      width: 220px;
+      margin: 0;
+   }
+
+   circle.storage-active {
+      transform: translateX(50%);
+      fill: var(--tint400); 
+   }
+   
+   /* circle.front:hover {
+      fill: var(--light600);
+   } */
    .cog {
       padding: 1rem 0;
    }
@@ -810,7 +827,7 @@ import { championParametersStore } from '../../../stores/championParameters'
       /* margin-left: 10px; */
    }
 
-   .cog div:not(:nth-child(2)), .cog div:not(:nth-child(1)) {
+   .cog .tab {
       margin-left: 10px;
    }
 

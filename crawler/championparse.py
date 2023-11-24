@@ -218,38 +218,9 @@ class ChampionParser():
                      f"skills.levelOrder.{level_order}.enemies.{e[4]}": 1,
                      f"skills.{skill_path}.games": 1,
                      f"skills.{skill_path}.wins": win,
-                     # Runes
-                     # f"runes.{rune_path}.games": 1,
-                     # f"runes.{rune_path}.wins": win,
-                     # f"primaryRunes.{primary_tree}.games": 1,
-                     # f"primaryRunes.{primary_tree}.wins": win,
-                     # f"primaryRunes.{primary_tree}.row0.{primary_runes[0]}.games": 1,
-                     # f"primaryRunes.{primary_tree}.row0.{primary_runes[0]}.wins": win,
-                     # f"primaryRunes.{primary_tree}.row1.{primary_runes[1]}.games": 1,
-                     # f"primaryRunes.{primary_tree}.row1.{primary_runes[1]}.wins": win,
-                     # f"primaryRunes.{primary_tree}.row2.{primary_runes[2]}.games": 1,
-                     # f"primaryRunes.{primary_tree}.row2.{primary_runes[2]}.wins": win,
-                     # f"primaryRunes.{primary_tree}.row3.{primary_runes[3]}.games": 1,
-                     # f"primaryRunes.{primary_tree}.row3.{primary_runes[3]}.wins": win,
-                     # f"secondaryRunes.{secondary_tree}.games": 1,
-                     # f"secondaryRunes.{secondary_tree}.wins": win,
-                     # f"secondaryRunes.{secondary_tree}.row{secondary_rune_one_tier}.{secondary_runes[0]}.games": 1,
-                     # f"secondaryRunes.{secondary_tree}.row{secondary_rune_one_tier}.{secondary_runes[0]}.wins": win,
-                     # f"secondaryRunes.{secondary_tree}.row{secondary_rune_two_tier}.{secondary_runes[1]}.games": 1,
-                     # f"secondaryRunes.{secondary_tree}.row{secondary_rune_two_tier}.{secondary_runes[1]}.wins": win,
-                     # f"flexRunes.row0.{tertiary_offense}.games": 1,
-                     # f"flexRunes.row0.{tertiary_offense}.wins": win,
-                     # f"flexRunes.row1.{tertiary_flex}.games": 1,
-                     # f"flexRunes.row1.{tertiary_flex}.wins": win,
-                     # f"flexRunes.row2.{tertiary_defense}.games": 1,
-                     # f"flexRunes.row2.{tertiary_defense}.wins": win,
                      # Builds
                      f"builds.{build_path}.games": 1,
                      f"builds.{build_path}.wins": win,
-                     # f"builds.{build_path}.spells.{summoner_spells}.games": 1,
-                     # f"builds.{build_path}.spells.{summoner_spells}.wins": win,
-                     # f"builds.{build_path}.startingItems.{starting_build}.games": 1,
-                     # f"builds.{build_path}.startingItems.{starting_build}.wins": win,
                      # Mythics
                      f"mythics.{mythic}.runes.{rune_path}.games": 1,
                      f"mythics.{mythic}.runes.{rune_path}.wins": win,
@@ -275,10 +246,13 @@ class ChampionParser():
                      f"mythics.{mythic}.flexRunes.row1.{tertiary_flex}.wins": win,
                      f"mythics.{mythic}.flexRunes.row2.{tertiary_defense}.games": 1,
                      f"mythics.{mythic}.flexRunes.row2.{tertiary_defense}.wins": win,
+                     # Spells
                      f"mythics.{mythic}.spells.{summoner_spells}.games": 1,
                      f"mythics.{mythic}.spells.{summoner_spells}.wins": win,
+                     # Skill path
                      f"mythics.{mythic}.skillPath.{skill_path}.games": 1,
                      f"mythics.{mythic}.skillPath.{skill_path}.wins": win,
+                     # Level order
                      f"mythics.{mythic}.levelOrder.{level_order}.games": 1,
                      f"mythics.{mythic}.levelOrder.{level_order}.wins": win,
                   }
@@ -305,12 +279,6 @@ class ChampionParser():
                   # Position
                   update["$inc"][f"items.{i}.position.{item_order.index(i)}.games"] = 1
                   update["$inc"][f"items.{i}.position.{item_order.index(i)}.wins"] = win
-                  # Keystone
-                  # update["$inc"][f"items.{i}.keystone.{key_stone}.games"] = 1
-                  # update["$inc"][f"items.{i}.keystone.{key_stone}.wins"] = win
-                  # Skillpath
-                  # update["$inc"][f"items.{i}.skillPath.{skill_path}.games"] = 1
-                  # update["$inc"][f"items.{i}.skillPath.{skill_path}.wins"] = win
                   # Friendlies
                   update["$inc"][f"items.{i}.friends.{f[0]}"] = 1
                   update["$inc"][f"items.{i}.friends.{f[1]}"] = 1
