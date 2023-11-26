@@ -1092,11 +1092,11 @@ import { championParametersStore } from '../../../stores/championParameters'
    .tldr-body-wrapper {
       display: flex;
       margin-bottom: 40px;
+      height: 437px;
    }
    .tldr-tabs {
       overflow-y: scroll;
       overflow-x: hidden;
-      height: 410px;
       margin-right: 8px;
       padding-right: 5px;
    }
@@ -1177,6 +1177,7 @@ import { championParametersStore } from '../../../stores/championParameters'
    .tldr-body {
       display: flex;
       flex-direction: column;
+      justify-content: space-around;
       width: 100%;
       gap: 20px;
       background: var(--tint100);

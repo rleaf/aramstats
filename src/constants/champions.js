@@ -509,35 +509,34 @@ const frontName = {
    143: "Zyra"
 }
 
-
 // Ref
 const table = {
-    'Aurelion Sol' : 'AurelionSol',
-    "Bel'Veth" : 'Belveth',
-    "Cho'Gath" : 'Chogath',
-    'Dr. Mundo' : 'DrMundo',
-    'FiddleSticks' : 'Fiddlesticks',
-    'Jarvan IV' : 'JarvanIV',
-    "K'Sante" : "KSante",
-    "Kai'Sa" : "Kaisa",
-    "Kha'Zix" : 'Khazix',
-    "Kog'Maw" : 'KogMaw',
-    'LeBlanc' : 'Leblanc',
-    'Lee Sin' : 'LeeSin',
-    'Master Yi' : 'MasterYi',
-    'Miss Fortune' : 'MissFortune',
-    'Wukong' : 'MonkeyKing',
-    'Nunu & Willump' : 'Nunu',
-    "Rek'Sai" : 'RekSai',
-    'Renata Glasc' : 'Renata',
-    'Tahm Kench' : 'TahmKench',
-    'Twisted Fate' : 'TwistedFate',
-    "Vel'Koz" : 'Velkoz',
-    'Xin Zhao' : 'XinZhao'
+   'AurelionSol': 'Aurelion Sol',
+   'Belveth': "Bel'Veth",
+   'Chogath': "Cho'Gath",
+   'DrMundo': 'Dr. Mundo',
+   'Fiddlestiks': 'FiddleSticks',
+   'JarvanIV': 'Jarvan IV',
+   "KSante": "K'Sante",
+   "Kaisa": "Kai'Sa",
+   'Khazix': "Kha'Zix",
+   'KogMaw': "Kog'Maw",
+   'Leblanc': 'LeBlanc',
+   'LeeSin': 'Lee Sin',
+   'MasterYi': 'Master Yi',
+   'MissFortune': 'Miss Fortune',
+   'MonkeyKng': 'Wukong',
+   'Nunu': 'Nunu & Willump',
+   'RekSai': "Rek'Sai",
+   'Renata': 'Renata Glasc',
+   'TahmKench': 'Tahm Kench',
+   'TwistedFate': 'Twisted Fate',
+   'Velkoz': "Vel'Koz",
+   'XinZhao': 'Xin Zhao',
 }
 
 export default {
    names,
-   frontName,
+   table,
    imageName
 }

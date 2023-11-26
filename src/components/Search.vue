@@ -1,9 +1,6 @@
 <script>
 import Dropdown from '../components/Dropdown.vue'
 import champions from '../constants/champions'
-import axios from 'axios'
-
-// import { globalsStore } from '../stores/globals'
 
 export default {
    components: {
@@ -22,7 +19,6 @@ export default {
          containerFocus: false,
          championNames: null,
          champions: [],
-         // store: globalsStore()
       }
    },
 
@@ -41,17 +37,6 @@ export default {
    },
 
    methods: {
-      // async getCurrentPatch() {
-      //    const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
-
-      //    try {
-      //       // this.currentPatch = (await axios.get(url)).data[0].split('.').slice(0, 2).join('.')
-      //       this.store.patch = (await axios.get(url)).data[0]
-      //    } catch (e) {
-      //       console.log(e, 'getCurrentPatch')
-      //    }
-      // },
-
       inputFocus() {
          this.containerFocus = true
          this.showRegions = false
@@ -129,7 +114,7 @@ export default {
 
    computed: {
       filteredChamps() {
-         if (this.input.length === 0) return
+         if (!this.input) return
          return this.champions.filter(champ => champ.front.toLowerCase().startsWith(this.input.toLowerCase())).slice(0, 5)
       }
    }
@@ -144,7 +129,7 @@ export default {
          <input ref="input" type="text" spellcheck="false" autocomplete="off"
             @focus="inputFocus"
             @keyup.enter="summonerSearch"
-            placeholder="(づ｡◕‿‿◕｡)づ   gamename#tagline "
+            placeholder="Summoner or Champion"
             v-model="input">
          <button class="region" @click="this.showRegions = true, this.containerFocus = false">
             {{ this.region.toUpperCase() }}
@@ -161,7 +146,7 @@ export default {
          </div>
       </transition>
       <div ref="champions" class="champion-search" v-show="this.containerFocus && this.input.length > 0">
-         <router-link :to="{ name: 'champions', params: {champion: champ.back}}" v-for="champ in filteredChamps">
+         <router-link :to="{ name: 'champions', params: {champion: champ.back} }" v-for="champ in filteredChamps">
             <img :src="champ.image" alt="" srcset="" rel="preload">
             {{ champ.front }}
          </router-link>

@@ -30,6 +30,7 @@
    <nav>
       <div class="left">
          <RouterLink to="/">Home</RouterLink>
+         <RouterLink to="/champions">Champions</RouterLink>
       </div>
       <!-- <input v-if="this.store.userReady" type="text"> -->
       <div class="right">

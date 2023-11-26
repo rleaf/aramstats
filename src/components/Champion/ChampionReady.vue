@@ -19,15 +19,6 @@ export default {
          itemBin: [],
          backName: champions.imageName[this.champion.id],
          abilities: [],
-         // parameters: {
-         //    thresholds: {
-         //       core: 0.05,
-         //       trail: 0.05,
-         //    },
-         //    trailingDuplicates: true,
-         //    trailingExtended: 2,
-         //    levelCutoff: 10
-         // },
          parameters: championParametersStore(),
          title: '',
          masterTab: 0,
@@ -47,11 +38,12 @@ export default {
    },
 
    created() {
+      document.title = `${this.champion.name} | Aramstats`
       // console.log(this.backName)
       // console.log(this.champion)
+      // console.log('potato', this.mythicData)
       this.getChampData()
       this.getMythicClusters()
-      // console.log('potato', this.mythicData)
       this.getItems()
       this.getRunes()
    },

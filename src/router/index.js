@@ -13,6 +13,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/champions',
+      name: 'allChampions',
+      component: () => import('../views/AllChampionsView.vue'),
+      meta: {
+        title: 'ARAM Stats'
+      }
+    },
+    {
       path: '/about',
       name: 'about',
       component: () => import('../views/AboutView.vue'),
@@ -36,7 +44,7 @@ const router = createRouter({
     {
       path: '/champions/:champion',
       name: 'champions',
-      component: () => import('../views/ChampionView.vue')
+      component: () => import('../views/ChampionView.vue'),
     }
   ]
 })

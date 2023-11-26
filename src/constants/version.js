@@ -13,15 +13,16 @@
 const version = [
    {
       version: "3.1.0",
-      date: "",
-      notes: "General improvements to UX for the champion stat pages",
+      date: "11/26/23",
+      notes: "Created Champions page (accessible in nav bar) & general improvements to UX for the champion stat pages",
       add: [
-         `Settings. Users can customize the information they want to see in the 'tldr' tab in champion stats`
+         `Champions page. See holistic champion information in a list view.`,
+         `Settings. Users can customize the information they want to see in the 'tldr' tab in champion stats.`
       ],
       remove: [],
       fix: [],
       adjust: [
-         `Cleaning up styles`
+         `CSS is a mess`
       ]
    }, 
    {

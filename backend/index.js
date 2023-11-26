@@ -23,10 +23,12 @@ mongoose.connect(process.env.DB_CONNECTION_STRING, {dbName: 'aramstats'})
 const summoners = require('./routes/summoner')
 const matchInfo = require('./routes/matchInfo')
 const championInfo = require('./routes/champion')
+const championsList = require('./routes/championsList')
 
 app.use('/api/summoners', summoners)
 app.use('/api/matchInfo', matchInfo)
-app.use('/api/champions', championInfo)
+app.use('/api/champion', championInfo)
+app.use('/api/championsList', championsList)
 app.use(express.static(__dirname + '/public'))
 
 let server

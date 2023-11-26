@@ -4,7 +4,8 @@
       <h2>About</h2>
       <hr>
       <p>
-        aramstats.lol parses all of a summoner's available ARAM games available in the Riot API to display insightful statistics.
+        Aramstats provides insightful Howling Abyss statistics for both summoners and champions. Summoner information is calculated using all available games through the Riot API.
+        Champion information is calculated from NA games on the most recent patch. 
       </p>
       <p>
         Get in touch with me <code>@ryli.</code> (display name: Owl) on Discord.
