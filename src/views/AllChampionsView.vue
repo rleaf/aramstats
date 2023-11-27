@@ -79,6 +79,13 @@ export default {
             this.sort = sort
          }
       },
+      winrateColors(g) {
+         if (g === 'D') return 'color: red;'
+         if (g === 'C') return 'color: orange;'
+         if (g === 'B') return 'color: yellow;'
+         if (g === 'A') return 'color: var(--green100);'
+         if (g === 'S') return 'color: var(--orange100);'
+      }
    },
 
    computed: {
@@ -162,7 +169,7 @@ export default {
             <div class="grade">
                {{ champ.grade }}
             </div>
-            <div class="winrate">
+            <div :style="winrateColors(champ.grade)" class="winrate">
                {{ champ.winrate }}%
             </div>
             <div class="pickrate">
@@ -195,17 +202,17 @@ export default {
       align-items: center;
       width: 100%;
       height: 50px;
-      border-radius: 15px;
+      border-radius: 10px;
       font-size: 0.9rem;
    }
 
    img.champ-image {
-      height: 40px;
+      height: 38px;
       margin-right: 10px;
    }
 
    .o {
-      background: var(--hoverButton);
+      background: var(--tint100);
    }
 
    .header h2 {

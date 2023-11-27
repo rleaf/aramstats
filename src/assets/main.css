@@ -50,6 +50,10 @@
 
   --bar2: #7a90ca;
   --themeIcon: url('./sun.svg');
+
+  --orange100: #EFC16F;
+  --green100: #4DC94D;
+
 }
 
 /* Day mode */

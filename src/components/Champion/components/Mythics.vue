@@ -1187,6 +1187,7 @@ import { championParametersStore } from '../../../stores/championParameters'
    .tldr-header {
       display: flex;
       align-items: flex-end;
+      justify-content: space-between;
       gap: 15px;
       margin-bottom: 0.8rem;
       padding-bottom: 0.3rem;
