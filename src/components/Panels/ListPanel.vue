@@ -167,31 +167,35 @@ export default {
 .header {
    display: flex;
    width: 100%;
-   height: 50px;
    align-items: center;
-   margin: 10px 0; 
+   margin-top: 20px; 
+   margin-bottom: 10px; 
 }
 
 .sort {
-   font-size: 1rem;
-   font-weight: bold;
+   font-size: 0.9rem;
 }
 
 .sort-button {
+   font-size: 0.95rem;
    background: transparent;
-   padding: 0.5rem 1rem;
-   border-radius: 15px;
+   padding: 0.5rem 0.75rem;
+   border-radius: 10px;
    border: none;
-   font-size: 1rem;
+   margin-left: 10px;
    color: var(--color-font);
+   background: var(--cold-blue);
+   transition: 0.2s;
 }
 .sort-button:hover {
    cursor: pointer;
-   background: var(--hoverButton);
+   background: var(--cold-blue-focus);
+   color: var(--color-font-focus)
 }
 
 .sort-button:focus {
-   background: var(--hoverButton);
+   background: var(--cold-blue-focus);
+   color: var(--color-font-focus);
 }
 
 .order-button {
@@ -200,12 +204,14 @@ export default {
    color: var(--color-font);
    cursor: pointer;
    padding: 0.5rem 1rem;
-   border-radius: 15px;
+   border-radius: 10px;
    margin-left: 1rem;
+   background: var(--cold-blue);
+   transition: 0.2s;
 }
 
 button.order-button:hover {
-   background: var(--hoverButton);
+   background: var(--cold-blue-focus);
 }
 
 .order-button img {
@@ -224,9 +230,9 @@ button.order-button:hover {
    padding: 1rem 1.5rem;
    backdrop-filter: blur(13px) saturate(120%);
    -webkit-backdrop-filter: blur(13px) saturate(120%);
-   background-color: rgba(38, 41, 51, 0.2);
+   background-color: rgba(var(--cold-blue), 0.2);
    border-radius: 12px;
-   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.65);
+   box-shadow: 1px 1px 5px var(--alpha-14);
    width: 650px;
    font-size: 1rem;
    margin-top: 5px;
@@ -240,15 +246,15 @@ button.order-button:hover {
 
 .sort-value {
    font-weight: normal;
-   font-size: 0.9rem;
-   padding: 0.1rem 0;
+   font-size: 0.85rem;
+   padding: 0.2rem 0;
    transition: 0.25s;
-   color: var(--light300);
+   color: var(--color-font);
    cursor: pointer;
 }
 
 .sort-value:hover {
-   color: white;
+   color: var(--color-font-focus);
 }
 
 .search {
@@ -256,13 +262,19 @@ button.order-button:hover {
 }
 
 .search input {
-   background: none;
-   border: 1px solid var(--tint100);
+   background: var(--cold-blue);
+   border: 1px solid var(--light-12);
    color: var(--color-font);
-   padding: 0.5rem 1rem;
+   padding: 0.5rem 0.75rem;
    border-radius: 15px;
-   font-size: 1rem;
+   font-size: 0.95rem;
    font-style: italic;
+   transition: 0.2s;
+}
+
+.search input:focus {
+   border: 1px solid var(--light-05);
+   background: var(--cold-blue-focus);
 }
 
 .champion-container {
@@ -276,16 +288,16 @@ button.order-button:hover {
 
 .champion-container::-webkit-scrollbar {
    width: 12px;
-   background: var(--hoverButton);
+   background: var(--alpha-06);
    border-radius: 3px;
 }
 
 .champion-container::-webkit-scrollbar-thumb {
-   background-color: var(--hoverButton);
+   background-color: var(--alpha-06);
    border-radius: 3px;
 }
 .champion-container::-webkit-scrollbar-thumb:hover {
-   background-color: var(--light900);
+   background-color: var(--light-12);
 }
 
 .search input:focus {

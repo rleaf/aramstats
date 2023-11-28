@@ -18,21 +18,133 @@
   --dark500: rgb(64, 64, 64);
   --dark600: rgb(82, 82, 82);
 
+
+  /* NEW BELOW */
+
+  /* Secondary blues */
+  /* --dark-blue: hsl(229, 24%, 13%); #191c29 */
+  --dark-blue: hsl(232, 21%, 14%); /* #1c1e2b */
+  --dark-blue-button-hover: hsl(232, 21%, 17%);
+
+  --white-0: rgb(255, 255, 255);
+  --white-1: rgb(242, 242, 242);
+  --white-2: rgb(230, 230, 230);
+  --white-3: rgb(217, 217, 217);
+  --white-4: rgb(204, 204, 204);
+  --white-5: rgb(191, 191, 191);
+  --white-6: rgb(179, 179, 179);
+  --white-7: rgb(166, 166, 166);
+  --white-8: rgb(153, 153, 153);
+  --white-9: rgb(140, 140, 140);
+
+  --neutral: rgb(128, 128, 128);
+
+  --black-0: rgb(115, 115, 115);
+  --black-1: rgb(102, 102, 102);
+  --black-2: rgb(89, 89, 89);
+  --black-3: rgb(77, 77, 77);
+  --black-4: rgb(64, 64, 64);
+  --black-5: rgb(51, 51, 51);
+  --black-6: rgb(38, 38, 38);
+  --black-7: rgb(26, 26, 26);
+  --black-8: rgb(13, 13, 13);
+  --black-9: rgb(0, 0, 0);
+
+  /* White alphas */
+  --white-alpha-0: rgba(255, 255, 255, 0.04);
+  --white-alpha-1: rgba(255, 255, 255, 0.05);
+  --white-alpha-2: rgba(255, 255, 255, 0.06);
+  --white-alpha-3: rgba(255, 255, 255, 0.07);
+  --white-alpha-4: rgba(255, 255, 255, 0.08);
+  --white-alpha-5: rgba(255, 255, 255, 0.09);
+  --white-alpha-6: rgba(255, 255, 255, 0.10);
+
+  /* Black alphas */
+  --black-alpha-0: rgba(0, 0, 0, 0.04);
+  --black-alpha-1: rgba(0, 0, 0, 0.05);
+  --black-alpha-2: rgba(0, 0, 0, 0.06);
+  --black-alpha-3: rgba(0, 0, 0, 0.07);
+  --black-alpha-4: rgba(0, 0, 0, 0.08);
+  --black-alpha-5: rgba(0, 0, 0, 0.09);
+  --black-alpha-6: rgba(0, 0, 0, 0.10);
+  --black-alpha-7: rgba(0, 0, 0, 0.60);
+
   --font-main: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
     Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   }
 
   /* Default  Night Mode */
 :root {
-  --color-background: #0d111c;
+  /* NEW CSS */
+  --color-background: #10131A;
+  --cell-panel: var(--cold-blue);
+  /* --cell-panel: #1C1F25; */
+  --color-font: #cfcfcf;
+  --color-font-focus: #e2e2e2;
+  --color-font-faded: var(--neutral);
+  
+  /* Blues */
+  --cold-blue: hsl(232, 21%, 14%);
+  --cold-blue-rgb: 28, 30, 43;
+  --cold-blue-focus: hsl(232, 21%, 18%);
+  --ice-blue: #7a90ca;
+
+  /* Nightmode alphas */
+  --alpha-00: var(--white-alpha-0);
+  --alpha-01: var(--white-alpha-1);
+  --alpha-02: var(--white-alpha-2);
+  --alpha-03: var(--white-alpha-3);
+  --alpha-04: var(--white-alpha-4);
+  --alpha-05: var(--white-alpha-5);
+  --alpha-06: var(--white-alpha-6);
+
+  --alpha-07: var(--black-alpha-0);
+  --alpha-08: var(--black-alpha-1);
+  --alpha-09: var(--black-alpha-2);
+  --alpha-10: var(--black-alpha-3);
+  --alpha-11: var(--black-alpha-4);
+  --alpha-12: var(--black-alpha-5);
+  --alpha-13: var(--black-alpha-6);
+  --alpha-14: var(--black-alpha-7);
+
+  --light-00: var(--white-0);
+  --light-01: var(--white-1);
+  --light-02: var(--white-2);
+  --light-03: var(--white-3);
+  --light-04: var(--white-4);
+  --light-05: var(--white-5);
+  --light-06: var(--white-6);
+  --light-07: var(--white-7);
+  --light-08: var(--white-8);
+  --light-09: var(--white-9);
+  --light-10: var(--neutral);
+  --light-11: var(--black-0);
+  --light-12: var(--black-1);
+  --light-13: var(--black-2);
+  --light-14: var(--black-3);
+  --light-15: var(--black-4);
+  --light-16: var(--black-5);
+  --light-17: var(--black-6);
+  --light-18: var(--black-7);
+  --light-19: var(--black-8);
+  --light-20: var(--black-9);
+
+  --win: rgba(21, 106, 128, 0.2);
+  --loss: rgba(150, 33, 33, 0.2);
+  
+
+
+  /* OLD CSS :NAUSEATED FACE: */
+  /* --color-background: #0d111c; */
   --searchHover: #1f263f;
-  --color-font: var(--light200);
+  /* --color-font: #CCC; */
   --color-font-unfocused: var(--light700);
   --runeMythic: #2e3341;
   --hoverButton: rgba(255, 255, 255, 0.1);
 
-  --win: rgba(21, 106, 128, 0.2);
-  --loss: rgba(150, 33, 33, 0.2);
+
+
+
 
   /* --tint100: #262933; */
   /* --tint100RGB: 38, 41, 51; */
@@ -51,16 +163,70 @@
   --bar2: #7a90ca;
   --themeIcon: url('./sun.svg');
 
-  --orange100: #EFC16F;
+  --orange100: #32880b;
   --green100: #4DC94D;
+  --green1003: #4dc94d;
 
+  
+  
 }
 
 /* Day mode */
 .day {
-  --color-background: #fff;
+  --color-background: #f0f0f0;
+  --cell-panel: hsl(232, 20%, 85%);;
+  --color-font: #111111;
+  --color-font-focus: #3c4565;
+
+  /* Blues */
+  --cold-blue: hsl(232, 21%, 89%);
+  --cold-blue-rgb: 209, 211, 225;
+  --cold-blue-focus: hsl(232, 21%, 90%);
+  --ice-blue: #7a90ca;
+
+  --alpha-00: var(--black-alpha-0);
+  --alpha-01: var(--black-alpha-1);
+  --alpha-02: var(--black-alpha-2);
+  --alpha-03: var(--black-alpha-3);
+  --alpha-04: var(--black-alpha-4);
+  --alpha-05: var(--black-alpha-5);
+  --alpha-06: var(--black-alpha-6);
+
+  --alpha-07: var(--white-alpha-0);
+  --alpha-08: var(--white-alpha-1);
+  --alpha-09: var(--white-alpha-2);
+  --alpha-10: var(--white-alpha-3);
+  --alpha-11: var(--white-alpha-4);
+  --alpha-12: var(--white-alpha-5);
+  --alpha-13: var(--white-alpha-6);
+  --alpha-14: var(--white-alpha-7);
+
+  --light-00: var(--black-0);
+  --light-01: var(--black-1);
+  --light-02: var(--black-2);
+  --light-03: var(--black-3);
+  --light-04: var(--black-4);
+  --light-05: var(--black-5);
+  --light-06: var(--black-6);
+  --light-07: var(--black-7);
+  --light-08: var(--black-8);
+  --light-09: var(--black-9);
+  --light-10: var(--neutral);
+  --light-11: var(--white-0);
+  --light-12: var(--white-1);
+  --light-13: var(--white-2);
+  --light-14: var(--white-3);
+  --light-15: var(--white-4);
+  --light-16: var(--white-5);
+  --light-17: var(--white-6);
+  --light-18: var(--white-7);
+  --light-19: var(--white-8);
+  --light-20: var(--white-9);
+
+
+  /* Old css */
+  /* --color-background: #fff; */
   --searchHover: #fff;
-  --color-font: #000;
   --runeMythic: var(--light400);
   --hoverButton: rgba(0, 0, 0, 0.1);
 

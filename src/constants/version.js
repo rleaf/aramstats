@@ -12,6 +12,19 @@
 
 const version = [
    {
+      version: "3.2.0",
+      date: "-",
+      notes: "Styles",
+      add: [
+         `Screen size header`
+      ],
+      remove: [],
+      fix: [],
+      adjust: [
+         `Colors to reduce eyestrain`
+      ]
+   }, 
+   {
       version: "3.1.0",
       date: "11/26/23",
       notes: "Created Champions page (accessible in nav bar) & general improvements to UX for the champion stat pages",

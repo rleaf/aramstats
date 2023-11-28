@@ -197,7 +197,7 @@ export default {
    display: flex;
    width: 745px;
    height: 65px;
-   background: var(--tint100);
+   background: var(--cell-panel);
    margin-bottom: 10px;
    margin-left: auto;
    border-radius: 15px;
@@ -206,16 +206,15 @@ export default {
 }
 
 .win {
-   background: linear-gradient(to right, var(--win) 0%, var(--tint100));
+   background: linear-gradient(to right, var(--win) 0%, var(--cell-panel));
 }
 
 .loss {
-   background: linear-gradient(to right, var(--loss) 0%, var(--tint100));
+   background: linear-gradient(to right, var(--loss) 0%, var(--cell-panel));
 }
 
 .match-left {
    display: flex;
-   /* gap: 10px; */
    height: inherit;
    align-items: center;
    justify-content: space-between;
@@ -241,7 +240,7 @@ export default {
 }
 
 .match-left button:hover {
-   background: var(--hoverButton);
+   background: var(--alpha-05);
 }
 
 .match-date {
@@ -255,7 +254,7 @@ export default {
 }
 
 .date-minor {
-   color: var(--tint400);
+   color: var(--color-font-faded);
    font-size: 0.7rem;
 }
 
@@ -286,7 +285,7 @@ export default {
 
 .unit {
    font-size: 0.75rem;
-   color: var(--tint400);
+   color: var(--color-font-faded);
 }
 
 .match-items {
@@ -329,13 +328,13 @@ export default {
 
 h5 {
    margin: 0;
-   color: var(--tint400);
+   color: var(--color-font-faded);
    font-weight: normal;
    font-size: 0.75rem;
 }
 
 .per-minute {
-   color: var(--tint400);
+   color: var(--color-font-faded);
    font-size: 0.75rem;
 }
 </style>

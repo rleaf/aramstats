@@ -210,7 +210,7 @@ export default {
    .match-info-main {
       width: 745px;
       border-radius: 15px;
-      background: var(--tint100);
+      background: var(--cell-panel);
       margin: 10px 0 20px auto;
    }
 
@@ -218,21 +218,23 @@ export default {
       width: inherit;
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding: 10px 0;
-      border-bottom: 1px solid var(--tint200);
+      border-bottom: 1px solid var(--light-12);
    }
 
    h2 {
       display: inline-block;
       margin: 0;
-      font-size: 1.3rem;
+      font-weight: normal;
+      font-size: 1rem;
       opacity: 0.5;
+      margin-left: 1rem;
       font-style: italic;
    }
 
    .temp {
-      /* display: inline-block; */
-      font-size: 0.8wrem;
+      font-size: 0.8rem;
       margin: 0;
       max-width: 300px;
       margin-left: 20px;
@@ -241,7 +243,6 @@ export default {
    .unit-dropdown {
       margin-left: auto;
       position: relative;
-      /* width: 150px; */
       height: 100%;
    }
 
@@ -250,12 +251,17 @@ export default {
       background: none;
       border: none;
       color: var(--color-font);
-      border: 1px solid var(--tint200);
       border-radius: 7px;
       padding: 6px 10px;
       font-weight: bold;
-      background: var(--tint200);
+      background: var(--alpha-02);
       margin-right: 10px;
+      transition: 0.2s;
+   }
+
+   .unit-dropdown button:hover, .unit-dropdown button:focus {
+      background: var(--alpha-04);
+      color: var(--color-font-focus);
    }
 
    .unit-drop {
@@ -265,21 +271,28 @@ export default {
       right: 0;
       backdrop-filter: blur(13px) saturate(120%);
       -webkit-backdrop-filter: blur(13px) saturate(120%);
-      background-color: rgba(38, 41, 51, 0.2);
-      box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.65);
+      background-color: rgba(var(--cold-blue), 0.2);
+      box-shadow: 1px 1px 5px var(--alpha-14);
       border-radius: 5px;
       z-index: 5;
       margin-right: 10px;
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+      -khtml-user-select: none; /* Konqueror HTML */
+      -moz-user-select: none; /* Old versions of Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+      user-select: none;
    }
 
    .unit {
       cursor: pointer;
       padding: 5px 10px;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       border-radius: 5px;
    }
    .unit:hover {
-      background-color: var(--hoverButton);
+      background-color: var(--alpha-06);
+      color: var(--color-font-focus);
    }
 
    .unit-modal {
@@ -337,7 +350,7 @@ export default {
    .items img {
       width: 20px;
       border-radius: 3px;
-      background-color: var(--hoverButton);
+      background-color: var(--alpha-03);
    }
    
    .runes-spells {
@@ -370,29 +383,24 @@ export default {
    }
 
    .secondary {
-      /* position: relative; */
-      /* left: -10px; */
       filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 1)) saturate(1.25);
       width: 14px;
    }
 
    .kda {
       font-size: 0.8rem;
-      /* color: var(--tint400); */
-      color: var(--tint400);
+      color: var(--color-font-faded);
    }
 
 
    .bar {
       width: 60px;
       height: 7px;
-      /* margin-left: auto; */
-      /* margin-right: 15%; */
-      background: var(--tint200);
+      background: var(--alpha-04);
    }
 
    .value {
-      color: var(--tint400);
+      color: var(--color-font-faded);
       text-align: center;
       font-size: 0.75rem;
       transition: 0.25s ease-in-out;
@@ -400,10 +408,8 @@ export default {
    
    .bar .value {
       margin-top: 3px;
-      background-color: var(--bar2);
-      /* background: linear-gradient(to right, var(--bar2), var(--win)); */
+      background-color: var(--ice-blue);
       height: inherit;
-      /* width: 15px; */
       z-index: 5;
    }
 

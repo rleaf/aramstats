@@ -66,7 +66,7 @@ export default {
 
 <template>
    <div class="champion-search">
-      <input type="text" placeholder="Nunu & Willump" v-model="championFilter" @click="championSearch"
+      <input type="text" placeholder="Search champion" v-model="championFilter" @click="championSearch"
          @keyup.esc="champSearchFocus = false">
       <div class="champion-search-list" v-show="champSearchFocus">
          <div class="champion-search-select" v-for="champ in champSearchList" :key="champ.name"
@@ -85,22 +85,23 @@ export default {
 }
 
 .champion-search input {
-   background: var(--tint200);
+   background: var(--alpha-04);
    color: var(--color-font);
    padding: 0.5rem 0.8rem;
    border: none;
    border-radius: 7px;
    width: inherit;
    box-sizing: border-box;
+   transition: 0.2s;
 }
 
 .champion-search input:hover {
-   background: var(--tint301);
+   background: var(--alpha-06);
 }
 
 .champion-search input:focus {
    outline: none;
-   background: var(--tint301);
+   background: var(--light-15);
 }
 
 .champion-search-select {
@@ -109,6 +110,13 @@ export default {
    align-items: center;
    padding: 5px 10px;
    font-size: 0.9rem;
+   cursor: pointer;
+   -webkit-touch-callout: none; /* iOS Safari */
+   -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Old versions of Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+   user-select: none;
 }
 
 .champion-search-select img {
@@ -117,35 +125,35 @@ export default {
 
 .champion-search-list {
    position: absolute;
-   margin-left: 8px;
+   /* margin-left: 8px; */
    z-index: 2;
-   /* background: var(--tint200); */
    backdrop-filter: blur(13px) saturate(120%);
    -webkit-backdrop-filter: blur(13px) saturate(120%);
-   background-color: rgba(38, 41, 51, 0.2);
+   background-color: rgba(var(--cold-blue-rgb), 0.2);
    border-radius: 12px;
    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.65);
    color: var(--color-font);
    height: 300px;
-   width: 250px;
+   width: 280px;
    overflow-y: scroll;
 }
 
 .champion-search-select:hover {
-   background: var(--hoverButton);
-}
-
-.champion-search-list::-webkit-scrollbar-track {
-   background-color: var(--tint300);
+   background: var(--alpha-05);
 }
 
 .champion-search-list::-webkit-scrollbar {
-   width: 15px;
+   width: 8px;
+   background: var(--alpha-01);
+   border-radius: 3px;
 }
 
 .champion-search-list::-webkit-scrollbar-thumb {
-   border-radius: 2px;
-   background-color: var(--light800);
+   background-color: var(--alpha-06);
+   border-radius: 3px;
+}
+.champion-search-list::-webkit-scrollbar-thumb:hover {
+   background-color: var(--light-12);;
 }
 
 .outside-search {

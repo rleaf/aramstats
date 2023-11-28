@@ -189,7 +189,7 @@ export default {
       },
 
       background() {
-         return `background: radial-gradient(circle at 50% -160%, transparent 30%, var(--tint100) 77%), no-repeat center -330% url('${this.profileIcon}');
+         return `background: radial-gradient(circle at 50% -160%, transparent 30%, var(--cell-panel) 77%), no-repeat center -460% url('${this.profileIcon}');
                  background-size: 380px;`
       },
    },
@@ -312,45 +312,25 @@ export default {
    flex-direction: column;
    min-width: 760px;
    width: 760px;
-   /* height: 100vh;
-   overflow-y: scroll;
-   padding-right: 5px; */
 }
-
-/* .rhs::-webkit-scrollbar {
-   width: 15px;
-}
-
-.rhs::-webkit-scrollbar-track {
-   background-color: rgba(0, 0, 0, 0.1);
-}
-
-.rhs::-webkit-scrollbar-thumb {
-   background-color: var(--tint100);
-   border-radius: 8px;
-} */
 
 .sections {
    display: flex;
    gap: 10px;
 }
 
-.section-tab:hover {
-   cursor: pointer;
-   /* font-weight: bold; */
-}
 
-.active {
-   /* background: var(--tint100); */
-   background: var(--hoverButton);
-   font-weight: bold;
-}
+
+
 
 .section-tab {
-   padding: 0.75rem 1rem;
-   /* font-weight: bold; */
-   border-radius: 15px;
-   /* https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting */
+   border-radius: 10px;
+   color: var(--color-font);
+   background: var(--cold-blue);
+   padding: 0.5rem 0.95rem;
+   font-size: 0.85rem;
+   border: 1px solid transparent;
+   transition: 0.2s;
    -webkit-touch-callout: none; /* iOS Safari */
    -webkit-user-select: none; /* Safari */
    -khtml-user-select: none; /* Konqueror HTML */
@@ -359,8 +339,20 @@ export default {
    user-select: none;
 }
 
+.section-tab:hover {
+   cursor: pointer;
+   background: var(--cold-blue-focus);
+}
+
+.active {
+   border: 1px solid var(--light-12);
+   background: var(--cold-blue-focus);
+   color: var(--color-font-focus);
+   /* font-weight: bold; */
+}
+
 .profile {
-   background: var(--tint100);
+   background: var(--cold-blue);
    border-radius: 15px;
 }
 
@@ -396,7 +388,7 @@ img.bongo-cat {
 
 .name-wrapper button {
    display: block;
-   background: var(--color-background);
+   background: var(--cold-blue);
    border: none;
    height: 33px;
    width: 100px;
@@ -409,11 +401,12 @@ img.bongo-cat {
 
 .name-wrapper button:hover {
    cursor: pointer;
-   background: var(--tint100);
+   color: var(--color-font-focus);
+   background: var(--cold-blue-focus);
 }
 
 .name-wrapper button[disabled] {
-   background: var(--hoverButton);
+   background: var(--light-10);
    cursor: wait;
 }
 
@@ -426,15 +419,15 @@ img.bongo-cat {
    row-gap: 40px;
    justify-content: space-evenly;
    margin: 0 auto;
-   font-size: 1.5rem;
-   font-weight: lighter;
+   font-size: 1.3rem;
+   font-weight: normal;
    line-height: 1;
 }
 
 .summ-stats h3 {
-   font-size: 1rem;
-   font-weight: lighter;
-   color: var(--tint400);
+   font-size: 0.85rem;
+   font-weight: normal;
+   color: var(--color-font-faded);
    margin-top: 0;
    margin-bottom: 5px;
 }
@@ -468,7 +461,7 @@ img.bongo-cat {
    display: flex;
    font-size: 1.5rem;
    font-weight: medium;
-   text-shadow: rgba(0, 0, 0, 0.5) 2px 2px 1px;
+   text-shadow: var(--alpha-14) 2px 2px 1px;
    justify-content: space-around;
 }
 

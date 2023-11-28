@@ -3,7 +3,7 @@
 export default {
    data() {
       return {
-         tab: 0,
+         tab: 1,
          populate: false,
          summoners: []
       }
@@ -92,7 +92,7 @@ export default {
 
 <template>
    <div class="pancakes-main">
-      <div class="pancakes-tabs">
+      <!-- <div class="pancakes-tabs">
          <div class="history-tab"
          @click="this.tab = 0"
          :class="{ active: !this.tab }">
@@ -106,7 +106,7 @@ export default {
       </div>
       <div class="history" v-show="this.tab === 0">
          pancakes
-      </div>
+      </div> -->
       <div class="encounters" v-show="this.tab === 1">
          <div class="description">
             People you've encountered >5 times.
@@ -131,13 +131,10 @@ export default {
    display: flex;
    flex-direction: row;
    font-size: 0.9rem;
-   color: var(--light900);
+   color: var(--color-font-faded);
    justify-content: space-evenly;
    align-items: center;
    height: 35px;
-   /* gap: 20px; */
-   /* padding-bottom: 1rem; */
-   /* border-bottom: 1px solid white; */
 }
 
 .pancakes-tabs > div {
@@ -148,23 +145,23 @@ export default {
 
 .active {
    color: var(--color-font);
-   background: var(--hoverButton);
+   background: var(--alpha-06);
 }
 
 .pancakes-main {
    display: flex;
    flex-direction: column;
-   background: var(--tint100);
+   background: var(--cell-panel);
    border-radius: 15px;
    /* Hello future ryan, pls make it so height of lhs and rhs are identical by having them fit to user-ready-main property */
-   height: 420px; 
+   height: 430px; 
 }
 
 .description {
    text-align: center;
    margin: 10px 0;
    font-style: italic;
-   color: var(--light800);
+   color: var(--color-font-faded);
 }
 
 .history, .encounters {
@@ -181,11 +178,11 @@ export default {
    flex-direction: column;
    font-size: 0.8rem;
    line-height: 1.25;
-   height: 90%;
+   height: 97%;
 }
 
 .alt {
-   background: var(--runeMythic);
+   background: var(--alpha-00);
 }
 
 .encounters .headers {
@@ -216,15 +213,15 @@ export default {
 
 .table::-webkit-scrollbar {
    width: 8px;
-   background: var(--hoverButton);
+   background: var(--alpha-01);
    border-radius: 3px;
 }
 
 .table::-webkit-scrollbar-thumb {
-   background-color: var(--hoverButton);
+   background-color: var(--alpha-06);
    border-radius: 3px;
 }
 .table::-webkit-scrollbar-thumb:hover {
-   background-color: var(--light900);
+   background-color: var(--light-12);
 }
 </style>

@@ -117,7 +117,7 @@ export default {
       background() {
          const img = new URL(`../../assets/champion_splash/${this.championData.name.toLowerCase()}.webp`, import.meta.url).href
          // return `background: linear-gradient(to right, rgba(var(--tint100RGB), 0.8), rgba(var(--tint100RGB), 0.85) 10%, rgba(var(--tint100RGB), 1.0) 60%), no-repeat -110% 20%/80% url('${img}')`
-         return `background: linear-gradient(to left, rgba(var(--tint100RGB), 0.9), rgba(var(--tint100RGB), 0.85) 10%, rgba(var(--tint100RGB), 1.0) 70%), no-repeat 100% 20%/80% url('${img}')`
+         return `background: linear-gradient(to left, rgba(var(--cold-blue-rgb), 0.9), rgba(var(--cold-blue-rgb), 0.85) 10%, rgba(var(--cold-blue-rgb), 1.0) 70%), no-repeat 100% 20%/80% url('${img}')`
       },
 
       ensembleWinRate() {
@@ -194,10 +194,9 @@ export default {
    display: flex;
    flex-direction: column;
    width: 100%;
-   background-color: var(--tint100);
+   background-color: var(--cell-panel);
    margin-top: 20px;
    border-radius: 15px;
-   /* height: 100px; */
 }
 
 .head {
@@ -227,28 +226,32 @@ export default {
    font-weight: bold;
    border-radius: 9px;
    cursor: pointer;
-   background: var(--tint200);
+   background: var(--light-15);
+   transition: 0.2s;
 }
 
 button:hover {
-   background: var(--tint301);
+   background: var(--light-14);
+   color: var(--color-font-focus)
 }
 
 .stat-drop {
    position: absolute;
    backdrop-filter: blur(13px) saturate(120%);
    -webkit-backdrop-filter: blur(13px) saturate(120%);
-   background-color: rgba(38, 41, 51, 0.2);
+   background-color: rgba(var(--cold-blue-rgb), 0.2);
    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.65);
    z-index: 5;
    border-radius: 5px;
+   font-size: 0.9rem;
 }
 
 .stat {
    border-radius: 5px;
 }
 .stat:hover {
-   background-color: var(--hoverButton);
+   color: var(--color-font-focus);
+   background-color: var(--alpha-06);
 }
 
 .stat {
@@ -271,14 +274,13 @@ button:hover {
 
 .champion-stats div {
    display: inline-block;
-   font-size: 1.2rem;
-   font-weight: bold;
+   font-weight: normal;
    margin: 0 20px;
 }
 
 .unit {
-   font-size: 0.9rem;
+   font-size: 0.85rem;
    font-weight: normal;
-   color: var(--tint400);
+   color: var(--color-font-faded);
 }
 </style>

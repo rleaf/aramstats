@@ -153,7 +153,7 @@ export default {
 }
 
 .barplot-main {
-   background: var(--tint100);
+   background: var(--cell-panel);
    margin-top: 20px;
    border-radius: 15px;
    height: 300px;
@@ -163,7 +163,7 @@ export default {
 .barplot-tooltip {
    backdrop-filter: blur(13px) saturate(120%);
    -webkit-backdrop-filter: blur(13px) saturate(120%);
-   background-color: rgba(39, 42, 68, 0.65);
+   background-color: rgba(var(--cold-blue-rgb), 0.65);
    border-radius: 5px;
    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.85);
    color: var(--color-font);

@@ -98,7 +98,7 @@ export default {
 }
 
 p.percentile {
-   color: var(--light700);
+   color: var(--color-font-faded);
    font-size: 12px;
 }
 
@@ -108,11 +108,10 @@ p.percentile {
    align-content: center;
    justify-content: center;
    row-gap: 20px;
-   /* height: 400px; */
    border-radius: 15px;
    padding: 20px 0;
    margin: 20px 0;
-   background: var(--tint100);
+   background: var(--cell-panel);
 }
 
 .challenge-scroll {

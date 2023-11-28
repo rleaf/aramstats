@@ -10,6 +10,11 @@ export default {
          total: null,
          sort: 'grade',
          sortOrder: 1,
+         winrates: {
+            max: 0,
+            min: 101,
+            delta: 0
+         }
       }
    },
 
@@ -47,7 +52,11 @@ export default {
             c.frontName = this.getName(c.name)
             c.pickrate = this.getPickRate(c.games)
             c.winrate = this.getWinrate(c.wins, c.games)
+            if (c.winrate > this.winrates.max) this.winrates.max = c.winrate
+            if (c.winrate < this.winrates.min) this.winrates.min = c.winrate
          }
+
+         this.winrates.delta = this.winrates.max - this.winrates.min
 
          for (const i in this.champions.sort((a, b) => b.winrate - a.winrate)) {
             const rank = Number(i) + 1
@@ -85,6 +94,14 @@ export default {
          if (g === 'B') return 'color: yellow;'
          if (g === 'A') return 'color: var(--green100);'
          if (g === 'S') return 'color: var(--orange100);'
+      },
+      computeColor(g) {
+         const val = (g - this.winrates.min) / this.winrates.delta 
+         const green = [79, 201, 79]
+         const red = [201, 40, 0]
+
+         const lerp = green.map((p, i) => p * val + red[i] * (1 - val))
+         return `rgba(${lerp[0]},${lerp[1]},${lerp[2]})`
       }
    },
 
@@ -169,7 +186,7 @@ export default {
             <div class="grade">
                {{ champ.grade }}
             </div>
-            <div :style="winrateColors(champ.grade)" class="winrate">
+            <div :style="{ color: this.computeColor(champ.winrate) }" class="winrate">
                {{ champ.winrate }}%
             </div>
             <div class="pickrate">
@@ -201,13 +218,13 @@ export default {
       justify-content: space-around;
       align-items: center;
       width: 100%;
-      height: 50px;
+      height: 45px;
       border-radius: 10px;
       font-size: 0.9rem;
    }
 
    img.champ-image {
-      height: 38px;
+      height: 36px;
       margin-right: 10px;
    }
 

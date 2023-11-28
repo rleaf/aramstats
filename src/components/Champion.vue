@@ -26,7 +26,7 @@ export default {
          // const img = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${this.champion.name}_0.jpg`
          const img = new URL(`../assets/champion_splash/${this.champion.name.toLowerCase()}.webp`, import.meta.url).href
          if (this.lazy) {
-            return `linear-gradient(to right, rgba(var(--tint100RGB), 0.8), rgba(var(--tint100RGB), 0.85) 10%, rgba(var(--tint100RGB), 1.0) 60%), no-repeat -110% 20%/80% url('${img}')`
+            return `linear-gradient(to right, rgba(var(--cold-blue-rgb), 0.8), rgba(var(--cold-blue-rgb), 0.85) 10%, var(--cell-panel) 60%), no-repeat -110% 20%/80% url('${img}')`
          }
       },
       winrate() {
@@ -174,7 +174,7 @@ export default {
 <style scoped>
    .champion-main {
       width: 100%;
-      background-color: var(--tint100);
+      background-color: var(--cell-panel);
       margin-bottom: 20px;
       height: 120px;
       border-radius: 15px;
@@ -190,7 +190,6 @@ export default {
       border: none;
       transition: 0.25s;
       border-radius: 15px 0 0 15px;
-      /* margin-right: 5px; */
       cursor: pointer;
    }
 
@@ -199,7 +198,7 @@ export default {
    }
 
    button.dropdown:hover {
-      background: var(--hoverButton);
+      background: var(--alpha-05);
    }
 
    button.dropdown:hover img {
@@ -213,15 +212,13 @@ export default {
    .lhs {
       display: flex;
       justify-content: center;
-      /* gap: 10px; */
       margin: 0 10px;
       flex-direction: column;
       width: max-content;
    }
 
    .lhs h2 {
-      /* text-align: center; */
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       margin-top: -5px;
       margin-bottom: 10px;
    }
@@ -240,14 +237,13 @@ export default {
    }
 
    .body {
-      font-size: 1.5rem;
-      font-weight: lighter;
-      /* line-height: 1.2; */
+      font-size: 1rem;
+      font-weight: normal;
    }
    
    .title {
       display: block;
-      color: var(--tint400);
+      color: var(--color-font-faded);
       font-size: 0.8rem;
       line-height: 0.9;
       font-weight: normal;
@@ -255,7 +251,7 @@ export default {
 
    .sub {
       display: block;
-      color: var(--tint400);
+      color: var(--color-font-faded);
       font-size: 0.9rem;
       font-weight: normal;
    }
@@ -281,24 +277,15 @@ export default {
       background-image: url('../assets/penta_small.svg');
    }
 
-   /*  */
-
    .rhs-stats {
       display: grid;
       height: 100%;
       align-items: center;
-      /* width: 100%; */
       grid-template-columns: 1fr 1fr 1fr;
       grid-template-rows: 1fr 1fr;
       column-gap: 30px;
       margin-left: 10px;
    }
-
-   /* .rhs-stats div {
-      width: 30px;
-   } */
-
-   /*  */
 
    .secondary-stats {
       display: flex;
@@ -312,11 +299,11 @@ export default {
 
    .secondary-body {
       line-height: 1.4;
-      font-weight: lighter;
+      font-size: 0.9rem;
    }
 
    .secondary-sub {
-      color: var(--tint400);
+      color: var(--color-font-faded);
       font-size: 0.75rem;
       line-height: 0.9;
    }
