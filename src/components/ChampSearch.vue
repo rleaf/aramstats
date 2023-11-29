@@ -96,12 +96,13 @@ export default {
 }
 
 .champion-search input:hover {
-   background: var(--alpha-06);
+   background: var(--alpha-07);
 }
 
 .champion-search input:focus {
    outline: none;
-   background: var(--light-15);
+   background: var(--alpha-07);
+
 }
 
 .champion-search-select {
@@ -125,7 +126,6 @@ export default {
 
 .champion-search-list {
    position: absolute;
-   /* margin-left: 8px; */
    z-index: 2;
    backdrop-filter: blur(13px) saturate(120%);
    -webkit-backdrop-filter: blur(13px) saturate(120%);

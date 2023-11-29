@@ -195,7 +195,7 @@ export default {
          //    .attr("cx", `${this.width - 132}`)
          //    .attr("cy", -12)
          //    .attr("r", 6)
-         //    .style("fill", "var(--bar2)")
+         //    .style("fill", "var(--ice-blue)")
 
          this.blueLegend
             .append("text")
@@ -227,7 +227,7 @@ export default {
             })
             .attr("height", (d) => this.height - this.y(d.length))
             // .attr("fill", d => `hsl(221, ${Math.round((((this.maxBin - d.length) / this.maxBin) * 10) + 50)}%, 50%)`)
-            .attr("fill", 'var(--bar2)')
+            .attr("fill", 'var(--ice-blue)')
             .style("opacity", 0.7)
             .on('mouseover', function (_, d) {
                // need function declaration format to pass 'this'.

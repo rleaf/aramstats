@@ -58,6 +58,12 @@
   --white-alpha-4: rgba(255, 255, 255, 0.08);
   --white-alpha-5: rgba(255, 255, 255, 0.09);
   --white-alpha-6: rgba(255, 255, 255, 0.10);
+  --white-alpha-7: rgba(255, 255, 255, 0.20);
+  --white-alpha-8: rgba(255, 255, 255, 0.30);
+  --white-alpha-9: rgba(255, 255, 255, 0.40);
+  --white-alpha-10: rgba(255, 255, 255, 0.50);
+  --white-alpha-11: rgba(255, 255, 255, 0.60);
+  --white-alpha-12: rgba(255, 255, 255, 0.70);
 
   /* Black alphas */
   --black-alpha-0: rgba(0, 0, 0, 0.04);
@@ -67,7 +73,12 @@
   --black-alpha-4: rgba(0, 0, 0, 0.08);
   --black-alpha-5: rgba(0, 0, 0, 0.09);
   --black-alpha-6: rgba(0, 0, 0, 0.10);
-  --black-alpha-7: rgba(0, 0, 0, 0.60);
+  --black-alpha-7: rgba(0, 0, 0, 0.20);
+  --black-alpha-8: rgba(0, 0, 0, 0.30);
+  --black-alpha-9: rgba(0, 0, 0, 0.40);
+  --black-alpha-10: rgba(0, 0, 0, 0.50);
+  --black-alpha-11: rgba(0, 0, 0, 0.60);
+  --black-alpha-12: rgba(0, 0, 0, 0.70);
 
   --font-main: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
     Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -77,19 +88,22 @@
 :root {
   /* NEW CSS */
   --color-background: #10131A;
+
   --cell-panel: var(--cold-blue);
-  /* --cell-panel: #1C1F25; */
+  --cell-panel-rgb: 28, 30, 43;
+  --cell-border: var(--light-12);
+  --cell-backdrop: var(--white-alpha-3);
+
   --color-font: #cfcfcf;
   --color-font-focus: #e2e2e2;
   --color-font-faded: var(--neutral);
   
   /* Blues */
   --cold-blue: hsl(232, 21%, 14%);
-  --cold-blue-rgb: 28, 30, 43;
   --cold-blue-focus: hsl(232, 21%, 18%);
   --ice-blue: #7a90ca;
 
-  /* Nightmode alphas */
+  /* alphas */
   --alpha-00: var(--white-alpha-0);
   --alpha-01: var(--white-alpha-1);
   --alpha-02: var(--white-alpha-2);
@@ -97,15 +111,13 @@
   --alpha-04: var(--white-alpha-4);
   --alpha-05: var(--white-alpha-5);
   --alpha-06: var(--white-alpha-6);
+  --alpha-07: var(--white-alpha-7);
+  --alpha-08: var(--white-alpha-8);
+  --alpha-09: var(--white-alpha-9);
+  --alpha-10: var(--white-alpha-10);
+  --alpha-11: var(--white-alpha-11);
+  --alpha-12: var(--white-alpha-12);
 
-  --alpha-07: var(--black-alpha-0);
-  --alpha-08: var(--black-alpha-1);
-  --alpha-09: var(--black-alpha-2);
-  --alpha-10: var(--black-alpha-3);
-  --alpha-11: var(--black-alpha-4);
-  --alpha-12: var(--black-alpha-5);
-  --alpha-13: var(--black-alpha-6);
-  --alpha-14: var(--black-alpha-7);
 
   --light-00: var(--white-0);
   --light-01: var(--white-1);
@@ -132,74 +144,76 @@
   --win: rgba(21, 106, 128, 0.2);
   --loss: rgba(150, 33, 33, 0.2);
   
-
-
-  /* OLD CSS :NAUSEATED FACE: */
-  /* --color-background: #0d111c; */
-  --searchHover: #1f263f;
-  /* --color-font: #CCC; */
-  --color-font-unfocused: var(--light700);
-  --runeMythic: #2e3341;
-  --hoverButton: rgba(255, 255, 255, 0.1);
-
-
-
-
-
-  /* --tint100: #262933; */
-  /* --tint100RGB: 38, 41, 51; */
-  --tint100: #191c29;
-  --tint100RGB: 25, 28, 41;
-  --tint200: #3c3f48;
-  --tint300: #595c63;
-  --tint301: #44474f;
-  --tint400: #818181;
-
   --parse100: #fabb1c;
   --parse85: #C76BFF;
   --parse75: #38CA46;
   --parse50: #F44D4D;
 
-  --bar2: #7a90ca;
-  --themeIcon: url('./sun.svg');
+  --theme-icon: url('./solari.svg');
+  --theme-mask-size: 100%;
 
-  --orange100: #32880b;
-  --green100: #4DC94D;
-  --green1003: #4dc94d;
+  /* OLD CSS :NAUSEATED FACE: */
+  /* --color-background: #0d111c; */
+  /* --searchHover: #1f263f;
+  --color-font: #CCC;
+  --color-font-unfocused: var(--light700);
+  --runeMythic: #2e3341;
+  --hoverButton: rgba(255, 255, 255, 0.1); */
+  /* --tint100: #262933; */
+  /* --tint100RGB: 38, 41, 51; */
+  /* --tint100: #191c29;
+  --tint100RGB: 25, 28, 41;
+  --tint200: #3c3f48;
+  --tint300: #595c63;
+  --tint301: #44474f;
+  --tint400: #818181; */
 
-  
-  
 }
 
 /* Day mode */
 .day {
   --color-background: #f0f0f0;
-  --cell-panel: hsl(232, 20%, 85%);;
+
+  --cell-panel: var(--white-3);
+  --cell-panel-rgb: 217, 217, 217;
+  --cell-border: var(--white-9);
+  --cell-backdrop: var(--black-alpha-7);
+
   --color-font: #111111;
-  --color-font-focus: #3c4565;
+  --color-font-focus: var(--light-09);
+  --color-font-faded: var(--light-02);
+
+  --win: rgba(58, 184, 216, 0.45);
+  --loss: rgba(226, 91, 91, 0.45);
+
+  --parse100: #d89228;
+  --parse85: #aa52e0;
+  --parse75: #17a025;
+  --parse50: #ec2121;
+
+  --theme-icon: url('./lunari.svg');
+  --theme-mask-size: 80%;
 
   /* Blues */
-  --cold-blue: hsl(232, 21%, 89%);
+  --cold-blue: hsl(0, 0%, 87%);
   --cold-blue-rgb: 209, 211, 225;
-  --cold-blue-focus: hsl(232, 21%, 90%);
+  --cold-blue-focus: hsl(0, 0%, 80%);
   --ice-blue: #7a90ca;
 
-  --alpha-00: var(--black-alpha-0);
+  --alpha-00: var(--black-alpha-6);
   --alpha-01: var(--black-alpha-1);
   --alpha-02: var(--black-alpha-2);
   --alpha-03: var(--black-alpha-3);
   --alpha-04: var(--black-alpha-4);
   --alpha-05: var(--black-alpha-5);
   --alpha-06: var(--black-alpha-6);
+  --alpha-07: var(--black-alpha-7);
+  --alpha-08: var(--black-alpha-8);
+  --alpha-09: var(--black-alpha-9);
+  --alpha-10: var(--black-alpha-10);
+  --alpha-11: var(--black-alpha-11);
+  --alpha-12: var(--black-alpha-12);
 
-  --alpha-07: var(--white-alpha-0);
-  --alpha-08: var(--white-alpha-1);
-  --alpha-09: var(--white-alpha-2);
-  --alpha-10: var(--white-alpha-3);
-  --alpha-11: var(--white-alpha-4);
-  --alpha-12: var(--white-alpha-5);
-  --alpha-13: var(--white-alpha-6);
-  --alpha-14: var(--white-alpha-7);
 
   --light-00: var(--black-0);
   --light-01: var(--black-1);
@@ -211,42 +225,35 @@
   --light-07: var(--black-7);
   --light-08: var(--black-8);
   --light-09: var(--black-9);
+
   --light-10: var(--neutral);
-  --light-11: var(--white-0);
-  --light-12: var(--white-1);
-  --light-13: var(--white-2);
-  --light-14: var(--white-3);
-  --light-15: var(--white-4);
-  --light-16: var(--white-5);
-  --light-17: var(--white-6);
-  --light-18: var(--white-7);
-  --light-19: var(--white-8);
-  --light-20: var(--white-9);
+
+  --light-11: var(--white-9);
+  --light-12: var(--white-8);
+  --light-13: var(--white-7);
+  --light-14: var(--white-6);
+  --light-15: var(--white-5);
+  --light-16: var(--white-4);
+  --light-17: var(--white-3);
+  --light-18: var(--white-2);
+  --light-19: var(--white-1);
+  --light-20: var(--white-0);
+
 
 
   /* Old css */
-  /* --color-background: #fff; */
+  /* --color-background: #fff;
   --searchHover: #fff;
   --runeMythic: var(--light400);
   --hoverButton: rgba(0, 0, 0, 0.1);
-
-  --win: rgba(66, 168, 194, 0.4);
-  --loss: rgba(226, 72, 72, 0.4);
-
   --tint100: var(--light300);
   --tint100RGB: 209, 209, 209;
   --tint200: var(--light400);
   --tint300: var(--light500);
   --tint301: var(--light500);
   --tint400: var(--light900);
-
-  --parse100: #d89228;
-  --parse85: #aa52e0;
-  --parse75: #17a025;
-  --parse50: #ec2121;
-
   --bar2: #75a6e7;
-  --themeIcon: url('./moon.svg')
+   */
 }
 
 body {

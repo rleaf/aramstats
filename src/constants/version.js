@@ -12,30 +12,19 @@
 
 const version = [
    {
-      version: "3.2.0",
-      date: "-",
-      notes: "Styles",
-      add: [
-         `Screen size header`
-      ],
-      remove: [],
-      fix: [],
-      adjust: [
-         `Colors to reduce eyestrain`
-      ]
-   }, 
-   {
       version: "3.1.0",
-      date: "11/26/23",
-      notes: "Created Champions page (accessible in nav bar) & general improvements to UX for the champion stat pages",
+      date: "11/28/23",
+      notes: "Created Champions page (accessible through nav bar) & general improvements to UX/UI.",
       add: [
-         `Champions page. See holistic champion information in a list view.`,
-         `Settings. Users can customize the information they want to see in the 'tldr' tab in champion stats.`
+         `Champions page. See holistic champion information in a list view`,
+         `Settings. Users can customize the information they want to see in the 'tldr' tab in champion stats`,
+         `Smaller screen size warning header`
       ],
       remove: [],
       fix: [],
       adjust: [
-         `CSS is a mess`
+         `Homogenized CSS`,
+         `Improved visual clarity (including day mode)`,
       ]
    }, 
    {

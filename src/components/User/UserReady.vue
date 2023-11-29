@@ -345,7 +345,7 @@ export default {
 }
 
 .active {
-   border: 1px solid var(--light-12);
+   border: 1px solid var(--cell-border);
    background: var(--cold-blue-focus);
    color: var(--color-font-focus);
    /* font-weight: bold; */
@@ -461,7 +461,7 @@ img.bongo-cat {
    display: flex;
    font-size: 1.5rem;
    font-weight: medium;
-   text-shadow: var(--alpha-14) 2px 2px 1px;
+   text-shadow: var(--light-18) 1px 1px 3px;
    justify-content: space-around;
 }
 

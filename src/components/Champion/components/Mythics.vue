@@ -913,7 +913,7 @@ import { championParametersStore } from '../../../stores/championParameters'
       right: 0;
       margin: 0 auto;
       width: max-content;
-      background: var(--tint100);
+      background: var(--cell-panel);
       border-radius: 15px;
       padding: 2rem;
       z-index: 2;
@@ -924,7 +924,6 @@ import { championParametersStore } from '../../../stores/championParameters'
       flex-direction: row-reverse;
       gap: 10px;
       align-items: center;
-      /* margin-bottom: 20px; */
    }
 
    .local svg {
@@ -944,19 +943,19 @@ import { championParametersStore } from '../../../stores/championParameters'
       width: calc(100% - 1px);
       height: calc(100% - 1px);
       /* height: 100%; */
-      stroke: var(--tint400);
+      stroke: var(--light-10);
       /* stroke-width: 2; */
    }
 
    .local circle {
-      fill: var(--tint200);
+      fill: var(--alpha-07);
       height: calc(100% - 8px);
       transition: 0.2s cubic-bezier(.25,.52,.64,.84);
    }
 
    .local p {
       /* display: inline-block; */
-      color: var(--tint400);
+      color: var(--color-font-faded);
       font-size: 0.8rem;
       font-style: italic;
       width: 220px;
@@ -965,19 +964,15 @@ import { championParametersStore } from '../../../stores/championParameters'
 
    circle.storage-active {
       transform: translateX(50%);
-      fill: var(--tint400); 
+      fill: var(--light-01); 
    }
    
-   /* circle.front:hover {
-      fill: var(--light600);
-   } */
    .cog {
       padding: 1rem 0;
    }
 
    .cog .tab {
       display: inline-block;
-      /* margin-left: 10px; */
    }
 
    .cog .tab {
@@ -993,29 +988,27 @@ import { championParametersStore } from '../../../stores/championParameters'
       font-size: 0.8rem;
       margin-top: 0.3rem;
       font-style: italic;
-      color: var(--tint400);
+      color: var(--color-font-faded);
    }
 
    .modal h4 {
       font-weight: normal;
       margin: 0;
-      /* color: tomato; */
    }
 
    .modal .settings {
       font-size: 0.85rem;
-      /* width: 100px; */
    }
    
    .modal .tab {
       padding: 0.5rem 1rem;
       width: max-content;
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--alpha-06);
    }
 
    .modal-back {
       position: absolute;
-      background-color: rgba(0, 0, 0, 0.35);
+      background-color: var(--black-alpha-9);
       top: 0;
       left: 0;
       width: 100%;
@@ -1026,7 +1019,7 @@ import { championParametersStore } from '../../../stores/championParameters'
    h3 {
       margin: 0;
       display: inline-block;
-      color: var(--tint400);
+      color: var(--color-font-faded);
       font-weight: normal;
       font-style: italic;
       font-size: 1rem;
@@ -1043,7 +1036,7 @@ import { championParametersStore } from '../../../stores/championParameters'
    }
    
    h2 {   
-      color: var(--light400);
+      color: var(--color-font);
       font-size: 1.1rem;
       display: inline-block;
       font-style: italic;
@@ -1107,7 +1100,7 @@ import { championParametersStore } from '../../../stores/championParameters'
 
    .tab-sub h4 {
       display: block;
-      color: var(--tint500);
+      color: var(--color-font);
       text-align: center;
       font-weight: normal;
       margin: 0;
@@ -1146,7 +1139,7 @@ import { championParametersStore } from '../../../stores/championParameters'
    .tab {
       display: flex;
       align-items: center;
-      background: var(--tint100);
+      background: var(--cold-blue);
       border-radius: 10px;
       border: 1px solid transparent;
       cursor: pointer;
@@ -1162,16 +1155,27 @@ import { championParametersStore } from '../../../stores/championParameters'
    }
 
    .tab-focus {
-      border: 1px solid var(--tint400);
+      border: 1px solid var(--cell-border);
+      background: var(--cold-blue-focus);
+      color: var(--color-font-focus);
    }
-
+   
+   .modal .tab-focus {
+      border: 1px solid var(--cell-border);
+      background: var(--alpha-07);
+      color: var(--color-font-focus);   
+   }
+   
+   .modal .tab:hover {
+      background: var(--alpha-07);
+   }
    .tab:hover {
-      background: var(--hoverButton);
+      background: var(--cold-blue-focus);
    }
 
    .tldr-tabs img {
       width: 30px;
-      border: 1px solid var(--tint400);
+      border: 1px solid var(--cell-border);
    }
 
    .tldr-body {
@@ -1180,7 +1184,7 @@ import { championParametersStore } from '../../../stores/championParameters'
       justify-content: space-around;
       width: 100%;
       gap: 20px;
-      background: var(--tint100);
+      background: var(--cell-panel);
       border-radius: 15px;
    }
 
@@ -1191,7 +1195,7 @@ import { championParametersStore } from '../../../stores/championParameters'
       gap: 15px;
       margin-bottom: 0.8rem;
       padding-bottom: 0.3rem;
-      border-bottom: 1px solid var(--tint400);
+      border-bottom: 1px solid var(--cell-border);
    }
 
    .tldr-body h1 {
@@ -1203,7 +1207,6 @@ import { championParametersStore } from '../../../stores/championParameters'
    .header-stats {
       display: inline-block;
       font-size: 0.8rem;
-      color: var(--light400);
    }
    
    .tldr-right h2 {
@@ -1211,7 +1214,7 @@ import { championParametersStore } from '../../../stores/championParameters'
       text-align: center;
       margin-top: 0;
       font-size: 0.9rem;
-      color: var(--light300);
+      color: var(--color-font);
    }
    .header-stats h2 {
       display: inline-block;
@@ -1226,7 +1229,6 @@ import { championParametersStore } from '../../../stores/championParameters'
 
    .tldr-left {
       display: flex;
-      /* margin: 0 50px; */
       justify-content: space-around;
       align-items: flex-start;
       gap: 10px;
@@ -1235,10 +1237,8 @@ import { championParametersStore } from '../../../stores/championParameters'
    
    .tldr-right {
       display: flex;
-      /* margin: 0 50px; */
       margin-bottom: 20px;
       justify-content: space-around;
-      /* flex-direction: column; */
    }
 
    .tldr-items {
@@ -1249,7 +1249,6 @@ import { championParametersStore } from '../../../stores/championParameters'
    
    .tldr-items .items {
       display: flex;
-      /* flex-direction: column; */
       align-items: center;
       gap: 10px;
       
@@ -1291,7 +1290,7 @@ import { championParametersStore } from '../../../stores/championParameters'
    .tldr-levels .cell {
       width: 18px;
       height: 20px;
-      background: rgba(255, 255, 255, 0.1);
+      background: var(--cell-backdrop);
       border-radius: 3px;
       text-align: center;
       line-height: 1.3rem;
@@ -1307,9 +1306,8 @@ import { championParametersStore } from '../../../stores/championParameters'
    }
 
    .tldr-levels .active-skill {
-      border: 1px solid var(--tint400);
-      background: rgba(255, 255, 255, 0.25);
-      /* background: var(--color-background); */
+      border: 1px solid var(--light-10);
+      background: var(--alpha-08);
    }
 
 
@@ -1332,12 +1330,10 @@ import { championParametersStore } from '../../../stores/championParameters'
       flex-direction: column;
       justify-content: space-between;
       gap: 10px;
-      /* align-items: center; */
    }
 
    .tldr-secondary-flex-runes {
       display: flex;
-      /* flex-direction: column; */
       gap: 8px;
    }
    .tldr-secondary-runes, .tldr-flex-runes {
@@ -1395,13 +1391,13 @@ import { championParametersStore } from '../../../stores/championParameters'
    }
    .tldr-runes-right img.active-rune, .tldr-secondary-flex-runes img.active-rune {
       filter: saturate(1);
-      border: 1px solid var(--tint400);
+      border: 1px solid var(--cell-border);
    }
 
    .tldr-flex-runes img.active-rune {
       filter: saturate(1.25);
       background: rgba(0, 0, 0, 0.5);
-      border: 1px solid var(--tint400);
+      border: 1px solid var(--cell-border);
    }
 
    .image-sub {
@@ -1513,7 +1509,7 @@ import { championParametersStore } from '../../../stores/championParameters'
    .trailing-items .item:nth-child(1),
    .trailing-items .item:nth-child(3) {
       /* background: var(--hoverButton); */
-      background: rgba(127, 127, 127, 0.1);
+      background: var(--alpha-00);
       
    }
 

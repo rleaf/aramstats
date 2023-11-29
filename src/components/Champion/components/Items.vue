@@ -128,9 +128,6 @@ export default {
                   Individual Items
                </div>
             </div>
-            <!-- <div class="tldr-toggle">
-               <div class="tab">Duplicate Items</div>
-            </div> -->
          </div>
 
       </div>
@@ -139,9 +136,6 @@ export default {
    <div class="item-wrapper">
 
       <div v-if="this.itemTab === 0" class="builds section">
-         <!-- <div class="meta-info">
-            toad
-         </div> -->
          <div class="builder">
             <div class="slot" v-for="i in 6" :key="i">
                <div class="placeholder" v-if="this.activeSelection[i-1] === 0" @click=""></div>
@@ -161,12 +155,6 @@ export default {
       </div>
 
       <div v-if="this.itemTab === 1" class="items section">
-         <!-- <div class="header">
-            <div class="cell">Item</div>
-            <div class="cell">Winrate</div>
-            <div class="cell">Position</div>
-            <div class="cell">Encounters</div>
-         </div> -->
          <div class="items-rows" v-for="(i, k) in iterItems" :key="k">
             <div class="item-header">
                <img :src="itemImage(i[0])" rel="preload" >
@@ -262,7 +250,7 @@ export default {
    .tab {
       display: flex;
       align-items: center;
-      background: var(--tint100);
+      background: var(--cold-blue);
       border-radius: 10px;
       border: 1px solid transparent;
       cursor: pointer;
@@ -277,30 +265,22 @@ export default {
       user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
    }
    h2 {   
-      color: var(--light400);
+      color: var(--color-font);
       font-size: 1.1rem;
       display: inline-block;
       font-style: italic;
       font-weight: 400;
       width: 115px;
       margin: 0;
-      /* margin-top: 0; */
       text-align: center;
    }
 
    .item-wrapper {
       padding: 1rem 0;
       border-radius: 15px;
-      background: var(--tint100);
+      background: var(--cell-panel);
       width: 100%;
       margin-bottom: 100px;
-   }
-   .meta-info {
-      margin: 0 auto;
-      text-align: center;
-      background: var(--tint200);
-      border-radius: 8px;
-      width: 80%;
    }
 
    .builder {
@@ -317,7 +297,7 @@ export default {
       justify-content: space-around;
    }
    .placeholder {
-      background: var(--hoverButton);
+      background: var(--cell-backdrop);
       display: block;
       width: 42px;
       height: 42px;
@@ -326,7 +306,7 @@ export default {
 
    .tab-sub h4 {
       display: block;
-      color: var(--tint500);
+      color: var(--color-font);
       text-align: center;
       font-weight: normal;
       margin: 0;
@@ -335,7 +315,7 @@ export default {
    
    .tab-sub h3 {
       display: block;
-      color: var(--tint400);
+      color: var(--color-font-faded);
       text-align: center;
       font-weight: normal;
       margin: 0;
@@ -368,12 +348,12 @@ export default {
    }
 
    .carousel-item:hover {
-      background: var(--hoverButton);
+      background: var(--alpha-05);
    }
    .carousel-item img {
       width: 34px;
       height: 34px;
-      border: 1px solid  var(--tint400);
+      border: 1px solid  var(--cell-border);
    }
 
    .carousel::-webkit-scrollbar {
@@ -385,12 +365,12 @@ export default {
    }
 
    .carousel::-webkit-scrollbar-thumb {
-      background: var(--tint200);
+      background: var(--alpha-06);
       border-radius: 5px;
       
    }
    .carousel::-webkit-scrollbar-thumb:hover {
-      background: var(--tint300);
+      background: var(--light-12);
       transition: 0.25s;
    }
 
@@ -398,17 +378,20 @@ export default {
    .slot-focus {
       border: 1px solid  var(--tint400);
    }
+
    .builds {
       display: flex;
       flex-direction: column;
       height: 700px;
    }
    .tab-focus {
-      border: 1px solid var(--tint400);
+      border: 1px solid var(--cell-border);
+      background: var(--cold-blue-focus);
+      color: var(--color-font-focus);
    }
 
    .tab:hover {
-      background: var(--hoverButton);
+      background: var(--cold-blue-focus);
    }
    .items {
       display: flex;
@@ -419,11 +402,11 @@ export default {
    .items img {
       margin-left: 10px;
       width: 36px;
-      border: 1px solid  var(--tint400);
+      border: 1px solid  var(--cell-border);
    }
    img.master-img {
       width: 40px;
-      border: 1px solid  var(--tint400);
+      border: 1px solid  var(--cell-border);
       cursor: pointer;
       margin: 0;
    }
@@ -432,14 +415,12 @@ export default {
       display: flex;
       height: 30px;
       font-size: 0.9rem;
-      border-bottom: 1px solid var(--tint400);
+      border-bottom: 1px solid var(--cell-border);
    }
 
    .items-rows {
-      /* display: flex; */
       font-size: 0.9rem;
       align-items: center;
-      /* border-bottom: 1px solid var(--tint400); */
    }
 
    .item-header {
@@ -450,18 +431,15 @@ export default {
 
    .item-body {
       display: flex;
-      /* height: 200px; */
       gap: 40px;
       align-items: center;
       justify-content: space-around;
-      /* margin-left: 30px; */
-      /* border-bottom: 1px solid tomato; */
    }
 
    .stat-header {
       margin-bottom: 0.8rem;
       padding-bottom: 0.3rem;
-      border-bottom: 1px solid var(--tint400);
+      border-bottom: 1px solid var(--cell-border);
    }
 
    .item-body h3 {
@@ -500,12 +478,12 @@ export default {
    }
 
    .friendly::-webkit-scrollbar-thumb, .enemy::-webkit-scrollbar-thumb{
-      background: var(--tint200);
+      background: var(--alpha-06);
       border-radius: 5px;
       
    }
    .friendly::-webkit-scrollbar-thumb:hover, .enemy::-webkit-scrollbar-thumb:hover{
-      background: var(--tint300);
+      background: var(--light-12);
       transition: 0.25s;
    }
 
@@ -516,14 +494,6 @@ export default {
       margin: 0;
    }
 
-   .items-rows span {
-      width: 30px;
-      height: 30px;
-      margin-left: 3px;
-      display: inline-block;
-      background: var(--hoverButton);
-      font-size: 0.75rem;
-   }
 
    .items-rows svg {
       width: 250px;
@@ -541,21 +511,20 @@ export default {
    }
    
    text.games {
-      fill: var(--tint400);
+      fill: var(--color-font-faded);
       font-size: 12px;
    }
    
    rect.value {
-      fill: var(--tint400);
+      fill: var(--alpha-09);
       transform: rotate(180deg) scaleX(-1);
       transform-origin: center center;
       transition: height 0.5s;
    }
    
    rect.backdrop {
-      fill: var(--hoverButton);
+      fill: var(--cell-backdrop);
       transform: rotate(180deg) scaleX(-1);
       transform-origin: center center;
-      transition: height 0.5s;
    }
 </style>

@@ -117,7 +117,7 @@ export default {
       background() {
          const img = new URL(`../../assets/champion_splash/${this.championData.name.toLowerCase()}.webp`, import.meta.url).href
          // return `background: linear-gradient(to right, rgba(var(--tint100RGB), 0.8), rgba(var(--tint100RGB), 0.85) 10%, rgba(var(--tint100RGB), 1.0) 60%), no-repeat -110% 20%/80% url('${img}')`
-         return `background: linear-gradient(to left, rgba(var(--cold-blue-rgb), 0.9), rgba(var(--cold-blue-rgb), 0.85) 10%, rgba(var(--cold-blue-rgb), 1.0) 70%), no-repeat 100% 20%/80% url('${img}')`
+         return `background: linear-gradient(to left, rgba(var(--cell-panel-rgb), 0.9), rgba(var(--cell-panel-rgb), 0.85) 10%, rgba(var(--cell-panel-rgb), 1.0) 70%), no-repeat 100% 20%/80% url('${img}')`
       },
 
       ensembleWinRate() {
@@ -226,12 +226,17 @@ export default {
    font-weight: bold;
    border-radius: 9px;
    cursor: pointer;
-   background: var(--light-15);
+   background: var(--cell-backdrop);
    transition: 0.2s;
 }
 
 button:hover {
-   background: var(--light-14);
+   background: var(--cold-blue-focus);
+   color: var(--color-font-focus)
+}
+
+button:focus {
+   background: var(--cold-blue-focus);
    color: var(--color-font-focus)
 }
 

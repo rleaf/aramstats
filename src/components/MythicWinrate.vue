@@ -121,7 +121,7 @@ export default {
 
 <style scoped>
    .mythic-0 {
-      background: var(--runeMythic);
+      background: var(--alpha-02);
    }
 
    /* .mythic-style-1 {

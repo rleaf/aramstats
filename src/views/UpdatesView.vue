@@ -92,7 +92,8 @@ export default {
 <style scoped>
 
 .notes p {
-   color: var(--light600);
+   color: var(--color-font-faded);
+   font-size: 0.95rem;
    font-style: italic;
    padding-bottom: 1rem;
 }
@@ -109,7 +110,7 @@ export default {
 
 h4 {
    color: var(--color-font);
-   font-size: 1.1rem;
+   font-size: 1rem;
    font-weight: normal;
    margin: 0;
 }
@@ -123,51 +124,50 @@ h4 {
    width: 800px;
 }
 
-.description {
-   font-size: 0.9rem;
-   color: var(--light800);
-   font-style: italic;
-   margin-bottom: 3vh;
-}
-
 .update-links {
    text-align: left;
 }
 
 .update-links li {
-   color: var(--light300);
    display: block;
    text-decoration: none;
 }
 
 .update-links h4 {
    font-size: 1rem;
-   /* text-decoration: underline; */
 }
 
 .update-tabs > div {
-   padding: 0.5rem 1rem;
+   padding: 0.4rem 0.7rem;
+   font-size: 0.95rem;
    border-radius: 8px;
+   border: 1px solid transparent;
    cursor: pointer;
+   transition: 0.2s;
    -webkit-touch-callout: none; /* iOS Safari */
    -webkit-user-select: none; /* Safari */
    -khtml-user-select: none; /* Konqueror HTML */
    -moz-user-select: none; /* Old versions of Firefox */
    -ms-user-select: none; /* Internet Explorer/Edge */
-   user-select: none; /* Non-prefixed version, currently
-      supported by Chrome, Edge, Opera and Firefox */
+   user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
-.active {
-   color: var(--color-font);
-   background: var(--hoverButton);
+
+.update-tabs > div:hover {
+   background: var(--cold-blue-focus);
+   color: var(--color-font-focus);
+}
+div.active {
+   background: var(--cold-blue-focus);
+   color: var(--color-font-focus);
+   border: 1px solid var(--cell-border);
 }
 
 .update-tabs {
-   color: var(--light900);
    display: flex;
    width: 800px;
    gap: 20px;
    margin-bottom: 2vh;
+   color: var(--color-font);
 }
 .update-main {
    display: flex;
@@ -209,7 +209,7 @@ a {
 h2 {
    font-weight: normal;
    line-height: 1;
-   font-size: 1.3rem;
+   font-size: 1.2rem;
    text-align: left;
    color: var(--color-font);
    margin-bottom: 0;
@@ -217,10 +217,10 @@ h2 {
 
 h3 {
    font-weight: normal;
-   font-size: 1rem;
+   font-size: 0.9rem;
    line-height: 1;
    text-align: left;
-   color: var(--light600);
+   color: var(--color-font-faded);
    margin-bottom: 0;
    font-style: italic;
 }
@@ -236,7 +236,7 @@ p {
 p.sub {
    text-align: center;
    font-size: 0.8rem;
-   color: var(--light600);
+   color: var(--color-font-faded);
    font-style: italic;
    margin-top: 0;
 }

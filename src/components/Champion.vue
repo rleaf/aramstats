@@ -26,7 +26,7 @@ export default {
          // const img = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${this.champion.name}_0.jpg`
          const img = new URL(`../assets/champion_splash/${this.champion.name.toLowerCase()}.webp`, import.meta.url).href
          if (this.lazy) {
-            return `linear-gradient(to right, rgba(var(--cold-blue-rgb), 0.8), rgba(var(--cold-blue-rgb), 0.85) 10%, var(--cell-panel) 60%), no-repeat -110% 20%/80% url('${img}')`
+            return `linear-gradient(to right, rgba(var(--cell-panel-rgb), 0.8), rgba(var(--cell-panel-rgb), 0.85) 10%, var(--cell-panel) 60%), no-repeat -110% 20%/80% url('${img}')`
          }
       },
       winrate() {
@@ -237,7 +237,7 @@ export default {
    }
 
    .body {
-      font-size: 1rem;
+      font-size: 1.2rem;
       font-weight: normal;
    }
    

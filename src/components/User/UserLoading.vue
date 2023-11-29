@@ -118,6 +118,7 @@ export default {
 
 h2 {
    font-weight: normal;
+   font-size: 1rem;
    color: var(--color-font);
 }
 

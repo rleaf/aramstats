@@ -296,7 +296,7 @@ export default {
 
    .tab-sub h4 {
       display: block;
-      color: var(--tint500);
+      color: var(--color-font);
       text-align: center;
       font-weight: normal;
       margin: 0;
@@ -305,7 +305,7 @@ export default {
    
    .tab-sub h3 {
       display: block;
-      color: var(--tint400);
+      color: var(--color-font-faded);
       text-align: center;
       font-weight: normal;
       margin: 0;
@@ -315,7 +315,7 @@ export default {
    .tab {
       display: flex;
       align-items: center;
-      background: var(--tint100);
+      background: var(--cold-blue);
       border-radius: 10px;
       border: 1px solid transparent;
       cursor: pointer;
@@ -333,16 +333,18 @@ export default {
    
 
    .tab-focus {
-      border: 1px solid var(--tint400);
+      border: 1px solid var(--cell-border);
+      background: var(--cold-blue-focus);
+      color: var(--color-font-focus);
    }
 
    .tab:hover {
-      background: var(--hoverButton);
+      background: var(--cold-blue-focus);
    }
 
    .mythic-tabs img {
       width: 30px;
-      border: 1px solid var(--tint400);
+      border: 1px solid var(--cell-border);
    }
 
    .mythic-tabs::-webkit-scrollbar {
@@ -356,12 +358,12 @@ export default {
 
    /* Handle */
    .mythic-tabs::-webkit-scrollbar-thumb {
-      background: var(--tint200);
+      background: var(--alpha-07);
       border-radius: 5px;
       
    }
    .mythic-tabs::-webkit-scrollbar-thumb:hover {
-      background: var(--tint300);
+      background: var(--light-12);
       transition: 0.25s;
    }
    
@@ -393,7 +395,7 @@ export default {
       width: 100%;
       flex-direction: column;
       padding: 30px 0;
-      background: var(--tint100);
+      background: var(--cell-panel);
       border-radius: 15px;
       gap: 20px;
    }
@@ -413,12 +415,10 @@ export default {
    }
 
    .flex-runes img {
-      background: rgba(0, 0, 0, 0.15);
+      background: var(--black-alpha-7);
       border-radius: 100%;
    }
-   /* .secondary-runes .rune-tree:first-child {
-      width: 186px;
-   } */
+
    .rune-tree {
       display: flex;
       flex-direction: column;
@@ -430,8 +430,6 @@ export default {
       display: flex;
       align-items: center;
       gap: 15px;
-      
-      /* width: 186px; */
    }
 
 
@@ -452,7 +450,7 @@ export default {
    }
    
    h2 {   
-      color: var(--light400);
+      color: var(--color-font);
       font-size: 1.1rem;
       display: inline-block;
       font-style: italic;
@@ -463,16 +461,16 @@ export default {
    }
    .image-sub h4 {
       display: inline-block;
-      color: var(--tint500);
+      color: var(--color-font);
       text-align: center;
       font-weight: normal;
       margin: 0;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
    }
    
    .image-sub h3 {
       display: inline-block;
-      color: var(--tint400);
+      color: var(--color-font-faded);
       text-align: center;
       font-weight: normal;
       margin: 0;
@@ -485,7 +483,7 @@ export default {
 
    .image-sub-block h4 {
       display: block;
-      color: var(--tint500);
+      color: var(--color-font);
       text-align: center;
       font-weight: normal;
       margin: 0;
@@ -494,7 +492,7 @@ export default {
    
    .image-sub-block h3 {
       display: block;
-      color: var(--tint400);
+      color: var(--color-font-faded);
       text-align: center;
       font-weight: normal;
       margin: 0;

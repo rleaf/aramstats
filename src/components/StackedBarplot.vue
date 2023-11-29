@@ -113,7 +113,7 @@ export default {
             .selectAll("g")
             .data(data)
             .join("rect")
-            .attr("fill", "#8E9ED7")
+            .attr("fill", "var(--ice-blue)")
             .attr("x", d => this.x(d.class))
             .attr("y", d => this.y(d.Total))
             .attr("height", d => this.height - this.y(d.Total))

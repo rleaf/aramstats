@@ -33,12 +33,12 @@ export default {
    .screen-width-main {
       padding: 0.5rem 1rem;
       line-height: 1.5;
-      height: 35px;
+      height: 30px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.9rem;
-      background-color: var(--hoverButton);
+      font-size: 0.95rem;
+      background-color: var(--light-13);
       color: var(--color-font);
    }
 </style>

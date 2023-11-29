@@ -32,7 +32,7 @@
 <style scoped>
 
 code {
-   background: var(--dark500);
+   background: var(--alpha-07);
    padding: 0.1rem 0.15rem;
    border-radius: 5px;
 }
@@ -51,20 +51,15 @@ code {
   margin-bottom: 3vh;
 }
 
-a {
-  color: var(--color-font);
-  transition: background 0.25s;
+hr {
+  border: 1px solid var(--cell-border);
 }
-
-a:hover {
-  background: var(--hoverButton);
-}
-
 h2 {
   font-weight: normal;
+  font-size: 1.2rem;
   line-height: 1;
   text-align: left;
-  color: var(--color-font);
+  color: var(--color-font-focus);
   margin-bottom: 0;
 }
 

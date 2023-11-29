@@ -214,7 +214,7 @@ export default {
 
       background() {
          const img = new URL(`../../assets/champion_splash/${this.backName.toLowerCase()}.webp`, import.meta.url).href
-         return `linear-gradient(to right, rgba(var(--tint100RGB), 1.0), rgba(var(--tint100RGB), 0.9) 10%, rgba(var(--tint100RGB), .8) 60%, rgba(var(--tint100RGB), .7) 90%), no-repeat -20% 15%/100% url('${img}')`
+         return `linear-gradient(to right, rgba(var(--cell-panel-rgb), 1.0), rgba(var(--cell-panel-rgb), 0.9) 10%, rgba(var(--cell-panel-rgb), .8) 60%, rgba(var(--cell-panel-rgb), .7) 90%), no-repeat -20% 15%/100% url('${img}')`
       },
 
       championWinrate() {
@@ -367,7 +367,7 @@ export default {
       font-style: italic;
       font-size: 1rem;
       font-weight: normal;
-      color: var(--tint400);
+      color: var(--color-font-faded);
    }
    .champion-right {
       display: flex;
@@ -388,8 +388,6 @@ export default {
       display: flex;
       border-radius: 15px;
       align-items: center;
-      /* height: 200px; */
-      /* padding: 0; */
       padding: 30px 0;
       gap: 4rem;
       width: 100%;
@@ -402,7 +400,7 @@ export default {
       margin: 0;
       font-size: 0.9rem;
       font-weight: normal;
-      color: var(--tint400);
+      color: var(--color-font-faded);
    }
    
    .champion-head h4 {
@@ -410,7 +408,7 @@ export default {
       font-size: 0.9rem;
       font-style: italic;
       font-weight: normal;
-      color: var(--tint400);
+      color: var(--color-font-faded);
 
    }
 
@@ -428,7 +426,7 @@ export default {
    }
    .champion-abilities img {
       width: 36px;
-      border: 1px solid var(--tint400);
+      border: 1px solid var(--cell-border);
    }
    
    .champion-abilities > div {
@@ -440,7 +438,7 @@ export default {
       top: -23px;
       left: -9px;
       font-size: 0.85rem;
-      background: rgba(13, 17, 28, 0.9);
+      background: var(--color-background);
       font-weight: normal;
       text-align: center;
       width: 0.9rem;
@@ -471,17 +469,9 @@ export default {
       color: var(--color-font);
    }
 
-   .champion-body h2 {
-      color: var(--tint400);
-      margin: 1rem;
-      font-size: 1.1rem;
-      font-style: italic;
-      font-weight: normal;
-   }
-   
    .master-tabs {
       margin-top: 40px;
-      border-bottom: 1px solid var(--tint400);
+      border-bottom: 1px solid var(--cell-border);
    }
    
    .master-tabs .tab {
@@ -492,7 +482,6 @@ export default {
       display: inline-block;
       padding: .5rem 1.5rem;
       border-bottom: 0;
-      /* margin-bottom: -1px; */
    }
    .master-tabs .tab:not(:first-child) {
       margin-left: 15px;
@@ -501,7 +490,7 @@ export default {
    .tab {
       display: flex;
       align-items: center;
-      background: var(--tint100);
+      background: var(--cold-blue);
       border-radius: 10px;
       border: 1px solid transparent;
       cursor: pointer;
@@ -516,22 +505,15 @@ export default {
       user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
    }
 
-   .tab-focus {
-      border: 1px solid var(--tint400);
+   .master-tabs .tab-focus {
+      border: 1px solid var(--cell-border);
+      background: var(--cold-blue-focus);
+      border-bottom: 0px;
+      color: var(--color-font-focus);
    }
+
 
    .tab:hover {
-      background: var(--hoverButton);
+      background: var(--cold-blue-focus);
    }
-   
-   .test {
-      background: rgb(120, 161, 199);
-      border: 1px solid rgb(63, 100, 201);
-      width: 100%;
-      text-align: center;
-      margin: 1rem 0;
-      border-radius: 15px;
-   }
-
-   
 </style>

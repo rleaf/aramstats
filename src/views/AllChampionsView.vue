@@ -133,6 +133,7 @@ export default {
 </script>
 
 <template>
+   
    <div v-if="this.champions" class="champ-list-main">
       <div class="champ-table">
          <div class="champion header">
@@ -180,7 +181,9 @@ export default {
             <div class="name-image">
                <router-link :to="{ name: 'champions', params: {champion: champ.name} }">
                   <img class="champ-image" rel="preload" :src="this.champIcon(champ.id)" alt="">
-                  {{ champ.frontName }}
+                  <div>
+                     <span>{{ champ.frontName }}</span>
+                  </div>
                </router-link>
             </div>
             <div class="grade">
@@ -198,6 +201,10 @@ export default {
          </div>
       </div>
    </div>
+   <div v-else class="loading-champ-list">
+      Getting data...
+   </div>
+   
 </template>
 
 <style scoped>
@@ -229,7 +236,7 @@ export default {
    }
 
    .o {
-      background: var(--tint100);
+      background: var(--cell-panel);
    }
 
    .header h2 {
@@ -251,14 +258,13 @@ export default {
    }
 
    .header h2:hover {
-      background: var(--hoverButton)
+      background: var(--cold-blue-focus);
    }
 
    svg.triangle {
       width: 20px;
       height: 20px;
-      /* padding-left: 10px; */
-      fill: var(--tint400);
+      fill: var(--light-12);
    }
 
    .descending {
@@ -285,9 +291,32 @@ export default {
       transition: 0.2s;
    }
 
-   .champion a:hover {
-      color: var(--bar2);
+   .champion div {
+      position: relative;
    }
+
+   .champion div span:hover {
+      color: var(--color-font-focus);
+   }
+
+   .champion div span:after {    
+      background: none repeat scroll 0 0 transparent;
+      position: absolute;
+      bottom: -3px;
+      content: "";
+      display: block;
+      height: 1px;
+      left: 50%;
+      background: var(--color-font-focus);
+      transition: width 0.3s ease 0s, left 0.3s ease 0s;
+      width: 0;
+   }
+
+   .champion div span:hover:after { 
+      width: 100%; 
+      left: 0;
+   }
+   
 
    .rank, .grade {
       min-width: 80px;
@@ -303,6 +332,15 @@ export default {
 
    .games {
       min-width: 100px;
+   }
+
+   .loading-champ-list {
+      display: flex;
+      justify-content: center;
+      margin-top: 20vh;
+      color: var(--color-font);
+      width: 100%;
+      text-align: center;
    }
    
 </style>

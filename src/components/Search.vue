@@ -180,27 +180,10 @@ export default {
 
 .champion-search {
    position: relative;
-   /* background: var(--color-background); */
-   background: #1f263f;
-   color: var(--color-font-unfocused);
+   background: var(--cold-blue-focus);
    font-size: 0.8rem;
-   /* height: 205px; */
    margin-top: 5px;
-   /* border: 1px solid var(--light700); */
-   /* border-radius: 5px; */
-   /* padding: 0.5rem 0; */
    width: calc(380px);
-}
-
-.champion-search h3 {
-   font-size: 0.9rem;
-   /* font-weight: normal; */
-   /* text-decoration: underline; */
-   color: var(--light400);
-   width: auto;
-   /* background: var(--hoverButton); */
-   padding: 1rem 0.8rem;
-   margin: 0;
 }
 
 .champion-search > a {
@@ -209,7 +192,7 @@ export default {
    gap: 0.5rem;
    position: relative;
    z-index: 2;
-   color: var(--color-font-unfocused);
+   color: var(--color-font);
    text-decoration: none;
    padding: 0.3rem 1rem;
    padding-left: 1.5rem;
@@ -218,8 +201,8 @@ export default {
 
 
 .champion-search > a:hover {
-   background: var(--hoverButton);
-   color: var(--color-font)
+   background: var(--alpha-06);
+   color: var(--color-font-focus)
 }
 
 .champion-search img {
@@ -237,13 +220,14 @@ export default {
    margin: 0 .2rem;
    padding: .2rem .4rem;
    display: inline-block;
-   background: var(--tint200);
+   background: var(--light-13);
    border-radius: 5px;
    cursor: pointer;
+   transition: 0.1s;
 }
 .region-selection > div:hover {
-   transition: 0.1s;
-   background: var(--tint300);
+   background: var(--light-12);
+   color: var(--color-font-focus)
 }
 
 button.region {
@@ -262,7 +246,7 @@ button.region {
 }
 
 button.region:hover {
-   background: var(--tint200);
+   background: var(--alpha-06);
    transition: 0.1s ease-in-out;
 }
 
@@ -288,18 +272,18 @@ img.logo {
 .container {
    position: relative;
    z-index: 2;
-   background: var(--color-background);
+   background: var(--cell-panel);
    display: flex;
    align-items: center;
    padding: 0.7rem 2rem;
-   border: 2px solid var(--tint100);
+   border: 1px solid var(--cell-border);
    border-radius: 50px;
    width: 380px;
    transition: 0.25s;
 }
 
 .focus {
-   background: var(--searchHover);
+   background: var(--cold-blue-focus);
    border-color: var(--light700);
 }
 
