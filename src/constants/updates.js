@@ -11,6 +11,18 @@
 
 const updates = [
    {
+      title: `Upgrading DB again`,
+      version: "",
+      date: "11/29/23",
+      body: [
+         `Sorry, this means I will be wiping everything again in about 2 weeks from now.`,
+         `With the crawler (firing only on 1 region), the database is getting large enough to the point where the RPi is having trouble hosting it and occasionally crashes. I've halted the crawler so the champion data you see is frozen.`,
+         `The move will be around Dec 9.`,
+      ],
+      links: [],
+      img: []
+   },
+   {
       title: `Transitioning to "gamename#tagline" lookups`,
       version: "3.0.1",
       date: "11/21/23",

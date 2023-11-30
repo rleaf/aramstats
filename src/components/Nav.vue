@@ -13,7 +13,6 @@
 
       mounted() {
          if (JSON.parse(localStorage.getItem('theme'))) this.theme()
-         console.log(this.$route)
       },
 
       methods: {

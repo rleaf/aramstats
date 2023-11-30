@@ -1,11 +1,17 @@
 <script>
-
+import updates from '../constants/updates'
+export default {
+   data() {
+      return {
+         msg: updates[0].title,
+      }
+   }
+}
 </script>
 
 <template>
    <div class="header-main">
-      <!-- <RouterLink to="/updates">Transitioning to "gamename#tagline" lookups</RouterLink> -->
-      <p>Taking database down for maintenance due to crashing. Search will be unavail. Start @ 9:30 Nov 26 EST</p>
+      <RouterLink to="/updates">{{ this.msg }}</RouterLink>
    </div>
 </template>
 
@@ -15,7 +21,7 @@
       justify-content: center;
       align-items: center;
       height: 35px;
-      background: var(--hoverButton);
+      background: var(--alpha-06);
       /* background: rgba(82, 32, 32, 0.5); */
    }
 

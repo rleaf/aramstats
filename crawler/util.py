@@ -43,8 +43,8 @@ def get_summoner_matches_on_patch(puuid: str, region: str, current_patch: str) -
    for x in range(0, 20, 10):
       try:
          matchlist = lol_watcher.match.matchlist_by_puuid(puuid=puuid, region=region, start=x ,count=10, queue=450)
-      except ApiError as err:
-         print(err, '@@@@error')
+      except ApiError as e:
+         raise e
       
       [bin.append(x) for x in matchlist]
 
@@ -52,7 +52,7 @@ def get_summoner_matches_on_patch(puuid: str, region: str, current_patch: str) -
          last_match = lol_watcher.match.by_id(match_id=matchlist[-1], region=region)
          trailing_patch = '.'.join(last_match['info']['gameVersion'].split('.')[0:2])
       except ApiError as e:
-         print(e, '@@@')
+         raise e
 
       if current_patch != trailing_patch: return bin
       
@@ -62,34 +62,32 @@ def get_matchlist(puuid: str, region: str, start: int, count: int) -> list[str]:
    try:
       return lol_watcher.match.matchlist_by_puuid(puuid=puuid, region=region, start=start, count=count, queue=450)
    except ApiError as e:
-      print(e, '1'*20)
       if e.response.status_code == 429:
          print('We should retry in {} seconds.'.format(e.response.headers['Retry-After']))
       else:
-         res = e.response.status_code
+         raise e
 
 def get_match(match_id, region):
    try:
       return lol_watcher.match.by_id(match_id=match_id, region=region)
    except ApiError as e:
-
-      # print(e.response.text)
-      print(e, '2'*20)
       if e.response.status_code == 429:
          print('We should retry in {} seconds.'.format(e.response.headers['Retry-After']))
       else:
-         print('trying again')
-         return lol_watcher.match.by_id(match_id=match_id, region=region)
-         # raise
+         return e.response.status_code
+      # else:
+      # Forgot why I had this
+      #    # print('trying again')
+      #    # return lol_watcher.match.by_id(match_id=match_id, region=region)
+      #    raise
+
+
 
 
 def get_match_timeline(match_id, region):
-   # print(match_id, region)
    try:
       return lol_watcher.match.timeline_by_match(match_id=match_id, region=region)
    except ApiError as e:
-      # print(e.response.text)
-      print(e, '3'*20)
       if e.response.status_code == 429:
          print('We should retry in {} seconds.'.format(e.response.headers['Retry-After']))
       else:
