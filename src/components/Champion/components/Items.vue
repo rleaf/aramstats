@@ -374,11 +374,6 @@ export default {
       transition: 0.25s;
    }
 
-   
-   .slot-focus {
-      border: 1px solid  var(--tint400);
-   }
-
    .builds {
       display: flex;
       flex-direction: column;

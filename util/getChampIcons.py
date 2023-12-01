@@ -12,7 +12,7 @@ Util function. Pull all champs icons from `champs_url`
 """
 
 champs = []
-champs_url = 'http://ddragon.leagueoflegends.com/cdn/13.9.1/data/en_US/champion.json'
+champs_url = 'http://ddragon.leagueoflegends.com/cdn/13.23.1/data/en_US/champion.json'
 directory = './images'
 
 
@@ -102,9 +102,9 @@ def main():
    if not os.path.exists(directory):
       os.mkdir(directory)
 
-   # getChampionAssets()
+   getChampionAssets()
    # getChallengeIcons()
-   getSpells()
+   # getSpells()
 
 
 main()

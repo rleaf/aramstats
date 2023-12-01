@@ -4,15 +4,15 @@
       <h2>About</h2>
       <hr>
       <p>
-        Aramstats provides insightful Howling Abyss statistics for both summoners and champions. Summoner information is calculated using all available games through the Riot API.
+        Aramstats provides insightful Howling Abyss summoner and champion statistics. Summoner information is calculated using all available games through the Riot API.
         Champion information is calculated from NA games on the most recent patch. 
       </p>
       <p>
-        Get in touch with me <code>@ryli.</code> (display name: Owl) on Discord.
+        Get in touch with me <code>@ryli.</code> on Discord.
       </p>
     </div>
     <div class="about-block">
-      <h2>Why aren't all my games shown?</h2>
+      <h2>Why doesn't my profile show all my games?</h2>
       <hr>
       <p>
         Riot only stores up to 1,000 games within a 2 year time frame. This is why, if you've played >1,000 games in the last 2 years, your first pull will only

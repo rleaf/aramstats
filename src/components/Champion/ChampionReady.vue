@@ -38,7 +38,7 @@ export default {
    },
 
    created() {
-      document.title = `${this.champion.name} | Aramstats`
+      document.title = `${this.champion.name} | ARAM Stats`
       // console.log(this.backName)
       // console.log(this.champion)
       // console.log('potato', this.mythicData)

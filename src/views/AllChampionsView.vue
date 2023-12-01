@@ -202,7 +202,7 @@ export default {
       </div>
    </div>
    <div v-else class="loading-champ-list">
-      Getting data...
+      Loading data...
    </div>
    
 </template>

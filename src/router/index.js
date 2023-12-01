@@ -17,7 +17,7 @@ const router = createRouter({
       name: 'allChampions',
       component: () => import('../views/AllChampionsView.vue'),
       meta: {
-        title: 'ARAM Stats'
+        title: 'Champions | ARAM Stats'
       }
     },
     {
@@ -25,7 +25,7 @@ const router = createRouter({
       name: 'about',
       component: () => import('../views/AboutView.vue'),
       meta: {
-        title: 'About - ARAM Stats'
+        title: 'About | ARAM Stats'
       }
     },
     {
@@ -33,7 +33,7 @@ const router = createRouter({
       name: 'updates',
       component: () => import('../views/UpdatesView.vue'),
       meta: {
-        title: 'Updates - ARAM Stats'
+        title: 'Updates | ARAM Stats'
       }
     },
     {

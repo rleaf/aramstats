@@ -10,7 +10,7 @@ import { championParametersStore } from '../../../stores/championParameters'
             renderKey: 0,
             settings: false,
             parameters: championParametersStore(),
-            noData: `No data with current settings/observations.`
+            noData: `No data with current settings/observations D:`,
          }
       },
 
@@ -1109,7 +1109,7 @@ import { championParametersStore } from '../../../stores/championParameters'
    
    .tab-sub h3 {
       display: block;
-      color: var(--tint400);
+      color: var(--color-font-faded);
       text-align: center;
       font-weight: normal;
       margin: 0;
@@ -1127,12 +1127,12 @@ import { championParametersStore } from '../../../stores/championParameters'
 
    /* Handle */
    .tldr-tabs::-webkit-scrollbar-thumb {
-      background: var(--tint200);
+      background: var(--alpha-07);
       border-radius: 5px;
       
    }
    .tldr-tabs::-webkit-scrollbar-thumb:hover {
-      background: var(--tint300);
+      background: var(--light-12);
       transition: 0.25s;
    }
 
@@ -1353,7 +1353,7 @@ import { championParametersStore } from '../../../stores/championParameters'
    .tldr-runes-left h3 {
       font-size: 0.75rem;
       margin: 0;
-      color: var(--tint400);
+      color: var(--color-font-faded);
       margin-left: 0.3rem;
       display: inline-block;
       font-weight: normal;
@@ -1406,7 +1406,7 @@ import { championParametersStore } from '../../../stores/championParameters'
 
    .image-sub h4 {
       display: inline-block;
-      color: var(--tint500);
+      color: var(--color-font);
       text-align: center;
       font-weight: normal;
       margin: 0;
@@ -1415,33 +1415,12 @@ import { championParametersStore } from '../../../stores/championParameters'
    
    .image-sub h3 {
       display: inline-block;
-      color: var(--tint400);
+      color: var(--color-font-faded);
       text-align: center;
       font-weight: normal;
       margin: 0;
       font-size: 0.75rem;
       margin-left: 0.3rem;
-   }
-   .image-sub-block {
-      text-align: center;
-   }
-
-   .image-sub-block h4 {
-      display: block;
-      color: var(--tint500);
-      text-align: center;
-      font-weight: normal;
-      margin: 0;
-      font-size: 0.75rem;
-   }
-   
-   .image-sub-block h3 {
-      display: block;
-      color: var(--tint400);
-      text-align: center;
-      font-weight: normal;
-      margin-top: 0.2rem;
-      font-size: 0.75rem;
    }
 
    .core-items {
@@ -1453,7 +1432,7 @@ import { championParametersStore } from '../../../stores/championParameters'
 
    .core-items img {
       width: 34px;
-      border: 1px solid var(--tint400);
+      border: 1px solid var(--cell-border);
       margin: 0 5px;
    }
 
@@ -1463,7 +1442,7 @@ import { championParametersStore } from '../../../stores/championParameters'
    }
 
    .spells img {
-      border: 1px solid var(--tint400);
+      border: 1px solid var(--cell-border);
       width: 34px;
       margin: 0 5px;
    }
@@ -1476,7 +1455,7 @@ import { championParametersStore } from '../../../stores/championParameters'
    
    .starting img {
       width: 34px;
-      border: 1px solid var(--tint400);
+      border: 1px solid var(--cell-border);
       margin: 0 5px;
    }
    
@@ -1496,7 +1475,7 @@ import { championParametersStore } from '../../../stores/championParameters'
    }
 
    .no-data, .no-runes-data {
-      color: var(--tint400);
+      color: var(--color-font-faded);
       font-style: italic;
       font-size: 0.9rem;
    }
@@ -1510,7 +1489,6 @@ import { championParametersStore } from '../../../stores/championParameters'
    .trailing-items .item:nth-child(3) {
       /* background: var(--hoverButton); */
       background: var(--alpha-00);
-      
    }
 
    .trailing-items .item img {
@@ -1518,11 +1496,10 @@ import { championParametersStore } from '../../../stores/championParameters'
       margin-left: auto;
       margin-right: auto;
       width: 34px;
-      border: 1px solid var(--tint400);
+      border: 1px solid var(--cell-border);
    }   
    .item h2 {
       font-size: 0.85rem;
-      /* font-style: normal; */
-      color: var(--tint400);
+      color: var(--color-font-faded);
    }
 </style>

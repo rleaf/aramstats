@@ -12,6 +12,22 @@
 
 const version = [
    {
+      version: "3.1.1",
+      date: "11/30/23",
+      notes: "",
+      add: [
+         "Hwei"
+      ],
+      remove: [],
+      fix: [
+         `Fiddlesticks`
+      ],
+      adjust: [
+         `Update champion assets`,
+         `CSS`
+      ]
+   },
+   {
       version: "3.1.0",
       date: "11/28/23",
       notes: "Created Champions page (accessible through nav bar) & general improvements to UX/UI.",

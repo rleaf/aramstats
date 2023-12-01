@@ -253,14 +253,14 @@ button.region:hover {
 img.logo {
    width: 250px;
    padding-bottom: 2rem;
-   filter: drop-shadow(3px 5px 2px rgba(0, 0, 0, 0.4));
+   filter: var(--logo-filter);
 }
 
-@media (prefers-color-scheme: light) {
+/* @media (prefers-color-scheme: light) {
    img.logo {
-      filter: brightness(0) saturate(100%) invert(18%) sepia(9%) saturate(2305%) hue-rotate(184deg) brightness(105%) contrast(92%);
+      filter: var(--logo-)
    }
-}
+} */
 
 .search-main {
    display: flex;

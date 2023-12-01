@@ -10,9 +10,13 @@ export default {
    data() {
       return {
          championIcon: `https://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/champion/${this.champion.name}.png`,
-         // championIcon: new URL(`../assets/champion_icons/${this.champion.name.toLowerCase()}.png`, import.meta.url).href,
          expand: false,
       }
+   },
+
+   created() {
+      // :)
+      if (this.champion.name == 'FiddleSticks') this.champion.name = 'Fiddlesticks'
    },
 
    methods: {

@@ -1,6 +1,7 @@
 <script>
 import Champion from '../Champion.vue'
 import championNameBook from '../../constants/championNames'
+import champions from '../../constants/champions'
 
 export default {
    components: {
@@ -83,10 +84,9 @@ export default {
             'Quadra kills': 'multikills.quadra',
             'Penta kills': 'multikills.penta',
          }
-         
          const filtered = this.championData.filter(champion => {
-            return (champion.name in championNameBook) ?
-               championNameBook[champion.name].toLowerCase().includes(this.search.toLowerCase()) :
+            return (champion.name in champions.table) ?
+               champions.table[champion.name].toLowerCase().includes(this.search.toLowerCase()) :
                champion.name.toLowerCase().includes(this.search.toLowerCase())
          })
 

@@ -3,8 +3,8 @@ import os
 Convert non-webp images in `route` path to webp images to `out` path
 """
 
-route = './src/assets/spells'
-out = './src/assets/spells'
+route = './images'
+out = './src/assets/champion_splash'
 
 def main():
    for file in os.listdir(route):

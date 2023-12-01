@@ -11,7 +11,7 @@
 
 const updates = [
    {
-      title: `Upgrading DB again`,
+      title: `Upgrading DB again. Halting crawler.`,
       version: "",
       date: "11/29/23",
       body: [
