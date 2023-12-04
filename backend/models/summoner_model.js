@@ -2,6 +2,8 @@ const mongoose = require("mongoose")
 
 const summonerSchema = new mongoose.Schema({
    puuid: String,
+   gameName: String,
+   tagLine: String,
    name: String,
    level: Number,
    region: String,
@@ -26,6 +28,7 @@ const summonerSchema = new mongoose.Schema({
       {
          _id: false,
          name: String,
+         championId: Number,
          wins: { type: Number, default: 0 },
          games: { type: Number, default: 0 },
          averages: {

@@ -40,7 +40,7 @@ router.get('/:region/:gameName/:tagLine', async (req, res) => {
 
    if (summoner) {
       // 1.
-      const exists = await summonerModel.findOne({ 'puuid': summoner.puuid })
+      const exists = await summonerModel.findOne({ 'puuid': riotId.puuid })
 
       // 2.
       if (exists) {
@@ -51,7 +51,7 @@ router.get('/:region/:gameName/:tagLine', async (req, res) => {
             return
          }
 
-         const summonerResponse = await aggregateSummoner(summoner.puuid)
+         const summonerResponse = await aggregateSummoner(riotId.puuid)
          console.log(`Summoner ${req.params.gameName}#${req.params.tagLine} (${req.params.region}) already parsed.`)
          res.send(summonerResponse[0])
          return
@@ -60,12 +60,14 @@ router.get('/:region/:gameName/:tagLine', async (req, res) => {
       // 3.
       // 3.1 Pull all matchIds
       // Most recent game is at [0]
-      const matchlist = (await twisted.getAllSummonerMatches(summoner.puuid, req.params.region))
-      const challenges = await challengeScribe(summoner.puuid, req.params.region)
+      const matchlist = (await twisted.getAllSummonerMatches(riotId.puuid, req.params.region))
+      const challenges = await challengeScribe(riotId.puuid, req.params.region)
       
       // 3.2 Create summoner document
       const summonerDocument = new summonerModel({
-         puuid: summoner.puuid,
+         puuid: riotId.puuid,
+         gameName: riotId.gameName,
+         tagLine: riotId.tagLine,
          name: summoner.name,
          level: summoner.summonerLevel,
          region: req.params.region,
@@ -80,13 +82,13 @@ router.get('/:region/:gameName/:tagLine', async (req, res) => {
       })
 
       if (matchlist.length === 0) {
-         const summonerResponse = (await aggregateSummoner(summoner.puuid))[0]
+         const summonerResponse = (await aggregateSummoner(riotId.puuid))[0]
          res.send(summonerResponse)
       }
 
       // 3.3 Parse every match, store what I want in matches collection. Once match document
       //     is created, push the _id to summoner.<champion>.matches
-      await matchParser(summoner, req.params.region, matchlist, summonerDocument)
+      await matchParser(riotId, req.params.region, matchlist, summonerDocument)
 
       // Iterate over champion matches & calc avgs
       await championParser(summonerDocument)
@@ -95,7 +97,7 @@ router.get('/:region/:gameName/:tagLine', async (req, res) => {
       summonerDocument.pull.queue = 0
       await summonerDocument.save()
 
-      const summonerResponse = (await aggregateSummoner(summoner.puuid))[0]
+      const summonerResponse = (await aggregateSummoner(riotId.puuid))[0]
 
       
       res.send(summonerResponse)
@@ -130,13 +132,13 @@ router.put('/update/:region/:gameName/:tagLine', async (req, res) => {
          return
       }
    }
-   console.log(`Updating ${summoner.name} (${req.params.region}).`)
+   console.log(`Updating ${riotId.gameName}#${riotId.tagLine} (${req.params.region}).`)
    
    // Get summoner data
-   const summonerDocument = await summonerModel.findOne({ puuid: summoner.puuid })
+   const summonerDocument = await summonerModel.findOne({ puuid: riotId.puuid })
 
    // Update summoner properties
-   const challenges = await challengeScribe(summoner.puuid, req.params.region)
+   const challenges = await challengeScribe(riotId.puuid, req.params.region)
 
    summonerDocument.name = summoner.name
    summonerDocument.level = summoner.summonerLevel
@@ -145,7 +147,7 @@ router.put('/update/:region/:gameName/:tagLine', async (req, res) => {
    await summonerDocument.save()
 
    // Get total matchlist & find idx of last match
-   const totalMatchlist = (await twisted.getAllSummonerMatches(summoner.puuid, req.params.region))
+   const totalMatchlist = (await twisted.getAllSummonerMatches(riotId.puuid, req.params.region))
    const lastMatchIndex = totalMatchlist.findIndex(x => x === summonerDocument.pull.lastMatchId)
 
    /* 
@@ -158,7 +160,7 @@ router.put('/update/:region/:gameName/:tagLine', async (req, res) => {
    // There are no matches in matchlist, therefore the summoner is UTD
    if (matchlist.length === 0) {
       console.log(`Summoner ${summoner.name} (${req.params.region}) already updated`)
-      const summonerResponse = (await aggregateSummoner(summoner.puuid))[0]
+      const summonerResponse = (await aggregateSummoner(riotId.puuid))[0]
       res.send(summonerResponse)
       return
    }
@@ -220,7 +222,7 @@ router.put('/update/:region/:gameName/:tagLine', async (req, res) => {
    summonerDocument.pull.active = false
    await summonerDocument.save()
 
-   const summonerResponse = (await aggregateSummoner(summoner.puuid))[0]
+   const summonerResponse = (await aggregateSummoner(riotId.puuid))[0]
    
    res.send(summonerResponse)
    console.log(`Finished updating ${summoner.name} (${req.params.region}).`)
@@ -289,30 +291,27 @@ async function championParser(summonerDocument, updateArr) {
    await summonerDocument.save()
 }
 
-async function matchParser(summoner, region, matchlist, summonerDocument, updateArr) {
+async function matchParser(riotId, region, matchlist, summonerDocument, updateArr) {
 
    for (let i = 0; i < matchlist.length; i++) {
       if (i % 25 === 0) {
-         console.log(`Parsing ${summoner.name} (${region}), match ${i}/${matchlist.length}`)
+         console.log(`Parsing ${riotId.gameName}#${riotId.tagLine} (${region}), match ${i}/${matchlist.length}`)
          summonerDocument.pull.current = i
          await summonerDocument.save()
       }
 
       const game = await twisted.getMatchInfo(matchlist[i], region)
          .catch(e => {
-            if (e.status == 429) {
+            if (e.status === 429) {
                console.log(`(${e.status}) @ matchParse. Recycling same game.`,)
                i--
             }
-            if (e.status_code === 404) {
-               console.log(`404 on ${matchlist[i]}`)
-               return
-            }
+            if (e.status_code === 404) return
          })
 
       if (!game) continue
 
-      const puuidIndex = game.metadata.participants.findIndex(x => x === summoner.puuid)
+      const puuidIndex = game.metadata.participants.findIndex(x => x === riotId.puuid)
       const player = game.info.participants[puuidIndex]
 
       if (puuidIndex === -1 || !player) continue 
@@ -364,7 +363,8 @@ async function matchParser(summoner, region, matchlist, summonerDocument, update
       } else {
          summonerDocument.championData.push(
             {
-               name: player.championName, 
+               name: player.championName,
+               championId: player.championId,
                matches: match._id
             }
          )

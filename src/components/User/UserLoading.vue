@@ -125,11 +125,10 @@ h2 {
 p {
    color: var(--color-font);
    width: 700px;
-   line-height: 1.5;
+   font-size: 0.95rem;
 }
 
 .queue p {
-   /* color: var(--light700); */
    font-weight: 500;
 }
 
@@ -137,7 +136,7 @@ p.sub {
    font-size: 0.9rem;
    font-weight: normal;
    font-style: italic;
-   color: var(--light500);
+   color: var(--color-font-faded);
 }
 
 a {
