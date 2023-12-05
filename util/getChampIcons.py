@@ -80,8 +80,12 @@ def getChampionAssets():
 
 
 def getChallengeIcons():
-   IDs = [101105, 101000, 101100, 101200, 101300, 101103, 101106,
-          101301, 101305, 101302, 101303, 101101, 101304, 101108, 101307, 101202]
+   IDs = [101105, 101204, 101205, 101206, 101306, 101201, 101203,
+          101000, 101100, 101200, 101300, 101103, 101106, 101301,
+          101305, 101302, 101104, 101107, 101303, 101101, 101102,
+          101304, 101108, 101307, 101202]
+   # IDs = [101105, 101000, 101100, 101200, 101300, 101103, 101106,
+   #        101301, 101305, 101302, 101303, 101101, 101304, 101108, 101307, 101202]
    tiers = ['IRON', 'BRONZE', 'SILVER', 'GOLD', 'PLATINUM',
             'DIAMOND', 'MASTER', 'GRANDMASTER', 'CHALLENGER']
 
@@ -102,8 +106,8 @@ def main():
    if not os.path.exists(directory):
       os.mkdir(directory)
 
-   getChampionAssets()
-   # getChallengeIcons()
+   # getChampionAssets()
+   getChallengeIcons()
    # getSpells()
 
 

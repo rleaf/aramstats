@@ -34,7 +34,7 @@ export default {
 
    methods: {
       img(id, tier) {
-         return new URL(`../assets/challenge_icons/${id}-${tier}.png`, import.meta.url).href
+         return new URL(`../assets/challenge_icons/${id}-${tier}.webp`, import.meta.url).href
       },
 
       challengeName(id) {

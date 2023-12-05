@@ -5,7 +5,6 @@ const mongoose = require("mongoose")
    Match-level data for each champion for every summoner. 
 */
 const summonerMatchesSchema = new mongoose.Schema({
-   _master: mongoose.SchemaTypes.ObjectId,
    matchId: String,
    gameCreation: Number,
    gameDuration: Number,

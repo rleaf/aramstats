@@ -12,6 +12,20 @@
 
 const version = [
    {
+      version: "3.2.0",
+      date: "12/2/23",
+      notes: "",
+      add: [
+         `All ARAM challenges.`
+      ],
+      remove: [],
+      fix: [],
+      adjust: [
+         `New database`,
+         `Switch to gamename#tagline on summoner page`,
+      ]
+   },
+   {
       version: "3.1.1",
       date: "11/30/23",
       notes: "",

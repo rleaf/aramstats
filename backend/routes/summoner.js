@@ -4,6 +4,7 @@ const dotenv = require('dotenv')
 const twisted = require('../twisted_calls')
 const summonerModel = require('../models/summoner_model')
 const summonerMatchesModel = require('../models/summonerMatches_model')
+const puuidModel = require('../models/puuid_model')
 const challengeIds = require('../constants/challengesIds')
 
 dotenv.config()
@@ -294,13 +295,14 @@ async function championParser(summonerDocument, updateArr) {
 async function matchParser(riotId, region, matchlist, summonerDocument, updateArr) {
 
    for (let i = 0; i < matchlist.length; i++) {
+      console.time('toad')
       if (i % 25 === 0) {
          console.log(`Parsing ${riotId.gameName}#${riotId.tagLine} (${region}), match ${i}/${matchlist.length}`)
          summonerDocument.pull.current = i
          await summonerDocument.save()
       }
 
-      const game = await twisted.getMatchInfo(matchlist[i], region)
+      const game = await twisted.getMatchInfo(matchlist.reverse()[i], region)
          .catch(e => {
             if (e.status === 429) {
                console.log(`(${e.status}) @ matchParse. Recycling same game.`,)
@@ -318,7 +320,6 @@ async function matchParser(riotId, region, matchlist, summonerDocument, updateAr
 
       if (updateArr) updateArr.push(player.championName)
       const match = new summonerMatchesModel({
-         _master: summonerDocument._id,
          matchId: game.metadata.matchId,
          gameCreation: game.info.gameCreation,
          gameDuration: getGameDuration(game.info),
@@ -351,8 +352,20 @@ async function matchParser(riotId, region, matchlist, summonerDocument, updateAr
       })
 
       for (const participant of game.info.participants) {
+         // await puuidModel.findOneAndUpdate(
+         //    { _id: participant.puuid },
+         //    {
+         //       _id: participant.puuid,
+         //       gameName: participant.riotIdGameName || participant.riotIdName,
+         //       tagLine: participant.riotIdTagline,
+         //       name: participant.summonerName
+         //    },
+         //    { upsert: true }
+         // )
          if (participant.puuid != player.puuid) {
             match.summonerEncounters.push(participant.summonerName)
+            // match.summonerEncounters.push({ _id: participant.puuid})
+            // match.summonerEncounters.push(participant.puuid)
          }
       }
 
@@ -369,6 +382,7 @@ async function matchParser(riotId, region, matchlist, summonerDocument, updateAr
             }
          )
       }
+      console.timeEnd('toad')
    }
 
    if (updateArr) return updateArr
@@ -376,13 +390,35 @@ async function matchParser(riotId, region, matchlist, summonerDocument, updateAr
 
 async function aggregateSummoner(puuid) {
    return await summonerModel.aggregate([
-      { $match: { puuid: puuid} },
+      { $match: { puuid: puuid } },
       { $unwind: "$championData" },
       { $lookup: {
-         from: "summonermatches",
-         localField: "championData.matches",
-         foreignField: "_id",
-         as: "championData.matches"
+            from: "summonermatches",
+            localField: "championData.matches",
+            foreignField: "_id",
+            as: "championData.matches",
+            pipeline: [ // For Encounters.vue
+               {
+                  $lookup: {
+                     from: "summoner_puuids",
+                     localField: "summonerEncounters",
+                     foreignField: "_id",
+                     as: "summonerEncounters",
+                     pipeline: [
+                        {
+                           $project: {
+                              _id: 0,
+                           }
+                        }
+                     ],
+                  }
+               },
+               {
+                  $project: {
+                     _id: 0,
+                  }   
+               }
+            ]
          }
       },
       // Lookup does not guarantee order https://stackoverflow.com/questions/67396937/array-is-reordered-when-using-lookup
@@ -400,17 +436,12 @@ async function aggregateSummoner(puuid) {
          challenges: { $first: "$challenges"},
          championData: { $push: "$championData"}
       }},
-      // Omit _id?
-      // { $project: {
-      //    _id: 0,
-      //    puuid: 1,
-      //    name: 1,
-      //    region: 1,
-      //    profileIcon: 1,
-      //    pull: 1,
-      //    challenges: 1,
-      //    championData: 1
-      // }}
+      {
+         $project: {
+            _id: 0,
+            puuid: 0,
+         }
+      }
    ])
 }
 

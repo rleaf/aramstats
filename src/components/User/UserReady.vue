@@ -1,6 +1,6 @@
 <script>
 import Dropdown from '../Dropdown.vue'
-import Pancakes from '../Pancakes.vue'
+import Encounters from '../Encounters.vue'
 
 import ListPanel from '../Panels/ListPanel.vue'
 import SummonerPanel from '../Panels/SummonerPanel.vue'
@@ -16,7 +16,7 @@ import { userReadyStore } from '../../stores/userReady'
 export default {
    components: {
       Dropdown,
-      Pancakes,
+      Encounters,
       Histogram,
       ChampSearch,
       ListPanel,
@@ -248,7 +248,7 @@ export default {
             </div>
          </div>
          
-         <Pancakes :championData="this.championData"/>
+         <Encounters :championData="this.championData"/>
       </div>
       <div class="rhs">
          <div class="sections">

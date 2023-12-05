@@ -4,7 +4,7 @@ Convert non-webp images in `route` path to webp images to `out` path
 """
 
 route = './images'
-out = './src/assets/champion_splash'
+out = './src/assets/challenge_icons'
 
 def main():
    for file in os.listdir(route):
