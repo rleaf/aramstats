@@ -19,7 +19,25 @@ router.get('/:region/:gameName/:tagLine', async (req, res) => {
       0. Check to see if summoner exists in Riot DB, if not return DNE
       1. Check to see if summoner document exists in summoner collection in Aramstats DB
       2. If summoner exists in Aramstats, return summoner document
-      3. If summoner DNE in Aramstats DB, start init pull
+      3. If summoner DNE in Aramstats DB, init pull
+
+      (Dec 5, 2023)
+      CURRENTLY: 
+         0. Create summoner document & fill with summoner stuff.
+         1. Get total matchlist. For match in matchlist, write as document to summonermatches collection. Use _id as a pointer and store in corresponding championsData matches array.
+         2. Once fin step 1, for match in champion.matches for champion in championData for summoner, compute champion averages by querying the db for all match documents. Once averaging finishes, save document.
+         3. Once finish step 1 and 2, aggregate all summoner data using riot.puuid and send that to front.
+         + More efficient for frequent requests.
+         - Uglier to look at.
+         - Requires more CRUD operations to the database.
+      
+      BETTER?:
+         0. Create summoner document & fill with summoner stuff.
+         1. Get total matchlist. For match in matchlist, write as document to summonermatches collection. Use _id as a pointer and store in corresponding championsData matches array.
+         2. Aggregate summoner data using riot.puuid. For match in champion.matches for champion in championData for summoner, lookup ($lookup) match document with _id and compute averages of all interested fields, as done in step 2 in CURRENTLY. Will have to use some fun aggregation pipeline with lookups, match, unwind, group, project, etc...
+
+         + This is...simpler code-wise? Simplifies backend logic to a create -> store -> aggregate -> send VERSUS the other's create -> store -> get -> mutate -> store -> aggregate -> send (or something like that).
+         - This aggregation is computationally waaaaay more expensive and is fired upon every request.
    */
 
    let riotId
@@ -295,9 +313,8 @@ async function championParser(summonerDocument, updateArr) {
 async function matchParser(riotId, region, matchlist, summonerDocument, updateArr) {
 
    for (let i = 0; i < matchlist.length; i++) {
-      console.time('toad')
       if (i % 25 === 0) {
-         console.log(`Parsing ${riotId.gameName}#${riotId.tagLine} (${region}), match ${i}/${matchlist.length}`)
+         console.log(`${riotId.gameName}#${riotId.tagLine} (${region}): match ${i}/${matchlist.length}`)
          summonerDocument.pull.current = i
          await summonerDocument.save()
       }
@@ -349,6 +366,8 @@ async function matchParser(riotId, region, matchlist, summonerDocument, updateAr
             quadra: player.quadraKills,
             penta: player.pentaKills,
          },
+         // encounterPuuids: {},
+         // encounterNames: {},
       })
 
       for (const participant of game.info.participants) {
@@ -363,9 +382,21 @@ async function matchParser(riotId, region, matchlist, summonerDocument, updateAr
          //    { upsert: true }
          // )
          if (participant.puuid != player.puuid) {
-            match.summonerEncounters.push(participant.summonerName)
-            // match.summonerEncounters.push({ _id: participant.puuid})
+            // match.summonerEncounters.push(participant.summonerName)
             // match.summonerEncounters.push(participant.puuid)
+            if (participant.riotIdTagline) {
+               match.summonerEncounters[participant.puuid] = `${participant.riotIdGameName || participant.riotIdName}#${participant.riotIdTagline}`
+            } else {
+               // match.summonerEncounters.set(participant.puuid, participant.summonerName)
+               match.encounterPuuids.push(participant.puuid)
+               match.encounterNames.push(participant.summonerName)
+               // match.summonerEncounters.push({
+               //    [participant.puuid]: participant.summonerName
+               // })
+               // match.summonerEncounters.push({
+               //    [participant.puuid]: participant.summonerName
+               // })
+            }
          }
       }
 
@@ -382,7 +413,7 @@ async function matchParser(riotId, region, matchlist, summonerDocument, updateAr
             }
          )
       }
-      console.timeEnd('toad')
+      // console.timeEnd('toad')
    }
 
    if (updateArr) return updateArr
