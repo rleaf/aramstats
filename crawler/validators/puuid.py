@@ -1,9 +1,9 @@
 puuid_schema = {
       "$jsonSchema": {
          "bsonType": "object",
-         "required": ["puuid", "region"],
+         "required": ["_id", "region"],
          "properties": {
-            "puuid": {
+            "_id": {
                "bsonType": "string",
                "description": "a summoner's puuid"
             },

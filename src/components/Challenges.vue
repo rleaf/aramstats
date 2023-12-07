@@ -5,10 +5,10 @@ export default {
          book: {
             101105: 'No hiding',
             101204: 'Free Money',
-            101205: 'Free Ticket to Base',
-            101206: 'Pop Goes the Poro',
+            101205: 'Free Ticket\nto Base',
+            101206: 'Pop Goes\nthe Poro',
             101306: `Can't Touch This`,
-            101201: 'Another Day, Another Bullseye',
+            101201: 'Another Day,\nAnother Bullseye',
             101203: 'Snow Day', 
             101000: 'Aram Authority',
             101100: 'Aram Warrior',
@@ -20,14 +20,14 @@ export default {
             101305: 'Active Participant',
             101302: 'All Random\nAll Flawless',
             101104: 'Bad Medicine',
-            101107: 'Farm Champs Not Minions',
+            101107: 'Farm Champs\nNot Minions',
             101303: 'Rapid Demolition',
             101101: 'DPS Threat',
-            101102: 'Double Decimation',
-            101304: 'Lightning Round',
+            101102: 'Double\nDecimation',
+            101304: 'Lightning\nRound',
             101108: 'Solo Carry',
             101307: 'NA-RAM',
-            101202: 'It was a... Near-Hit'
+            101202: 'It was a...\nNear-Hit'
          }
       }
    },
@@ -67,12 +67,14 @@ export default {
          <div class="img-wrapper">
             <img :src="img(el.challengeId, el.level)" />
          </div>
-         <p class="challenge-title">
-            {{ challengeName(el.challengeId) }}
-         </p>
-         <p class="percentile">
-            Percentile: {{ el.percentile }}
-         </p>
+         <div>
+            <p class="challenge-title">
+               {{ challengeName(el.challengeId) }}
+            </p>
+            <p class="percentile">
+               Top: {{ Math.round((el.percentile * 10000) ) / 100 }}%
+            </p>
+         </div>
       </div>
       <div class="challenge-message" v-if="!this.data">
          Update summoner.
@@ -83,24 +85,22 @@ export default {
 <style scoped>
 .challenge-title {
    white-space: pre;
-   text-align: center;
+   font-size: 0.8rem;
 }
 
 .challenge img {
-   width: 70px;
+   width: 45px;
 }
 
 .img-wrapper {
-   height: 75px;
+   height: 50px;
 }
 
 .challenge {
    display: flex;
-   flex-direction: column;
    align-items: center;
-   width: 115px;
+   gap: 10px;
    color: var(--color-font);
-   font-size: 14px;
 }
 
 .challenge p {
@@ -109,18 +109,20 @@ export default {
 
 p.percentile {
    color: var(--color-font-faded);
-   font-size: 12px;
+   font-size: 0.75rem;
 }
 
 .challenge-main {
    display: flex;
+   flex-direction: column;
    flex-wrap: wrap;
-   align-content: center;
-   justify-content: center;
+   /* align-content: center;
+   justify-content: center; */
    row-gap: 20px;
    border-radius: 15px;
-   padding: 20px 0;
+   padding: 15px;
    margin: 20px 0;
+   height: 500px;
    background: var(--cell-panel);
 }
 

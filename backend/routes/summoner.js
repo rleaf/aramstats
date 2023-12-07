@@ -138,7 +138,7 @@ router.put('/update/:region/:gameName/:tagLine', async (req, res) => {
    */ 
    let summoner
    let riotId
-   // I prefer to only use puuid to query aramstats db, so I need to get it from Riot again.
+
    try {
       riotId = await twisted.getAccount(req.params.gameName, req.params.tagLine)
       summoner = await twisted.getSummoner(riotId.puuid, req.params.region)
@@ -163,22 +163,22 @@ router.put('/update/:region/:gameName/:tagLine', async (req, res) => {
    summonerDocument.level = summoner.summonerLevel
    summonerDocument.profileIcon = summoner.profileIconId
    summonerDocument.challenges = challenges
-   await summonerDocument.save()
+   // await summonerDocument.save()
 
    // Get total matchlist & find idx of last match
    const totalMatchlist = (await twisted.getAllSummonerMatches(riotId.puuid, req.params.region))
    const lastMatchIndex = totalMatchlist.findIndex(x => x === summonerDocument.pull.lastMatchId)
 
    /* 
-      Reverse to make most recent games appear at top.
-      1. matchlist = [newest, newer, new].reverse() # [new, newer, newest]
-      2. championEmbed.matches.unshift(matchlist[i for i in matchlist]) # adds new first...then newer...then newest to beginning
+      Reverse to make oldest games appear at top.
+      1. matchlist = [newest, newer, old].reverse() # [old, newer, newest]
+      2. championEmbed.matches.unshift(matchlist[i for i in matchlist]) # adds old first...then newer...then newest to beginning
    */
    const matchlist = totalMatchlist.slice(0, lastMatchIndex).reverse()
 
    // There are no matches in matchlist, therefore the summoner is UTD
    if (matchlist.length === 0) {
-      console.log(`Summoner ${summoner.name} (${req.params.region}) already updated`)
+      console.log(`Summoner ${riotId.gameName}#${riotId.tagLine} (${req.params.region}) already utd`)
       const summonerResponse = (await aggregateSummoner(riotId.puuid))[0]
       res.send(summonerResponse)
       return
@@ -311,15 +311,18 @@ async function championParser(summonerDocument, updateArr) {
 }
 
 async function matchParser(riotId, region, matchlist, summonerDocument, updateArr) {
-
+   let times = []
    for (let i = 0; i < matchlist.length; i++) {
+      const startTime = performance.now()
+
       if (i % 25 === 0) {
          console.log(`${riotId.gameName}#${riotId.tagLine} (${region}): match ${i}/${matchlist.length}`)
          summonerDocument.pull.current = i
          await summonerDocument.save()
       }
 
-      const game = await twisted.getMatchInfo(matchlist.reverse()[i], region)
+      // [:-1] to parse oldest games first
+      const game = await twisted.getMatchInfo(matchlist[matchlist.length - i], region)
          .catch(e => {
             if (e.status === 429) {
                console.log(`(${e.status}) @ matchParse. Recycling same game.`,)
@@ -366,39 +369,34 @@ async function matchParser(riotId, region, matchlist, summonerDocument, updateAr
             quadra: player.quadraKills,
             penta: player.pentaKills,
          },
-         // encounterPuuids: {},
-         // encounterNames: {},
+         teamId: player.teamId
       })
 
+      let participantPuuids = []
+
       for (const participant of game.info.participants) {
-         // await puuidModel.findOneAndUpdate(
-         //    { _id: participant.puuid },
-         //    {
-         //       _id: participant.puuid,
-         //       gameName: participant.riotIdGameName || participant.riotIdName,
-         //       tagLine: participant.riotIdTagline,
-         //       name: participant.summonerName
-         //    },
-         //    { upsert: true }
-         // )
-         if (participant.puuid != player.puuid) {
-            // match.summonerEncounters.push(participant.summonerName)
-            // match.summonerEncounters.push(participant.puuid)
-            if (participant.riotIdTagline) {
-               match.summonerEncounters[participant.puuid] = `${participant.riotIdGameName || participant.riotIdName}#${participant.riotIdTagline}`
-            } else {
-               // match.summonerEncounters.set(participant.puuid, participant.summonerName)
-               match.encounterPuuids.push(participant.puuid)
-               match.encounterNames.push(participant.summonerName)
-               // match.summonerEncounters.push({
-               //    [participant.puuid]: participant.summonerName
-               // })
-               // match.summonerEncounters.push({
-               //    [participant.puuid]: participant.summonerName
-               // })
+         participantPuuids.push({
+            updateOne: {
+               filter: { _id: participant.puuid },
+               update: {
+                  _id: participant.puuid,
+                  gameName: participant.riotIdGameName || participant.riotIdName,
+                  tagLine: participant.riotIdTagline,
+                  name: participant.summonerName
+               },
+               upsert: true
             }
+         })
+
+         if (participant.puuid != player.puuid) {
+            (player.teamId === participant.teamId) ? match.teamEncounters.push(participant.puuid) : match.enemyEncounters.push(participant.puuid)
          }
       }
+
+      await puuidModel.bulkWrite(participantPuuids)
+         .catch(e => {
+            throw e
+         })
 
       await match.save()
       const championEmbed = summonerDocument.championData.find(e => e.name === player.championName)
@@ -413,9 +411,13 @@ async function matchParser(riotId, region, matchlist, summonerDocument, updateAr
             }
          )
       }
-      // console.timeEnd('toad')
-   }
 
+      const endTime = performance.now()
+      times.push(endTime - startTime)
+   }
+   const avgTime = times.reduce((a, b) => a + b) / times.length
+   console.log(`Average match parse time: ${avgTime}ms`)
+   
    if (updateArr) return updateArr
 }
 
@@ -432,22 +434,38 @@ async function aggregateSummoner(puuid) {
                {
                   $lookup: {
                      from: "summoner_puuids",
-                     localField: "summonerEncounters",
+                     localField: "teamEncounters",
                      foreignField: "_id",
-                     as: "summonerEncounters",
+                     as: "teamEncounters",
                      pipeline: [
                         {
                            $project: {
                               _id: 0,
                            }
                         }
-                     ],
+                     ]
+                  }
+               },
+               {
+                  $lookup: {
+                     from: "summoner_puuids",
+                     localField: "enemyEncounters",
+                     foreignField: "_id",
+                     as: "enemyEncounters",
+                     pipeline: [
+                        {
+                           $project: {
+                              _id: 0,
+                           }
+                        }
+                     ]
                   }
                },
                {
                   $project: {
                      _id: 0,
-                  }   
+                     __v: 0
+                  }
                }
             ]
          }
@@ -460,6 +478,8 @@ async function aggregateSummoner(puuid) {
          _id: "$_id",
          puuid: { $first: "$puuid"},
          level: { $first: "$level"},
+         gameName: { $first: "$gameName"},
+         tagLine: { $first: "$tagLine"},
          name: { $first: "$name"},
          region: { $first: "$region"},
          profileIcon: { $first: "$profileIcon"},

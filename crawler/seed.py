@@ -38,7 +38,7 @@ class Seed():
       self.puuid_collection = puuid_collection
       self.match_collection = match_collection
       # self.champion_collection = champion_collection
-      self.patch = patch
+      self.patch = '13.23' # care bear
       self.region = region
       # self.match_data_cache = []
 
@@ -77,19 +77,21 @@ class Seed():
 
          timeline_bin = [skill_level_bin, item_bin]
 
-         # champions_data =  [[p["participantId"], p["championName"], p["win"], p["teamId"], p["championId"], [str(p[f"item{y}"]) for y in range(6)] ] for p in match["info"]["participants"]]
-         # self.match_data_cache.append([match_id, champions_data])
+         [puuid_bin.append({ '_id': puuid, 'region': self.seed_user['region']}) for puuid in match['metadata']['participants']]
 
-         [puuid_bin.append({ 'puuid': puuid, 'region': self.seed_user['region']}) for puuid in match['metadata']['participants']]
-         match_bin.append({ 'metadata': match['metadata'], 'info': match['info'], 'timeline': timeline_bin})
+         match_bin.append({
+            '_id': match['metadata']['matchId'],
+            'region': match['metadata']['matchId'].split('_')[0],
+            'metadata': match['metadata'],
+            'info': match['info'],
+            'timeline': timeline_bin
+         })
+
       try:
          self.puuid_collection.insert_many(puuid_bin, ordered=False)
       except pymongo.errors.BulkWriteError as e:
          errors = list(filter(lambda x: x['code'] != 11000, e.details['writeErrors']))
-         if len(errors) > 0:
-            raise Exception(f'Non-11000 errors in insertmany operation for TEST{self.region}_puuids')
-         else:
-            pass
+         if len(errors) > 0: raise Exception(f'Non-11000 errors in insertmany operation for TEST{self.region}_puuids:', e.details['writeErrors'][0]['errmsg'])
 
       try:
          self.match_collection.insert_many(match_bin, ordered=False)
@@ -98,10 +100,7 @@ class Seed():
          # self.match_data_cache = list(filter(lambda x: x[0] not in dup_matches, self.match_data_cache))
 
          errors = list(filter(lambda x: x['code'] != 11000, e.details['writeErrors']))
-         if len(errors) > 0:
-            raise Exception(f'Non-11000 errors in insertmany operation for TEST{self.patch}_matches')
-         else:
-            pass
+         if len(errors) > 0: raise Exception(f'Non-11000 errors in insertmany operation for TEST{self.patch}_matches')
          
    def champion_parse(self):
       for match_data in self.match_data_cache: 

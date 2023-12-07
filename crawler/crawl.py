@@ -3,7 +3,7 @@ import argparse
 # from wsgiref import validate
 import util
 import validators as V
-from pymongo import MongoClient
+from pymongo import MongoClient, TEXT
 from dotenv import load_dotenv
 from propagate import Propagate
 from seed import Seed
@@ -28,14 +28,14 @@ class Crawler():
          self.puuid_collection = db[puuid_collection_name]
       else:
          self.puuid_collection = db.create_collection(puuid_collection_name, validator=V.puuid_schema)
-         self.puuid_collection.create_index('puuid', unique=True)
+         # self.puuid_collection.create_index('puuid', unique=True)
 
       # Check if existing collection of matches on PATCH
       if match_collection_name in collection_list:
          self.match_collection = db[match_collection_name]
       else:
          self.match_collection = db.create_collection(match_collection_name, validator=V.match_schema)
-         self.match_collection.create_index('metadata.matchId', unique=True)
+         self.match_collection.create_index(['region', TEXT], default_language='english')
 
       if config.seed:
          Seed(patch, region, self.puuid_collection, self.match_collection)

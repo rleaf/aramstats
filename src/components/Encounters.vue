@@ -2,9 +2,10 @@
 export default {
    data() {
       return {
-         tab: 1,
+         tab: 0,
          populate: false,
-         summoners: []
+         friendlies: [],
+         enemies: []
       }
    },
 
@@ -13,77 +14,57 @@ export default {
    },
 
    methods: {
-      counter() {
-
-      },
-      
       populateSummoners() {
-         /* 
-         Algorithmically concerning, probably okay. Do this in aggregation?
-            champion: unbounded
-               what: amount of champions in League of Legends.
-               why: is okay because champ release is slow. (~164 on naafiri)
-            match: unbounded
-               what: number the num of games a summ has played on that champ.
-               why: fastesst growing metric, but operates in <1000 matches domain
-            summoner: bounded
-               what: number of players in game excluding yourself.
-               why: will always be 9. 5 players on enemy team, 4 bots on mine.
-         */
-         let j = []
-         console.log(this.championData)
+         let friends = []
+         let enemies = []
+
          for (const champion of this.championData) {
             for (const match of champion.matches) {
-               j.push(match.summonerEncounters)
+               if (match.win) {
+                  match.teamEncounters.forEach(x => x.win = 1)
+                  match.enemyEncounters.forEach(x => x.win = 1)
+               } else {
+                  match.teamEncounters.forEach(x => x.win = 0)
+                  match.enemyEncounters.forEach(x => x.win = 0)
+               }
+               friends.push(match.teamEncounters)
+               enemies.push(match.enemyEncounters)
             }
          }
-         j = j.flat().sort((a, b) => a.gameName.localeCompare(b.gameName))
-         console.log(j)
-         /* 
-         ALGO 1
-         ---
-         0.8ms-2.5ms. Generally <1ms. on ryi
-         8-15ms on Night Owl (760x faster than one below)
-         ---
-         */
-         // Count redundant summoner names
-         let counter = j.reduce((o, c) => {
-            if (c.gameName) {
-               o[`${c.gameName}#${c.tagLine}`] = 1 + o[`${c.gameName}#${c.tagLine}`] || 1
+         const algo = (arr, n) => {
+            arr = arr.flat().sort((a, b) => a.gameName.localeCompare(b.gameName))
+
+            let counter = arr.reduce((o, c) => {
+               const key = (c.gameName) ? `${c.gameName}#${c.tagLine}` : c.name
+               // (o[key]) ? o[key] = [o[key][0] + 1, o[key][1] + c.win] : o[key] = [1, c.win]
+               if (o[key]) {
+                  o[key] = [o[key][0] + 1, o[key][1] + c.win]
+               } else {
+                  o[key] = [1, c.win]
+               }
+               return o
+            }, {})
+            const burger = Object.entries(counter).filter(x => x[1][0] > 5).sort((a, b) => b[1][0] - a[1][0])
+            
+            if (n) {
+               this.friendlies = burger
             } else {
-               o[c.name] = 1 + o[c.name] || 1
+               this.enemies = burger
             }
-            return o
-         }, {})
-         console.log(counter)
-         // First filter for summoners encountered gt 5, then sort by frequency
-         this.summoners = Object.entries(counter).filter(x => x[1] > 5).sort((a, b) => b[1] - a[1])
+         }
+         algo(friends, 1)
+         algo(enemies, 0)
+      },
 
-
-         /*
-         ALGO 2
-         ---
-         7999-9500 ms on Night Owl
-         ---
-         */
-         // for (const summoner of j) {
-         //    if (!this.summoners.some(e => e[0] === summoner)) {
-         //       // Summ DNE, push to this.summoners
-         //       let s = [summoner, 1]
-         //       this.summoners.push(s)
-         //    } else {
-         //       let s = this.summoners.find(e => e[0] === summoner)
-         //       s[1]++
-         //    }
-         // }
-         // this.summoners = this.summoners.filter(x => x[1] > 5).sort((a, b) => b[1] - a[1])
+      winrate(wins, total) {
+         return `${Math.round((wins / total) * 1000) / 10}%`
       }
    },
 
    computed: {
       summonersCompute() {
          // return this.summoners.sort((a, b) => b.encounters - a.encounters).slice(0, 100)
-         return this.summoners.sort((a, b) => b.encounters - a.encounters)
+         return this.friendlies.sort((a, b) => b.encounters - a.encounters)
       }
    },
 
@@ -95,34 +76,47 @@ export default {
 
 <template>
    <div class="pancakes-main">
-      <!-- <div class="pancakes-tabs">
-         <div class="history-tab"
-         @click="this.tab = 0"
-         :class="{ active: !this.tab }">
-            History
+      <div class="pancakes-tabs">
+         <div @click="this.tab = 0" :class="{ 'active': !this.tab }"> 
+            Friendly
          </div>
-         <div class="encounters-tab"
-         @click="this.tab = 1"
-         :class="{ active: this.tab }">
-            Encounters
+         <div @click="this.tab = 1" :class="{ 'active': this.tab }">
+            Enemy
          </div>
       </div>
-      <div class="history" v-show="this.tab === 0">
-         pancakes
-      </div> -->
-      <div class="encounters" v-show="this.tab === 1">
-         <div class="description">
-            People you've encountered >5 times.
+      <div class="description">
+         {{ (this.tab) ? `People you've played against` : `People you've played with` }}
+      </div>
+      <div class="headers">
+         <div style="margin-left: 40px;">Summoner</div>
+         <div class="rhs-headers">
+            <div>WR</div>
+            <div style="width: 60px;">Wins</div>
          </div>
-         <div class="headers">
-            <div>Summoner</div>
-            <div>Games</div>
-         </div>
+      </div>
+      <div class="encounters" v-show="this.tab === 0">
          <div class="table">
-            <div class="row" :class="i % 2 == 0 ? `alt` : ``" v-for="(summoner, i) in this.summoners">
-               
-               <div>{{ summoner[0] }}</div>
-               <div>{{ summoner[1] }}</div>
+            <div class="row" :class="i % 2 == 0 ? `alt` : ``" v-for="(summoner, i) in this.friendlies">
+               <div class="name">{{ summoner[0] }}</div>
+               <div class="ratio">
+                  {{ this.winrate(summoner[1][1], summoner[1][0]) }}
+                  <div class="ratio-sub">
+                     {{ summoner[1][1] }}/{{ summoner[1][0] }}
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="encounters" v-show="this.tab === 1">
+         <div class="table">
+            <div class="row" :class="i % 2 == 0 ? `alt` : ``" v-for="(summoner, i) in this.enemies">
+               <div class="name">{{ summoner[0] }}</div>
+               <div class="ratio">
+                  {{ this.winrate(summoner[1][1], summoner[1][0]) }}
+                  <div class="ratio-sub">
+                     {{ summoner[1][1] }}/{{ summoner[1][0] }}
+                  </div>
+               </div>
             </div>
          </div>
       </div>
@@ -137,6 +131,7 @@ export default {
    font-size: 0.9rem;
    color: var(--color-font-faded);
    justify-content: space-evenly;
+   margin-top: 10px;
    align-items: center;
    height: 35px;
 }
@@ -145,10 +140,21 @@ export default {
    cursor: pointer;
    padding: 0.25rem 1rem;
    border-radius: 8px;
+   transition: 0.2s;
+   -webkit-touch-callout: none; /* iOS Safari */
+   -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Old versions of Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+   user-select: none;
+}
+.pancakes-tabs > div:hover {
+   background: var(--alpha-06);
+   cursor: pointer;
 }
 
 .active {
-   color: var(--color-font);
+   color: var(--color-font-focus);
    background: var(--alpha-06);
 }
 
@@ -157,6 +163,7 @@ export default {
    flex-direction: column;
    background: var(--cell-panel);
    border-radius: 15px;
+   overflow: hidden;
    /* Hello future ryan, pls make it so height of lhs and rhs are identical by having them fit to user-ready-main property */
    height: 430px; 
 }
@@ -164,6 +171,7 @@ export default {
 .description {
    text-align: center;
    margin: 10px 0;
+   font-size: 0.8rem;
    font-style: italic;
    color: var(--color-font-faded);
 }
@@ -181,7 +189,7 @@ export default {
    display: flex;
    flex-direction: column;
    font-size: 0.8rem;
-   line-height: 1.25;
+   /* line-height: 1.25; */
    height: 97%;
 }
 
@@ -189,30 +197,53 @@ export default {
    background: var(--alpha-00);
 }
 
-.encounters .headers {
+.headers {
    display: flex;
-   justify-content: space-evenly;
+   justify-content: space-between;
    width: calc(100% - 8px);
    padding: 0.25rem 0;
-   font-weight: 600;
+   font-size: 0.8rem;
+   color: var(--color-font);
+   font-weight: 500;
+}
+
+.rhs-headers {
+   display: flex;
+   justify-content: space-between;
+   width: 120px;
+   margin-right: 30px;
 }
 
 .table {
+   margin-top: 5px;
    overflow-y: scroll;
+   height: 320px;
 }
 
 .encounters .row {
    display: flex;
-   justify-content: space-evenly;
+   justify-content: space-between;
    width: 100%;
    padding: 5px 0;
 }
 
-.row div:first-child, .headers div:first-child {
-   flex: 0 0 150px;
+.name {
+   margin-left: 40px;
 }
-.row div:nth-child(2), .headers div:nth-child(2) {
-   flex: 0 0 70px;
+.ratio {
+   display: flex;
+   justify-content: space-between;
+   line-height: 1rem;
+   width: 120px;
+   margin-right: 30px;
+   align-items: center;
+}
+.ratio-sub {
+   display: inline-block;
+   text-align: left;
+   font-size: .75rem;
+   width: 60px;
+   color: var(--color-font-faded);
 }
 
 .table::-webkit-scrollbar {

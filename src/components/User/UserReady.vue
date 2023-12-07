@@ -40,7 +40,8 @@ export default {
          challengeInfo: this.response.challenges,
          summoner: {
             iconId: this.response.profileIcon,
-            name: this.response.name
+            // name: (this.response.tagLine) ? `${this.response.gameName}#${this.response.tagLine}` : this.response.name,
+            name: [this.response.gameName, this.response.tagLine]
          },
          selected: 'Total Games',
          refresh: 'Update',
@@ -68,6 +69,7 @@ export default {
       this.store.userReady = true
       // if (this.championData) { error handling for summoners w/ 0 aram matches
       // }
+      console.log(this.response)
       this.summonerAverages()
       // Pull patch data from https://ddragon.leagueoflegends.com/api/versions.json
 
@@ -208,7 +210,10 @@ export default {
             <div class="name-wrapper">
                <img class="pfp" :src=profileIcon  alt="">
                <div>
-                  {{ this.summoner.name }}
+                  {{ this.summoner.name[0] }}
+                  <span class="sub">
+                     #{{ this.summoner.name[1] }}
+                  </span>
                   <div>
                      <button :disabled="isDisabled" @click="updateSummoner()">
                         {{ this.refresh }}
@@ -363,10 +368,15 @@ export default {
    justify-content: left;
    align-items: center;
    gap: 20px;
-   font-size: 1.5rem;
-   font-weight: bold;
+   color: var(--color-font-focus);
+   font-size: 1.35rem;
    border-radius: 15px;
 } 
+
+.name-wrapper .sub {
+   color: var(--color-font-faded);
+   font-size: 1.25rem;
+}
 
 img.pfp {
    width: 100px;

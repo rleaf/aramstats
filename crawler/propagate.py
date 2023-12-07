@@ -17,7 +17,7 @@ class Propagate():
       if (cursor.next()):
          for doc in cursor:
             if index % 20 == 0: print(f"{'@' * 5} INDEX: {index + start} {'@' * 20}")
-            print(f"on puuid: {doc['puuid']}")
+            print(f"on puuid: {doc['_id']}")
             self.propagate(doc, 0, batch_size)
             index += 1
             meta_collection.update_one({ "name": "crawler"}, { "$set": {"index": index + start} })
@@ -29,7 +29,7 @@ class Propagate():
    
 
    def propagate(self, doc: object, start: int, batch_size: int) -> None:
-      matchlist = util.get_matchlist(doc['puuid'], doc['region'], start, batch_size)
+      matchlist = util.get_matchlist(doc['_id'], doc['region'], start, batch_size)
       if len(matchlist) == 0: return
 
       match_batch = []
@@ -58,11 +58,15 @@ class Propagate():
 
          timeline_bin = [skill_level_bin, item_bin]
 
-         # champions_data =  [[p["participantId"], p["championName"], p["win"], p["teamId"], p["championId"], [str(p[f"item{y}"]) for y in range(6)] ] for p in match["info"]["participants"]]
-         # self.match_data_cache.append([match_id, champions_data])
+         match_batch.append({
+            '_id': match['metadata']['matchId'],
+            'region': match['metadata']['matchId'].split('_')[0],
+            'metadata': match['metadata'],
+            'info': match['info'],
+            'timeline': timeline_bin
+         })
 
-         match_batch.append({ 'metadata': match['metadata'], 'info': match['info'], 'timeline': timeline_bin})
-         [puuid_batch.append({ 'puuid': participant, 'region': doc['region']}) \
+         [puuid_batch.append({ '_id': participant, 'region': doc['region']}) \
             for participant in match['metadata']['participants']]
 
          if (match_id == matchlist[-1]): persist = True
@@ -80,7 +84,6 @@ class Propagate():
             raise Exception(f'Non-11000 errors in insertmany operation for TEST{self.patch}_matches', errors[0]['code'], errors[0]['errmsg'])
          else:
             print(f"Inserted {e.details['nInserted']}/{len(match_batch)} matches")
-            pass
 
       try:
          self.puuid_collection.insert_many(puuid_batch, ordered=False)
@@ -90,7 +93,6 @@ class Propagate():
             raise Exception(f"Non-11000 errors in insertmany operation for TEST{self.region}_puuids", errors[0]['code'], errors[0]['errmsg'])
          else:
             print(f"Inserted {e.details['nInserted']}/{len(puuid_batch)} puuids")
-            pass
       
       if persist: 
          print('persisting')

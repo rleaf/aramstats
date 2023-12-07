@@ -1,8 +1,16 @@
 match_schema = {
       "$jsonSchema": {
          "bsonType": "object",
-         "required": ["metadata", "info", "timeline"],
+         "required": ["_id", "region", "metadata", "info", "timeline"],
          "properties": {
+            "_id": {
+               "bsonType": "string",
+               "description": "matchid of match response"
+            },
+            "region": {
+               "bsonType": "string",
+               "description": "region of match response"
+            },
             "metadata": {
                "bsonType": "object",
                "description": "metadata field of match response"
