@@ -1,6 +1,5 @@
 import os
 import argparse
-# from wsgiref import validate
 import util
 import validators as V
 from pymongo import MongoClient, TEXT
@@ -8,6 +7,24 @@ from dotenv import load_dotenv
 from propagate import Propagate
 from seed import Seed
 
+route_map = {
+   "br1": "americas",
+   "la1": "americas",
+   "la2": "americas",
+   "na1": "americas",
+   "oc1": "sea",
+   "ph2": "sea",
+   "sg2": "sea",
+   "th2": "sea",
+   "tw2": "sea",
+   "vn2": "sea",
+   "eun1": "europe",
+   "euw1": "europe",
+   "ru": "europe",
+   "tr1": "europe",
+   "jp1": "asia",
+   "kr": "asia",
+}
 
 class Crawler():
    """
@@ -19,9 +36,11 @@ class Crawler():
       db = MongoClient(os.environ['DB_CONNECTION_STRING'])['aramstats']
       collection_list = db.list_collection_names()
       region = config.region
+      route = route_map[config.region]
       patch = util.get_latest_patch()
       puuid_collection_name = f"{region.upper()}_puuids"
       match_collection_name = f"{patch}_matches"
+      
 
       # Check if existing collection of puuids for REGION
       if puuid_collection_name in collection_list:
@@ -40,8 +59,15 @@ class Crawler():
       if config.seed:
          Seed(patch, region, self.puuid_collection, self.match_collection)
       else:
-         self.meta_collection = db["meta"]
-         Propagate(patch, region, self.puuid_collection, self.match_collection, self.meta_collection, config.index)
+         if "meta" in collection_list:
+            meta_collection = db["meta"]
+         else:
+            body = {i: {"index": 0} for i in route_map.keys()}
+            body["_id"] = "crawler"
+            body["champ_parse_index"] = 0
+            meta_collection = db.create_collection("meta", validator=V.meta_schema)
+            meta_collection.insert_one(body)
+         Propagate(patch, region, self.puuid_collection, self.match_collection, meta_collection, config.index)
 
 if __name__ == '__main__':
    args = argparse.ArgumentParser()
@@ -49,7 +75,7 @@ if __name__ == '__main__':
                      help='Set to 1 to seed crawl. Set to propagation by default.')
    args.add_argument('-i', '--index', type=int, default=None,
                      help='Set starting index for propagation.')
-   args.add_argument('region', choices=['americas', 'europe', 'asia', 'sea'],
+   args.add_argument('region', choices=['br1', 'la1', 'la2', 'na1', 'oc1', 'ph2', 'sg2', 'th2', 'tw2', 'vn2', 'eun1', 'euw1', 'ru', 'tr1', 'jp1', 'kr'],
                      help='Select region to crawl through.')
    config = args.parse_args()
 

@@ -1,4 +1,3 @@
-from logging import Filterer
 import os
 import util
 import validators as V
@@ -13,8 +12,8 @@ class ChampionParser():
       collection_list = db.list_collection_names()
       patch = util.get_latest_patch()
       match_collection_name = f"{patch}_matches"
-      self.champion_stats_name = "championstats"
-      champion_collection = f"{patch}_{self.champion_stats_name}"
+      self.champion_stats_name = "crawler"
+      champion_collection = f"{patch}_championstats"
       self.items = util.get_items()
       self.runes = util.get_runes()
 
@@ -25,12 +24,12 @@ class ChampionParser():
       else:
          self.champion_stats_collection = db.create_collection(champion_collection, validator=V.champion_schema)
       if "meta" in collection_list:
-         self.meta_document = db["meta"]
-         self.meta_document.update_one({ "name": self.champion_stats_name }, { "$set": {"patch": patch} })
-         self.index = self.meta_document.find_one({ "name": self.champion_stats_name })["index"]
+         self.meta_collection = db["meta"]
+         self.meta_collection.update_one({ "_id": self.champion_stats_name }, { "$set": {"patch": patch} })
+         self.index = self.meta_collection.find_one({ "_id": self.champion_stats_name })["champ_parse_index"]
       print("Starting champion parser")
       self.forward()
-      self.meta_document.update_one({ "name": self.champion_stats_name}, { "$set": {"index": self.index} })
+      self.meta_collection.update_one({ "_id": self.champion_stats_name}, { "$set": {"champ_parse_index": self.index} })
       print("Fin champion parser")
 
    def forward(self):
@@ -41,7 +40,7 @@ class ChampionParser():
          print(match["metadata"]["matchId"], self.index)
          if self.index % 20 == 0 and self.index != 0:
             print('updating index')
-            self.meta_document.update_one({ "name": self.champion_stats_name}, { "$set": {"index": self.index} })
+            self.meta_collection.update_one({ "_id": self.champion_stats_name}, { "$set": {"champ_parse_index": self.index} })
                
          for participant in match["info"]["participants"]:
             item_timeline = list(filter(lambda x: participant["participantId"] == x["participantId"], match["timeline"][1]))

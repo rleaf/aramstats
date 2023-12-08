@@ -3,7 +3,7 @@ import pymongo
 
 class Propagate():
    def __init__(self, patch: str, region: str, puuid_collection, match_collection, meta_collection, config_index) -> None:
-      start = config_index if config_index is not None else meta_collection.find_one({ "name": "crawler"})["index"]
+      start = config_index if config_index is not None else meta_collection.find_one({ "_id": "crawler"})[region]["index"]
       batch_size = 50 # batch_size for cursor batch & matchlist batch
       self.puuid_collection = puuid_collection
       self.match_collection = match_collection
@@ -20,7 +20,7 @@ class Propagate():
             print(f"on puuid: {doc['_id']}")
             self.propagate(doc, 0, batch_size)
             index += 1
-            meta_collection.update_one({ "name": "crawler"}, { "$set": {"index": index + start} })
+            meta_collection.update_one({ "_id": "crawler"}, { "$set": {f"{self.region}.index": index + start} })
       else:
          print('fin')
          return
@@ -29,7 +29,7 @@ class Propagate():
    
 
    def propagate(self, doc: object, start: int, batch_size: int) -> None:
-      matchlist = util.get_matchlist(doc['_id'], doc['region'], start, batch_size)
+      matchlist = util.get_matchlist(doc['_id'], self.region, start, batch_size)
       if len(matchlist) == 0: return
 
       match_batch = []
@@ -38,16 +38,17 @@ class Propagate():
 
       for match_id in matchlist:
          print(match_id)
-         match = util.get_match(match_id, doc['region'])
+         match = util.get_match(match_id, self.region)
          # Continue/Break on...
          # ...404 match or ...dead match/remake. Remakes are < 210, but setting to 300 as an arbitrary cutoff for "pointless" games. (5 minute length)
          if match == 404 or match['info']['gameDuration'] < 300: continue
          # ...old patch
          if self.patch != util.get_match_patch(match): break
 
+         match_region = match['metadata']['matchId'].split('_')[0]
          skill_level_bin = []
          item_bin = []
-         match_timeline = util.get_match_timeline(match_id, doc["region"])
+         match_timeline = util.get_match_timeline(match_id, self.region)
          
          for frame in match_timeline["info"]["frames"]:
             for event in frame["events"]:
@@ -60,14 +61,13 @@ class Propagate():
 
          match_batch.append({
             '_id': match['metadata']['matchId'],
-            'region': match['metadata']['matchId'].split('_')[0],
+            'region': match_region,
             'metadata': match['metadata'],
             'info': match['info'],
             'timeline': timeline_bin
          })
 
-         [puuid_batch.append({ '_id': participant, 'region': doc['region']}) \
-            for participant in match['metadata']['participants']]
+         [puuid_batch.append({ '_id': participant }) for participant in match['metadata']['participants']]
 
          if (match_id == matchlist[-1]): persist = True
 
@@ -76,9 +76,6 @@ class Propagate():
       try:
          self.match_collection.insert_many(match_batch, ordered=False)
       except pymongo.errors.BulkWriteError as e:
-         # dup_matches = [x["keyValue"]["metadata.matchId"] for x in e.details["writeErrors"]]
-         # self.match_data_cache = list(filter(lambda x: x[0] not in dup_matches, self.match_data_cache))
-
          errors = list(filter(lambda x: x['code'] != 11000, e.details['writeErrors']))
          if len(errors) > 0:
             raise Exception(f'Non-11000 errors in insertmany operation for TEST{self.patch}_matches', errors[0]['code'], errors[0]['errmsg'])
@@ -90,68 +87,10 @@ class Propagate():
       except pymongo.errors.BulkWriteError as e:
          errors = list(filter(lambda x: x['code'] != 11000, e.details['writeErrors']))
          if len(errors) > 0:
-            raise Exception(f"Non-11000 errors in insertmany operation for TEST{self.region}_puuids", errors[0]['code'], errors[0]['errmsg'])
+            raise Exception(f"Non-11000 errors in insertmany operation for {match_region.upper()}_puuids", errors[0]['code'], errors[0]['errmsg'])
          else:
             print(f"Inserted {e.details['nInserted']}/{len(puuid_batch)} puuids")
       
       if persist: 
          print('persisting')
-         # self.champion_parse(doc)
          self.propagate(doc, start + batch_size, batch_size)
-
-   def champion_parse(self, doc: object):
-      for match_data in self.match_data_cache:
-         match_timeline = util.get_match_timeline(match_data[0], doc["region"])
-
-         for champion_data in match_data[1]:
-            """
-            name <str>: champion name
-            won <int>: boolean indicating win/lose
-            friendly_team <list>: summed multi-hot vector of friendly encounters
-            enemy_team <list>: summed multi-hot vector of enemy encounters
-            path <str>: build path in dot notation
-            level_path <dict>: datum to be inserted in .levelPath that stores level path info
-            starting_build <tuple>: [0] houses starting build path, similar to path. [1] houses datum to be inserted.
-            """
-            # Timeline-res level data
-            level_path, starting_build = util.get_champion_upsert_data(champion_data[0], match_timeline)
-
-            # Match-res level data
-            filtered_items = list(filter(lambda x: util.item_filter(x, self.items), champion_data[5]))
-            path = 'builds.' + '.'.join([str(x) for x in filtered_items]) + '.meta'
-            friends = [x[4] for x in match_data[1] if x[3] == champion_data[3]]
-            enemies = [x[4] for x in match_data[1] if x[3] != champion_data[3]]
-            name = champion_data[1] # champion name 
-            won = 1 if champion_data[2] else 0 # if champion won the game, either (0 or 1)
-
-            if len(filtered_items) > 0:
-               try:
-                  self.champion_collection.update_one(
-                     {
-                        "name": name,
-                     },
-                     {
-                        "$inc": {
-                           "games": 1,
-                           "wins": won,
-                           f'{path}.games': 1,
-                           f'{path}.wins': won,
-                           f"{path}.{level_path}": 1,
-                           f"{path}.{starting_build}.games": 1,
-                           f"{path}.{starting_build}.wins": won,
-                           # Friendlies
-                           f"{path}.friendlyEncounters.{friends[0]}": 1,
-                           f"{path}.friendlyEncounters.{friends[1]}": 1,
-                           f"{path}.friendlyEncounters.{friends[2]}": 1,
-                           f"{path}.friendlyEncounters.{friends[3]}": 1,
-                           # Enemies
-                           f"{path}.enemyEncounters.{enemies[0]}": 1,
-                           f"{path}.enemyEncounters.{enemies[1]}": 1,
-                           f"{path}.enemyEncounters.{enemies[2]}": 1,
-                           f"{path}.enemyEncounters.{enemies[3]}": 1,
-                        },
-                     },
-                     upsert = True
-                  )
-               except Exception as e:
-                  print(e, 'pancakes')

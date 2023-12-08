@@ -1,16 +1,12 @@
-puuid_schema = {
+meta_schema = {
       "$jsonSchema": {
          "bsonType": "object",
          "required": ["_id"],
          "properties": {
             "_id": {
                "bsonType": "string",
-               "description": "a summoner's puuid"
+               "description": "meta reference"
             },
-            "region": {
-               "bsonType": "string",
-               "description": "a puuid's region"
-            }
          }
       }
    }
