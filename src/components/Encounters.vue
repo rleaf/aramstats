@@ -20,22 +20,22 @@ export default {
 
          for (const champion of this.championData) {
             for (const match of champion.matches) {
-               if (match.win) {
-                  match.teamEncounters.forEach(x => x.win = 1)
-                  match.enemyEncounters.forEach(x => x.win = 1)
+               if (match.w) {
+                  match.te.forEach(x => x.win = 1)
+                  match.ee.forEach(x => x.win = 1)
                } else {
-                  match.teamEncounters.forEach(x => x.win = 0)
-                  match.enemyEncounters.forEach(x => x.win = 0)
+                  match.te.forEach(x => x.win = 0)
+                  match.ee.forEach(x => x.win = 0)
                }
-               friends.push(match.teamEncounters)
-               enemies.push(match.enemyEncounters)
+               friends.push(match.te)
+               enemies.push(match.ee)
             }
          }
          const algo = (arr, n) => {
-            arr = arr.flat().sort((a, b) => a.gameName.localeCompare(b.gameName))
+            arr = arr.flat().sort((a, b) => a.gn.localeCompare(b.gn))
 
             let counter = arr.reduce((o, c) => {
-               const key = (c.gameName) ? `${c.gameName}#${c.tagLine}` : c.name
+               const key = (c.gn) ? `${c.gn}#${c.tl}` : c.name
                // (o[key]) ? o[key] = [o[key][0] + 1, o[key][1] + c.win] : o[key] = [1, c.win]
                if (o[key]) {
                   o[key] = [o[key][0] + 1, o[key][1] + c.win]

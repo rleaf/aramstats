@@ -13,7 +13,6 @@ const router = express.Router()
 
 // Get summoner information from database or write summoner to db
 router.get('/:region/:gameName/:tagLine', async (req, res) => {
-// router.get('/:region/:summonerURI', async (req, res) => {
 
    /*
       0. Check to see if summoner exists in Riot DB, if not return DNE
@@ -59,7 +58,7 @@ router.get('/:region/:gameName/:tagLine', async (req, res) => {
 
    if (summoner) {
       // 1.
-      const exists = await summonerModel.findOne({ 'puuid': riotId.puuid })
+      const exists = await summonerModel.findOne({ '_id': riotId.puuid })
 
       // 2.
       if (exists) {
@@ -84,7 +83,7 @@ router.get('/:region/:gameName/:tagLine', async (req, res) => {
       
       // 3.2 Create summoner document
       const summonerDocument = new summonerModel({
-         puuid: riotId.puuid,
+         _id: riotId.puuid,
          gameName: riotId.gameName,
          tagLine: riotId.tagLine,
          name: summoner.name,
@@ -154,7 +153,7 @@ router.put('/update/:region/:gameName/:tagLine', async (req, res) => {
    console.log(`Updating ${riotId.gameName}#${riotId.tagLine} (${req.params.region}).`)
    
    // Get summoner data
-   const summonerDocument = await summonerModel.findOne({ puuid: riotId.puuid })
+   const summonerDocument = await summonerModel.findOne({ _id: riotId.puuid })
 
    // Update summoner properties
    const challenges = await challengeScribe(riotId.puuid, req.params.region)
@@ -174,7 +173,7 @@ router.put('/update/:region/:gameName/:tagLine', async (req, res) => {
       1. matchlist = [newest, newer, old].reverse() # [old, newer, newest]
       2. championEmbed.matches.unshift(matchlist[i for i in matchlist]) # adds old first...then newer...then newest to beginning
    */
-   const matchlist = totalMatchlist.slice(0, lastMatchIndex).reverse()
+   const matchlist = totalMatchlist.slice(0, lastMatchIndex)
 
    // There are no matches in matchlist, therefore the summoner is UTD
    if (matchlist.length === 0) {
@@ -197,8 +196,8 @@ router.put('/update/:region/:gameName/:tagLine', async (req, res) => {
    // Basically championParse(), but operates only on the champs in updatedChamps.
    for (const champion of summonerDocument.championData) {
       if (updatedChampions.includes(champion.name)) {
-         Object.keys(champion.averages).forEach(v => champion.averages[v] = 0)
-         Object.keys(champion.multikills).forEach(v => champion.multikills[v] = 0)
+         Object.keys(champion.avg).forEach(v => champion.avg[v] = 0)
+         Object.keys(champion.mk).forEach(v => champion.mk[v] = 0)
          champion.wins = 0
 
          const matches = await summonerMatchesModel.find( {"_id": { $in: champion.matches}} )
@@ -208,27 +207,27 @@ router.put('/update/:region/:gameName/:tagLine', async (req, res) => {
          // Is it more efficient to aggregate average stats on res.send() versus writing & reading them to/from DB?
          for (const match of matches) {
             
-            if (match.win) champion.wins++
-            champion.averages.allyHealPerMinute+= Math.round(match.totals.healsOnTeammates / match.gameDuration)
-            champion.averages.assists+= match.assists
-            champion.averages.damagePerMinute+= Math.round(match.totals.damageDealtToChampions / match.gameDuration)
-            champion.averages.damageShare+= match.damageShare * 100
-            champion.averages.damageTakenPerMinute+= Math.round(match.totals.damageTaken / match.gameDuration)
-            champion.averages.deaths+= match.deaths
-            champion.averages.goldEarned+= match.totals.gold
-            champion.averages.goldPerMinute+= Math.round(match.totals.gold / match.gameDuration)
-            champion.averages.healingPerMinute+= Math.round(match.totals.healed / match.gameDuration)
-            champion.averages.healingOnTeammates+= match.totals.healsOnTeammates
-            champion.averages.killParticipation+= match.killParticipation * 100
-            champion.averages.kills+= match.kills
-            champion.averages.selfMitigatedPerMinute+= Math.round(match.totals.selfMitigated / match.gameDuration)
-            champion.averages.totalDamageDealt+= match.totals.damageDealtToChampions
-            champion.averages.totalDamageTaken+= match.totals.damageTaken
-            champion.averages.totalHeal+= match.totals.healed
-            champion.averages.totalSelfMitigated+= match.totals.selfMitigated
-            champion.multikills.triple+= match.multikills.triple
-            champion.multikills.quadra+= match.multikills.quadra
-            champion.multikills.penta+= match.multikills.penta
+            if (match.w) champion.wins++
+            champion.avg.ahpm += Math.round(match.t.ah / match.gd)
+            champion.avg.a += match.a
+            champion.avg.dpm += Math.round(match.t.dtc / match.gd)
+            champion.avg.ds += match.ds * 100
+            champion.avg.dtpm += Math.round(match.t.dt / match.gd)
+            champion.avg.d += match.d
+            champion.avg.ge += match.t.g
+            champion.avg.gpm += Math.round(match.t.g / match.gd)
+            champion.avg.hpm += Math.round(match.t.h / match.gd)
+            champion.avg.ah += match.t.ah
+            champion.avg.kp += match.kp * 100
+            champion.avg.k += match.k
+            champion.avg.smpm += Math.round(match.t.sm / match.gd)
+            champion.avg.tdd += match.t.dtc
+            champion.avg.tdt += match.t.dt
+            champion.avg.th += match.t.h
+            champion.avg.tsm += match.t.sm
+            champion.mk.t += match.mk.t
+            champion.mk.q += match.mk.q
+            champion.mk.p += match.mk.p
          }
 
          for (const [k, v] of Object.entries(champion.averages)) {
@@ -268,42 +267,41 @@ async function championParser(summonerDocument, updateArr) {
 
       if (updateArr && updateArr.includes(champion.name)) {
          // If champion already exists, zero their values
-         Object.keys(champion.averages).forEach(v => champion.averages[v] = 0)
-         Object.keys(champion.multikills).forEach(v => champion.multikills[v] = 0)
+         Object.keys(champion.avg).forEach(v => champion.avg[v] = 0)
+         Object.keys(champion.mk).forEach(v => champion.mk[v] = 0)
          champion.wins = 0
       }
       
       const matches = await summonerMatchesModel.find( {"_id": { $in: champion.matches}} )
-      // console.log(matches, 'records')
       
       champion.games = matches.length
 
       for (const match of matches) {
-         if (match.win) champion.wins++
-         champion.averages.allyHealPerMinute+= Math.round(match.totals.healsOnTeammates / match.gameDuration)
-         champion.averages.assists+= match.assists
-         champion.averages.damagePerMinute+= Math.round(match.totals.damageDealtToChampions / match.gameDuration)
-         champion.averages.damageShare+= match.damageShare * 100
-         champion.averages.damageTakenPerMinute+= Math.round(match.totals.damageTaken / match.gameDuration)
-         champion.averages.deaths+= match.deaths
-         champion.averages.goldEarned+= match.totals.gold
-         champion.averages.goldPerMinute+= Math.round(match.totals.gold / match.gameDuration)
-         champion.averages.healingPerMinute+= Math.round(match.totals.healed / match.gameDuration)
-         champion.averages.healingOnTeammates+= match.totals.healsOnTeammates
-         champion.averages.killParticipation+= match.killParticipation * 100
-         champion.averages.kills+= match.kills
-         champion.averages.selfMitigatedPerMinute+= Math.round(match.totals.selfMitigated / match.gameDuration)
-         champion.averages.totalDamageDealt+= match.totals.damageDealtToChampions
-         champion.averages.totalDamageTaken+= match.totals.damageTaken
-         champion.averages.totalHeal+= match.totals.healed
-         champion.averages.totalSelfMitigated+= match.totals.selfMitigated
-         champion.multikills.triple+= match.multikills.triple
-         champion.multikills.quadra+= match.multikills.quadra
-         champion.multikills.penta+= match.multikills.penta
+         if (match.w) champion.wins++
+         champion.avg.ahpm += Math.round(match.t.ah / match.gd)
+         champion.avg.a += match.a
+         champion.avg.dpm += Math.round(match.t.dtc / match.gd)
+         champion.avg.ds += match.ds * 100
+         champion.avg.dtpm += Math.round(match.t.dt / match.gd)
+         champion.avg.d += match.d
+         champion.avg.ge += match.t.g
+         champion.avg.gpm += Math.round(match.t.g / match.gd)
+         champion.avg.hpm += Math.round(match.t.h / match.gd)
+         champion.avg.ah += match.t.ah
+         champion.avg.kp += match.kp * 100
+         champion.avg.k += match.k
+         champion.avg.smpm += Math.round(match.t.sm / match.gd)
+         champion.avg.tdd += match.t.dtc
+         champion.avg.tdt += match.t.dt
+         champion.avg.th += match.t.h
+         champion.avg.tsm += match.t.sm
+         champion.mk.t += match.mk.t
+         champion.mk.q += match.mk.q
+         champion.mk.p += match.mk.p
       }
 
-      for (const [k, v] of Object.entries(champion.averages)) {
-         champion.averages[k] = Math.round(v / matches.length)
+      for (const [k, v] of Object.entries(champion.avg)) {
+         champion.avg[k] = Math.round(v / matches.length)
       }
    }
 
@@ -311,10 +309,7 @@ async function championParser(summonerDocument, updateArr) {
 }
 
 async function matchParser(riotId, region, matchlist, summonerDocument, updateArr) {
-   let times = []
    for (let i = 0; i < matchlist.length; i++) {
-      const startTime = performance.now()
-
       if (i % 25 === 0) {
          console.log(`${riotId.gameName}#${riotId.tagLine} (${region}): match ${i}/${matchlist.length}`)
          summonerDocument.pull.current = i
@@ -340,36 +335,61 @@ async function matchParser(riotId, region, matchlist, summonerDocument, updateAr
 
       if (updateArr) updateArr.push(player.championName)
       const match = new summonerMatchesModel({
-         matchId: game.metadata.matchId,
-         gameCreation: game.info.gameCreation,
-         gameDuration: getGameDuration(game.info),
-         gameVersion: game.info.gameVersion,
-         win: player.win,
-         kills: player.kills,
-         deaths: player.deaths,
-         assists: player.assists,
-         assists: player.assists,
-         killParticipation: getKillParticipation(player, game.info.participants),
-         damageShare: getDamageShare(player, game.info.participants),
-         items: getItems(player),
-         summoner1Id: player.summoner1Id,
-         summoner2Id: player.summoner2Id,
-         primaryRune: player.perks.styles[0].selections[0].perk,
-         secondaryRune: player.perks.styles[1].style,
-         totals: {
-            damageDealtToChampions: player.totalDamageDealtToChampions,
-            damageTaken: player.totalDamageTaken,
-            selfMitigated: player.damageSelfMitigated,
-            healed: player.totalHeal,
-            healsOnTeammates: player.totalHealsOnTeammates,
-            gold: player.goldEarned
+         // peep schema for human-interpretable
+         m: summonerDocument._id,
+         mId: game.metadata.matchId,
+         gc: game.info.gameCreation,
+         gd: getGameDuration(game.info),
+         gv: game.info.gameVersion,
+         w: player.win,
+         k: player.kills,
+         d: player.deaths,
+         a: player.assists,
+         a: player.assists,
+         kp: getKillParticipation(player, game.info.participants),
+         ds: getDamageShare(player, game.info.participants),
+         i: getItems(player),
+         s1: player.summoner1Id,
+         s1c: player.summoner1Casts,
+         s2: player.summoner2Id,
+         s2c: player.summoner2Casts,
+         sc: [player.spell1Casts, player.spell2Casts, player.spell3Casts, player.spell4Casts],
+         pr: player.perks.styles[0].selections[0].perk,
+         sr: player.perks.styles[1].style,
+         t: {
+            dtc: player.totalDamageDealtToChampions,
+            dt: player.totalDamageTaken,
+            sm: player.damageSelfMitigated,
+            h: player.totalHeal,
+            ah: player.totalHealsOnTeammates,
+            g: player.goldEarned
          },
-         multikills: {
-            triple: player.tripleKills,
-            quadra: player.quadraKills,
-            penta: player.pentaKills,
+         mk: {
+            t: player.tripleKills,
+            q: player.quadraKills,
+            p: player.pentaKills,
          },
-         teamId: player.teamId
+         tId: player.teamId,
+         fba: player.firstBloodAssist,
+         fbk: player.firstBloodKill,
+         tk: player.turretKills,
+         tl: player.turretsLost,
+         p: {
+            all: player.allInPings,
+            assist: player.assistMePings,
+            bait: player.baitPings,
+            basic: player.basicPings,
+            comm: player.commandPings,
+            danger: player.dangerPings,
+            enMiss: player.enemyMissingPings,
+            enVis: player.enemyVisionPings,
+            back: player.getBackPings,
+            hold: player.holdPings,
+            vis: player.needVisionPings,
+            omw: player.onMyWayPings,
+            push: player.pushPings,
+            visClr: player.visionClearedPings,
+         }
       })
 
       let participantPuuids = []
@@ -380,8 +400,8 @@ async function matchParser(riotId, region, matchlist, summonerDocument, updateAr
                filter: { _id: participant.puuid },
                update: {
                   _id: participant.puuid,
-                  gameName: participant.riotIdGameName || participant.riotIdName,
-                  tagLine: participant.riotIdTagline,
+                  gn: participant.riotIdGameName || participant.riotIdName,
+                  tl: participant.riotIdTagline,
                   name: participant.summonerName
                },
                upsert: true
@@ -389,7 +409,7 @@ async function matchParser(riotId, region, matchlist, summonerDocument, updateAr
          })
 
          if (participant.puuid != player.puuid) {
-            (player.teamId === participant.teamId) ? match.teamEncounters.push(participant.puuid) : match.enemyEncounters.push(participant.puuid)
+            (player.teamId === participant.teamId) ? match.te.push(participant.puuid) : match.ee.push(participant.puuid)
          }
       }
 
@@ -411,22 +431,17 @@ async function matchParser(riotId, region, matchlist, summonerDocument, updateAr
             }
          )
       }
-
-      const endTime = performance.now()
-      times.push(endTime - startTime)
    }
-   const avgTime = times.reduce((a, b) => a + b) / times.length
-   console.log(`Average match parse time: ${avgTime}ms`)
    
    if (updateArr) return updateArr
 }
 
 async function aggregateSummoner(puuid) {
    return await summonerModel.aggregate([
-      { $match: { puuid: puuid } },
+      { $match: { _id: puuid } },
       { $unwind: "$championData" },
       { $lookup: {
-            from: "summonermatches",
+            from: "summoner_matches",
             localField: "championData.matches",
             foreignField: "_id",
             as: "championData.matches",
@@ -434,9 +449,9 @@ async function aggregateSummoner(puuid) {
                {
                   $lookup: {
                      from: "summoner_puuids",
-                     localField: "teamEncounters",
+                     localField: "te",
                      foreignField: "_id",
-                     as: "teamEncounters",
+                     as: "te",
                      pipeline: [
                         {
                            $project: {
@@ -449,9 +464,9 @@ async function aggregateSummoner(puuid) {
                {
                   $lookup: {
                      from: "summoner_puuids",
-                     localField: "enemyEncounters",
+                     localField: "ee",
                      foreignField: "_id",
-                     as: "enemyEncounters",
+                     as: "ee",
                      pipeline: [
                         {
                            $project: {

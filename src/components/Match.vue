@@ -12,7 +12,7 @@ export default {
          daysSince: Number,
          gameDuration: Number,
          date: null,
-         kda: `${this.match.kills}/${this.match.deaths}/${this.match.assists}`,
+         kda: `${this.match.k}/${this.match.d}/${this.match.a}`,
          // primaryRune: this.match.primaryRune,
          // secondaryTree: this.match.secondaryTree,
          items: [[], []],
@@ -49,7 +49,7 @@ export default {
 
    methods: {
       timeSet() {
-         this.date = new Date(this.match.gameCreation)
+         this.date = new Date(this.match.gc)
          const now = Date.now()
          const diffTime = Math.abs(this.date - now)
          this.daysSince = Math.round(diffTime / (1000 * 60 * 60 * 24))
@@ -58,9 +58,9 @@ export default {
 
       itemImages() {
          for (let i = 0; i < 6; i++) {
-            if (this.match.items) {
-               if (this.match.items[i] != 0) {
-                  let x = `https://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/item/${this.match.items[i]}.png`
+            if (this.match.i) {
+               if (this.match.i[i] != 0) {
+                  let x = `https://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/item/${this.match.i[i]}.png`
                   if (i < 3) {
                      this.items[0].push(x)
                   } else {
@@ -77,26 +77,23 @@ export default {
       },
 
       perMinute(unit) {
-         return Math.round(unit / this.match.gameDuration)
+         return Math.round(unit / this.match.gd)
       }
    },
 
    computed: {
       primary() {
-         return new URL(`../assets/runes/${this.match.primaryRune}.png`, import.meta.url).href
+         return new URL(`../assets/runes/${this.match.pr}.png`, import.meta.url).href
       },
       secondary() {
-         return new URL(`../assets/runes/${this.match.secondaryRune}.png`, import.meta.url).href
-      },
-      matchWinLoss() {
-         return (this.match.win) ? 'win' : 'loss'
+         return new URL(`../assets/runes/${this.match.sr}.png`, import.meta.url).href
       },
       damageShare() {
-         return Math.round(this.match.damageShare * 100)
+         return Math.round(this.match.ds * 100)
       },
       killParticipation() {
          // return `${this.match.killParticipation}`
-         return Math.round(this.match.killParticipation * 100)
+         return Math.round(this.match.kp * 100)
       },
       rotateArrow() {
          return (this.matchInfo) ? 'transform: rotate(180deg);' : ''
@@ -108,14 +105,14 @@ export default {
 </script>
 
 <template>
-   <div class="match-container" :class="(this.match.win) ? 'win' : 'loss'">
+   <div class="match-container" :class="(this.match.w) ? 'win' : 'loss'">
       <div class="match-left">
          <button @click="matchDetail">
             <img src="../assets/arrow3.svg" alt="" :style="rotateArrow"/>
          </button>
          <div class="match-date">
             <span class="date-minor">{{ this.daysSince }} days ago</span>
-            <span>{{ this.match.gameDuration }} min</span>
+            <span>{{ this.match.gd }} min</span>
             <span class="date-minor">{{ this.date }}</span>
          </div>
          <div class="match-runes">
@@ -139,55 +136,55 @@ export default {
       </div>
       <div class="match-right">
          <div class="multikills">
-            <span class="triple">{{ this.match.multikills.triple }}</span>
-            <span class="quadra">{{ this.match.multikills.quadra }}</span>
-            <span class="penta">{{ this.match.multikills.penta }}</span>
+            <span class="triple">{{ this.match.mk.t }}</span>
+            <span class="quadra">{{ this.match.mk.q }}</span>
+            <span class="penta">{{ this.match.mk.p }}</span>
          </div>
          <div class="damage">
             <h5>Damage</h5>
-            {{ this.match.totals.damageDealtToChampions }}, {{ damageShare || '-' }}% <span class="unit">DS</span>
+            {{ this.match.t.dtc }}, {{ damageShare }}% <span class="unit">DS</span>
             <div class="per-minute">
-               {{ perMinute(this.match.totals.damageDealtToChampions) }} / m
+               {{ perMinute(this.match.t.dtc) }} / m
             </div>
          </div>
          <div class="healing">
             <h5>Healing</h5>
-            {{ this.match.totals.healed }}
+            {{ this.match.t.h }}
             <div class="per-minute">
-               {{ perMinute(this.match.totals.healed) }} / m
+               {{ perMinute(this.match.t.h) }} / m
             </div>
          </div>
          <div class="ally">
             <h5>Ally Heals</h5>
-            {{ this.match.totals.healsOnTeammates }}
+            {{ this.match.t.ah }}
             <div class="per-minute">
-               {{ perMinute(this.match.totals.healsOnTeammates) }} / m
+               {{ perMinute(this.match.t.ah) }} / m
             </div>
          </div>
          <div class="taken">
             <h5>Taken</h5>
-            {{ this.match.totals.damageTaken }}
+            {{ this.match.t.dt }}
             <div class="per-minute">
-               {{ perMinute(this.match.totals.damageTaken) }} / m
+               {{ perMinute(this.match.t.dt) }} / m
             </div>
          </div>
          <div class="mitigated">
             <h5>Mitigated</h5>
-            {{ this.match.totals.selfMitigated }}
+            {{ this.match.t.sm }}
             <div class="per-minute">
-               {{ perMinute(this.match.totals.selfMitigated) }} / m
+               {{ perMinute(this.match.t.sm) }} / m
             </div>
          </div>
          <div class="gold">
             <h5>Gold</h5>
-            {{ this.match.totals.gold }}
+            {{ this.match.t.g }}
             <div class="per-minute">
-               {{ perMinute(this.match.totals.gold) }} / m
+               {{ perMinute(this.match.t.g) }} / m
             </div>
          </div>
       </div>
    </div>
-   <MatchInfo v-if="this.matchInfo" :matchId="this.match.matchId" :currentPatch="this.currentPatch"/>
+   <MatchInfo v-if="this.matchInfo" :matchId="this.match.mId" :currentPatch="this.currentPatch"/>
 </template>
 
 <style scoped>

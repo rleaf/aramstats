@@ -59,7 +59,7 @@ export default {
             .then((res) => _res = res.data.data)
 
          for(const match of matches) {
-            let mythic = await this.findMythic(match.items, _res)
+            let mythic = await this.findMythic(match.i, _res)
 
             if (mythic != undefined) {
                let mythicIdx = this.mythic.findIndex(el => el.id == mythic)

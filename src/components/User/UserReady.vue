@@ -109,15 +109,15 @@ export default {
             this.summonerStats.totalMatches += champ.games
             this.summonerStats.totalWins += champ.wins
 
-            this.summonerStats.kda[0] += champ.averages.kills
-            this.summonerStats.kda[1] += champ.averages.deaths
-            this.summonerStats.kda[2] += champ.averages.assists
+            this.summonerStats.kda[0] += champ.avg.k
+            this.summonerStats.kda[1] += champ.avg.d
+            this.summonerStats.kda[2] += champ.avg.a
 
-            this.summonerStats.killParticipation += champ.averages.killParticipation
+            this.summonerStats.killParticipation += champ.avg.kp
 
-            this.summonerStats.multiKills.triple += champ.multikills.triple
-            this.summonerStats.multiKills.quadra += champ.multikills.quadra
-            this.summonerStats.multiKills.penta += champ.multikills.penta
+            this.summonerStats.multiKills.triple += champ.mk.t
+            this.summonerStats.multiKills.quadra += champ.mk.q
+            this.summonerStats.multiKills.penta += champ.mk.p
          }
          this.summonerStats.kda = this.summonerStats.kda.map(x => Math.round(x / this.championData.length * 10) / 10)
          this.summonerStats.killParticipation = Math.round(this.summonerStats.killParticipation / this.championData.length * 10) / 10

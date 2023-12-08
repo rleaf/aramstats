@@ -34,10 +34,10 @@ export default {
          (this.comparison) ? matches = this.data : matches = this.data.matches
 
          for (const match of matches) {
-            let runeIdx = this.rune.findIndex(el => el.name == match.primaryRune)
+            let runeIdx = this.rune.findIndex(el => el.name == match.pr)
 
             if (runeIdx == -1) {
-               this.rune.push({ 'name': match.primaryRune, 'wins': 0, 'totalGames': 1, 'winRate': 0 })
+               this.rune.push({ 'name': match.pr, 'wins': 0, 'totalGames': 1, 'winRate': 0 })
                if (match.win) this.rune[this.rune.length - 1].wins++
             } else {
                if (match.win) this.rune[runeIdx].wins++

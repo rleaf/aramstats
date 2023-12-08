@@ -5,8 +5,8 @@ const mongoose = require("mongoose")
 */
 const puuidSchema = new mongoose.Schema({
    _id: String,
-   gameName: String,
-   tagLine: String,
+   gn: String,
+   tl: String,
    name: String,
 }, { versionKey: false })
 

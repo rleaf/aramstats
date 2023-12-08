@@ -23,15 +23,15 @@ export default {
          comparisonData: null,
          comparisonWins: 0,
          comparisonKDA: null,
-         statFilter: ['DPM', 'damageDealtToChampions'],
+         statFilter: ['DPM', 'dtc'],
          // statBook: ['DPM', 'HPM', 'AHPM', 'TPM', 'MPM', 'GPM'],
          statBook: {
-            'DPM': 'damageDealtToChampions',
-            'HPM': 'healed',
-            'AHPM': 'healsOnTeammates',
-            'DTPM': 'damageTaken',
-            'DMPM': 'selfMitigated',
-            'GPM': 'gold'
+            'DPM': 'dtc',
+            'HPM': 'h',
+            'AHPM': 'ah',
+            'DTPM': 'dt',
+            'DMPM': 'sm',
+            'GPM': 'g'
          },
          statDrop: false
       }
@@ -107,11 +107,11 @@ export default {
       },
 
       kda() {
-         return `${this.championData.averages.kills}/${this.championData.averages.deaths}/${this.championData.averages.assists}`
+         return `${this.championData.avg.k}/${this.championData.avg.d}/${this.championData.avg.a}`
       },
 
       kdr() {
-         return `${Math.round(((this.championData.averages.kills + this.championData.averages.assists) / this.championData.averages.deaths) * 100) / 100}`
+         return `${Math.round(((this.championData.avg.k + this.championData.avg.a) / this.championData.avg.d) * 100) / 100}`
       },
 
       background() {

@@ -42,7 +42,7 @@ export default {
       },
 
       kda() {
-         return `${this.champion.averages.kills}/${this.champion.averages.deaths}/${this.champion.averages.assists}`
+         return `${this.champion.avg.k}/${this.champion.avg.d}/${this.champion.avg.a}`
       },
 
       sortMatches() {
@@ -87,15 +87,15 @@ export default {
                      {{ kda }}
                   </div>
                   <div class="sub">
-                     {{ this.champion.averages.killParticipation }}% KP
+                     {{ this.champion.avg.kp }}% KP
                   </div>
                </div>
             </div>
          </div>
          <div class="multi-kills">
-            <div class="triple">{{ this.champion.multikills.triple }}</div>
-            <div class="quadra">{{ this.champion.multikills.quadra }}</div>
-            <div class="penta">{{ this.champion.multikills.penta }}</div>
+            <div class="triple">{{ this.champion.mk.t }}</div>
+            <div class="quadra">{{ this.champion.mk.q }}</div>
+            <div class="penta">{{ this.champion.mk.p }}</div>
          </div>
          <div class="rhs-stats">
             <div>
@@ -103,10 +103,10 @@ export default {
                   Damage
                </div>
                <div class="secondary-body">
-                  {{ this.champion.averages.totalDamageDealt }}, {{ this.champion.averages.damageShare || '-' }}%
+                  {{ this.champion.avg.tdd }}, {{ this.champion.avg.ds }}%
                </div>
                <div class="secondary-sub">
-                  {{ this.champion.averages.damagePerMinute }}/m
+                  {{ this.champion.avg.dpm }}/m
                </div>
             </div>
             <div>
@@ -114,10 +114,10 @@ export default {
                   Healing
                </div>
                <div class="secondary-body">
-                  {{ this.champion.averages.totalHeal }}
+                  {{ this.champion.avg.th }}
                </div>
                <div class="secondary-sub">
-                  {{ this.champion.averages.healingPerMinute || '-' }}/m
+                  {{ this.champion.avg.hpm }}/m
                </div>
             </div>
             <div>
@@ -125,10 +125,10 @@ export default {
                   Ally Healing
                </div>
                <div class="secondary-body">
-                  {{ this.champion.averages.healingOnTeammates }}
+                  {{ this.champion.avg.ah }}
                </div>
                <div class="secondary-sub">
-                  {{ this.champion.averages.allyHealPerMinute }}/m
+                  {{ this.champion.avg.ahpm }}/m
                </div>
             </div>
             <div>
@@ -136,10 +136,10 @@ export default {
                   Damage Taken
                </div>
                <div class="secondary-body">
-                  {{ this.champion.averages.totalDamageTaken }}
+                  {{ this.champion.avg.tdt }}
                </div>
                <div class="secondary-sub">
-                  {{ this.champion.averages.damageTakenPerMinute || '-'  }}/m
+                  {{ this.champion.avg.dtpm  }}/m
                </div>
             </div>
             <div>
@@ -147,10 +147,10 @@ export default {
                   Damage Mitigated
                </div>
                <div class="secondary-body">
-                  {{ this.champion.averages.totalSelfMitigated || '-'  }}
+                  {{ this.champion.avg.tsm  }}
                </div>
                <div class="secondary-sub">
-                  {{ this.champion.averages.selfMitigatedPerMinute || '-'  }}/m
+                  {{ this.champion.avg.smpm  }}/m
                </div>
             </div>
             <div>
@@ -158,10 +158,10 @@ export default {
                   Gold
                </div>
                <div class="secondary-body">
-                  {{ this.champion.averages.goldEarned }}
+                  {{ this.champion.avg.ge }}
                </div>
                <div class="secondary-sub">
-                  {{ this.champion.averages.goldPerMinute }}/m
+                  {{ this.champion.avg.gpm }}/m
                </div>
             </div>
          </div>
