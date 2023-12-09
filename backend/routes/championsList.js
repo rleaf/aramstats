@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
 
 async function loadChampionStatsCollection() {
    const client = await mongodb.MongoClient.connect(process.env.DB_CONNECTION_STRING)
-   const dbPatch = (await client.db('aramstats').collection('meta').findOne( {'name': 'championstats'})).patch
+   const dbPatch = (await client.db('aramstats').collection('meta').findOne( {'_id': 'crawler'})).patch
    return client.db('aramstats').collection(`${dbPatch}_championstats`)
 }
 

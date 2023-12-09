@@ -8,6 +8,7 @@ export default {
          champions: null,
          patch: null,
          total: null,
+         region: 'Global',
          sort: 'grade',
          sortOrder: 1,
          winrates: {
@@ -102,6 +103,10 @@ export default {
 
          const lerp = green.map((p, i) => p * val + red[i] * (1 - val))
          return `rgba(${lerp[0]},${lerp[1]},${lerp[2]})`
+      },
+
+      getChampName(id) {
+         return champions.humanName[id]
       }
    },
 
@@ -136,6 +141,11 @@ export default {
    
    <div v-if="this.champions" class="champ-list-main">
       <div class="champ-table">
+         <div class="filters">
+            <div class="region-button" @click="">
+               {{ this.region}}
+            </div>
+         </div>
          <div class="champion header">
             <div class="rank">
                <h2 @click="this.headerSort('rank')">Rank</h2>
@@ -181,8 +191,9 @@ export default {
             <div class="name-image">
                <router-link :to="{ name: 'champions', params: {champion: champ.name} }">
                   <img class="champ-image" rel="preload" :src="this.champIcon(champ.id)" alt="">
+                  {{ champ }}
                   <div>
-                     <span>{{ champ.frontName }}</span>
+                     <span>{{ this.getChampName(champ.id) }}</span>
                   </div>
                </router-link>
             </div>
@@ -208,6 +219,15 @@ export default {
 </template>
 
 <style scoped>
+   .region-button {
+      padding: 0.5rem 1rem;
+      /* width: 50px; */
+      background: tomato;
+   }
+   .filters {
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--cell-border)
+   }
    .champ-list-main {
       display: flex;
       flex-direction: column;

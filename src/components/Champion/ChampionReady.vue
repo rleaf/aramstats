@@ -17,6 +17,7 @@ export default {
       return {
          builds: null,
          itemBin: [],
+         name: champions.humanName[this.champion.id],
          backName: champions.imageName[this.champion.id],
          abilities: [],
          parameters: championParametersStore(),
@@ -286,7 +287,7 @@ export default {
                </div>
                <div class="champion-right">
                   <div class="champion-name">
-                     {{this.champion.name}} <h2>{{ this.title }}</h2>
+                     {{ this.name }} <h2>{{ this.title }}</h2>
                   </div>
                   <div class="champion-abilities">
                      <div v-for="(img, i) in this.abilities">

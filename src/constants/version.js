@@ -14,12 +14,14 @@ const version = [
    {
       version: "3.2.0",
       date: "12/2/23",
-      notes: "Listed changes are generally catered towards the frontend. This update, however, was a little bit of a doozy so tossing in backend stuff.",
+      notes: "I generally list only to frontend changes. This update, however, was a little bit of a doozy so tossing in backend stuff.",
       add: [
          `All (25?) ARAM challenges`,
+         `'Friendly' & 'Enemy' tabs in Encounters panel`,
+         `Seeded every region for crawler (backend)`,
+         `Crawling through EUW, EUNE, LAN, LAS, KR (backend)`,
          `Region indexing (backend)`,
          `Add more "hey that's pretty neat; how neat is that!" info from match responses (backend)`,
-         `'Friendly' & 'Enemy' tabs in Encounters panel`,
       ],
       remove: [],
       fix: [],

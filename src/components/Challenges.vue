@@ -89,7 +89,6 @@ export default {
 
 <style scoped>
 .challenge-title {
-   /* white-space: pre; */
    font-size: 0.8rem;
 }
 
@@ -133,13 +132,8 @@ p.percentile {
    display: flex;
    width: 50%;
    flex-direction: column;
-   /* flex-wrap: wrap; */
-   /* align-content: center;
-   justify-content: center; */
    row-gap: 10px;
    padding: 30px;
-   /* height: 750px; */
-   
 }
 
 .challenge-main {
