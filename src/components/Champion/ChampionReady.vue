@@ -17,8 +17,8 @@ export default {
       return {
          builds: null,
          itemBin: [],
-         name: champions.humanName[this.champion.id],
-         backName: champions.imageName[this.champion.id],
+         name: champions.humanName[this.champion._id],
+         backName: champions.imageName[this.champion._id],
          abilities: [],
          parameters: championParametersStore(),
          title: '',
@@ -39,7 +39,7 @@ export default {
    },
 
    created() {
-      document.title = `${this.champion.name} | ARAM Stats`
+      document.title = `${this.name} | ARAM Stats`
       // console.log(this.backName)
       // console.log(this.champion)
       // console.log('potato', this.mythicData)

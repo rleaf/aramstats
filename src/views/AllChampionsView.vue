@@ -41,6 +41,7 @@ export default {
          const url = `/api/championsList`
          axios.get(url).then(res => {
             this.champions = res.data
+            console.log(this.champions)
             this.total = this.champions.reduce((c, a) => c + a.games, 0)
             this.populate()
          }).catch(e => {
@@ -50,7 +51,7 @@ export default {
       populate() {
          for (const i in this.champions) {
             const c = this.champions[i]
-            c.frontName = this.getName(c.name)
+            // c.frontName = this.getName(c._id)
             c.pickrate = this.getPickRate(c.games)
             c.winrate = this.getWinrate(c.wins, c.games)
             if (c.winrate > this.winrates.max) this.winrates.max = c.winrate
@@ -107,6 +108,10 @@ export default {
 
       getChampName(id) {
          return champions.humanName[id]
+      },
+
+      champMap(name){
+         return champions.urlName[name]
       }
    },
 
@@ -141,11 +146,11 @@ export default {
    
    <div v-if="this.champions" class="champ-list-main">
       <div class="champ-table">
-         <div class="filters">
+         <!-- <div class="filters">
             <div class="region-button" @click="">
                {{ this.region}}
             </div>
-         </div>
+         </div> -->
          <div class="champion header">
             <div class="rank">
                <h2 @click="this.headerSort('rank')">Rank</h2>
@@ -189,11 +194,10 @@ export default {
                {{ champ.rank }}
             </div>
             <div class="name-image">
-               <router-link :to="{ name: 'champions', params: {champion: champ.name} }">
-                  <img class="champ-image" rel="preload" :src="this.champIcon(champ.id)" alt="">
-                  {{ champ }}
+               <router-link :to="{ name: 'champions', params: {champion: this.champMap(champ._id)} }">
+                  <img class="champ-image" rel="preload" :src="this.champIcon(champ._id)" alt="">
                   <div>
-                     <span>{{ this.getChampName(champ.id) }}</span>
+                     <span>{{ this.getChampName(champ._id) }}</span>
                   </div>
                </router-link>
             </div>

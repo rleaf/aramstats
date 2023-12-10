@@ -19,7 +19,7 @@ export default {
    <div class="dne-main">
       <div v-if="this.error === 404">
          <h2>
-            Summoner <i>{{ this.user.name }}#{{ this.user.tagLine }} on {{ this.user.region }}</i> does not exist.
+            <i>{{ decodeURI(this.user.name) }}#{{ decodeURI(this.user.tagLine) }} ({{ this.user.region }})</i> does not exist.
          </h2>
          <br>
          <img src="https://i.redd.it/6p956lq5yiq81.jpg" alt="">
@@ -36,9 +36,9 @@ export default {
          <h2>
             Riot API servers are probably down.
          </h2>
-         <p>
+         <!-- <p>
             Check server status <a href="https://developer.riotgames.com/api-status/" target="_blank">here</a>
-         </p>
+         </p> -->
       </div>
       <div v-if="this.error === 500">
          <h2>
@@ -74,6 +74,7 @@ img {
 h2 {
    font-weight: normal;
    color: var(--color-font);
+   font-size: 1.2rem;
 }
 
 p {

@@ -51,6 +51,7 @@ router.get('/:region/:gameName/:tagLine', async (req, res) => {
          console.log(`Hit rate limit on getSummoner for ${req.params.summonerURI} (${req.params.region})`)
       }
       if (e.status === 404 || e.status === 403) {
+         console.log(`${req.params.gameName}#${req.params.tagLine} (${req.params.region}) DNE`)
          res.status(e.status).send(e.statusText)
          return
       }

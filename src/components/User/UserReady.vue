@@ -69,7 +69,6 @@ export default {
       this.store.userReady = true
       // if (this.championData) { error handling for summoners w/ 0 aram matches
       // }
-      console.log(this.response)
       this.summonerAverages()
       // Pull patch data from https://ddragon.leagueoflegends.com/api/versions.json
 

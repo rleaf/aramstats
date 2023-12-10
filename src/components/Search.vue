@@ -85,7 +85,7 @@ export default {
          this.$router.push({ name: `user`, params: {
             region: this.region,
             gameName: encodeURI(_gameName),
-            tagLine: _tagLine
+            tagLine: encodeURI(_tagLine)
          }})
       },
 

@@ -14,7 +14,7 @@ const version = [
    {
       version: "3.2.0",
       date: "12/2/23",
-      notes: "I generally list only to frontend changes. This update, however, was a little bit of a doozy so tossing in backend stuff.",
+      notes: "I usually only list frontend changes. This update, however, was a little bit of a doozy so tossing in backend stuff so I can keep track.",
       add: [
          `All (25?) ARAM challenges`,
          `'Friendly' & 'Enemy' tabs in Encounters panel`,
@@ -29,11 +29,14 @@ const version = [
          `Encounters panel is not naive anymore (gets most observed UTD name)`,
          `Porting panels to gamename#tagline on summoner page`,
          `Challenge image assets -> webp`,
+         `Encode tagline`,
          `CSS`,
          `New database. Mongo 4 -> 7 & Ubuntu Server Focal -> Jammy (backend)`,
          `Clean up indexing (backend)`,
+         `Faster champion parser (backend)`,
          `Schema changes to support challenges & encounters (backend)`,
          `Minify summoner match keys (backend) & associated frontend references`,
+         `Champion names -> Champion Ids (backend)`,
       ]
    },
    {
