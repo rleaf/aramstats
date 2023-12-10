@@ -21,8 +21,8 @@ export default {
       justify-content: center;
       align-items: center;
       height: 35px;
-      background: var(--alpha-06);
-      /* background: rgba(82, 32, 32, 0.5); */
+      /* background: var(--alpha-06); */
+      background: rgba(36, 82, 32, 0.5);
    }
 
    a, p {

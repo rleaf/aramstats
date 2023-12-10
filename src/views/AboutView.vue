@@ -5,10 +5,13 @@
       <hr>
       <p>
         Aramstats provides insightful Howling Abyss summoner and champion statistics. Summoner information is calculated using all available games through the Riot API.
-        Champion information is calculated from NA games on the most recent patch. 
+        Champion information is calculated from games on the most recent patch. 
       </p>
       <p>
-        Get in touch with me <code>@ryli.</code> on Discord.
+        Currently the crawler, what's collecting and storing <router-link :to="{ name: 'allChampions' }">champion stats</router-link>, is only firing on <code>NA</code>, <code>EUW</code>, and <code>EUNE</code>.
+      </p>
+      <p>
+        Get in touch: @ <code>ryli.</code> on Discord.
       </p>
     </div>
     <div class="about-block">
@@ -23,7 +26,7 @@
       <h2>Some data is showing up weird.</h2>
       <hr>
       <p>
-        It is probably a bug. Ping me in Discord and I'll fix it.
+        Feel free to ping me in Discord and let me know :).
       </p>
     </div>
   </div>
@@ -35,6 +38,11 @@ code {
    background: var(--alpha-07);
    padding: 0.1rem 0.15rem;
    border-radius: 5px;
+}
+
+a {
+  color: var(--color-font);
+  /* font-style: italic; */
 }
 
 .about-main {

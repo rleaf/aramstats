@@ -5,11 +5,24 @@
       date: "",
       body: [],
       links: [],
-      img: [] // Expected webp format
+      img: [], // Expected webp format
+      imgCaption: ""
    },
 */
 
 const updates = [
+   {
+      title: "New database :)",
+      version: "3.2.0",
+      date: "12/2/23 - 12/10/23",
+      body: [
+         `1: You will have to reparse your summoner.`,
+         `2: The crawler is active again displaying UTD info based off match data from NA, EUW, and EUNE. I have seeded every region and, if there are no issues, will slowly add more.`,
+         `You'll find specific changes listed in the associated version. I plan to chill for a bit and see how well the database handles the new influx of operations.`,
+      ],
+      links: [],
+      img: [] // Expected webp format
+   },
    {
       title: `Upgrading DB again. Halting crawler.`,
       version: "",
@@ -56,7 +69,7 @@ const updates = [
    {
       title: "Champion stats",
       date: "11/7/23 - 11/20/23",
-      version: "2.2.1+",
+      version: "2.2.1 - 3.0.0",
       body: [
          `I've been working on developing a page to view champion stats and am pushing it to production to try and get an API key for the crawler it uses. The data you do see is not representative of live patch data.`,
          `A lot of work still needs to be done on both the front and backend, however there is some base functionality with the play data to give a sneak peek. I plan to give a better write up of the bells & whistles if this gets greenlit.`,

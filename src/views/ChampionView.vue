@@ -48,7 +48,6 @@ export default {
 
          axios.get(url).then((res) => {
             this.champion = res.data
-            console.log(this.champion)
             this.status = 1
          }).catch((e) => {
             console.log('err', e)

@@ -1,5 +1,6 @@
 <script>
 import Match from './Match.vue'
+import Wip from './Wip.vue'
 import championNameBook from '../constants/championNames'
 
 export default {

@@ -4,6 +4,7 @@ import ChampSearch from '../ChampSearch.vue'
 import RuneWinrate from '../RuneWinrate.vue'
 import MythicWinrate from '../MythicWinrate.vue'
 import championNameBook from '../../constants/championNames'
+import Wip from '../Wip.vue'
 
 export default {
    components: {
@@ -11,6 +12,7 @@ export default {
       ChampSearch,
       RuneWinrate,
       MythicWinrate,
+      Wip
    },
    data() {
       return {
@@ -145,6 +147,7 @@ export default {
 </script>
 
 <template>
+   <!-- <Wip /> -->
    <div class="champion-main" :style="background">
       <div class="head">
          <ChampSearch :data="this.data" :currentPatch="this.currentPatch" @championFocus="champion => championFilter = champion"/>

@@ -41,7 +41,6 @@ export default {
          const url = `/api/championsList`
          axios.get(url).then(res => {
             this.champions = res.data
-            console.log(this.champions)
             this.total = this.champions.reduce((c, a) => c + a.games, 0)
             this.populate()
          }).catch(e => {
@@ -152,24 +151,24 @@ export default {
             </div>
          </div> -->
          <div class="champion header">
-            <div class="rank">
+            <!-- <div class="rank">
                <h2 @click="this.headerSort('rank')">Rank</h2>
                <svg v-if="this.sort === 'rank'" class="triangle" :class="{ 'descending': this.sortOrder === 1}">
                   <polygon points="7 5, 14 14, 0 14"/>
                </svg>
-            </div>
+            </div> -->
             <div class="name-image">
                <h2 @click="this.headerSort('name')">Name</h2>
                <svg v-if="this.sort === 'name'" class="triangle" :class="{ 'descending': this.sortOrder === 1 }">
                   <polygon points="7 5, 14 14, 0 14"/>
                </svg>
             </div>
-            <div class="grade">
+            <!-- <div class="grade">
                <h2 @click="this.headerSort('grade')">Grade</h2>
                <svg v-if="this.sort === 'grade'" class="triangle" :class="{ 'descending': this.sortOrder === 1 }">
                   <polygon points="7 5, 14 14, 0 14"/>
                </svg>
-            </div>
+            </div> -->
             <div class="winrate">
                <h2 @click="this.headerSort('winrate')">Winrate</h2>
                <svg v-if="this.sort === 'winrate'" class="triangle" :class="{ 'descending': this.sortOrder === 1 }">
@@ -190,9 +189,9 @@ export default {
             </div>
          </div>
          <div :class="{'o': i % 2 === 0}" class="champion" v-for="(champ, i) in getChampionsList" :key="i">
-            <div class="rank">
+            <!-- <div class="rank">
                {{ champ.rank }}
-            </div>
+            </div> -->
             <div class="name-image">
                <router-link :to="{ name: 'champions', params: {champion: this.champMap(champ._id)} }">
                   <img class="champ-image" rel="preload" :src="this.champIcon(champ._id)" alt="">
@@ -201,9 +200,9 @@ export default {
                   </div>
                </router-link>
             </div>
-            <div class="grade">
+            <!-- <div class="grade">
                {{ champ.grade }}
-            </div>
+            </div> -->
             <div :style="{ color: this.computeColor(champ.winrate) }" class="winrate">
                {{ champ.winrate }}%
             </div>

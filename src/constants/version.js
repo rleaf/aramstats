@@ -13,17 +13,18 @@
 const version = [
    {
       version: "3.2.0",
-      date: "12/2/23",
+      date: "12/2/23 - 12/10/23",
       notes: "I usually only list frontend changes. This update, however, was a little bit of a doozy so tossing in backend stuff so I can keep track.",
       add: [
          `All (25?) ARAM challenges`,
          `'Friendly' & 'Enemy' tabs in Encounters panel`,
          `Seeded every region for crawler (backend)`,
-         `Crawling through EUW, EUNE, LAN, LAS, KR (backend)`,
-         `Region indexing (backend)`,
+         `Actively crawling through NA, EUW, EUNE, KR (backend)`,
          `Add more "hey that's pretty neat; how neat is that!" info from match responses (backend)`,
       ],
-      remove: [],
+      remove: [
+         `Rank & Grade columns from Champions list. Useless information (for now).`
+      ],
       fix: [],
       adjust: [
          `Encounters panel is not naive anymore (gets most observed UTD name)`,

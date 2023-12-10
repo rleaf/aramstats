@@ -146,10 +146,10 @@ export default {
 }
 .barplot-asterisk a {
    font-style: italic;
-   text-align: end;
+   /* text-decoration: none; */
    color: var(--color-font);
    transition: color 0.15s;
-   font-size: 0.85rem;
+   font-size: 0.8rem;
 }
 
 .barplot-main {
