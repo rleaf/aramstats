@@ -47,7 +47,7 @@ export default {
       },
 
       sortMatches() {
-         return this.champion.matches.sort((a, b) => b.gameCreation - a.gameCreation)
+         return this.champion.matches.sort((a, b) => b.gameCreation - a.gameCreation).reverse()
       }
    },
 

@@ -87,7 +87,7 @@ router.get('/:region/:gameName/:tagLine', async (req, res) => {
          _id: riotId.puuid,
          gameName: riotId.gameName,
          tagLine: riotId.tagLine,
-         name: summoner.name,
+         // name: summoner.name,
          level: summoner.summonerLevel,
          region: req.params.region,
          profileIcon: summoner.profileIconId,
@@ -159,11 +159,10 @@ router.put('/update/:region/:gameName/:tagLine', async (req, res) => {
    // Update summoner properties
    const challenges = await challengeScribe(riotId.puuid, req.params.region)
 
-   summonerDocument.name = summoner.name
+   // summonerDocument.name = summoner.name
    summonerDocument.level = summoner.summonerLevel
    summonerDocument.profileIcon = summoner.profileIconId
    summonerDocument.challenges = challenges
-   // await summonerDocument.save()
 
    // Get total matchlist & find idx of last match
    const totalMatchlist = (await twisted.getAllSummonerMatches(riotId.puuid, req.params.region))
@@ -192,7 +191,7 @@ router.put('/update/:region/:gameName/:tagLine', async (req, res) => {
    let updatedChampions = []
 
    // Parse new matchlist & return updatedChampions, to filter for champion parsing
-   await matchParser(summoner, req.params.region, matchlist, summonerDocument, updatedChampions)
+   await matchParser(riotId, req.params.region, matchlist, summonerDocument, updatedChampions)
 
    // Basically championParse(), but operates only on the champs in updatedChamps.
    for (const champion of summonerDocument.championData) {
@@ -231,8 +230,8 @@ router.put('/update/:region/:gameName/:tagLine', async (req, res) => {
             champion.mk.p += match.mk.p
          }
 
-         for (const [k, v] of Object.entries(champion.averages)) {
-            champion.averages[k] = Math.round(v / matches.length)
+         for (const [k, v] of Object.entries(champion.avg)) {
+            champion.avg[k] = Math.round(v / matches.length)
          }
 
       }  
@@ -244,7 +243,7 @@ router.put('/update/:region/:gameName/:tagLine', async (req, res) => {
    const summonerResponse = (await aggregateSummoner(riotId.puuid))[0]
    
    res.send(summonerResponse)
-   console.log(`Finished updating ${summoner.name} (${req.params.region}).`)
+   console.log(`Finished updating ${riotId.gameName}#${riotId.tagLine} (${req.params.region}).`)
 })
 
 // Delete summoner
@@ -318,7 +317,7 @@ async function matchParser(riotId, region, matchlist, summonerDocument, updateAr
       }
 
       // [:-1] to parse oldest games first
-      const game = await twisted.getMatchInfo(matchlist[matchlist.length - i], region)
+      const game = await twisted.getMatchInfo(matchlist[matchlist.length - i - 1], region)
          .catch(e => {
             if (e.status === 429) {
                console.log(`(${e.status}) @ matchParse. Recycling same game.`,)
@@ -422,7 +421,9 @@ async function matchParser(riotId, region, matchlist, summonerDocument, updateAr
       await match.save()
       const championEmbed = summonerDocument.championData.find(e => e.name === player.championName)
       if (championEmbed) {
-         championEmbed.matches.push(match._id)
+         // Idealy use unshift > push becauase iterating from oldest -> newest and want newest at [0].
+         // However doesn't matter because $lookup reoders in aggregation.
+         championEmbed.matches.unshift(match._id)
       } else {
          summonerDocument.championData.push(
             {

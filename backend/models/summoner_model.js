@@ -5,7 +5,7 @@ const summonerSchema = new mongoose.Schema({
    _id: String,
    gameName: String,
    tagLine: String,
-   name: String,
+   name: String, // Slowly being removed
    level: Number,
    region: String,
    profileIcon: Number,

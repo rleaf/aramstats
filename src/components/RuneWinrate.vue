@@ -38,9 +38,9 @@ export default {
 
             if (runeIdx == -1) {
                this.rune.push({ 'name': match.pr, 'wins': 0, 'totalGames': 1, 'winRate': 0 })
-               if (match.win) this.rune[this.rune.length - 1].wins++
+               if (match.w) this.rune[this.rune.length - 1].wins++
             } else {
-               if (match.win) this.rune[runeIdx].wins++
+               if (match.w) this.rune[runeIdx].wins++
                this.rune[runeIdx].totalGames++
             }
          }

@@ -37,7 +37,7 @@ class Propagate():
       persist = False
 
       for match_id in matchlist:
-         print(match_id)
+         # print(match_id)
          match = util.get_match(match_id, self.region)
          # Continue/Break on...
          # ...404 match or ...dead match/remake. Remakes are < 210, but setting to 300 as an arbitrary cutoff for "pointless" games. (5 minute length)

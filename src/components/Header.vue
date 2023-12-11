@@ -11,7 +11,8 @@ export default {
 
 <template>
    <div class="header-main">
-      <RouterLink to="/updates">{{ this.msg }}</RouterLink>
+      Fixed stuck summoners (I think). If your account is still stuck, hmu and I'll fix it.
+      <!-- <RouterLink to="/updates">{{ this.msg }}</RouterLink> -->
    </div>
 </template>
 
@@ -21,12 +22,13 @@ export default {
       justify-content: center;
       align-items: center;
       height: 35px;
-      /* background: var(--alpha-06); */
-      background: rgba(36, 82, 32, 0.5);
-   }
-
-   a, p {
+      background: var(--alpha-06);
+      /* background: rgba(36, 82, 32, 0.5); */
       color: var(--color-font);
       font-size: 0.85rem;
+   }
+   
+   a, p {
+      color: var(--color-font);
    }
 </style>

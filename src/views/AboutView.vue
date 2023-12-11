@@ -8,7 +8,7 @@
         Champion information is calculated from games on the most recent patch. 
       </p>
       <p>
-        Currently the crawler, what's collecting and storing <router-link :to="{ name: 'allChampions' }">champion stats</router-link>, is only firing on <code>NA</code>, <code>EUW</code>, and <code>EUNE</code>.
+        Currently the crawler, what's collecting and storing <router-link :to="{ name: 'allChampions' }">champion stats</router-link>, is only firing on <code>NA</code>, <code>EUW</code>, <code>EUNE</code>, and <code>KR</code>.
       </p>
       <p>
         Get in touch: @ <code>ryli.</code> on Discord.

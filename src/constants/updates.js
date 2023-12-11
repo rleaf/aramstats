@@ -17,7 +17,7 @@ const updates = [
       date: "12/2/23 - 12/10/23",
       body: [
          `1: You will have to reparse your summoner.`,
-         `2: The crawler is active again displaying UTD info based off match data from NA, EUW, and EUNE. I have seeded every region and, if there are no issues, will slowly add more.`,
+         `2: The crawler is active again displaying UTD info based off match data from NA, EUW, EUNE, and KR. I have seeded every region and, if there are no issues, will slowly add more.`,
          `You'll find specific changes listed in the associated version. I plan to chill for a bit and see how well the database handles the new influx of operations.`,
       ],
       links: [],

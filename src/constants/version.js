@@ -12,6 +12,22 @@
 
 const version = [
    {
+      version: "3.2.1",
+      date: "12/11/23",
+      notes: "Follow up fixes for 3.2.0",
+      add: [],
+      remove: [],
+      fix: [
+         `Crawler error handling`,
+         `Sorting by champion name on "Champions" page`,
+         `Summoner doc title`,
+         `Summoner profile update button indexing`,
+         `Champion mythic & rune winrates`,
+         `Champion matches in Summoner profiles sorted by newest -> oldest`,
+      ],
+      adjust: []
+   }, 
+   {
       version: "3.2.0",
       date: "12/2/23 - 12/10/23",
       notes: "I usually only list frontend changes. This update, however, was a little bit of a doozy so tossing in backend stuff so I can keep track.",

@@ -25,15 +25,6 @@ export default {
       Danger
    },
 
-   watch: {
-      $route: {
-         immediate: true,
-         handler() {
-            document.title = `${this.response.name} | ARAM Stats`
-         }
-      }
-   },
-
    data() {
       return {
          championData: this.response.championData,
@@ -65,8 +56,18 @@ export default {
       }
    },
 
+   watch: {
+      $route: {
+         immediate: true,
+         handler() {
+            document.title = `${this.response.gameName} | ARAM Stats`
+         }
+      }
+   },
+
    created() {
       this.store.userReady = true
+      
       // if (this.championData) { error handling for summoners w/ 0 aram matches
       // }
       this.summonerAverages()
@@ -89,7 +90,7 @@ export default {
          const res = await axios.put(url)
 
          this.championData = res.data.championData
-         this.summoner.name = res.data.name
+         this.summoner.name = [res.data.gameName, res.data.tagLine]
          this.summoner.iconId = res.data.profileIcon
          this.challengeInfo = res.data.challenges
 

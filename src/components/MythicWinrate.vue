@@ -49,7 +49,7 @@ export default {
       },
 
       async mythicWinrate() {
-
+         console.log(this.data)
          let matches
          (this.comparison) ? matches = this.data : matches = this.data.matches
 
@@ -57,7 +57,7 @@ export default {
          const url = `https://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/data/en_US/item.json`
          await axios.get(url)
             .then((res) => _res = res.data.data)
-
+         
          for(const match of matches) {
             let mythic = await this.findMythic(match.i, _res)
 
@@ -66,9 +66,9 @@ export default {
 
                if (mythicIdx == -1) {
                   this.mythic.push({ 'id': mythic, 'wins': 0, 'totalGames': 1, 'winRate': 0})
-                  if (match.win) this.mythic[this.mythic.length - 1].wins++
+                  if (match.w) this.mythic[this.mythic.length - 1].wins++
                } else {
-                  if (match.win) this.mythic[mythicIdx].wins++
+                  if (match.w) this.mythic[mythicIdx].wins++
                   this.mythic[mythicIdx].totalGames++
                }
       

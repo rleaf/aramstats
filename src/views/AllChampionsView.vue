@@ -125,8 +125,8 @@ export default {
                'D' : 5
             }
 
-            if (this.sort === 'name') {
-               return this.champions.sort((a, b) => a[this.sort].localeCompare(b[this.sort]) * this.sortOrder)
+            if (this.sort === '_id') {
+               return this.champions.sort((a, b) => champions.humanName[a[this.sort]].localeCompare(champions.humanName[b[this.sort]]) * this.sortOrder)
             }
 
             if (this.sort === 'grade') {
@@ -158,8 +158,8 @@ export default {
                </svg>
             </div> -->
             <div class="name-image">
-               <h2 @click="this.headerSort('name')">Name</h2>
-               <svg v-if="this.sort === 'name'" class="triangle" :class="{ 'descending': this.sortOrder === 1 }">
+               <h2 @click="this.headerSort('_id')">Name</h2>
+               <svg v-if="this.sort === '_id'" class="triangle" :class="{ 'descending': this.sortOrder === 1 }">
                   <polygon points="7 5, 14 14, 0 14"/>
                </svg>
             </div>
