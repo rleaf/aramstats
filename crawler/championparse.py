@@ -83,6 +83,7 @@ class ChampionParser():
 
          # <str> Skill path string ID used as field in database.
          skill_path = ''.join(str(x["skillSlot"]) for x in abilities_timeline)
+         if len(skill_path) == 0: continue # Terminate iter if champ has 0 skills leveled. ex: participant5 for EUN1_3504521192 (undesired data)
          basic_skills = skill_path.replace('4', '')
 
          # <spells> Summoner spells
