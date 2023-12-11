@@ -49,7 +49,6 @@ export default {
       },
 
       async mythicWinrate() {
-         console.log(this.data)
          let matches
          (this.comparison) ? matches = this.data : matches = this.data.matches
 
