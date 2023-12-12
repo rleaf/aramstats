@@ -16,7 +16,7 @@ export default {
    },
 
    created() {
-      // :)
+      // fix this sometime by using champions
       if (this.champion.name == 'FiddleSticks') this.champion.name = 'Fiddlesticks'
    },
 
@@ -47,7 +47,7 @@ export default {
       },
 
       sortMatches() {
-         return this.champion.matches.sort((a, b) => b.gameCreation - a.gameCreation).reverse()
+         return this.champion.matches.sort((a, b) => b.gc - a.gc)
       }
    },
 

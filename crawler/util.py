@@ -72,7 +72,7 @@ def get_match(match_id, region, attempts=0):
    try:
       return lol_watcher.match.by_id(match_id=match_id, region=region)
    except ApiError as e:
-      print('got some funk @', match_id, e)
+      print('got some funk @ get_match', match_id, e, e.response.status_code)
       if e.response.status_code == 429:
          print('We should retry in {} seconds.'.format(e.response.headers['Retry-After']))
       if e.response.status_code == 500:
@@ -89,7 +89,7 @@ def get_match_timeline(match_id, region, attempts=0):
    try:
       return lol_watcher.match.timeline_by_match(match_id=match_id, region=region)
    except ApiError as e:
-      print('got some funk @', match_id, e)
+      print('got some funk @ get_match_timeline', match_id, e, e.response.status_code)
       if e.response.status_code == 429:
          print('We should retry in {} seconds.'.format(e.response.headers['Retry-After']))
       if e.response.status_code == 500:
