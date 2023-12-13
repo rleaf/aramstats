@@ -68,16 +68,17 @@ def get_matchlist(puuid: str, region: str, start: int, count: int) -> list[str]:
          raise e
 
 def get_match(match_id, region, attempts=0):
-   if attempts == 1: return 404 # Try one more time before declaring 404
+   if attempts > 1: return 404 # Try one more time before declaring 404
    try:
       return lol_watcher.match.by_id(match_id=match_id, region=region)
    except ApiError as e:
-      print('got some funk @ get_match', match_id, e, e.response.status_code)
+      print('got some funk @ get_match_timeline', match_id, f'e: {e}', f'e.res.status_code: {e.response.status_code}')
       if e.response.status_code == 429:
          print('We should retry in {} seconds.'.format(e.response.headers['Retry-After']))
       if e.response.status_code == 500:
+         print('refiring @ get_match')
          # Riot seems to hand out 500s occasionally on valid requests.
-         get_match(match_id, region, attempts + 1)
+         return get_match(match_id, region, attempts + 1)
       else:
          return e.response.status_code
 
@@ -85,16 +86,16 @@ def get_match(match_id, region, attempts=0):
 
 
 def get_match_timeline(match_id, region, attempts=0):
-   if attempts == 1: return 404 # Try one more time before declaring 404
+   if attempts > 1: return 404 # Try one more time before declaring 404
    try:
       return lol_watcher.match.timeline_by_match(match_id=match_id, region=region)
    except ApiError as e:
-      print('got some funk @ get_match_timeline', match_id, e, e.response.status_code)
+      print('got some funk @ get_match_timeline', match_id, f'e: {e}', f'e.res.status_code: {e.response.status_code}')
       if e.response.status_code == 429:
          print('We should retry in {} seconds.'.format(e.response.headers['Retry-After']))
       if e.response.status_code == 500:
          # Riot seems to hand out 500s occasionally on valid requests.
-         get_match(match_id, region, attempts + 1)
+         return get_match(match_id, region, attempts + 1)
       else:
          return e.response.status_code
 

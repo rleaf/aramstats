@@ -120,7 +120,7 @@ router.get('/:region/:gameName/:tagLine', async (req, res) => {
 
       
       res.send(summonerResponse)
-      console.log(`${summoner.name} (${req.params.region}) finished.`)
+      console.log(`${riotId.gameName}#${riotId.tagLine} (${req.params.region}) finished.`)
    } else {
       // Summoner DNE
       res.sendStatus(504)
@@ -177,7 +177,7 @@ router.put('/update/:region/:gameName/:tagLine', async (req, res) => {
 
    // There are no matches in matchlist, therefore the summoner is UTD
    if (matchlist.length === 0) {
-      console.log(`Summoner ${riotId.gameName}#${riotId.tagLine} (${req.params.region}) already utd`)
+      console.log(`${riotId.gameName}#${riotId.tagLine} (${req.params.region}) already UTD.`)
       const summonerResponse = (await aggregateSummoner(riotId.puuid))[0]
       res.send(summonerResponse)
       return
