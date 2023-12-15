@@ -1405,22 +1405,23 @@ import { championParametersStore } from '../../../stores/championParameters'
    }
 
    .image-sub h4 {
-      display: inline-block;
+      display: block;
       color: var(--color-font);
       text-align: center;
       font-weight: normal;
       margin: 0;
       font-size: 0.75rem;
+      margin-top: 0.2rem;
    }
    
    .image-sub h3 {
-      display: inline-block;
+      display: block;
       color: var(--color-font-faded);
       text-align: center;
       font-weight: normal;
       margin: 0;
       font-size: 0.75rem;
-      margin-left: 0.3rem;
+      /* margin-left: 0.3rem; */
    }
 
    .core-items {
