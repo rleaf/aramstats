@@ -23,10 +23,23 @@
       </p>
     </div>
     <div class="about-block">
+      <h2>Why is the load time for champion statistics kinda slow?</h2>
+      <hr>
+      <p>
+        Two main reasons: hardware and a "4fun" mentality. Hardware is obvious ($) so I'll skip its explanation.
+      </p>
+      <p>
+        For the "4fun" part, I'm storing a lot of information where I don't know how inefficient aggregation operations will become as the data grows. Because patch data is temporarily interesting (as in I will only be showing current patch information and deleting old), I think this makes a good excuse to store a lot of data for a single match unconcerned about performance and then slowly refine/optimize on subsequent patches based off what I learn.
+      </p>
+      <p>
+        Currently the schema design (probably a good reason why it's slow) is unbounded, meaning it's possible to contain all (fuzzy math) ~1.029e13 six-item build permutations. This design, although maybe detrimental to peformance, is intentional because it's unrealistic to expect a champion document to contain anywhere near that number of possible builds. The upside is two-fold. First, the data-to-performance rate should plateau as the crawler builds a healthy distribution for observed builds; so even though it's slow, it shouldn't (I hope) become slooooooooooooooow. Second, we get to see all observed builds and any associated data that I think could be neat for the match that build is observed.
+      </p>
+    </div>
+    <div class="about-block">
       <h2>Some data is showing up weird.</h2>
       <hr>
       <p>
-        Feel free to ping me in Discord and let me know :).
+        Hmu - may be a bug.
       </p>
     </div>
   </div>
@@ -75,6 +88,7 @@ p {
   color: var(--color-font);
   line-height: 1.4;
   text-align: left;
+  font-size: 0.95rem;
   margin-top: 0.5rem;
 }
 </style>
