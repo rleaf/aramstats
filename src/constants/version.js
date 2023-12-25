@@ -12,6 +12,17 @@
 
 const version = [
    {
+      version: "3.2.2",
+      date: "12/25/23 🎄",
+      notes: "",
+      add: [
+         `More Q&A in About page`
+      ],
+      remove: [],
+      fix: [],
+      adjust: []
+   }, 
+   {
       version: "3.2.1",
       date: "12/11/23",
       notes: "Follow up fixes for 3.2.0",
