@@ -6,7 +6,7 @@ import Header from './components/Header.vue'
 
 <template>
     <SmallScreen />
-    <!-- <Header /> -->
+    <Header />
     <Nav />
 </template>
 

@@ -12,6 +12,17 @@
 
 const updates = [
    {
+      title: "Breaking changes expected on patch 14.1",
+      version: "",
+      date: "1/9/24",
+      body: [
+         `I'll work on fixing them after the patch drops.`
+      ],
+      links: [],
+      img: [], // Expected webp format
+      imgCaption: ""
+   },
+   {
       title: "New database :)",
       version: "3.2.0",
       date: "12/2/23 - 12/10/23",

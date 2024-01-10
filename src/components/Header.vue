@@ -11,8 +11,8 @@ export default {
 
 <template>
    <div class="header-main">
-      Fixed stuck summoners (I think). If your account is still stuck, hmu and I'll fix it.
-      <!-- <RouterLink to="/updates">{{ this.msg }}</RouterLink> -->
+      <!-- Fixed stuck summoners (I think). If your account is still stuck, hmu and I'll fix it. -->
+      <RouterLink to="/updates">{{ this.msg }}</RouterLink>
    </div>
 </template>
 
