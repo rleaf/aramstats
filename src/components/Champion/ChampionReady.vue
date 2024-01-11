@@ -135,7 +135,9 @@ export default {
 
          for (const i in this.mythicData) {
             const mythic = this.mythicData[i]
+            console.log(mythic)
             let item = mythic.id
+            console.log(this.champion.mythics[item])
             let _itemPosition = [[], [], [], [], [], []]
             let _levelOrder = []
             let _skillPath = []

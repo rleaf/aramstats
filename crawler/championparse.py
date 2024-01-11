@@ -33,7 +33,7 @@ class ChampionParser():
       for match in self.match_collection.find(skip=index):
          if (index % 50 == 0):
             print(f'Updating index: {index}')
-            self.meta_collection.update_one({ "_id": self.champion_stats_name }, { "$set": {"champ_parse_index": index} })
+            # self.meta_collection.update_one({ "_id": self.champion_stats_name }, { "$set": {"champ_parse_index": index} })
 
          bin = self.forward(match)
          index += 1
@@ -75,7 +75,7 @@ class ChampionParser():
             if i["type"] != "ITEM_PURCHASED" or i["itemId"] not in filtered_items or i["itemId"] in item_order: continue
             item_order.append(i["itemId"])
 
-         mythic = next(filter(lambda x: util.item_mythic(x, self.items), item_order), 0)
+         # mythic = next(filter(lambda x: util.item_mythic(x, self.items), item_order), 0)
          
          # <str> Build path string ID used as field in database.
          build_path = '_'.join([str(x) for x in item_order])
@@ -195,66 +195,66 @@ class ChampionParser():
                # Skills
                f"skills.levelOrder.{level_order}.games": 1,
                f"skills.levelOrder.{level_order}.wins": win,
-               f"skills.levelOrder.{level_order}.friends.{f[0]}": 1,
-               f"skills.levelOrder.{level_order}.friends.{f[1]}": 1,
-               f"skills.levelOrder.{level_order}.friends.{f[2]}": 1,
-               f"skills.levelOrder.{level_order}.friends.{f[3]}": 1,
-               f"skills.levelOrder.{level_order}.enemies.{e[0]}": 1,
-               f"skills.levelOrder.{level_order}.enemies.{e[1]}": 1,
-               f"skills.levelOrder.{level_order}.enemies.{e[2]}": 1,
-               f"skills.levelOrder.{level_order}.enemies.{e[3]}": 1,
-               f"skills.levelOrder.{level_order}.enemies.{e[4]}": 1,
+               # f"skills.levelOrder.{level_order}.friends.{f[0]}": 1,
+               # f"skills.levelOrder.{level_order}.friends.{f[1]}": 1,
+               # f"skills.levelOrder.{level_order}.friends.{f[2]}": 1,
+               # f"skills.levelOrder.{level_order}.friends.{f[3]}": 1,
+               # f"skills.levelOrder.{level_order}.enemies.{e[0]}": 1,
+               # f"skills.levelOrder.{level_order}.enemies.{e[1]}": 1,
+               # f"skills.levelOrder.{level_order}.enemies.{e[2]}": 1,
+               # f"skills.levelOrder.{level_order}.enemies.{e[3]}": 1,
+               # f"skills.levelOrder.{level_order}.enemies.{e[4]}": 1,
                f"skills.{skill_path}.games": 1,
                f"skills.{skill_path}.wins": win,
                # Builds
                f"builds.{build_path}.games": 1,
                f"builds.{build_path}.wins": win,
                # Mythics
-               f"mythics.{mythic}.runes.{rune_path}.games": 1,
-               f"mythics.{mythic}.runes.{rune_path}.wins": win,
-               f"mythics.{mythic}.primaryRunes.{primary_tree}.games": 1,
-               f"mythics.{mythic}.primaryRunes.{primary_tree}.wins": win,
-               f"mythics.{mythic}.primaryRunes.{primary_tree}.row0.{primary_runes[0]}.games": 1,
-               f"mythics.{mythic}.primaryRunes.{primary_tree}.row0.{primary_runes[0]}.wins": win,
-               f"mythics.{mythic}.primaryRunes.{primary_tree}.row1.{primary_runes[1]}.games": 1,
-               f"mythics.{mythic}.primaryRunes.{primary_tree}.row1.{primary_runes[1]}.wins": win,
-               f"mythics.{mythic}.primaryRunes.{primary_tree}.row2.{primary_runes[2]}.games": 1,
-               f"mythics.{mythic}.primaryRunes.{primary_tree}.row2.{primary_runes[2]}.wins": win,
-               f"mythics.{mythic}.primaryRunes.{primary_tree}.row3.{primary_runes[3]}.games": 1,
-               f"mythics.{mythic}.primaryRunes.{primary_tree}.row3.{primary_runes[3]}.wins": win,
-               f"mythics.{mythic}.secondaryRunes.{secondary_tree}.games": 1,
-               f"mythics.{mythic}.secondaryRunes.{secondary_tree}.wins": win,
-               f"mythics.{mythic}.secondaryRunes.{secondary_tree}.row{secondary_rune_one_tier}.{secondary_runes[0]}.games": 1,
-               f"mythics.{mythic}.secondaryRunes.{secondary_tree}.row{secondary_rune_one_tier}.{secondary_runes[0]}.wins": win,
-               f"mythics.{mythic}.secondaryRunes.{secondary_tree}.row{secondary_rune_two_tier}.{secondary_runes[1]}.games": 1,
-               f"mythics.{mythic}.secondaryRunes.{secondary_tree}.row{secondary_rune_two_tier}.{secondary_runes[1]}.wins": win,
-               f"mythics.{mythic}.flexRunes.row0.{tertiary_offense}.games": 1,
-               f"mythics.{mythic}.flexRunes.row0.{tertiary_offense}.wins": win,
-               f"mythics.{mythic}.flexRunes.row1.{tertiary_flex}.games": 1,
-               f"mythics.{mythic}.flexRunes.row1.{tertiary_flex}.wins": win,
-               f"mythics.{mythic}.flexRunes.row2.{tertiary_defense}.games": 1,
-               f"mythics.{mythic}.flexRunes.row2.{tertiary_defense}.wins": win,
-               # Spells
-               f"mythics.{mythic}.spells.{summoner_spells}.games": 1,
-               f"mythics.{mythic}.spells.{summoner_spells}.wins": win,
-               # Skill path
-               f"mythics.{mythic}.skillPath.{skill_path}.games": 1,
-               f"mythics.{mythic}.skillPath.{skill_path}.wins": win,
-               # Level order
-               f"mythics.{mythic}.levelOrder.{level_order}.games": 1,
-               f"mythics.{mythic}.levelOrder.{level_order}.wins": win,
+               # f"mythics.{mythic}.runes.{rune_path}.games": 1,
+               # f"mythics.{mythic}.runes.{rune_path}.wins": win,
+               # f"mythics.{mythic}.primaryRunes.{primary_tree}.games": 1,
+               # f"mythics.{mythic}.primaryRunes.{primary_tree}.wins": win,
+               # f"mythics.{mythic}.primaryRunes.{primary_tree}.row0.{primary_runes[0]}.games": 1,
+               # f"mythics.{mythic}.primaryRunes.{primary_tree}.row0.{primary_runes[0]}.wins": win,
+               # f"mythics.{mythic}.primaryRunes.{primary_tree}.row1.{primary_runes[1]}.games": 1,
+               # f"mythics.{mythic}.primaryRunes.{primary_tree}.row1.{primary_runes[1]}.wins": win,
+               # f"mythics.{mythic}.primaryRunes.{primary_tree}.row2.{primary_runes[2]}.games": 1,
+               # f"mythics.{mythic}.primaryRunes.{primary_tree}.row2.{primary_runes[2]}.wins": win,
+               # f"mythics.{mythic}.primaryRunes.{primary_tree}.row3.{primary_runes[3]}.games": 1,
+               # f"mythics.{mythic}.primaryRunes.{primary_tree}.row3.{primary_runes[3]}.wins": win,
+               # f"mythics.{mythic}.secondaryRunes.{secondary_tree}.games": 1,
+               # f"mythics.{mythic}.secondaryRunes.{secondary_tree}.wins": win,
+               # f"mythics.{mythic}.secondaryRunes.{secondary_tree}.row{secondary_rune_one_tier}.{secondary_runes[0]}.games": 1,
+               # f"mythics.{mythic}.secondaryRunes.{secondary_tree}.row{secondary_rune_one_tier}.{secondary_runes[0]}.wins": win,
+               # f"mythics.{mythic}.secondaryRunes.{secondary_tree}.row{secondary_rune_two_tier}.{secondary_runes[1]}.games": 1,
+               # f"mythics.{mythic}.secondaryRunes.{secondary_tree}.row{secondary_rune_two_tier}.{secondary_runes[1]}.wins": win,
+               # f"mythics.{mythic}.flexRunes.row0.{tertiary_offense}.games": 1,
+               # f"mythics.{mythic}.flexRunes.row0.{tertiary_offense}.wins": win,
+               # f"mythics.{mythic}.flexRunes.row1.{tertiary_flex}.games": 1,
+               # f"mythics.{mythic}.flexRunes.row1.{tertiary_flex}.wins": win,
+               # f"mythics.{mythic}.flexRunes.row2.{tertiary_defense}.games": 1,
+               # f"mythics.{mythic}.flexRunes.row2.{tertiary_defense}.wins": win,
+               # # Spells
+               # f"mythics.{mythic}.spells.{summoner_spells}.games": 1,
+               # f"mythics.{mythic}.spells.{summoner_spells}.wins": win,
+               # # Skill path
+               # f"mythics.{mythic}.skillPath.{skill_path}.games": 1,
+               # f"mythics.{mythic}.skillPath.{skill_path}.wins": win,
+               # # Level order
+               # f"mythics.{mythic}.levelOrder.{level_order}.games": 1,
+               # f"mythics.{mythic}.levelOrder.{level_order}.wins": win,
             }
          }
 
-         if mythic == 0:
-            update["$inc"][f"mythics.{mythic}.games"] = 1
-            update["$inc"][f"mythics.{mythic}.wins"] = win
+         # if mythic == 0:
+         #    update["$inc"][f"mythics.{mythic}.games"] = 1
+         #    update["$inc"][f"mythics.{mythic}.wins"] = win
 
          if core_build:
-            update["$inc"][f"mythics.{mythic}.coreBuild.{core_build}.games"] = 1
-            update["$inc"][f"mythics.{mythic}.coreBuild.{core_build}.wins"] = win
-            update["$inc"][f"mythics.{mythic}.startingItems.{starting_build}.games"] = 1
-            update["$inc"][f"mythics.{mythic}.startingItems.{starting_build}.wins"] = win
+            update["$inc"][f"coreBuild.{core_build}.games"] = 1
+            update["$inc"][f"coreBuild.{core_build}.wins"] = win
+            update["$inc"][f"startingItems.{starting_build}.games"] = 1
+            update["$inc"][f"startingItems.{starting_build}.wins"] = win
 
          # Items
          for i in filtered_items:
@@ -262,22 +262,22 @@ class ChampionParser():
             update["$inc"][f"items.{i}.games"] = 1
             update["$inc"][f"items.{i}.wins"] = win
             # Mythic related data conditioned on i
-            update["$inc"][f"mythics.{mythic}.items.{item_order.index(i)}.{i}.games"] = 1
-            update["$inc"][f"mythics.{mythic}.items.{item_order.index(i)}.{i}.wins"] = win
+            # update["$inc"][f"mythics.{mythic}.items.{item_order.index(i)}.{i}.games"] = 1
+            # update["$inc"][f"mythics.{mythic}.items.{item_order.index(i)}.{i}.wins"] = win
             # Position
             update["$inc"][f"items.{i}.position.{item_order.index(i)}.games"] = 1
             update["$inc"][f"items.{i}.position.{item_order.index(i)}.wins"] = win
-            # Friendlies
-            update["$inc"][f"items.{i}.friends.{f[0]}"] = 1
-            update["$inc"][f"items.{i}.friends.{f[1]}"] = 1
-            update["$inc"][f"items.{i}.friends.{f[2]}"] = 1
-            update["$inc"][f"items.{i}.friends.{f[3]}"] = 1
-            # Enemies
-            update["$inc"][f"items.{i}.enemies.{e[0]}"] = 1
-            update["$inc"][f"items.{i}.enemies.{e[1]}"] = 1
-            update["$inc"][f"items.{i}.enemies.{e[2]}"] = 1
-            update["$inc"][f"items.{i}.enemies.{e[3]}"] = 1
-            update["$inc"][f"items.{i}.enemies.{e[4]}"] = 1
+            # # Friendlies
+            # update["$inc"][f"items.{i}.friends.{f[0]}"] = 1
+            # update["$inc"][f"items.{i}.friends.{f[1]}"] = 1
+            # update["$inc"][f"items.{i}.friends.{f[2]}"] = 1
+            # update["$inc"][f"items.{i}.friends.{f[3]}"] = 1
+            # # Enemies
+            # update["$inc"][f"items.{i}.enemies.{e[0]}"] = 1
+            # update["$inc"][f"items.{i}.enemies.{e[1]}"] = 1
+            # update["$inc"][f"items.{i}.enemies.{e[2]}"] = 1
+            # update["$inc"][f"items.{i}.enemies.{e[3]}"] = 1
+            # update["$inc"][f"items.{i}.enemies.{e[4]}"] = 1
 
          bin.append(UpdateOne({ "_id": id }, update, upsert=True))
       return bin

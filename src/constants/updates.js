@@ -14,9 +14,9 @@ const updates = [
    {
       title: "Breaking changes expected on patch 14.1",
       version: "",
-      date: "1/9/24",
+      date: "1/9/24 - now",
       body: [
-         `I'll work on fixing them after the patch drops.`
+         `Working on fixing them. With the new patch, some things will require a significant redesign such as the champion stats pages so it may take a hot minute. I'll be sprinkling in minor updates here.`
       ],
       links: [],
       img: [], // Expected webp format

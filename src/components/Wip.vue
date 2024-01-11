@@ -11,7 +11,7 @@ export default {
 
 <template>
    <div class="wip-main">
-      This section is a work in progress :). The UI may be a little weird
+      🚧 This section is a work in progress - the UI may be a little weird. 🚧
    </div>
 </template>
 

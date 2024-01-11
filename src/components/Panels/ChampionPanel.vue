@@ -2,7 +2,7 @@
 import Histogram from '../Histogram.vue'
 import ChampSearch from '../ChampSearch.vue'
 import RuneWinrate from '../RuneWinrate.vue'
-import MythicWinrate from '../MythicWinrate.vue'
+// import MythicWinrate from '../MythicWinrate.vue'
 import championNameBook from '../../constants/championNames'
 import Wip from '../Wip.vue'
 
@@ -11,7 +11,7 @@ export default {
       Histogram,
       ChampSearch,
       RuneWinrate,
-      MythicWinrate,
+      // MythicWinrate,
       Wip
    },
    data() {
@@ -147,7 +147,7 @@ export default {
 </script>
 
 <template>
-   <!-- <Wip /> -->
+   <Wip />
    <div class="champion-main" :style="background">
       <div class="head">
          <ChampSearch :data="this.data" :currentPatch="this.currentPatch" @championFocus="champion => championFilter = champion"/>
@@ -180,7 +180,7 @@ export default {
       <div class="body">
          <div class="rune-mythic">
             <RuneWinrate :data="this.championData"/>
-            <MythicWinrate :data="this.championData" :currentPatch="this.currentPatch"/>
+            <!-- <MythicWinrate :data="this.championData" :currentPatch="this.currentPatch"/> -->
          </div>
          <Histogram
          :championData="this.championData"

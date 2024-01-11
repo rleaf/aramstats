@@ -100,11 +100,11 @@ def get_match_timeline(match_id, region, attempts=0):
          return e.response.status_code
 
 def get_items():
-   # patch = get_latest_patch(True)
-   # url = f'https://ddragon.leagueoflegends.com/cdn/{patch}/data/en_US/item.json'
-   url = 'https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/items.json'
+   patch = get_latest_patch(True)
+   url = f'https://ddragon.leagueoflegends.com/cdn/{patch}/data/en_US/item.json'
+   # url = 'https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/items.json'
    res = requests.get(url).json()
-   return res
+   return res['data']
 
 def get_runes():
    # patch = get_latest_patch(True)
@@ -147,11 +147,14 @@ def get_champion_upsert_data(participant_id, timeline):
 
 def item_filter(i, items):
    blacklist = [
-      0, # No item
+      0,    # No item
       2003, # Healing potion
       2140, # Elixer of wrath
       2138, # Elixer of iron
       2139, # Elixir of sorcery
+      2150, # Elixir of Skill (Triple Tonic)
+      2151, # Elixir of Avarice (Triple Tonic)
+      2152, # Elixir of Force (Triple Tonic)
       3177, # Guardian's Blade
       3184, # Guardian's Hammer
       3112, # Guardian's Orb
@@ -160,44 +163,17 @@ def item_filter(i, items):
       2403, # Minion dematerializer (Klepto)
       3400, # Your Cut (Pyke)
       2424, # Broken Stopwatch
+      3599, # Kalista's Black Spear
       3600, # Kalista's Black Spear
-
-      # # Masterworks.
-      # 7000,
-      # 7001,
-      # 7002,
-      # 7005,
-      # 7006,
-      # 7009,
-      # 7010,
-      # 7011,
-      # 7012,
-      # 7013,
-      # 7014,
-      # 7015,
-      # 7016,
-      # 7017,
-      # 7018,
-      # 7019,
-      # 7020,
-      # 7021,
-      # 7023,
-      # 7024,
-      # 7025,
-      # 7026,
-      # 7027,
-      # 7028,
-      # 7029,
-      # 7030,
-      # 7031,
-      # 7032,
-      # 7033,
-      # 7050, # Gangplank placeholder(?)
+      2421, # Shattered Armguard
+      2420, # Seeker's Armguard
+      7050, # Gangplank placeholder (?)
    ]
 
    if i in blacklist: return False
    item = items[str(i)]
    """
+   Moving back to ddragon for patch 14.1
    Meraki considerations:
       IE: Stores as rank 2, when should be 3
       keys are in both snake_case & camelCase
@@ -212,14 +188,10 @@ def item_filter(i, items):
    # if "requiredAlly" in item:
    #    if item["requiredAlly"] == "Ornn": return False
 
-   return True if "LEGENDARY" in item["rank"] or ("MYTHIC" in item["rank"] or item["tier"] >= 3) or ('BOOTS' in item["rank"] and item["tier"] == 2) else False   
+   # return True if "LEGENDARY" in item["rank"] or ("MYTHIC" in item["rank"] or item["tier"] >= 3) or ('BOOTS' in item["rank"] and item["tier"] == 2) else False   
 
-   # Moving from ddragon to meraki
-   # if 'requiredAlly' in item: return False
-   # if "into" not in item or 'requiredAlly' in items[str(item["into"][0])]:
-   #    return True
-   # else:
-   #    return False
+   # Assuming all builder items build into multiple epic/legendaries. Also accounts for Ornn masterworks.
+   return True if "into" not in item or len(item["into"]) < 2 else False
    
 def item_mythic(i, items):
    item = items[str(i)]
@@ -236,8 +208,12 @@ def item_evolutions(i):
       7000: 6693,
       7001: 6692,
       7002: 6691,
+      7003: 3089,
+      7004: 3118,
       7005: 6662,
       7006: 6671,
+      7007: 6699,
+      7008: 6697,
       7009: 4633,
       7010: 4636,
       7011: 3152,
@@ -251,6 +227,7 @@ def item_evolutions(i):
       7019: 3190,
       7020: 2065,
       7021: 6617,
+      7022: 6701,
       7023: 3001,
       7024: 4644,
       7025: 3084,
@@ -261,7 +238,17 @@ def item_evolutions(i):
       7030: 3124,
       7031: 3031,
       7032: 6675,
-      7033: 6620, 
+      7033: 6620,
+      7034: 2502,
+      7035: 6621,
+      7036: 3073,
+      7037: 3071,
+      7038: 3161,
+      7039: 6610,
+      7040: 3095,
+      7041: 6672,
+      7042: 3115,
+
       # Tear evolutions
       3040: 3003, # Seraphs: Archangel's 
       3042: 3004, # Muramana: Manamune
