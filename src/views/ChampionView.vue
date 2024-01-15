@@ -2,14 +2,13 @@
 import ChampionLoading from '../components/Champion/ChampionLoading.vue'
 import ChampionError from '../components/Champion/ChampionError.vue'
 import ChampionReady from '../components/Champion/ChampionReady.vue'
-
 import axios from 'axios'
 
 export default {
    components: {
       ChampionLoading,
       ChampionError,
-      ChampionReady
+      ChampionReady,
    },
 
    data() {

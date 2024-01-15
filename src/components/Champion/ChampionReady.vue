@@ -4,6 +4,7 @@ import champions from '../../constants/champions'
 import Mythics from './components/Mythics.vue'
 import Items from './components/Items.vue'
 import Runes from './components/Runes.vue'
+import Wip from '../Wip.vue'
 import { championParametersStore } from '../../stores/championParameters'
 
 
@@ -11,7 +12,8 @@ export default {
    components: {
       Mythics,
       Items,
-      Runes
+      Runes,
+      Wip
    },
    data() {
       return {
@@ -135,9 +137,7 @@ export default {
 
          for (const i in this.mythicData) {
             const mythic = this.mythicData[i]
-            console.log(mythic)
             let item = mythic.id
-            console.log(this.champion.mythics[item])
             let _itemPosition = [[], [], [], [], [], []]
             let _levelOrder = []
             let _skillPath = []
@@ -275,6 +275,7 @@ export default {
 </script>
 
 <template>
+   <Wip />
    <div class="champion-ready-main">
       <div class="champion-wrapper">
          <!-- <div class="test">

@@ -11,12 +11,13 @@ export default {
 
 <template>
    <div class="wip-main">
-      🚧 This section is a work in progress - the UI may be a little weird. 🚧
+      🚧 This section is a work in progress - the UI may be a little weird. Champion stat pages are showing 13.24 data. 🚧
    </div>
 </template>
 
 <style scoped>
    .wip-main {
+      color: var(--color-font);
       text-align: center;
       background: var(--cell-panel);
       border: 1px solid var(--cell-border);

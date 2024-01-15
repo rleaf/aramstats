@@ -1,8 +1,12 @@
 <script>
 import axios from 'axios'
 import champions from '../constants/champions'
+import Wip from '../components/Wip.vue'
 
 export default {
+   components: {
+      Wip 
+   },
    data() {
       return {
          champions: null,
@@ -80,6 +84,7 @@ export default {
          return (name in champions.table) ? champions.table[name] : name
       },
       getPickRate(g) {
+         // if (this.total) return (g / this.total * 1000)
          if (this.total) return Math.round(g / this.total * 10000) / 10
       },
       headerSort(sort) {
@@ -142,7 +147,7 @@ export default {
 </script>
 
 <template>
-   
+   <Wip />
    <div v-if="this.champions" class="champ-list-main">
       <div class="champ-table">
          <!-- <div class="filters">

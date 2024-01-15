@@ -16,7 +16,8 @@ const updates = [
       version: "",
       date: "1/9/24 - now",
       body: [
-         `Working on fixing them. With the new patch, some things will require a significant redesign such as the champion stats pages so it may take a hot minute. I'll be sprinkling in minor updates here.`
+         `Working on fixing them. With the new patch, some things will require a significant redesign such as the champion stats pages so it may take a hot minute. I'll be sprinkling in minor updates here.`,
+         `1/15: Finished designing mythicless UI & streamlining data hoarding to improve load times.`,
       ],
       links: [],
       img: [], // Expected webp format
