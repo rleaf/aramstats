@@ -75,11 +75,9 @@ class ChampionParser():
             if i["type"] != "ITEM_PURCHASED" or i["itemId"] not in filtered_items or i["itemId"] in item_order: continue
             item_order.append(i["itemId"])
 
-         # mythic = next(filter(lambda x: util.item_mythic(x, self.items), item_order), 0)
-         
          # <str> Build path string ID used as field in database.
-         build_path = '_'.join([str(x) for x in item_order])
-         core_build = '_'.join([str(item_order[i]) for i in range(3) if len(item_order) > 2])
+         build = '_'.join([str(x) for x in item_order])
+         core = '_'.join([str(item_order[i]) for i in range(3) if len(item_order) > 2])
 
          # <str> Skill path string ID used as field in database.
          skill_path = ''.join(str(x["skillSlot"]) for x in abilities_timeline)
@@ -124,7 +122,7 @@ class ChampionParser():
          for i, arr in enumerate(count):
             if len(arr) > 1:
                if i == max(ql, wl, el):
-                  for v in arr: level_order += table[v]
+                  for v in arr: level_order += table[v] 
                   continue
                o = {v: len(basic_skills) - 1 - basic_skills[::-1].index(v) for v in arr}
                s = sorted(o, key=lambda x: o[x])
@@ -151,26 +149,40 @@ class ChampionParser():
             for i, arr in enumerate(rune_tier):
                if id in arr: return i
 
-         for x in match["info"]["participants"]:
-            if x["participantId"] == participant["participantId"]:
-               primary_runes = [str(y["perk"]) for y in x["perks"]["styles"][0]["selections"]]
-               primary_tree = x["perks"]["styles"][0]["style"]
-               primary_runes.sort(key=lambda x: rune_order.index(x))
-               primary = f'{primary_tree}|' + '_'.join(primary_runes) + '|'
+         # for x in match["info"]["participants"]:
+         #    if x["participantId"] == participant["participantId"]:
+         #       primary_runes = [str(y["perk"]) for y in x["perks"]["styles"][0]["selections"]]
+         #       primary_tree = x["perks"]["styles"][0]["style"]
+         #       # primary_runes.sort(key=lambda x: rune_order.index(x))
+         #       primary = f'{primary_tree}|' + '_'.join(primary_runes) + '|'
 
-               secondary_runes = [str(y["perk"]) for y in x["perks"]["styles"][1]["selections"]]
-               secondary_tree = x["perks"]["styles"][1]["style"]
-               secondary_runes.sort(key=lambda x: rune_order.index(x))
-               secondary = f'{secondary_tree}|' + '_'.join(secondary_runes) + '|'
+         #       secondary_runes = [str(y["perk"]) for y in x["perks"]["styles"][1]["selections"]]
+         #       secondary_tree = x["perks"]["styles"][1]["style"]
+         #       secondary_runes.sort(key=lambda x: rune_order.index(x))
+         #       secondary = f'{secondary_tree}|' + '_'.join(secondary_runes) + '|'
 
-               tertiary_offense = x["perks"]["statPerks"]["offense"]
-               tertiary_flex = x["perks"]["statPerks"]["flex"]
-               tertiary_defense = x["perks"]["statPerks"]["defense"]
-               tertiary = f'{tertiary_offense}_{tertiary_flex}_{tertiary_defense}'
-         rune_path = primary + secondary + tertiary
+         #       tertiary_offense = x["perks"]["statPerks"]["offense"]
+         #       tertiary_flex = x["perks"]["statPerks"]["flex"]
+         #       tertiary_defense = x["perks"]["statPerks"]["defense"]
+         #       tertiary = f'{tertiary_offense}_{tertiary_flex}_{tertiary_defense}'
+         primary_runes = [str(y["perk"]) for y in participant["perks"]["styles"][0]["selections"]]
+         primary_tree = participant["perks"]["styles"][0]["style"]
+         # primary_runes.sort(key=lambda x: rune_order.index(x))
+         # primary = f'{primary_tree}|' + '_'.join(primary_runes) + '|'
 
-         secondary_rune_one_tier = get_rune_tier(secondary_runes[0])
-         secondary_rune_two_tier = get_rune_tier(secondary_runes[1])
+         secondary_runes = [str(y["perk"]) for y in participant["perks"]["styles"][1]["selections"]]
+         secondary_tree = participant["perks"]["styles"][1]["style"]
+         # secondary_runes.sort(key=lambda x: rune_order.index(x))
+         # secondary = f'{secondary_tree}|' + '_'.join(secondary_runes) + '|'
+
+         tertiary_offense = participant["perks"]["statPerks"]["offense"]
+         tertiary_flex = participant["perks"]["statPerks"]["flex"]
+         tertiary_defense = participant["perks"]["statPerks"]["defense"]
+         # tertiary = f'{tertiary_offense}_{tertiary_flex}_{tertiary_defense}'
+         # rune_path = primary + secondary + tertiary
+
+         # secondary_rune_one_tier = get_rune_tier(secondary_runes[0])
+         # secondary_rune_two_tier = get_rune_tier(secondary_runes[1])
          # <str> Starting items string ID used as field in database. 
          starting_build = []
          for x in item_timeline:
@@ -179,105 +191,86 @@ class ChampionParser():
                   starting_build.append(x["itemId"])
                if x["type"] == "ITEM_UNDO":
                   if x["beforeId"] in starting_build: starting_build.remove(x["beforeId"])
+            else:
+               break
+
          starting_build.sort()
          starting_build = '_'.join(str(x) for x in starting_build)
          if starting_build == '': starting_build = '0000'
          # <[str]> List containing friendly championIds in each match
-         f = [str(x["championId"]) for x in match["info"]["participants"] if x["teamId"] == participant["teamId"] and x["championId"] != id]
+         # f = [str(x["championId"]) for x in match["info"]["participants"] if x["teamId"] == participant["teamId"] and x["championId"] != id]
 
          # <[str]> List containing enemy championIds in each match
-         e = [str(x["championId"]) for x in match["info"]["participants"] if x["teamId"] != participant["teamId"]]
+         # e = [str(x["championId"]) for x in match["info"]["participants"] if x["teamId"] != participant["teamId"]]
 
+         # print('primaryrune', primary_runes)
+         # print('secondary', secondary_runes)
+         # print(toad)
          update = {
             "$inc": {
                "games": 1,
                "wins": win,
                # Skills
-               f"skills.levelOrder.{level_order}.games": 1,
-               f"skills.levelOrder.{level_order}.wins": win,
-               # f"skills.levelOrder.{level_order}.friends.{f[0]}": 1,
-               # f"skills.levelOrder.{level_order}.friends.{f[1]}": 1,
-               # f"skills.levelOrder.{level_order}.friends.{f[2]}": 1,
-               # f"skills.levelOrder.{level_order}.friends.{f[3]}": 1,
-               # f"skills.levelOrder.{level_order}.enemies.{e[0]}": 1,
-               # f"skills.levelOrder.{level_order}.enemies.{e[1]}": 1,
-               # f"skills.levelOrder.{level_order}.enemies.{e[2]}": 1,
-               # f"skills.levelOrder.{level_order}.enemies.{e[3]}": 1,
-               # f"skills.levelOrder.{level_order}.enemies.{e[4]}": 1,
-               f"skills.{skill_path}.games": 1,
-               f"skills.{skill_path}.wins": win,
-               # Builds
-               f"builds.{build_path}.games": 1,
-               f"builds.{build_path}.wins": win,
-               # Mythics
-               # f"mythics.{mythic}.runes.{rune_path}.games": 1,
-               # f"mythics.{mythic}.runes.{rune_path}.wins": win,
-               # f"mythics.{mythic}.primaryRunes.{primary_tree}.games": 1,
-               # f"mythics.{mythic}.primaryRunes.{primary_tree}.wins": win,
-               # f"mythics.{mythic}.primaryRunes.{primary_tree}.row0.{primary_runes[0]}.games": 1,
-               # f"mythics.{mythic}.primaryRunes.{primary_tree}.row0.{primary_runes[0]}.wins": win,
-               # f"mythics.{mythic}.primaryRunes.{primary_tree}.row1.{primary_runes[1]}.games": 1,
-               # f"mythics.{mythic}.primaryRunes.{primary_tree}.row1.{primary_runes[1]}.wins": win,
-               # f"mythics.{mythic}.primaryRunes.{primary_tree}.row2.{primary_runes[2]}.games": 1,
-               # f"mythics.{mythic}.primaryRunes.{primary_tree}.row2.{primary_runes[2]}.wins": win,
-               # f"mythics.{mythic}.primaryRunes.{primary_tree}.row3.{primary_runes[3]}.games": 1,
-               # f"mythics.{mythic}.primaryRunes.{primary_tree}.row3.{primary_runes[3]}.wins": win,
-               # f"mythics.{mythic}.secondaryRunes.{secondary_tree}.games": 1,
-               # f"mythics.{mythic}.secondaryRunes.{secondary_tree}.wins": win,
-               # f"mythics.{mythic}.secondaryRunes.{secondary_tree}.row{secondary_rune_one_tier}.{secondary_runes[0]}.games": 1,
-               # f"mythics.{mythic}.secondaryRunes.{secondary_tree}.row{secondary_rune_one_tier}.{secondary_runes[0]}.wins": win,
-               # f"mythics.{mythic}.secondaryRunes.{secondary_tree}.row{secondary_rune_two_tier}.{secondary_runes[1]}.games": 1,
-               # f"mythics.{mythic}.secondaryRunes.{secondary_tree}.row{secondary_rune_two_tier}.{secondary_runes[1]}.wins": win,
-               # f"mythics.{mythic}.flexRunes.row0.{tertiary_offense}.games": 1,
-               # f"mythics.{mythic}.flexRunes.row0.{tertiary_offense}.wins": win,
-               # f"mythics.{mythic}.flexRunes.row1.{tertiary_flex}.games": 1,
-               # f"mythics.{mythic}.flexRunes.row1.{tertiary_flex}.wins": win,
-               # f"mythics.{mythic}.flexRunes.row2.{tertiary_defense}.games": 1,
-               # f"mythics.{mythic}.flexRunes.row2.{tertiary_defense}.wins": win,
-               # # Spells
-               # f"mythics.{mythic}.spells.{summoner_spells}.games": 1,
-               # f"mythics.{mythic}.spells.{summoner_spells}.wins": win,
-               # # Skill path
-               # f"mythics.{mythic}.skillPath.{skill_path}.games": 1,
-               # f"mythics.{mythic}.skillPath.{skill_path}.wins": win,
-               # # Level order
-               # f"mythics.{mythic}.levelOrder.{level_order}.games": 1,
-               # f"mythics.{mythic}.levelOrder.{level_order}.wins": win,
+               f"skills.path.{skill_path}.games": 1,
+               f"skills.path.{skill_path}.wins": win,
+               f"skills.priority.{level_order}.games": 1,
+               f"skills.priority.{level_order}.wins": win,
+               # Runes
+               f"runes.primary.{primary_runes[0]}.games": 1,
+               f"runes.primary.{primary_runes[0]}.wins": win,
+               f"runes.primary.{primary_runes[1]}.games": 1,
+               f"runes.primary.{primary_runes[1]}.wins": win,
+               f"runes.primary.{primary_runes[2]}.games": 1,
+               f"runes.primary.{primary_runes[2]}.wins": win,
+               f"runes.primary.{primary_runes[3]}.games": 1,
+               f"runes.primary.{primary_runes[3]}.wins": win,
+               f"runes.secondary.{secondary_runes[0]}.games": 1,
+               f"runes.secondary.{secondary_runes[0]}.wins": win,
+               f"runes.secondary.{secondary_runes[1]}.games": 1,
+               f"runes.secondary.{secondary_runes[1]}.wins": win,
+               f"runes.tertiary.offense.{tertiary_offense}.games": 1,
+               f"runes.tertiary.offense.{tertiary_offense}.wins": win,
+               f"runes.tertiary.defense.{tertiary_defense}.games": 1,
+               f"runes.tertiary.defense.{tertiary_defense}.wins": win,
+               f"runes.tertiary.flex.{tertiary_flex}.games": 1,
+               f"runes.tertiary.flex.{tertiary_flex}.wins": win,
+               # Starting Items
+               f"starting.{starting_build}.games": 1,
+               f"starting.{starting_build}.wins": win,
+               # Summoner Spells
+               f"spells.{summoner_spells}.games": 1,
+               f"spells.{summoner_spells}.wins": win,
             }
          }
 
-         # if mythic == 0:
-         #    update["$inc"][f"mythics.{mythic}.games"] = 1
-         #    update["$inc"][f"mythics.{mythic}.wins"] = win
+         if core:
+            update["$inc"][f"core.{core}.games"] = 1
+            update["$inc"][f"core.{core}.wins"] = win
+            update["$inc"][f"core.{core}.starting.{starting_build}.games"] = 1
+            update["$inc"][f"core.{core}.starting.{starting_build}.wins"] = win
+            update["$inc"][f"core.{core}.spells.{summoner_spells}.games"] = 1
+            update["$inc"][f"core.{core}.spells.{summoner_spells}.wins"] = win
+            update["$inc"][f"core.{core}.skills.{skill_path}.games"] = 1
+            update["$inc"][f"core.{core}.skills.{skill_path}.wins"] = win
+            update["$inc"][f"core.{core}.runes.primary.{primary_tree}.games"] = 1
+            update["$inc"][f"core.{core}.runes.primary.{primary_tree}.wins"] = win
+            update["$inc"][f"core.{core}.runes.secondary.{secondary_tree}.games"] = 1
+            update["$inc"][f"core.{core}.runes.secondary.{secondary_tree}.wins"] = win
+            update["$inc"][f"core.{core}.runes.tertiaryOff.{tertiary_offense}.games"] = 1
+            update["$inc"][f"core.{core}.runes.tertiaryOff.{tertiary_offense}.wins"] = win
+            update["$inc"][f"core.{core}.runes.tertiaryDef.{tertiary_defense}.games"] = 1
+            update["$inc"][f"core.{core}.runes.tertiaryDef.{tertiary_defense}.wins"] = win
+            update["$inc"][f"core.{core}.runes.tertiaryFlx.{tertiary_flex}.games"] = 1
+            update["$inc"][f"core.{core}.runes.tertiaryFlx.{tertiary_flex}.wins"] = win
 
-         if core_build:
-            update["$inc"][f"coreBuild.{core_build}.games"] = 1
-            update["$inc"][f"coreBuild.{core_build}.wins"] = win
-            update["$inc"][f"startingItems.{starting_build}.games"] = 1
-            update["$inc"][f"startingItems.{starting_build}.wins"] = win
+            for i, item in enumerate(item_order[3::]):
+               update["$inc"][f"core.{core}.trailing.{i+4}.{item}.games"] = 1
+               update["$inc"][f"core.{core}.trailing.{i+4}.{item}.wins"] = win
 
          # Items
-         for i in filtered_items:
-            # Totals
-            update["$inc"][f"items.{i}.games"] = 1
-            update["$inc"][f"items.{i}.wins"] = win
-            # Mythic related data conditioned on i
-            # update["$inc"][f"mythics.{mythic}.items.{item_order.index(i)}.{i}.games"] = 1
-            # update["$inc"][f"mythics.{mythic}.items.{item_order.index(i)}.{i}.wins"] = win
-            # Position
-            update["$inc"][f"items.{i}.position.{item_order.index(i)}.games"] = 1
-            update["$inc"][f"items.{i}.position.{item_order.index(i)}.wins"] = win
-            # # Friendlies
-            # update["$inc"][f"items.{i}.friends.{f[0]}"] = 1
-            # update["$inc"][f"items.{i}.friends.{f[1]}"] = 1
-            # update["$inc"][f"items.{i}.friends.{f[2]}"] = 1
-            # update["$inc"][f"items.{i}.friends.{f[3]}"] = 1
-            # # Enemies
-            # update["$inc"][f"items.{i}.enemies.{e[0]}"] = 1
-            # update["$inc"][f"items.{i}.enemies.{e[1]}"] = 1
-            # update["$inc"][f"items.{i}.enemies.{e[2]}"] = 1
-            # update["$inc"][f"items.{i}.enemies.{e[3]}"] = 1
-            # update["$inc"][f"items.{i}.enemies.{e[4]}"] = 1
+         for i, item in enumerate(item_order):
+            update["$inc"][f"items.{i+1}.{item}.games"] = 1
+            update["$inc"][f"items.{i+1}.{item}.wins"] = win
 
          bin.append(UpdateOne({ "_id": id }, update, upsert=True))
       return bin
