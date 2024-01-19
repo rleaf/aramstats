@@ -95,6 +95,7 @@
 :root {
   /* NEW CSS */
   --color-background: #10131A;
+  --color-background-rgb: 16, 19, 26;
 
   --cell-panel: var(--cold-blue);
   --cell-panel-rgb: 28, 30, 43;
@@ -182,6 +183,7 @@
 /* Day mode */
 .day {
   --color-background: #f0f0f0;
+  --color-background-rgb: 240, 240, 240;
 
   --cell-panel: var(--white-3);
   --cell-panel-rgb: 217, 217, 217;

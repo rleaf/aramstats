@@ -44,7 +44,24 @@ class ChampionParser():
             except Exception as e:
                raise e
       print("Fin champion parser")
+      coll = list(self.champion_stats_collection.find({}, projection={"_id": 1, "games": 1, "wins": 1}))
+      total = sum(doc["games"] for doc in coll)
+      for doc in coll:
+         doc["pickRate"] = round((doc["games"] / total) * 100, 2)
+         doc["winRate"] = round((doc["wins"] / doc["games"]) * 100, 2)
+      coll = sorted(coll, key=lambda x: x["winRate"], reverse=True)
 
+      for i, doc in enumerate(coll):
+         update = {
+            "$set": {
+               "rank": i+1,
+               "pickRate": doc["pickRate"],
+            }
+         }
+         # print(i, doc["_id"])
+         self.champion_stats_collection.update_one({ "_id": doc["_id"] }, update, upsert=True)
+      print("Fin rank/pickrate")
+      
    def forward(self, match):
       """
       Iterate through matchdata and update champion documents for observed champions.
@@ -199,7 +216,6 @@ class ChampionParser():
          if starting_build == '': starting_build = '0000'
          # <[str]> List containing friendly championIds in each match
          # f = [str(x["championId"]) for x in match["info"]["participants"] if x["teamId"] == participant["teamId"] and x["championId"] != id]
-
          # <[str]> List containing enemy championIds in each match
          # e = [str(x["championId"]) for x in match["info"]["participants"] if x["teamId"] != participant["teamId"]]
 
@@ -210,6 +226,8 @@ class ChampionParser():
             "$inc": {
                "games": 1,
                "wins": win,
+               "rank": 0,
+               "pickRate": 0.0,
                # Skills
                f"skills.path.{skill_path}.games": 1,
                f"skills.path.{skill_path}.wins": win,
