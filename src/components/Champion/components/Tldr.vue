@@ -1,4 +1,7 @@
 <script>
+import _runes from '@/constants/runes'
+import _flex from '@/constants/flex'
+
 export default {
    data() {
       return {
@@ -8,32 +11,43 @@ export default {
             visibleCore: 10, // Limit core build to top N builds, sorted by popularity
             winrateSort: false, // Sort trailing items by highest winrate
             trailingExtended: 2, // How many trailing items to display
+            levelCutoff: 10, // Minimum character level when considering skill order.
          },
-         // totalGames: 0, use actual total games
+         runes: _runes,
+         flex: _flex,
       }
    },
 
    created() {
       this.sortCore()
-      // console.log(this.champion.core)
-      // if (this.champion != null) 
+      this.skills
    },
    
    methods: {
       sortCore() {
          for (const c in this.champion.core) {
-            // this.totalGames += this.champion.core[c].games
             this.champion.core[c].core = c
             this.organizedCore.push(this.champion.core[c])
          }
          this.organizedCore.sort((a, b) => b.games - a.games)
          this.organizedCore = this.organizedCore.slice(0, this.config.visibleCore)
-         // console.log(this.totalGames)
-         console.log('potato', this.organizedCore)
+         console.log('organized core', this.organizedCore)
       },
 
       itemImage(id) {
          return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/item/${id}.png`
+      },
+
+      spellImage(id) {
+         return new URL(`../../../assets/spells/${id}.webp`, import.meta.url).href
+      },
+
+      runeImage(id) {
+         return new URL(`../../../assets/runes/${id}.png`, import.meta.url).href
+      },
+
+      flexRuneImage(id) {
+         return new URL(`../../../assets/runes/flex/${id}.png`, import.meta.url).href
       },
 
       trailingSort(obj) {
@@ -45,24 +59,27 @@ export default {
          return arr
       },
       
-      startingSort(obj) {
-         let key
+      masterSort(obj) {
+         /* 
+            Take any obj with games & wins value for Tldr section and return desired datum based off winrate configuration.
+         */
+         let peaches
          let roll = 0
          if (this.config.winrateSort) {
             for (const j in obj) {
                const potato = (obj[j].wins / obj[j].games)
-               if (potato > roll ) key = [j, obj[j].games, obj[j].wins]
+               if (potato > roll ) peaches = [j, obj[j].games, obj[j].wins]
             }
          } else {
             for (const j in obj) {
                if (obj[j].games > roll) {
                   roll = obj[j].games
-                  key = key = [j, obj[j].games, obj[j].wins]
+                  peaches = [j, obj[j].games, obj[j].wins]
                }
             }
          }
 
-         return key
+         return peaches // [datum, games, wins]
       },
 
       winrate(total, win) {
@@ -72,13 +89,48 @@ export default {
          if (i != 2) {
             return 'var(--alpha-01)'
          }
-      }
+      }, 
+
    },
 
    computed: {
       startingItems() {
-         return this.startingSort(this.organizedCore[this.coreFocus].starting)
-      }
+         return this.masterSort(this.organizedCore[this.coreFocus].starting)
+      },
+
+      startingSpells() {
+         return this.masterSort(this.organizedCore[this.coreFocus].spells)
+      },
+
+      primaryRunes() {
+         return this.masterSort(this.organizedCore[this.coreFocus].runes.primary)
+      },
+
+      secondaryRunes() {
+         // delete this.organizedCore[this.coreFocus].runes.secondary[this.primaryRunes[0]]
+         // const x = this.organizedCore[this.coreFocus].runes.secondary
+         const x = Object.assign({}, this.organizedCore[this.coreFocus].runes.secondary)
+         delete x[this.primaryRunes[0]]
+         return this.masterSort(x)
+      },
+
+      skills() {
+         /* 
+            Need to take skills object and produce an object where redundant skill paths are reduced to their
+            superset.
+
+            Need array for order from small to large
+         */
+         // Broken until I fix backend since I will not be passing `raw` back to front.
+         
+         const x = Object.entries(this.organizedCore[this.coreFocus].skills).sort((a, b) => a[0].length - b[0].length)
+
+         for (const i of x) {
+            if (i[0].length < this.config.levelCutoff) continue
+            console.log(i)
+            
+         }
+      },
    },
 
    props: {
@@ -107,7 +159,10 @@ export default {
          </div>
          <div class="trailing">
             <div class="sub-section-header">
-               <h2>Items</h2>
+               <div class="sub-lhs">
+                  <span class="title">Items</span>
+               </div>
+               <img src="@/assets/information.svg" alt="">
             </div>
             <div class="trailing-items-wrapper">
 
@@ -123,15 +178,85 @@ export default {
 
          </div>
          <div class="starting-spells">
-            <div class="sub-section-header">
-               <div class="title">Starting</div>
-               {{ this.winrate(startingItems[1], startingItems[2]) }}
-               <div class="misc">
+            <div class="starting">
+               <div class="sub-section-header">
+                  <div class="sub-lhs">
+                     <span class="title">Starting</span>
+                     <div class="misc">
+                        <h3>{{ this.winrate(startingItems[1], startingItems[2]) }}</h3>
+                        <h3>{{ startingItems[1] }}</h3>
+                     </div>
+                  </div>
+                  <img src="@/assets/information.svg" alt="">
+               </div>
+               <img class="starting-image" :src="this.itemImage(img)" alt="" v-for="(img, i) in startingItems[0].split('_')" :key="i">
+            </div>
+            <div class="spells">
+               <div class="sub-section-header">
+                  <div class="sub-lhs">
+                     <span class="title">Spells</span>
+                     <div class="misc">
+                        <h3>{{ this.winrate(startingSpells[1], startingSpells[2]) }}</h3>
+                        <h3>{{ startingSpells[1] }}</h3>
+                     </div>
+                  </div>
+                  <img src="@/assets/information.svg" alt="">
+               </div>
+               <img class="starting-image" :src="this.spellImage(img)" alt="" v-for="(img, i) in startingSpells[0].split('_')" :key="i">
+            </div>
+         </div>
+         <div class="runes-leveling">
+            <div class="runes">
+               <div class="sub-section-header">
+                  <div class="sub-lhs">
+                     <span class="title">Runes</span>
+                     <div class="misc">
+                        <h3>{{ this.winrate(primaryRunes[1], primaryRunes[2]) }}</h3>
+                        <h3>{{ primaryRunes[1] }}</h3>
+                     </div>
+                  </div>
+                  <img src="@/assets/information.svg" alt="">
+               </div>
+               <div class="runes-wrapper">
+                  <div class="tldr-primary">
+                     <div class="rune-row" alt="" v-for="(row, i) in this.runes[primaryRunes[0]]" :key="i">
+                        <img :src="this.runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
+                     </div>
+                  </div>
+                  <div>
+                     <div class="tldr-secondary">
+                        <div class="rune-row" v-for="(row, i) in this.runes[secondaryRunes[0]].slice(1)" :key="i">
+                           <img :src="this.runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
+                        </div>
+                     </div>
+                     <div class="tldr-flex">
+                        <div class="rune-row" v-for="(row, i) in this.flex" :key="i">
+                           <img :src="this.flexRuneImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
+                        </div>
+                     </div>
+                  </div>
                </div>
             </div>
-            <img :src="this.itemImage(img)" alt="" v-for="(img, i) in startingItems[0].split('_')" :key="i">
+            <div class="leveling">
+               <div class="sub-section-header">
+                  <div class="sub-lhs">
+                     <span class="title">Level Order</span>
+                     <div class="misc">
+                        <h3>{{ this.winrate(startingSpells[1], startingSpells[2]) }}</h3>
+                        <h3>{{ startingSpells[1] }}</h3>
+                     </div>
+                  </div>
+                  <img src="@/assets/information.svg" alt="">
+               </div>
+               <div class="level-wrapper">
+                  <div class="level-column" v-for="(col, i) in 18" :key="i">
+                     <div class="level-row" v-for="(row, j) in 4" :key="j">
+                        
+                     </div>
+                  </div>
+               </div>
+            </div>
          </div>
-         <div class="runes-leveling"></div>
       </div>
    </div>
 </template>
@@ -143,6 +268,7 @@ export default {
 
 .section {
    display: flex;
+   justify-content: space-between;
    height: 405px;
    color: var(--color-font);
 }
@@ -150,7 +276,6 @@ export default {
 .core-selection {
    border-right: 1px solid var(--cell-border);
    padding-right: 20px;
-   /* margin-right: 10px; */
    overflow: scroll;
    overflow-x: hidden;
 }
@@ -175,11 +300,78 @@ export default {
 }
 
 .starting-spells {
+   min-width: 200px;
+   /* padding-right: 20px; */
+}
+
+.spells {
+   margin-top: 80px;
+}
+
+.runes-leveling {
+   width: 350px;
+}
+.runes-wrapper {
+   display: flex;
+   justify-content: space-evenly;
+}
+
+.tldr-primary, .tldr-secondary, .tldr-flex {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+.tldr-primary .rune-row:first-child img {
+   width: 40px;
+}
+
+.tldr-primary .rune-row img {
+   width: 28px;
+}
+
+.tldr-primary .rune-row:not(:first-child) img {
+   padding: 6px;
+}
+
+.tldr-secondary img, .tldr-flex img {
+   padding: 1px 2px;
+}
+.tldr-secondary img {
+   width: 24px;
+}
+
+.tldr-flex img {
+   width: 24px;
+}
+
+.rune-row {
+   display: inline-block;
+}
+
+.level-wrapper {
+   display: flex;
+}
+
+.level-row {
+   width: 18px;
+   height: 18px;
+   margin: 1px;
+   background: tomato;
+}
+
+img.starting-image {
+   width: 32px;
+   border: 1px solid var(--cell-border);
 
 }
 
+ img.starting-image:not(:nth-child(2)) {
+   margin-left: 5px;
+}
+
 .trailing {
-   padding: 0 20px;
+   /* padding: 0 20px; */
    color: var(--color-font);
 }
 
@@ -189,12 +381,10 @@ export default {
 }
 
 .trailing-items {
-
    display: flex;
    flex-direction: column;
    gap: 20px;
    align-items: center;
-   margin-top: 10px;
    padding: 20px 20px;
    width: 35px;
    border-radius: 5px;

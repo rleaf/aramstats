@@ -5,16 +5,51 @@
    padding-bottom: 1.25rem;
 }
 
+.sub-section-header {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding-bottom: 0.3rem;
+   margin-bottom: 0.8rem;
+   border-bottom: 1px solid var(--cell-border);
+}
+
+.sub-section-header img {
+   cursor: pointer;
+   -webkit-touch-callout: none; /* iOS Safari */
+   -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Old versions of Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+   user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+
+.sub-lhs {
+   display: flex;
+   align-items: center;
+}
+
+.sub-lhs .misc h3 {
+   display: block;
+   font-weight: normal;
+   font-size: 0.75rem;
+   text-align: center;
+   margin: 0;
+}
+
+.sub-lhs .misc h3:not(:first-child) {
+   color: var(--color-font-faded);
+}
+
 .sub-section-header .title {
    font-family: 'Thestral';
    /* display: inline-block; */
    margin: 0;
    font-size: 1.5rem;
    color: var(--color-font);
-   border-bottom: 1px solid var(--cell-border);
 }
 
-/* .sub-section-header h3 {
-   display: inline-block;
-   margin: 0;
-} */
+.sub-section-header .misc {
+   padding-left: 15px;
+   color: var(--color-font);
+}

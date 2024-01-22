@@ -1,7 +1,7 @@
 champion_schema = {
       "$jsonSchema": {
          "bsonType": "object",
-         "required": ["games", "wins", "rank", "pickRate", "skills", "runes", "starting", "spells", "items"],
+         "required": ["games", "wins", "rank", "pickRate", "skills", "runes", "starting", "spells", "items", "raw"],
          "properties": {
             "_id": {
                "bsonType": "int"
@@ -46,6 +46,10 @@ champion_schema = {
                "bsonType": "object",
                "description": "items dict",
             },
+            "raw": {
+               "bsonType": "object",
+               "description": "raw data to be preproessed on championparse",
+            }
          }
       }
    }

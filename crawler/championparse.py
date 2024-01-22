@@ -1,5 +1,6 @@
 import os
 import util
+import re
 import validators as V
 # import multiprocessing as mp
 from pymongo import MongoClient, UpdateOne
@@ -29,39 +30,66 @@ class ChampionParser():
          self.meta_collection.update_one({ "_id": self.champion_stats_name }, { "$set": {"patch": patch} })
          index = self.meta_collection.find_one({ "_id": self.champion_stats_name })["champ_parse_index"]
 
-      print("Starting champion parser")
-      for match in self.match_collection.find(skip=index):
-         if (index % 50 == 0):
-            print(f'Updating index: {index}')
-            # self.meta_collection.update_one({ "_id": self.champion_stats_name }, { "$set": {"champ_parse_index": index} })
+      # print("Starting champion parser")
+      # for match in self.match_collection.find(skip=index):
+      #    if (index % 50 == 0):
+      #       print(f'Updating index: {index}')
+      #       # self.meta_collection.update_one({ "_id": self.champion_stats_name }, { "$set": {"champ_parse_index": index} })
 
-         bin = self.forward(match)
-         index += 1
+      #    bin = self.forward(match)
+      #    index += 1
 
-         if len(bin) != 0:
-            try:
-               self.champion_stats_collection.bulk_write(bin)
-            except Exception as e:
-               raise e
-      print("Fin champion parser")
-      coll = list(self.champion_stats_collection.find({}, projection={"_id": 1, "games": 1, "wins": 1}))
-      total = sum(doc["games"] for doc in coll)
-      for doc in coll:
-         doc["pickRate"] = round((doc["games"] / total) * 100, 2)
-         doc["winRate"] = round((doc["wins"] / doc["games"]) * 100, 2)
-      coll = sorted(coll, key=lambda x: x["winRate"], reverse=True)
+      #    if len(bin) != 0:
+      #       try:
+      #          self.champion_stats_collection.bulk_write(bin)
+      #       except Exception as e:
+      #          raise e
+      # print("Champion parser done, processing champion stats...")
 
-      for i, doc in enumerate(coll):
-         update = {
-            "$set": {
-               "rank": i+1,
-               "pickRate": doc["pickRate"],
-            }
-         }
-         # print(i, doc["_id"])
-         self.champion_stats_collection.update_one({ "_id": doc["_id"] }, update, upsert=True)
-      print("Fin rank/pickrate")
+      self.preprocess()
       
+      
+   def preprocess(self):
+      total = 0
+      for doc in self.champion_stats_collection.find():
+         total += doc["games"]
+         print(f"On {doc['_id']}")
+         self.levels(doc["raw"]["levels"].items())
+
+         return
+      # coll = list(self.champion_stats_collection.find({}, projection={"_id": 1, "games": 1, "wins": 1}))
+      # total = sum(doc["games"] for doc in coll)
+      # for doc in coll:
+      #    doc["pickRate"] = round((doc["games"] / total) * 100, 2)
+      #    doc["winRate"] = round((doc["wins"] / doc["games"]) * 100, 2)
+      # coll = sorted(coll, key=lambda x: x["winRate"], reverse=True)
+
+      # for i, doc in enumerate(coll):
+      #    update = {
+      #       "$set": {
+      #          "rank": i+1,
+      #          "pickRate": doc["pickRate"],
+      #       }
+      #    }
+      #    # print(i, doc["_id"])
+      #    self.champion_stats_collection.update_one({ "_id": doc["_id"] }, update, upsert=True)
+      # print("Fin rank/pickrate")
+
+   def levels(self, i):
+      """ 
+      Do I have to manually watch for champs that auto point into an ability such as Azir and Zeri? Test w/out for now but eyeballs open. 
+      """
+      levels = sorted(i, key=lambda x: len(x[0]))
+
+      for level in levels: #  ('123114222211334334', {'games': 1, 'wins': 0})
+         starting_levels = level[0][:3]
+         trailing_levels = level[0][3:]
+         print(level)
+
+         ''.join(sorted(starting_levels)) # Use combinations > permutations. (112 == 121)
+
+         
+
    def forward(self, match):
       """
       Iterate through matchdata and update champion documents for observed champions.
@@ -229,10 +257,10 @@ class ChampionParser():
                "rank": 0,
                "pickRate": 0.0,
                # Skills
-               f"skills.path.{skill_path}.games": 1,
-               f"skills.path.{skill_path}.wins": win,
-               f"skills.priority.{level_order}.games": 1,
-               f"skills.priority.{level_order}.wins": win,
+               # f"skills.path.{skill_path}.games": 1,
+               # f"skills.path.{skill_path}.wins": win,
+               f"skills.{level_order}.games": 1,
+               f"skills.{level_order}.wins": win,
                # Runes
                f"runes.primary.{primary_runes[0]}.games": 1,
                f"runes.primary.{primary_runes[0]}.wins": win,
@@ -258,6 +286,9 @@ class ChampionParser():
                # Summoner Spells
                f"spells.{summoner_spells}.games": 1,
                f"spells.{summoner_spells}.wins": win,
+               # Raw data. Anything in here to be preprocessed by championparse.py. To be omitted when sent to frontend.
+               f"raw.levels.{skill_path}.games": 1,
+               f"raw.levels.{skill_path}.wins": win,
             }
          }
 
@@ -268,8 +299,10 @@ class ChampionParser():
             update["$inc"][f"core.{core}.starting.{starting_build}.wins"] = win
             update["$inc"][f"core.{core}.spells.{summoner_spells}.games"] = 1
             update["$inc"][f"core.{core}.spells.{summoner_spells}.wins"] = win
-            update["$inc"][f"core.{core}.skills.{skill_path}.games"] = 1
-            update["$inc"][f"core.{core}.skills.{skill_path}.wins"] = win
+            # update["$inc"][f"core.{core}.skills.{skill_path}.games"] = 1
+            # update["$inc"][f"core.{core}.skills.{skill_path}.wins"] = win
+            update["$inc"][f"raw.core.{core}.levels.{skill_path}.games"] = 1
+            update["$inc"][f"raw.core.{core}.levels.{skill_path}.wins"] = win
             update["$inc"][f"core.{core}.runes.primary.{primary_tree}.games"] = 1
             update["$inc"][f"core.{core}.runes.primary.{primary_tree}.wins"] = win
             update["$inc"][f"core.{core}.runes.secondary.{secondary_tree}.games"] = 1
