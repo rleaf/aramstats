@@ -12,7 +12,8 @@ class ChampionParser():
    def __init__(self) -> None:
       db = MongoClient(os.environ['DB_CONNECTION_STRING'])['aramstats']
       collection_list = db.list_collection_names()
-      patch = util.get_latest_patch()
+      # patch = util.get_latest_patch()
+      patch = '14.1'
       match_collection_name = f"{patch}_matches"
       self.champion_stats_name = "crawler"
       champion_collection = f"{patch}_championstats"
@@ -47,48 +48,72 @@ class ChampionParser():
       # print("Champion parser done, processing champion stats...")
 
       self.preprocess()
+
+      print('Fin champion parser.')
       
       
    def preprocess(self):
+      """ 
+      Preprocess data that can significantly detriment user experience on frontend.
+      Data to be preprocessed will be in raw field.
+      """
+      champion_winrate_pickrate = []
       total = 0
+
       for doc in self.champion_stats_collection.find():
-         total += doc["games"]
          print(f"On {doc['_id']}")
-         self.levels(doc["raw"]["levels"].items())
 
-         return
-      # coll = list(self.champion_stats_collection.find({}, projection={"_id": 1, "games": 1, "wins": 1}))
-      # total = sum(doc["games"] for doc in coll)
-      # for doc in coll:
-      #    doc["pickRate"] = round((doc["games"] / total) * 100, 2)
-      #    doc["winRate"] = round((doc["wins"] / doc["games"]) * 100, 2)
-      # coll = sorted(coll, key=lambda x: x["winRate"], reverse=True)
+         champion_winrate_pickrate.append({ "_id": doc["_id"], "games": doc["games"], "wins": doc["wins"]})
+         total += doc["games"]
 
-      # for i, doc in enumerate(coll):
-      #    update = {
-      #       "$set": {
-      #          "rank": i+1,
-      #          "pickRate": doc["pickRate"],
-      #       }
-      #    }
-      #    # print(i, doc["_id"])
-      #    self.champion_stats_collection.update_one({ "_id": doc["_id"] }, update, upsert=True)
-      # print("Fin rank/pickrate")
+         bin = []
+         for core in doc["raw"]["core"]:
+            cleaned_levels = self.levels(doc["raw"]["core"][core]["levels"].items())
+            bin.append(UpdateOne({"_id": doc["_id"]}, {"$set": {f"core.{core}.levels": cleaned_levels}}, upsert=True))
+            
+         self.champion_stats_collection.bulk_write(bin)
+
+      for champion in champion_winrate_pickrate:
+         champion["pickRate"] = round((champion["games"] / total) * 100, 2)
+         champion["winRate"] = round((champion["wins"] / champion["games"]) * 100, 2)
+
+      champion_winrate_pickrate = sorted(champion_winrate_pickrate, key=lambda x: x["winRate"], reverse=True)
+
+      for i, doc in enumerate(champion_winrate_pickrate):
+         update = {
+            "$set": {
+               "rank": i+1,
+               "pickRate": doc["pickRate"],
+            }
+         }
+
+         self.champion_stats_collection.update_one({ "_id": doc["_id"] }, update, upsert=True)
+      print("Fin rank/pickrate")
 
    def levels(self, i):
       """ 
+      Reduce redundant levels. Sort input in descending and combine the wins & games of lower leveled skillpaths.
       Do I have to manually watch for champs that auto point into an ability such as Azir and Zeri? Test w/out for now but eyeballs open. 
       """
-      levels = sorted(i, key=lambda x: len(x[0]))
+      raw = sorted(i, key=lambda x: len(x[0]), reverse=True)
+      cleaned = [[raw[0][0], raw[0][1]["games"], raw[0][1]["wins"]]]
+      for o in raw[1:]: #  ('123114222211334334', {'games': 1, 'wins': 0})
+         cleaned_levels = ''.join(sorted(o[0][:3])) + o[0][3:] # Use combinations > permutations for levels 1-3. (112 == 121)
+         push = True
 
-      for level in levels: #  ('123114222211334334', {'games': 1, 'wins': 0})
-         starting_levels = level[0][:3]
-         trailing_levels = level[0][3:]
-         print(level)
+         for x in cleaned:
+            if o[0] in x[0]:
+               x[1] += o[1]["games"]
+               x[2] += o[1]["wins"]
+               push = False
+               break
 
-         ''.join(sorted(starting_levels)) # Use combinations > permutations. (112 == 121)
+         if push:
+            cleaned.append([cleaned_levels, o[1]["games"], o[1]["wins"]])
 
-         
+      cleaned.sort(key=lambda x: x[2], reverse=True)
+
+      return cleaned
 
    def forward(self, match):
       """
@@ -287,8 +312,8 @@ class ChampionParser():
                f"spells.{summoner_spells}.games": 1,
                f"spells.{summoner_spells}.wins": win,
                # Raw data. Anything in here to be preprocessed by championparse.py. To be omitted when sent to frontend.
-               f"raw.levels.{skill_path}.games": 1,
-               f"raw.levels.{skill_path}.wins": win,
+               # f"raw.levels.{skill_path}.games": 1,
+               # f"raw.levels.{skill_path}.wins": win,
             }
          }
 
