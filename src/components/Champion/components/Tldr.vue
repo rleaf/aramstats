@@ -1,18 +1,18 @@
 <script>
+import ModalSettings from './ModalSettings.vue'
+import { championStore } from '@/stores/championConfig'
 import _runes from '@/constants/runes'
 import _flex from '@/constants/flex'
 
 export default {
+   components: {
+      ModalSettings
+   },
    data() {
       return {
          organizedCore: [],
          coreFocus: 0,
-         config: {
-            visibleCore: 10, // Limit core build to top N builds, sorted by popularity
-            winrateSort: false, // Sort trailing items by highest winrate
-            trailingExtended: 2, // How many trailing items to display
-            levelCutoff: 10, // Minimum character level when considering skill order.
-         },
+         config: championStore(),
          runes: _runes,
          flex: _flex,
       }
@@ -20,7 +20,7 @@ export default {
 
    created() {
       this.sortCore()
-      this.skills
+
    },
    
    methods: {
@@ -50,12 +50,36 @@ export default {
          return new URL(`../../../assets/runes/flex/${id}.png`, import.meta.url).href
       },
 
+      activeLevel(i, j) {
+         const x = this.levels[0][i-1]
+         console.log(this.levels[0])
+         if (x == j) return true
+      },
+
+      activeSkill(i, j) {
+         const map = {
+            1: 'Q',
+            2: 'W',
+            3: 'E',
+            4: 'R'
+         }
+
+         if (this.levels[0][i-1] == j) return map[j]
+      },
+
       trailingSort(obj) {
          let arr = []
          for (const i in obj) {
             arr.push([i, obj[i].games, obj[i].wins])
          }
-         (this.config.winrateSort) ? arr.sort((a, b) => (a[1] / a[2]) - (b[1] / b[2])) : arr.sort((a, b) => b[1] - a[1])
+         
+         if (this.config.winrateSort) {
+            arr.sort((a, b) => (a[1] / a[2]) - (b[1] / b[2]))
+            arr = arr.filter(v => (v[1] / this.organizedCore[this.coreFocus].games) > this.config.winrateThreshold)
+         } else {
+            arr.sort((a, b) => b[1] - a[1])  
+         }
+
          return arr
       },
       
@@ -67,6 +91,7 @@ export default {
          let roll = 0
          if (this.config.winrateSort) {
             for (const j in obj) {
+               if ((obj[j].games / this.organizedCore[this.coreFocus].games) < this.config.winrateThreshold) continue
                const potato = (obj[j].wins / obj[j].games)
                if (potato > roll ) peaches = [j, obj[j].games, obj[j].wins]
             }
@@ -107,28 +132,24 @@ export default {
       },
 
       secondaryRunes() {
-         // delete this.organizedCore[this.coreFocus].runes.secondary[this.primaryRunes[0]]
-         // const x = this.organizedCore[this.coreFocus].runes.secondary
          const x = Object.assign({}, this.organizedCore[this.coreFocus].runes.secondary)
          delete x[this.primaryRunes[0]]
          return this.masterSort(x)
       },
 
-      skills() {
-         /* 
-            Need to take skills object and produce an object where redundant skill paths are reduced to their
-            superset.
+      levels() {
+         if (this.config.winrateSort) {
+            let roll = 0
+            for (const i in this.organizedCore[this.coreFocus].levels) {
+               if ((this.organizedCore[this.coreFocus].levels[i][1] / this.organizedCore[this.coreFocus].games) < this.config.winrateThreshold) break
+               if (this.organizedCore[this.coreFocus].levels[i][2] / this.organizedCore[this.coreFocus].levels[i][1] > roll) {
+                  roll = this.organizedCore[this.coreFocus].levels[i]
+               }
+            }
 
-            Need array for order from small to large
-         */
-         // Broken until I fix backend since I will not be passing `raw` back to front.
-         
-         const x = Object.entries(this.organizedCore[this.coreFocus].skills).sort((a, b) => a[0].length - b[0].length)
-
-         for (const i of x) {
-            if (i[0].length < this.config.levelCutoff) continue
-            console.log(i)
-            
+            return roll
+         } else {
+            return this.organizedCore[this.coreFocus].levels[0]
          }
       },
    },
@@ -142,8 +163,11 @@ export default {
 
 <template>
    <div class="tldr-main">
+      <ModalSettings v-if="this.config.modals.tldr"
+         :title="'Tldr'" />
       <div class="section-header">
          Tldr
+         <img @click="this.config.modals.tldr = true" class="settings" src="@/assets/ellipses.svg" alt="">
       </div>
       <div class="section">
          <div class="core-selection">
@@ -171,7 +195,7 @@ export default {
                   <div v-for="(i, k) in this.trailingSort(this.organizedCore[this.coreFocus].trailing[i+3]).slice(0, this.config.trailingExtended)" :key="k">
                      <img :src="this.itemImage(i[0])" alt="">
                      <div class="winrate">{{ this.winrate(i[1], i[2]) }}</div>
-                     <div class="total">{{ i[2] }}</div>
+                     <div class="total">{{ i[1] }}</div>
                   </div>
                </div>
             </div>
@@ -249,9 +273,9 @@ export default {
                   <img src="@/assets/information.svg" alt="">
                </div>
                <div class="level-wrapper">
-                  <div class="level-column" v-for="(col, i) in 18" :key="i">
-                     <div class="level-row" v-for="(row, j) in 4" :key="j">
-                        
+                  <div class="level-column" v-for="i in 18" :key="i">
+                     <div class="level-row" :class="{'active-level' : levels[0][i-1] == j}" v-for="j in 4" :key="j">
+                        {{ this.activeSkill(i, j) }}
                      </div>
                   </div>
                </div>
@@ -300,7 +324,7 @@ export default {
 }
 
 .starting-spells {
-   min-width: 200px;
+   min-width: 150px;
    /* padding-right: 20px; */
 }
 
@@ -309,7 +333,7 @@ export default {
 }
 
 .runes-leveling {
-   width: 350px;
+   width: 360px;
 }
 .runes-wrapper {
    display: flex;
@@ -349,15 +373,29 @@ export default {
    display: inline-block;
 }
 
+.leveling {
+   padding-top: 30px;
+}
+
 .level-wrapper {
    display: flex;
 }
 
 .level-row {
-   width: 18px;
-   height: 18px;
-   margin: 1px;
-   background: tomato;
+   width: 16px;
+   height: 16px;
+   margin: 2px 1px;
+   border: 1px solid transparent;
+   border-radius: 2px;
+   background: var(--alpha-06);
+   text-align: center;
+   font-size: 0.7rem;
+   line-height: 1.5;
+}
+
+.active-level {
+   border: 1px solid var(--cell-border);
+   background: var(--alpha-07);
 }
 
 img.starting-image {

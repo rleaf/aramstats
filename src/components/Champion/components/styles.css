@@ -1,8 +1,32 @@
 .section-header {
+   display: flex;
+   align-items: center;
+   gap: 20px;
    font-family: 'Thestral';
    color: var(--color-font);
    font-size: 2rem;
    padding-bottom: 1.25rem;
+}
+
+.section-header .settings {
+   cursor: pointer;
+   transition: 0.2s ease-in-out;
+
+   /* padding: 7px; */
+   border-radius: 7px;
+   padding: 3px 5px;
+   /* background: crimson; */
+   -webkit-touch-callout: none; /* iOS Safari */
+   -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Old versions of Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+   user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+
+.section-header .settings:hover {
+   background: var(--cold-blue-focus);
+   filter: brightness(1.5)
 }
 
 .sub-section-header {
@@ -45,7 +69,7 @@
    font-family: 'Thestral';
    /* display: inline-block; */
    margin: 0;
-   font-size: 1.5rem;
+   font-size: 1.3rem;
    color: var(--color-font);
 }
 

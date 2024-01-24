@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get('/:champion', async (req, res) => {
    const coll = await loadChampionStatsCollection()
-   const pancakes = await coll.findOne({"_id": idMap[req.params.champion.toLowerCase()]})
+   const pancakes = await coll.findOne({"_id": idMap[req.params.champion.toLowerCase()]}, {projection: { raw: 0 }})
    // const waffles = await coll.find({}, {projection: { _id: 1, games: 1, wins: 1 }}).toArray().map()
 
    // for (const waffle of waffles) {

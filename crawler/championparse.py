@@ -56,6 +56,8 @@ class ChampionParser():
       """ 
       Preprocess data that can significantly detriment user experience on frontend.
       Data to be preprocessed will be in raw field.
+
+      Care bear on runtime for this & monitor runtime to ensure doesn't overlap cronjobs.
       """
       champion_winrate_pickrate = []
       total = 0
