@@ -26,7 +26,6 @@
 
 .section-header .settings:hover {
    background: var(--cold-blue-focus);
-   filter: brightness(1.5)
 }
 
 .sub-section-header {

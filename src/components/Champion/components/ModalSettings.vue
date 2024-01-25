@@ -19,7 +19,7 @@ export default {
       <div class="modal">
          <div class="head">
             <h1>{{ this.title }}</h1>
-            The "Tldr" section provides a synopsis for a selected core build, the first three items purchased.
+            The "Tldr" section provides a synopsis, by winrate or popularity, of games with the selected core build.
          </div>
          <div class="setting">
             <div class="setting-head">
@@ -43,6 +43,30 @@ export default {
             </div>
             <p>
                View core builds as combinations to consolidate data. This may slow down performance.
+            </p>
+         </div>
+         <div class="setting">
+            <div class="setting-head">
+               <h2>Boots</h2>
+               <svg @click="this.config.localStorage = !this.config.localStorage" fill="none">
+                  <rect x="0.5" y="0.5" rx="13"/>
+                  <circle :class="{ 'storage-active': this.config.localStorage }" cx="25%" cy="50%" r="22%" rx="12"/>
+               </svg>
+            </div>
+            <p>
+               hmm?
+            </p>
+         </div>
+         <div class="setting">
+            <div class="setting-head">
+               <h2>Sort by winrate</h2>
+               <svg @click="this.config.localStorage = !this.config.localStorage" fill="none">
+                  <rect x="0.5" y="0.5" rx="13"/>
+                  <circle :class="{ 'storage-active': this.config.localStorage }" cx="25%" cy="50%" r="22%" rx="12"/>
+               </svg>
+            </div>
+            <p>
+               Data defaults to showing by popularity. Instead, sort information by highest winrate.
             </p>
          </div>
          <div class="setting">
@@ -162,7 +186,7 @@ export default {
       z-index: 1;
    }
    .modal-main {
-      position: absolute;
+      position: fixed;
       width: 100%;
       height: 100%;
       top: 0;
