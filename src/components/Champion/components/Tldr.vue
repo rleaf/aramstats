@@ -34,6 +34,20 @@ export default {
          console.log('organized core', this.organizedCore)
       },
 
+      setCoreFocus(i) {
+         this.coreFocus = i
+      },
+
+      getRunes() {
+         let primary = []
+         for (const c in this.runes[this.primaryRunes[0]]) {
+            console.log(this.runes[this.primaryRunes[0]][c])
+            const pre = this.runes[this.primaryRunes[0]][c].reduce((a, b) => ({ ...a, [b]: this.champion.runes.primary[b] }), {})
+            primary.push(this.masterSort(pre)[0])
+         }
+         console.log(primary)
+      },
+
       itemImage(id) {
          return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/item/${id}.png`
       },
@@ -91,12 +105,13 @@ export default {
          let roll = 0
          if (this.config.winrateSort) {
             for (const j in obj) {
-               if ((obj[j].games / this.organizedCore[this.coreFocus].games) < this.config.winrateThreshold) continue
+               if (!obj[j] ||(obj[j].games / this.organizedCore[this.coreFocus].games) < this.config.winrateThreshold) continue
                const potato = (obj[j].wins / obj[j].games)
                if (potato > roll ) peaches = [j, obj[j].games, obj[j].wins]
             }
          } else {
             for (const j in obj) {
+               if (!obj[j]) continue
                if (obj[j].games > roll) {
                   roll = obj[j].games
                   peaches = [j, obj[j].games, obj[j].wins]
@@ -119,6 +134,35 @@ export default {
    },
 
    computed: {
+
+      activePrimaryRunes() {
+         let primary = []
+         for (const c in this.runes[this.primaryRunes[0]]) {
+            const pre = this.runes[this.primaryRunes[0]][c].reduce((a, b) => ({ ...a, [b]: this.champion.runes.primary[b] }), {})
+            primary.push(this.masterSort(pre)[0])
+         }
+
+         return primary
+      },
+      
+      activeSecondaryRunes() {
+         let filter
+         let baguette = []
+         const secondaries = this.runes[this.secondaryRunes[0]].slice(1)
+
+         for (const c in secondaries) {
+            const pre = secondaries[c].reduce((a, b) => ({ ...a, [b]: this.champion.runes.primary[b] }), {})
+            baguette.push(this.masterSort(pre))
+         }
+         
+         (this.config.winrateSort) ? filter = baguette.map(x => x[2] / x[1]) : filter = baguette.map(x => x[1])
+
+         const j = filter.indexOf(Math.min(...filter))
+         baguette.splice(j, 1)
+         
+         return baguette.map(x => parseInt(x[0]))
+      },
+
       startingItems() {
          return this.masterSort(this.organizedCore[this.coreFocus].starting)
       },
@@ -171,7 +215,7 @@ export default {
       </div>
       <div class="section">
          <div class="core-selection">
-            <div class="core" :class="{'core-focus' : this.coreFocus === i}" @click="this.coreFocus = i" v-for="(c, i) in this.organizedCore" :key="i">
+            <div class="core" :class="{'core-focus' : this.coreFocus === i}" @click="this.setCoreFocus(i)" v-for="(c, i) in this.organizedCore" :key="i">
                <div class="core-numbers">
                   <div class="winrate">{{ this.winrate(c.games, c.wins) }}</div>
                   <div class="total">{{ c.games }}</div>
@@ -244,13 +288,14 @@ export default {
                <div class="runes-wrapper">
                   <div class="tldr-primary">
                      <div class="rune-row" alt="" v-for="(row, i) in this.runes[primaryRunes[0]]" :key="i">
-                        <img :src="this.runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
+                        <img :class="{'active-rune': activePrimaryRunes[i] == rune }" :src="this.runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
+                        <!-- <img :src="this.runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j"> -->
                      </div>
                   </div>
                   <div>
                      <div class="tldr-secondary">
                         <div class="rune-row" v-for="(row, i) in this.runes[secondaryRunes[0]].slice(1)" :key="i">
-                           <img :src="this.runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
+                           <img :class="{ 'active-rune': activeSecondaryRunes.includes(rune) }" :src="this.runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
                         </div>
                      </div>
                      <div class="tldr-flex">
@@ -324,7 +369,7 @@ export default {
 }
 
 .starting-spells {
-   min-width: 150px;
+   max-width: 150px;
    /* padding-right: 20px; */
 }
 
@@ -338,6 +383,16 @@ export default {
 .runes-wrapper {
    display: flex;
    justify-content: space-evenly;
+}
+
+.runes-wrapper img {
+   filter: saturate(0);
+   opacity: 0.5;
+}
+
+img.active-rune {
+   opacity: 1;
+   filter: saturate(1);
 }
 
 .tldr-primary, .tldr-secondary, .tldr-flex {
