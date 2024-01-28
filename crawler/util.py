@@ -149,6 +149,7 @@ def item_filter(i, items):
    blacklist = [
       0,    # No item
       2003, # Healing potion
+      2031, # Refillable potion
       2140, # Elixer of wrath
       2138, # Elixer of iron
       2139, # Elixir of sorcery

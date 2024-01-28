@@ -47,21 +47,28 @@
    user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
 
-.sub-lhs {
+.sub-rhs {
    display: flex;
    align-items: center;
 }
 
-.sub-lhs .misc h3 {
-   display: block;
+.misc {
+   margin-right: 1rem;
+}
+
+.misc h3 {
+   display: inline-block;
    font-weight: normal;
    font-size: 0.75rem;
    text-align: center;
    margin: 0;
+
 }
 
-.sub-lhs .misc h3:not(:first-child) {
+.misc h3:not(:first-child) {
    color: var(--color-font-faded);
+   font-style: italic;
+   margin-left: 0.4rem;
 }
 
 .sub-section-header .title {
@@ -75,4 +82,25 @@
 .sub-section-header .misc {
    padding-left: 15px;
    color: var(--color-font);
+}
+
+.tip {
+   color: var(--color-font-faded);
+   font-size: 0.8rem;
+   line-height: 1.35;
+   font-style: normal;
+   background: var(--cold-blue);
+   border: 1px solid var(--cell-border);
+   border-radius: 8px;
+   padding: 0.7rem;
+   width: 300px;
+   /* transition: 1s ease-in-out; */
+}
+
+.tip ul {
+   padding-left: 1rem;
+}
+
+.tip ul li:not(:last-child) { 
+   margin-bottom: 0.5rem;  
 }

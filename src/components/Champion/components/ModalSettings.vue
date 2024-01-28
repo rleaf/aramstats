@@ -35,34 +35,10 @@ export default {
          </div>
          <div class="setting">
             <div class="setting-head">
-               <h2>Combinations over permutations?</h2>
-               <svg @click="this.config.localStorage = !this.config.localStorage" fill="none">
-                  <rect x="0.5" y="0.5" rx="13"/>
-                  <circle :class="{ 'storage-active': this.config.localStorage }" cx="25%" cy="50%" r="22%" rx="12"/>
-               </svg>
-            </div>
-            <p>
-               View core builds as combinations to consolidate data. This may slow down performance.
-            </p>
-         </div>
-         <div class="setting">
-            <div class="setting-head">
-               <h2>Boots</h2>
-               <svg @click="this.config.localStorage = !this.config.localStorage" fill="none">
-                  <rect x="0.5" y="0.5" rx="13"/>
-                  <circle :class="{ 'storage-active': this.config.localStorage }" cx="25%" cy="50%" r="22%" rx="12"/>
-               </svg>
-            </div>
-            <p>
-               hmm?
-            </p>
-         </div>
-         <div class="setting">
-            <div class="setting-head">
                <h2>Sort by winrate</h2>
-               <svg @click="this.config.localStorage = !this.config.localStorage" fill="none">
+               <svg @click="this.config.winrateSort = !this.config.winrateSort" fill="none">
                   <rect x="0.5" y="0.5" rx="13"/>
-                  <circle :class="{ 'storage-active': this.config.localStorage }" cx="25%" cy="50%" r="22%" rx="12"/>
+                  <circle :class="{ 'storage-active': this.config.winrateSort }" cx="25%" cy="50%" r="22%" rx="12"/>
                </svg>
             </div>
             <p>
@@ -72,25 +48,18 @@ export default {
          <div class="setting">
             <div class="setting-head">
                <h2>Winrate threshold</h2>
-               <svg @click="this.config.localStorage = !this.config.localStorage" fill="none">
+               <div class="options">
+                  <div :class="{ 'active-option': this.config.winrateThreshold == 0.05 }" @click="this.config.winrateThreshold = 0.05">5%</div>
+                  <div :class="{ 'active-option': this.config.winrateThreshold == 0.08 }" @click="this.config.winrateThreshold = 0.08">8%</div>
+                  <div :class="{ 'active-option': this.config.winrateThreshold == 0.1 }" @click="this.config.winrateThreshold = 0.1">10%</div>
+               </div>
+               <!-- <svg @click="this.config.localStorage = !this.config.localStorage" fill="none">
                   <rect x="0.5" y="0.5" rx="13"/>
                   <circle :class="{ 'storage-active': this.config.localStorage }" cx="25%" cy="50%" r="22%" rx="12"/>
-               </svg>
+               </svg> -->
             </div>
             <p>
-               Set the lower bound of observed data when viewing by winrate. This is to preclude games with too little sample size from biasing data.
-            </p>
-         </div>
-         <div class="setting">
-            <div class="setting-head">
-               <h2>View More Items</h2>
-               <svg @click="this.config.localStorage = !this.config.localStorage" fill="none">
-                  <rect x="0.5" y="0.5" rx="13"/>
-                  <circle :class="{ 'storage-active': this.config.localStorage }" cx="25%" cy="50%" r="22%" rx="12"/>
-               </svg>
-            </div>
-            <p>
-               Show 3, instead of 2, items per slot in Items.
+               Set the lower bound of observed data when viewing by winrate. This is to exclude games with too little sample size.
             </p>
          </div>
       </div>
@@ -118,6 +87,31 @@ export default {
       justify-content: space-between;
       align-items: center;
       padding-bottom: 3px;
+   }
+
+   .setting-head .options {
+      display: flex;
+      gap: 20px;
+   }
+
+   
+   .setting-head .options div {
+      padding: 0.4rem;
+      font-size: 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.25s ease-in-out;
+      border: 1px solid rgba(0, 0, 0, 0);
+   }
+   
+   .setting-head .options div:hover {
+      background: var(--cold-blue-focus);
+   }
+
+   .setting-head .options .active-option {
+      background: var(--cold-blue-focus);
+      color: var(--color-font);
+      border: 1px solid var(--cell-border);
    }
 
    h2 {
@@ -159,7 +153,7 @@ export default {
    }
    p {
       margin: 0;
-      width: 380px;
+      width: 320px;
    }
    .modal {
       position: absolute;
@@ -191,5 +185,6 @@ export default {
       height: 100%;
       top: 0;
       left: 0;
+      z-index: 2;
    }
 </style>

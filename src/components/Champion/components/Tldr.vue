@@ -6,7 +6,7 @@ import _flex from '@/constants/flex'
 
 export default {
    components: {
-      ModalSettings
+      ModalSettings,
    },
    data() {
       return {
@@ -48,6 +48,12 @@ export default {
          console.log(primary)
       },
 
+      coreItemImage(id) {
+         // For custom images not on ddragon cdn
+         return (id === '10010') ? new URL(`../../../assets/boots.png`, import.meta.url).href :
+            `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/item/${id}.png`
+      },
+
       itemImage(id) {
          return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/item/${id}.png`
       },
@@ -81,7 +87,7 @@ export default {
          if (this.levels[0][i-1] == j) return map[j]
       },
 
-      trailingSort(obj) {
+      itemSort(obj) {
          let arr = []
          for (const i in obj) {
             arr.push([i, obj[i].games, obj[i].wins])
@@ -125,12 +131,18 @@ export default {
       winrate(total, win) {
          return (win / total * 100).toFixed(1) + '%'
       },
-      trailingBackground(i) {
-         if (i != 2) {
+      itemBackground(i) {
+         if (i % 2 === 0) {
             return 'var(--alpha-01)'
          }
       }, 
 
+   },
+
+   watch: {
+      config(n, o) {
+         console.log(n, o)
+      }
    },
 
    computed: {
@@ -212,78 +224,100 @@ export default {
       <div class="section-header">
          Tldr
          <img @click="this.config.modals.tldr = true" class="settings" src="@/assets/ellipses.svg" alt="">
+         
       </div>
       <div class="section">
          <div class="core-selection">
-            <div class="core" :class="{'core-focus' : this.coreFocus === i}" @click="this.setCoreFocus(i)" v-for="(c, i) in this.organizedCore" :key="i">
-               <div class="core-numbers">
-                  <div class="winrate">{{ this.winrate(c.games, c.wins) }}</div>
-                  <div class="total">{{ c.games }}</div>
-               </div>
-               <div class="core-img">
-                  <img :src="this.itemImage(i)" alt="" v-for="(i, j) in c.core.split('_') " :key="j">
-               </div>
-            </div>
-         </div>
-         <div class="trailing">
-            <div class="sub-section-header">
-               <div class="sub-lhs">
-                  <span class="title">Items</span>
-               </div>
-               <img src="@/assets/information.svg" alt="">
-            </div>
-            <div class="trailing-items-wrapper">
-
-               <div class="trailing-items" :style="{ background: this.trailingBackground(i) }" v-for="i in 3" :key="i">
-                  <span style="color: var(--color-font-faded);">{{ i + 3 }}</span> <!-- KEEP? -->
-                  <div v-for="(i, k) in this.trailingSort(this.organizedCore[this.coreFocus].trailing[i+3]).slice(0, this.config.trailingExtended)" :key="k">
-                     <img :src="this.itemImage(i[0])" alt="">
-                     <div class="winrate">{{ this.winrate(i[1], i[2]) }}</div>
-                     <div class="total">{{ i[1] }}</div>
+            <div class="combination-tooltip">
+               <p>Select a <b>combination</b></p>
+               <div class="tldr-tooltip">
+                  <img src="@/assets/information.svg" alt="">
+                  <div class="tip">
+                     <ul>
+                        <li>
+                           To consolidate data, these selections represent combinations of core builds - meaning they are core builds irrespective of buy order. This means <b>[boots, kraken, ie]</b> is the same as <b>[kraken, ie, boots]</b> and any other arrangement of those items.
+                        </li>
+                        <li>
+                           The boot icon represents any tier 2 boot.
+                        </li>
+                     </ul>
                   </div>
                </div>
             </div>
-
+            <div class="combinations">
+               <div class="core" :class="{'core-focus' : this.coreFocus === i}" @click="this.setCoreFocus(i)" v-for="(c, i) in this.organizedCore" :key="i">
+                  <div class="core-numbers">
+                     <div class="winrate">{{ this.winrate(c.games, c.wins) }}</div>
+                     <div class="total">{{ c.games }}</div>
+                  </div>
+                  <div class="core-img">
+                     <img :src="this.coreItemImage(i)" alt="" v-for="(i, j) in c.core.split('_') " :key="j">
+                  </div>
+               </div>
+            </div>
          </div>
-         <div class="starting-spells">
-            <div class="starting">
+         <div>
+
+            <div class="items">
                <div class="sub-section-header">
                   <div class="sub-lhs">
+                     <span class="title">Items</span>
+                  </div>
+                  <img src="@/assets/information.svg" alt="">
+               </div>
+               <div class="items-wrapper">
+   
+                  <div class="items-column" :class="{ 'column-bg': (i+1) % 2 === 0 }" v-for="i in 6" :key="i">
+                     <span style="color: var(--color-font-faded);">{{ i }}</span> <!-- KEEP? -->
+                     <div v-for="(i, k) in this.itemSort(this.organizedCore[this.coreFocus].items[i]).slice(0, this.config.itemsExtended)" :key="k">
+                        <img :src="this.itemImage(i[0])" alt="">
+                        <div class="winrate">{{ this.winrate(i[1], i[2]) }}</div>
+                        <div class="total">{{ i[1] }}</div>
+                     </div>
+                  </div>
+               </div>
+   
+            </div>
+            <div class="starting-spells">
+               <div class="starting">
+                  <div class="sub-section-header">
                      <span class="title">Starting</span>
-                     <div class="misc">
-                        <h3>{{ this.winrate(startingItems[1], startingItems[2]) }}</h3>
-                        <h3>{{ startingItems[1] }}</h3>
+                     <div class="sub-rhs">
+                        <div class="misc">
+                           <h3>{{ this.winrate(startingItems[1], startingItems[2]) }}</h3>
+                           <h3>{{ startingItems[1] }}</h3>
+                        </div>
+                        <img src="@/assets/information.svg" alt="">
                      </div>
                   </div>
-                  <img src="@/assets/information.svg" alt="">
+                  <img class="starting-image" :src="this.itemImage(img)" alt="" v-for="(img, i) in startingItems[0].split('_')" :key="i">
                </div>
-               <img class="starting-image" :src="this.itemImage(img)" alt="" v-for="(img, i) in startingItems[0].split('_')" :key="i">
-            </div>
-            <div class="spells">
-               <div class="sub-section-header">
-                  <div class="sub-lhs">
+               <div class="spells">
+                  <div class="sub-section-header">
                      <span class="title">Spells</span>
-                     <div class="misc">
-                        <h3>{{ this.winrate(startingSpells[1], startingSpells[2]) }}</h3>
-                        <h3>{{ startingSpells[1] }}</h3>
+                     <div class="sub-rhs">
+                        <div class="misc">
+                           <h3>{{ this.winrate(startingSpells[1], startingSpells[2]) }}</h3>
+                           <h3>{{ startingSpells[1] }}</h3>
+                        </div>
+                        <img src="@/assets/information.svg" alt="">
                      </div>
                   </div>
-                  <img src="@/assets/information.svg" alt="">
+                  <img class="starting-image" :src="this.spellImage(img)" alt="" v-for="(img, i) in startingSpells[0].split('_')" :key="i">
                </div>
-               <img class="starting-image" :src="this.spellImage(img)" alt="" v-for="(img, i) in startingSpells[0].split('_')" :key="i">
             </div>
          </div>
          <div class="runes-leveling">
             <div class="runes">
                <div class="sub-section-header">
-                  <div class="sub-lhs">
-                     <span class="title">Runes</span>
+                  <span class="title">Runes</span>
+                  <div class="sub-rhs">
                      <div class="misc">
                         <h3>{{ this.winrate(primaryRunes[1], primaryRunes[2]) }}</h3>
                         <h3>{{ primaryRunes[1] }}</h3>
                      </div>
+                     <img src="@/assets/information.svg" alt="">
                   </div>
-                  <img src="@/assets/information.svg" alt="">
                </div>
                <div class="runes-wrapper">
                   <div class="tldr-primary">
@@ -308,14 +342,14 @@ export default {
             </div>
             <div class="leveling">
                <div class="sub-section-header">
-                  <div class="sub-lhs">
-                     <span class="title">Level Order</span>
+                  <span class="title">Level Order</span>
+                  <div class="sub-rhs">
                      <div class="misc">
-                        <h3>{{ this.winrate(startingSpells[1], startingSpells[2]) }}</h3>
-                        <h3>{{ startingSpells[1] }}</h3>
+                        <h3>{{ this.winrate(levels[1], levels[2]) }}</h3>
+                        <h3>{{ levels[1] }}</h3>
                      </div>
+                     <img src="@/assets/information.svg" alt="">
                   </div>
-                  <img src="@/assets/information.svg" alt="">
                </div>
                <div class="level-wrapper">
                   <div class="level-column" v-for="i in 18" :key="i">
@@ -333,8 +367,6 @@ export default {
 <style scoped>
 @import url(./styles.css);
 
-
-
 .section {
    display: flex;
    justify-content: space-between;
@@ -342,39 +374,78 @@ export default {
    color: var(--color-font);
 }
 
+.combination-tooltip {
+   display: flex;
+   justify-content: space-between;
+   color: var(--color-font-faded);
+   font-size: 0.75rem;
+   font-style: italic;
+   padding-bottom: 0.6rem;
+   padding-right: 25px;
+}
+
+.combination-tooltip p {
+   margin: 0;
+   display: inline-block;
+}
+
+.combination-tooltip img {
+   /* padding-right: 20px; */
+   cursor: pointer;
+   -webkit-touch-callout: none; /* iOS Safari */
+   -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Old versions of Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+   user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+
 .core-selection {
+   display: flex;
+   flex-direction: column;
    border-right: 1px solid var(--cell-border);
+}
+
+.combinations {
    padding-right: 20px;
    overflow: scroll;
    overflow-x: hidden;
 }
 
-.core-selection::-webkit-scrollbar {
+.combinations::-webkit-scrollbar {
    width: 4px;
 }
 
-.core-selection::-webkit-scrollbar-track {
+.combinations::-webkit-scrollbar-track {
    border-radius: 5px;
    padding-right: 15px;
 }
 
-.core-selection::-webkit-scrollbar-thumb {
+.combinations::-webkit-scrollbar-thumb {
    background: var(--alpha-06);
    border-radius: 5px;
    
 }
-.core-selection::-webkit-scrollbar-thumb:hover {
+.combinations::-webkit-scrollbar-thumb:hover {
    background: var(--light-12);
    transition: 0.25s;
 }
 
 .starting-spells {
-   max-width: 150px;
+   display: flex;
+   padding-top: 30px;
+   gap: 50px;
+   align-items: center;
+   /* max-width: 150px; */
    /* padding-right: 20px; */
 }
 
+.starting {
+   min-width: 180px;
+}
 .spells {
-   margin-top: 80px;
+   min-width: 180px;
+   /* margin-top: 80px; */
 }
 
 .runes-leveling {
@@ -394,7 +465,14 @@ img.active-rune {
    opacity: 1;
    filter: saturate(1);
 }
-
+.tldr-tooltip .tip {
+   visibility: hidden;
+   position: absolute;
+   z-index: 1;
+}
+.tldr-tooltip:hover .tip {
+   visibility: visible;
+}
 .tldr-primary, .tldr-secondary, .tldr-flex {
    display: flex;
    flex-direction: column;
@@ -463,17 +541,20 @@ img.starting-image {
    margin-left: 5px;
 }
 
-.trailing {
-   /* padding: 0 20px; */
+.items {
    color: var(--color-font);
 }
 
-.trailing-items-wrapper {
+.column-bg {
+   background: var(--alpha-01);
+}
+
+.items-wrapper {
    display: flex;
    gap: 10px;
 }
 
-.trailing-items {
+.items-column {
    display: flex;
    flex-direction: column;
    gap: 20px;
@@ -483,7 +564,7 @@ img.starting-image {
    border-radius: 5px;
 }
 
-.trailing-items img {
+.items-column img {
    display: block;
    margin: 0 auto;
    width: 32px;

@@ -31,21 +31,21 @@ class ChampionParser():
          self.meta_collection.update_one({ "_id": self.champion_stats_name }, { "$set": {"patch": patch} })
          index = self.meta_collection.find_one({ "_id": self.champion_stats_name })["champ_parse_index"]
 
-      # print("Starting champion parser")
-      # for match in self.match_collection.find(skip=index):
-      #    if (index % 50 == 0):
-      #       print(f'Updating index: {index}')
-      #       # self.meta_collection.update_one({ "_id": self.champion_stats_name }, { "$set": {"champ_parse_index": index} })
+      print("Starting champion parser")
+      for match in self.match_collection.find(skip=index):
+         if (index % 50 == 0):
+            print(f'Updating index: {index}')
+            # self.meta_collection.update_one({ "_id": self.champion_stats_name }, { "$set": {"champ_parse_index": index} })
 
-      #    bin = self.forward(match)
-      #    index += 1
+         bin = self.forward(match)
+         index += 1
 
-      #    if len(bin) != 0:
-      #       try:
-      #          self.champion_stats_collection.bulk_write(bin)
-      #       except Exception as e:
-      #          raise e
-      # print("Champion parser done, processing champion stats...")
+         if len(bin) != 0:
+            try:
+               self.champion_stats_collection.bulk_write(bin)
+            except Exception as e:
+               raise e
+      print("Champion parser done, processing champion stats...")
 
       self.preprocess()
 
@@ -63,8 +63,6 @@ class ChampionParser():
       total = 0
 
       for doc in self.champion_stats_collection.find():
-         print(f"On {doc['_id']}")
-
          champion_winrate_pickrate.append({ "_id": doc["_id"], "games": doc["games"], "wins": doc["wins"]})
          total += doc["games"]
 
@@ -148,8 +146,14 @@ class ChampionParser():
             item_order.append(i["itemId"])
 
          # <str> Build path string ID used as field in database.
-         build = '_'.join([str(x) for x in item_order])
-         core = '_'.join([str(item_order[i]) for i in range(3) if len(item_order) > 2])
+         # build = '_'.join([str(x) for x in item_order])
+         # core = '_'.join([str(item_order[i]) for i in range(3) if len(item_order) > 2])
+
+         # Core item **combination**. Sorted to consolidate permutations. 
+         boots = ["1001", "3005", "3047", "3117", "3006", "3009", "3020", "3111", "3158", "2422"]
+         core = sorted([str(item_order[i]) for i in range(3) if len(item_order) > 2])
+         core = list(map(lambda x: "10010" if x in boots else x, core))
+         core = '_'.join(core)
 
          # <str> Skill path string ID used as field in database.
          skill_path = ''.join(str(x["skillSlot"]) for x in abilities_timeline)
@@ -341,9 +345,9 @@ class ChampionParser():
             update["$inc"][f"core.{core}.runes.tertiaryFlx.{tertiary_flex}.games"] = 1
             update["$inc"][f"core.{core}.runes.tertiaryFlx.{tertiary_flex}.wins"] = win
 
-            for i, item in enumerate(item_order[3::]):
-               update["$inc"][f"core.{core}.trailing.{i+4}.{item}.games"] = 1
-               update["$inc"][f"core.{core}.trailing.{i+4}.{item}.wins"] = win
+            for i, item in enumerate(item_order):
+               update["$inc"][f"core.{core}.items.{i+1}.{item}.games"] = 1
+               update["$inc"][f"core.{core}.items.{i+1}.{item}.wins"] = win
 
          # Items
          for i, item in enumerate(item_order):
