@@ -106,26 +106,33 @@ export default {
       masterSort(obj) {
          /* 
             Take any obj with games & wins value for Tldr section and return desired datum based off winrate configuration.
+            
+            JUST DO RUNES ON THE BACKEND :)
+            Can't winrate threshold runes because it's comparing the corebuild games to the total amount of games the rune has been observed.
          */
-         let peaches
+         console.log('obj', obj)
+         let peaches = [0, 0, 0] // [datum, games, wins]
          let roll = 0
          if (this.config.winrateSort) {
             for (const j in obj) {
-               if (!obj[j] ||(obj[j].games / this.organizedCore[this.coreFocus].games) < this.config.winrateThreshold) continue
+               if (!obj[j] || (obj[j].games / this.organizedCore[this.coreFocus].games) < this.config.winrateThreshold) continue
                const potato = (obj[j].wins / obj[j].games)
-               if (potato > roll ) peaches = [j, obj[j].games, obj[j].wins]
+               console.log('procing on', j, potato)
+               if (potato >= roll ) {
+                  roll = potato
+                  peaches = [j, obj[j].games, obj[j].wins]
+               }
             }
          } else {
             for (const j in obj) {
                if (!obj[j]) continue
-               if (obj[j].games > roll) {
+               if (obj[j].games >= roll) {
                   roll = obj[j].games
                   peaches = [j, obj[j].games, obj[j].wins]
                }
             }
          }
-
-         return peaches // [datum, games, wins]
+         return peaches 
       },
 
       winrate(total, win) {
@@ -153,7 +160,6 @@ export default {
             const pre = this.runes[this.primaryRunes[0]][c].reduce((a, b) => ({ ...a, [b]: this.champion.runes.primary[b] }), {})
             primary.push(this.masterSort(pre)[0])
          }
-
          return primary
       },
       
@@ -163,12 +169,11 @@ export default {
          const secondaries = this.runes[this.secondaryRunes[0]].slice(1)
 
          for (const c in secondaries) {
-            const pre = secondaries[c].reduce((a, b) => ({ ...a, [b]: this.champion.runes.primary[b] }), {})
+            const pre = secondaries[c].reduce((a, b) => ({ ...a, [b]: this.champion.runes.secondary[b] }), {})
             baguette.push(this.masterSort(pre))
          }
-         
-         (this.config.winrateSort) ? filter = baguette.map(x => x[2] / x[1]) : filter = baguette.map(x => x[1])
 
+         (this.config.winrateSort) ? filter = baguette.map(x => (x[2] / x[1]) || 0) : filter = baguette.map(x => x[1])
          const j = filter.indexOf(Math.min(...filter))
          baguette.splice(j, 1)
          
@@ -184,7 +189,10 @@ export default {
       },
 
       primaryRunes() {
-         return this.masterSort(this.organizedCore[this.coreFocus].runes.primary)
+         const x = this.masterSort(this.organizedCore[this.coreFocus].runes.primary)
+         // console.log(x)
+         return x
+         // return this.masterSort(this.organizedCore[this.coreFocus].runes.primary)
       },
 
       secondaryRunes() {
@@ -235,10 +243,10 @@ export default {
                   <div class="tip">
                      <ul>
                         <li>
-                           To consolidate data, these selections represent combinations of core builds - meaning they are core builds irrespective of buy order. This means <b>[boots, kraken, ie]</b> is the same as <b>[kraken, ie, boots]</b> and any other arrangement of those items.
+                           To consolidate data, these selections represent <b>combinations</b> of core builds - they are core builds irrespective of buy order. This means <b>[boots, kraken, ie]</b> is the same as <b>[kraken, ie, boots]</b> and any other arrangement of those items.
                         </li>
                         <li>
-                           The boot icon represents any tier 2 boot.
+                           The boot icon represents all boots.
                         </li>
                      </ul>
                   </div>
@@ -290,7 +298,8 @@ export default {
                         <img src="@/assets/information.svg" alt="">
                      </div>
                   </div>
-                  <img class="starting-image" :src="this.itemImage(img)" alt="" v-for="(img, i) in startingItems[0].split('_')" :key="i">
+                  <img v-if="(typeof startingItems[0] === 'string')" class="starting-image" :src="this.itemImage(img)" alt="" v-for="(img, i) in startingItems[0].split('_')" :key="i">
+                  <p class="no-data" v-else> Not enough data :(</p>
                </div>
                <div class="spells">
                   <div class="sub-section-header">
@@ -367,6 +376,11 @@ export default {
 <style scoped>
 @import url(./styles.css);
 
+.no-data {
+   color: var(--color-font-faded);
+   font-style: italic;
+   font-size: 0.8rem;
+}
 .section {
    display: flex;
    justify-content: space-between;
