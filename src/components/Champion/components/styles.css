@@ -8,6 +8,10 @@
    padding-bottom: 1.25rem;
 }
 
+.section {
+   padding-bottom: 8vh;
+}
+
 .section-header .settings {
    cursor: pointer;
    transition: 0.2s ease-in-out;
@@ -82,25 +86,4 @@
 .sub-section-header .misc {
    padding-left: 15px;
    color: var(--color-font);
-}
-
-.tip {
-   color: var(--color-font-faded);
-   font-size: 0.8rem;
-   line-height: 1.35;
-   font-style: normal;
-   background: var(--cold-blue);
-   border: 1px solid var(--cell-border);
-   border-radius: 8px;
-   padding: 0.7rem;
-   width: 300px;
-   /* transition: 1s ease-in-out; */
-}
-
-.tip ul {
-   padding-left: 1rem;
-}
-
-.tip ul li:not(:last-child) { 
-   margin-bottom: 0.5rem;  
 }

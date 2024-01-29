@@ -7,6 +7,40 @@ export default {
          config: championStore(),
       }
    },
+   
+   created() {
+      this.checkStorage()
+      this.closeModal()
+   },
+
+   methods: {
+      checkStorage() {
+         if (!localStorage.getItem('localStorage')) return
+
+         this.config.localStorage = localStorage.getItem('localStorage') === 'true'
+         this.config.visibleCore = localStorage.getItem('visibleCore') === 'true'
+         this.config.winrateSort = localStorage.getItem('winrateSort') === 'true'
+         this.config.winrateThreshold = Number(localStorage.getItem('winrateThreshold'))
+      },
+
+      closeModal() {
+         this.config.modals.tldr = false
+         
+         if (this.config.localStorage) {
+            localStorage.setItem('localStorage', this.config.localStorage)
+            localStorage.setItem('winrateSort', this.config.winrateSort)
+            localStorage.setItem('winrateThreshold', this.config.winrateThreshold)
+         } else {
+            localStorage.removeItem('localStorage')
+            localStorage.removeItem('winrateSort')
+            localStorage.removeItem('winrateThreshold')
+
+            // for (const o in this.config) {
+            //    localStorage.removeItem(o)
+            // }
+         }
+      }
+   },
 
    props: {
       title: null,
@@ -19,7 +53,7 @@ export default {
       <div class="modal">
          <div class="head">
             <h1>{{ this.title }}</h1>
-            The "Tldr" section provides a synopsis, by winrate or popularity, of games with the selected core build.
+            The Tldr section provides a synopsis, by winrate or popularity, of games with the selected core build.
          </div>
          <div class="setting">
             <div class="setting-head">
@@ -53,17 +87,13 @@ export default {
                   <div :class="{ 'active-option': this.config.winrateThreshold == 0.08 }" @click="this.config.winrateThreshold = 0.08">8%</div>
                   <div :class="{ 'active-option': this.config.winrateThreshold == 0.1 }" @click="this.config.winrateThreshold = 0.1">10%</div>
                </div>
-               <!-- <svg @click="this.config.localStorage = !this.config.localStorage" fill="none">
-                  <rect x="0.5" y="0.5" rx="13"/>
-                  <circle :class="{ 'storage-active': this.config.localStorage }" cx="25%" cy="50%" r="22%" rx="12"/>
-               </svg> -->
             </div>
             <p>
                Set the lower bound of observed data when viewing by winrate. This is to exclude games with too little sample size.
             </p>
          </div>
       </div>
-      <div class="modal-back" @click ="this.config.modals.tldr = false" />
+      <div class="modal-back" @click ="this.closeModal()" />
    </div>
 </template>
 
@@ -102,6 +132,12 @@ export default {
       cursor: pointer;
       transition: 0.25s ease-in-out;
       border: 1px solid rgba(0, 0, 0, 0);
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+      -khtml-user-select: none; /* Konqueror HTML */
+      -moz-user-select: none; /* Old versions of Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+      user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
    }
    
    .setting-head .options div:hover {

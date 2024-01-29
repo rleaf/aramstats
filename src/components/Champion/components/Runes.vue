@@ -19,7 +19,10 @@ export default {
 <template>
    <div class="runes-main">
       <div class="section-header">
-         Tldr
+         Runes
+      </div>
+      <div class="section">
+         
       </div>
    </div>
 </template>

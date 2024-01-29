@@ -21,6 +21,9 @@ export default {
       <div class="section-header">
          Starting Items & Spells
       </div>
+      <div class="section">
+         
+      </div>
    </div>
 </template>
 

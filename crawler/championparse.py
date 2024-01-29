@@ -12,8 +12,7 @@ class ChampionParser():
    def __init__(self) -> None:
       db = MongoClient(os.environ['DB_CONNECTION_STRING'])['aramstats']
       collection_list = db.list_collection_names()
-      # patch = util.get_latest_patch()
-      patch = '14.1'
+      patch = util.get_latest_patch()
       match_collection_name = f"{patch}_matches"
       self.champion_stats_name = "crawler"
       champion_collection = f"{patch}_championstats"
@@ -151,9 +150,9 @@ class ChampionParser():
 
          # Core item **combination**. Sorted to consolidate permutations. 
          boots = ["1001", "3005", "3047", "3117", "3006", "3009", "3020", "3111", "3158", "2422"]
-         core = sorted([str(item_order[i]) for i in range(3) if len(item_order) > 2])
+         core = [str(item_order[i]) for i in range(3) if len(item_order) > 2]
          core = list(map(lambda x: "10010" if x in boots else x, core))
-         core = '_'.join(core)
+         core = '_'.join(sorted(core))
 
          # <str> Skill path string ID used as field in database.
          skill_path = ''.join(str(x["skillSlot"]) for x in abilities_timeline)
@@ -288,8 +287,6 @@ class ChampionParser():
                "rank": 0,
                "pickRate": 0.0,
                # Skills
-               # f"skills.path.{skill_path}.games": 1,
-               # f"skills.path.{skill_path}.wins": win,
                f"skills.{level_order}.games": 1,
                f"skills.{level_order}.wins": win,
                # Runes
@@ -317,9 +314,6 @@ class ChampionParser():
                # Summoner Spells
                f"spells.{summoner_spells}.games": 1,
                f"spells.{summoner_spells}.wins": win,
-               # Raw data. Anything in here to be preprocessed by championparse.py. To be omitted when sent to frontend.
-               # f"raw.levels.{skill_path}.games": 1,
-               # f"raw.levels.{skill_path}.wins": win,
             }
          }
 
@@ -330,20 +324,33 @@ class ChampionParser():
             update["$inc"][f"core.{core}.starting.{starting_build}.wins"] = win
             update["$inc"][f"core.{core}.spells.{summoner_spells}.games"] = 1
             update["$inc"][f"core.{core}.spells.{summoner_spells}.wins"] = win
-            # update["$inc"][f"core.{core}.skills.{skill_path}.games"] = 1
-            # update["$inc"][f"core.{core}.skills.{skill_path}.wins"] = win
+            # Raw data
             update["$inc"][f"raw.core.{core}.levels.{skill_path}.games"] = 1
             update["$inc"][f"raw.core.{core}.levels.{skill_path}.wins"] = win
-            update["$inc"][f"core.{core}.runes.primary.{primary_tree}.games"] = 1
-            update["$inc"][f"core.{core}.runes.primary.{primary_tree}.wins"] = win
-            update["$inc"][f"core.{core}.runes.secondary.{secondary_tree}.games"] = 1
-            update["$inc"][f"core.{core}.runes.secondary.{secondary_tree}.wins"] = win
-            update["$inc"][f"core.{core}.runes.tertiaryOff.{tertiary_offense}.games"] = 1
-            update["$inc"][f"core.{core}.runes.tertiaryOff.{tertiary_offense}.wins"] = win
-            update["$inc"][f"core.{core}.runes.tertiaryDef.{tertiary_defense}.games"] = 1
-            update["$inc"][f"core.{core}.runes.tertiaryDef.{tertiary_defense}.wins"] = win
-            update["$inc"][f"core.{core}.runes.tertiaryFlx.{tertiary_flex}.games"] = 1
-            update["$inc"][f"core.{core}.runes.tertiaryFlx.{tertiary_flex}.wins"] = win
+            # Rune tree
+            update["$inc"][f"core.{core}.runes.tree.primary.{primary_tree}.games"] = 1
+            update["$inc"][f"core.{core}.runes.tree.primary.{primary_tree}.wins"] = win
+            update["$inc"][f"core.{core}.runes.tree.secondary.{secondary_tree}.games"] = 1
+            update["$inc"][f"core.{core}.runes.tree.secondary.{secondary_tree}.wins"] = win
+            # Runes
+            update["$inc"][f"core.{core}.runes.primary.{primary_runes[0]}.games"] = 1
+            update["$inc"][f"core.{core}.runes.primary.{primary_runes[0]}.wins"] = win
+            update["$inc"][f"core.{core}.runes.primary.{primary_runes[1]}.games"] = 1
+            update["$inc"][f"core.{core}.runes.primary.{primary_runes[1]}.wins"] = win
+            update["$inc"][f"core.{core}.runes.primary.{primary_runes[2]}.games"] = 1
+            update["$inc"][f"core.{core}.runes.primary.{primary_runes[2]}.wins"] = win
+            update["$inc"][f"core.{core}.runes.primary.{primary_runes[3]}.games"] = 1
+            update["$inc"][f"core.{core}.runes.primary.{primary_runes[3]}.wins"] = win
+            update["$inc"][f"core.{core}.runes.secondary.{secondary_runes[0]}.games"] = 1
+            update["$inc"][f"core.{core}.runes.secondary.{secondary_runes[0]}.wins"] = win
+            update["$inc"][f"core.{core}.runes.secondary.{secondary_runes[1]}.games"] = 1
+            update["$inc"][f"core.{core}.runes.secondary.{secondary_runes[1]}.wins"] = win
+            update["$inc"][f"core.{core}.runes.tertiary.offense.{tertiary_offense}.games"] = 1
+            update["$inc"][f"core.{core}.runes.tertiary.offense.{tertiary_offense}.wins"] = win
+            update["$inc"][f"core.{core}.runes.tertiary.defense.{tertiary_defense}.games"] = 1
+            update["$inc"][f"core.{core}.runes.tertiary.defense.{tertiary_defense}.wins"] = win
+            update["$inc"][f"core.{core}.runes.tertiary.flex.{tertiary_flex}.games"] = 1
+            update["$inc"][f"core.{core}.runes.tertiary.flex.{tertiary_flex}.wins"] = win
 
             for i, item in enumerate(item_order):
                update["$inc"][f"core.{core}.items.{i+1}.{item}.games"] = 1

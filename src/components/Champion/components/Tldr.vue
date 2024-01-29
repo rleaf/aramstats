@@ -1,5 +1,6 @@
 <script>
 import ModalSettings from './ModalSettings.vue'
+import Tooltip from './Tooltip.vue'
 import { championStore } from '@/stores/championConfig'
 import _runes from '@/constants/runes'
 import _flex from '@/constants/flex'
@@ -7,6 +8,7 @@ import _flex from '@/constants/flex'
 export default {
    components: {
       ModalSettings,
+      Tooltip
    },
    data() {
       return {
@@ -20,9 +22,8 @@ export default {
 
    created() {
       this.sortCore()
-
    },
-   
+
    methods: {
       sortCore() {
          for (const c in this.champion.core) {
@@ -30,7 +31,12 @@ export default {
             this.organizedCore.push(this.champion.core[c])
          }
          this.organizedCore.sort((a, b) => b.games - a.games)
-         this.organizedCore = this.organizedCore.slice(0, this.config.visibleCore)
+         
+         if (!this.config.visibleCore) {
+            this.organizedCore = this.organizedCore.slice(0, 10)
+         }
+         // (this.config.visibleCore) ? this.organizedCore = this.organizedCore.slice(0, 10) : this.organizedCore
+         // this.organizedCore = this.organizedCore.slice(0, this.config.visibleCore)
          console.log('organized core', this.organizedCore)
       },
 
@@ -106,18 +112,14 @@ export default {
       masterSort(obj) {
          /* 
             Take any obj with games & wins value for Tldr section and return desired datum based off winrate configuration.
-            
-            JUST DO RUNES ON THE BACKEND :)
-            Can't winrate threshold runes because it's comparing the corebuild games to the total amount of games the rune has been observed.
          */
-         console.log('obj', obj)
+
          let peaches = [0, 0, 0] // [datum, games, wins]
          let roll = 0
          if (this.config.winrateSort) {
             for (const j in obj) {
                if (!obj[j] || (obj[j].games / this.organizedCore[this.coreFocus].games) < this.config.winrateThreshold) continue
                const potato = (obj[j].wins / obj[j].games)
-               console.log('procing on', j, potato)
                if (potato >= roll ) {
                   roll = potato
                   peaches = [j, obj[j].games, obj[j].wins]
@@ -146,18 +148,12 @@ export default {
 
    },
 
-   watch: {
-      config(n, o) {
-         console.log(n, o)
-      }
-   },
-
    computed: {
 
       activePrimaryRunes() {
          let primary = []
          for (const c in this.runes[this.primaryRunes[0]]) {
-            const pre = this.runes[this.primaryRunes[0]][c].reduce((a, b) => ({ ...a, [b]: this.champion.runes.primary[b] }), {})
+            const pre = this.runes[this.primaryRunes[0]][c].reduce((a, b) => ({ ...a, [b]: this.organizedCore[this.coreFocus].runes.primary[b] }), {})
             primary.push(this.masterSort(pre)[0])
          }
          return primary
@@ -169,15 +165,25 @@ export default {
          const secondaries = this.runes[this.secondaryRunes[0]].slice(1)
 
          for (const c in secondaries) {
-            const pre = secondaries[c].reduce((a, b) => ({ ...a, [b]: this.champion.runes.secondary[b] }), {})
+            const pre = secondaries[c].reduce((a, b) => ({ ...a, [b]: this.organizedCore[this.coreFocus].runes.secondary[b] }), {})
             baguette.push(this.masterSort(pre))
          }
 
          (this.config.winrateSort) ? filter = baguette.map(x => (x[2] / x[1]) || 0) : filter = baguette.map(x => x[1])
          const j = filter.indexOf(Math.min(...filter))
          baguette.splice(j, 1)
-         
+
          return baguette.map(x => parseInt(x[0]))
+      },
+
+      activeFlexRunes() {
+         const flex = []
+
+         flex.push(this.masterSort(this.organizedCore[this.coreFocus].runes.tertiary.offense)[0])
+         flex.push(this.masterSort(this.organizedCore[this.coreFocus].runes.tertiary.flex)[0])
+         flex.push(this.masterSort(this.organizedCore[this.coreFocus].runes.tertiary.defense)[0])
+
+         return flex
       },
 
       startingItems() {
@@ -189,14 +195,11 @@ export default {
       },
 
       primaryRunes() {
-         const x = this.masterSort(this.organizedCore[this.coreFocus].runes.primary)
-         // console.log(x)
-         return x
-         // return this.masterSort(this.organizedCore[this.coreFocus].runes.primary)
+         return this.masterSort(this.organizedCore[this.coreFocus].runes.tree.primary)
       },
 
       secondaryRunes() {
-         const x = Object.assign({}, this.organizedCore[this.coreFocus].runes.secondary)
+         const x = Object.assign({}, this.organizedCore[this.coreFocus].runes.tree.secondary)
          delete x[this.primaryRunes[0]]
          return this.masterSort(x)
       },
@@ -227,7 +230,7 @@ export default {
 
 <template>
    <div class="tldr-main">
-      <ModalSettings v-if="this.config.modals.tldr"
+      <ModalSettings v-show="this.config.modals.tldr"
          :title="'Tldr'" />
       <div class="section-header">
          Tldr
@@ -238,19 +241,7 @@ export default {
          <div class="core-selection">
             <div class="combination-tooltip">
                <p>Select a <b>combination</b></p>
-               <div class="tldr-tooltip">
-                  <img src="@/assets/information.svg" alt="">
-                  <div class="tip">
-                     <ul>
-                        <li>
-                           To consolidate data, these selections represent <b>combinations</b> of core builds - they are core builds irrespective of buy order. This means <b>[boots, kraken, ie]</b> is the same as <b>[kraken, ie, boots]</b> and any other arrangement of those items.
-                        </li>
-                        <li>
-                           The boot icon represents all boots.
-                        </li>
-                     </ul>
-                  </div>
-               </div>
+               <Tooltip :tip="'core'"/>
             </div>
             <div class="combinations">
                <div class="core" :class="{'core-focus' : this.coreFocus === i}" @click="this.setCoreFocus(i)" v-for="(c, i) in this.organizedCore" :key="i">
@@ -265,13 +256,12 @@ export default {
             </div>
          </div>
          <div>
-
             <div class="items">
                <div class="sub-section-header">
                   <div class="sub-lhs">
                      <span class="title">Items</span>
                   </div>
-                  <img src="@/assets/information.svg" alt="">
+                  <Tooltip :tip="'items'" />
                </div>
                <div class="items-wrapper">
    
@@ -295,7 +285,7 @@ export default {
                            <h3>{{ this.winrate(startingItems[1], startingItems[2]) }}</h3>
                            <h3>{{ startingItems[1] }}</h3>
                         </div>
-                        <img src="@/assets/information.svg" alt="">
+                        <Tooltip :tip="'starting'" />
                      </div>
                   </div>
                   <img v-if="(typeof startingItems[0] === 'string')" class="starting-image" :src="this.itemImage(img)" alt="" v-for="(img, i) in startingItems[0].split('_')" :key="i">
@@ -309,7 +299,7 @@ export default {
                            <h3>{{ this.winrate(startingSpells[1], startingSpells[2]) }}</h3>
                            <h3>{{ startingSpells[1] }}</h3>
                         </div>
-                        <img src="@/assets/information.svg" alt="">
+                        <Tooltip :tip="'spells'"/>
                      </div>
                   </div>
                   <img class="starting-image" :src="this.spellImage(img)" alt="" v-for="(img, i) in startingSpells[0].split('_')" :key="i">
@@ -325,14 +315,13 @@ export default {
                         <h3>{{ this.winrate(primaryRunes[1], primaryRunes[2]) }}</h3>
                         <h3>{{ primaryRunes[1] }}</h3>
                      </div>
-                     <img src="@/assets/information.svg" alt="">
+                     <Tooltip :tip="'runes'" />
                   </div>
                </div>
                <div class="runes-wrapper">
                   <div class="tldr-primary">
                      <div class="rune-row" alt="" v-for="(row, i) in this.runes[primaryRunes[0]]" :key="i">
-                        <img :class="{'active-rune': activePrimaryRunes[i] == rune }" :src="this.runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
-                        <!-- <img :src="this.runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j"> -->
+                        <img :class="{'active-rune': rune == activePrimaryRunes[i] }" :src="this.runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
                      </div>
                   </div>
                   <div>
@@ -343,7 +332,7 @@ export default {
                      </div>
                      <div class="tldr-flex">
                         <div class="rune-row" v-for="(row, i) in this.flex" :key="i">
-                           <img :src="this.flexRuneImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
+                           <img :class="{ 'active-rune': rune == activeFlexRunes[i] }" :src="this.flexRuneImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
                         </div>
                      </div>
                   </div>
@@ -357,7 +346,7 @@ export default {
                         <h3>{{ this.winrate(levels[1], levels[2]) }}</h3>
                         <h3>{{ levels[1] }}</h3>
                      </div>
-                     <img src="@/assets/information.svg" alt="">
+                     <Tooltip :tip="'levels'" />
                   </div>
                </div>
                <div class="level-wrapper">
@@ -401,17 +390,6 @@ export default {
 .combination-tooltip p {
    margin: 0;
    display: inline-block;
-}
-
-.combination-tooltip img {
-   /* padding-right: 20px; */
-   cursor: pointer;
-   -webkit-touch-callout: none; /* iOS Safari */
-   -webkit-user-select: none; /* Safari */
-   -khtml-user-select: none; /* Konqueror HTML */
-   -moz-user-select: none; /* Old versions of Firefox */
-   -ms-user-select: none; /* Internet Explorer/Edge */
-   user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
 
 .core-selection {
@@ -472,21 +450,14 @@ export default {
 
 .runes-wrapper img {
    filter: saturate(0);
-   opacity: 0.5;
+   opacity: 0.45;
 }
 
 img.active-rune {
    opacity: 1;
-   filter: saturate(1);
+   filter: saturate(1.35);
 }
-.tldr-tooltip .tip {
-   visibility: hidden;
-   position: absolute;
-   z-index: 1;
-}
-.tldr-tooltip:hover .tip {
-   visibility: visible;
-}
+
 .tldr-primary, .tldr-secondary, .tldr-flex {
    display: flex;
    flex-direction: column;
@@ -505,15 +476,17 @@ img.active-rune {
    padding: 6px;
 }
 
-.tldr-secondary img, .tldr-flex img {
+.tldr-secondary img {
    padding: 1px 2px;
 }
 .tldr-secondary img {
    width: 24px;
 }
-
 .tldr-flex img {
    width: 24px;
+   margin: 0 3px;
+   background: var(--alpha-02);
+   border-radius: 100%;
 }
 
 .rune-row {

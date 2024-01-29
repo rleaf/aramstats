@@ -21,6 +21,9 @@ export default {
       <div class="section-header">
          Items
       </div>
+      <div class="section">
+         
+      </div>
    </div>
 </template>
 

@@ -1,0 +1,77 @@
+<script>
+import _tooltips from '@/constants/tooltips'
+
+export default {
+   data() {
+      return {
+         tooltips: _tooltips
+      }
+   }, 
+
+   props: {
+      tip: null,
+   }
+}
+</script>
+
+<template>
+   <div class="tooltip">
+      <img src="@/assets/information.svg" alt="">
+      <div class="tip">
+         <ul>
+            <li v-for="(t, i) in this.tooltips[this.tip]" :key="i">
+               <span v-html="t"></span>
+            </li>
+         </ul>
+      </div>
+   </div>
+</template>
+
+<style scoped>
+.tooltip img {
+   cursor: pointer;
+   -webkit-touch-callout: none; /* iOS Safari */
+   -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Old versions of Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+   user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tooltip {
+   position: relative;
+   display: inline-block;
+   height: 16px;
+}
+
+.tooltip:hover .tip {
+   visibility: visible;
+}
+
+.tip {
+   visibility: hidden;
+   position: absolute;
+   z-index: 1;
+   color: var(--color-font-faded);
+   font-size: 0.8rem;
+   line-height: 1.35;
+   font-style: normal;
+   background: var(--cold-blue);
+   border: 1px solid var(--cell-border);
+   border-radius: 8px;
+   padding: 0.2rem 1.5rem;
+   width: 300px;
+
+   top: 130%;
+   left: 50%;
+   margin-left: -150px;
+}
+
+.tip ul {
+   padding-left: 1rem;
+}
+
+.tip ul li:not(:last-child) { 
+   margin-bottom: 0.5rem;  
+}
+</style>
