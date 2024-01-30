@@ -7,44 +7,8 @@ export default {
          config: championStore(),
       }
    },
-   
-   created() {
-      this.checkStorage()
-      this.closeModal()
-   },
 
-   methods: {
-      checkStorage() {
-         if (!localStorage.getItem('localStorage')) return
 
-         this.config.localStorage = localStorage.getItem('localStorage') === 'true'
-         this.config.visibleCore = localStorage.getItem('visibleCore') === 'true'
-         this.config.winrateSort = localStorage.getItem('winrateSort') === 'true'
-         this.config.winrateThreshold = Number(localStorage.getItem('winrateThreshold'))
-      },
-
-      closeModal() {
-         this.config.modals.tldr = false
-         
-         if (this.config.localStorage) {
-            localStorage.setItem('localStorage', this.config.localStorage)
-            localStorage.setItem('winrateSort', this.config.winrateSort)
-            localStorage.setItem('winrateThreshold', this.config.winrateThreshold)
-         } else {
-            localStorage.removeItem('localStorage')
-            localStorage.removeItem('winrateSort')
-            localStorage.removeItem('winrateThreshold')
-
-            // for (const o in this.config) {
-            //    localStorage.removeItem(o)
-            // }
-         }
-      }
-   },
-
-   props: {
-      title: null,
-   }
 }
 </script>
 
@@ -52,48 +16,36 @@ export default {
    <div class="modal-main">
       <div class="modal">
          <div class="head">
-            <h1>{{ this.title }}</h1>
-            The Tldr section provides a synopsis, by winrate or popularity, of games with the selected core build.
+            <h1>Runes</h1>
+            The Runes section displays individual rune observations & winrate.
          </div>
          <div class="setting">
             <div class="setting-head">
-               <h2>Local Storage</h2>
-               <svg @click="this.config.localStorage = !this.config.localStorage" fill="none">
-                  <rect x="0.5" y="0.5" rx="13"/>
-                  <circle :class="{ 'storage-active': this.config.localStorage }" cx="25%" cy="50%" r="22%" rx="12"/>
-               </svg>
-            </div>
-            <p>
-               Save settings to local storage? Data auto-purges when toggled off.
-            </p>
-         </div>
-         <div class="setting">
-            <div class="setting-head">
-               <h2>Sort by winrate</h2>
-               <svg @click="this.config.winrateSort = !this.config.winrateSort" fill="none">
-                  <rect x="0.5" y="0.5" rx="13"/>
-                  <circle :class="{ 'storage-active': this.config.winrateSort }" cx="25%" cy="50%" r="22%" rx="12"/>
-               </svg>
-            </div>
-            <p>
-               Data defaults to ordering by popularity. Instead, sort information by highest winrate. Note that there may be low/no observations for certain data.
-            </p>
-         </div>
-         <div class="setting">
-            <div class="setting-head">
-               <h2>Winrate threshold</h2>
+               <h2>Heatmap</h2>
                <div class="options">
-                  <div :class="{ 'active-option': this.config.winrateThreshold == 0.05 }" @click="this.config.winrateThreshold = 0.05">5%</div>
-                  <div :class="{ 'active-option': this.config.winrateThreshold == 0.08 }" @click="this.config.winrateThreshold = 0.08">8%</div>
-                  <div :class="{ 'active-option': this.config.winrateThreshold == 0.1 }" @click="this.config.winrateThreshold = 0.1">10%</div>
+                  <div :class="{ 'active-option': this.config.runes.heatmap == 0 }" @click="this.config.runes.heatmap = 0">Off</div>
+                  <div :class="{ 'active-option': this.config.runes.heatmap == 1 }" @click="this.config.runes.heatmap = 1">Popularity</div>
+                  <div :class="{ 'active-option': this.config.runes.heatmap == 2 }" @click="this.config.runes.heatmap = 2">Winrate</div>
                </div>
             </div>
             <p>
-               Set the lower bound of observed data when viewing by winrate. This is to exclude games with too little sample size.
+               Toggle heatmap to help visually discern rune data.
+            </p>
+         </div>
+         <div class="setting">
+            <div class="setting-head">
+               <h2>Visual clarity</h2>
+               <svg @click="this.config.runes.clarity = !this.config.runes.clarity" fill="none">
+                  <rect x="0.5" y="0.5" rx="13"/>
+                  <circle :class="{ 'storage-active': this.config.runes.clarity }" cx="25%" cy="50%" r="22%" rx="12"/>
+               </svg>
+            </div>
+            <p>
+               Desaturate colors for visual clarity.
             </p>
          </div>
       </div>
-      <div class="modal-back" @click ="this.closeModal()" />
+      <div class="modal-back" @click ="this.config.modals.runes = false" />
    </div>
 </template>
 
@@ -107,11 +59,16 @@ export default {
       padding-bottom: 0.5rem;
    }
 
-   .setting {
-      padding-top: 2rem;
-      /* border-bottom: 1px solid var(--cell-border); */
+   .head {
+      border-bottom: 1px solid var(--cell-border);
+      padding-bottom: 2rem;
+      line-height: 1.25;
    }
 
+   .setting {
+      padding-top: 2rem;
+   }
+   
    .setting-head {
       display: flex;
       justify-content: space-between;

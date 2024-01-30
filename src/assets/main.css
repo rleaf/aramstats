@@ -162,22 +162,6 @@
   --theme-icon: url('./solari.svg');
   --theme-mask-size: 100%;
 
-  /* OLD CSS :NAUSEATED FACE: */
-  /* --color-background: #0d111c; */
-  /* --searchHover: #1f263f;
-  --color-font: #CCC;
-  --color-font-unfocused: var(--light700);
-  --runeMythic: #2e3341;
-  --hoverButton: rgba(255, 255, 255, 0.1); */
-  /* --tint100: #262933; */
-  /* --tint100RGB: 38, 41, 51; */
-  /* --tint100: #191c29;
-  --tint100RGB: 25, 28, 41;
-  --tint200: #3c3f48;
-  --tint300: #595c63;
-  --tint301: #44474f;
-  --tint400: #818181; */
-
 }
 
 /* Day mode */
@@ -194,7 +178,6 @@
   --color-font-focus: var(--light-09);
   --color-font-faded: var(--light-02);
 
-  /* --logo-filter: brightness(0) saturate(100%) invert(67%) sepia(10%) saturate(1730%) hue-rotate(187deg) brightness(84%) contrast(86%) drop-shadow(3px 5px 2px rgba(0, 0, 0, 0.4)); */
   --logo-filter: invert(30%) drop-shadow(3px 5px 2px rgba(255, 255, 255, 0.5));
 
   --win: rgba(58, 184, 216, 0.45);
@@ -253,21 +236,6 @@
   --light-19: var(--white-1);
   --light-20: var(--white-0);
 
-
-
-  /* Old css */
-  /* --color-background: #fff;
-  --searchHover: #fff;
-  --runeMythic: var(--light400);
-  --hoverButton: rgba(0, 0, 0, 0.1);
-  --tint100: var(--light300);
-  --tint100RGB: 209, 209, 209;
-  --tint200: var(--light400);
-  --tint300: var(--light500);
-  --tint301: var(--light500);
-  --tint400: var(--light900);
-  --bar2: #75a6e7;
-   */
 }
 
 body {

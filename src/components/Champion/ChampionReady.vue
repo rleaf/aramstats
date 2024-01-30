@@ -26,7 +26,7 @@ export default {
    },
 
    created() {
-      console.log(this.champion)
+      // console.log(this.champion)
       this.getChampData()
       this.getItemData()
    },
@@ -137,8 +137,8 @@ export default {
       <div class="champion-body">
           <Tldr :champion="this.champion" :patch="this.patch" />
           <Items :champion="this.champion" :patch="this.patch" :itemData="this.itemData"/>
-          <Runes :champion="this.champion" />
-          <StartingSpells :champion="this.champion" />
+          <Runes :champion="this.champion" :patch="this.patch" />
+          <StartingSpells :champion="this.champion" :patch="this.patch" />
       </div>
    </div>
 </template>

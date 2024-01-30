@@ -10,6 +10,7 @@ export default {
 
    props: {
       tip: null,
+      align: null
    }
 }
 </script>
@@ -17,7 +18,7 @@ export default {
 <template>
    <div class="tooltip">
       <img src="@/assets/information.svg" alt="">
-      <div class="tip">
+      <div :class="this.align" class="tip">
          <ul>
             <li v-for="(t, i) in this.tooltips[this.tip]" :key="i">
                <span v-html="t"></span>
@@ -65,6 +66,11 @@ export default {
    top: 130%;
    left: 50%;
    margin-left: -150px;
+}
+
+.right {
+   left: 50%;
+   margin-left: -360px;
 }
 
 .tip ul {

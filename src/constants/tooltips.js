@@ -8,7 +8,7 @@ export default {
       `Each slot is shown with two items where each item is accompanied with the winrate and total games observed for that core build.`,
    ],
    'runes': [
-      `Runes are computed by looking at the, depending on your settings, highest winrate or most popular primary and secondary tree. Afterwards it finds the, again depending on your settings, highest winrate or most popular rune in each row for that tree.`
+      `Runes are computed by looking at the, depending on your settings, highest winrate or most popular primary and secondary tree. Afterwards it finds the highest winrate or most popular rune in each row for that tree.`
    ],
    'starting': [
       `Starting items are the items purchased within the first minute of game start.`,
@@ -17,6 +17,13 @@ export default {
       `The order the spells are shown do not correspond to the D and F keys.`,
    ],
    'levels': [
-      `Levels are currently computed with no lower bound for champion level set. This adds a slight frequency bias to observed higher level orders.`
+      `Levels are computed with no lower bound for champion level set. This adds a slight frequency bias to observed higher level orders.`
+   ],
+
+   'popularity': [
+      `Popularity represents how frequently an item was purchased for a corresponding slot.`,
+   ],
+   'winrate': [
+      `Winrate represents an items winrate for a corresponding slot.`
    ],
 }

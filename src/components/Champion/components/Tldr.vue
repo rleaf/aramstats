@@ -1,5 +1,5 @@
 <script>
-import ModalSettings from './ModalSettings.vue'
+import TldrModal from './TldrModal.vue'
 import Tooltip from './Tooltip.vue'
 import { championStore } from '@/stores/championConfig'
 import _runes from '@/constants/runes'
@@ -7,7 +7,7 @@ import _flex from '@/constants/flex'
 
 export default {
    components: {
-      ModalSettings,
+      TldrModal,
       Tooltip
    },
    data() {
@@ -232,7 +232,7 @@ export default {
 
 <template>
    <div class="tldr-main">
-      <ModalSettings v-show="this.config.modals.tldr"
+      <TldrModal v-show="this.config.modals.tldr"
          :title="'Tldr'" />
       <div class="section-header">
          Tldr
@@ -325,7 +325,7 @@ export default {
                            <h3>{{ secondaryRunes[1] }}</h3>
                         </div>
                      </div>
-                     <Tooltip :tip="'runes'" />
+                     <Tooltip :align="'right'" :tip="'runes'" />
                   </div>
                </div>
                <div class="runes-wrapper">
@@ -356,7 +356,7 @@ export default {
                         <h3>{{ this.winrate(levels[1], levels[2]) }}</h3>
                         <h3>{{ levels[1] }}</h3>
                      </div>
-                     <Tooltip :tip="'levels'" />
+                     <Tooltip :align="'right'" :tip="'levels'" />
                   </div>
                </div>
                <div class="level-wrapper">
@@ -465,7 +465,7 @@ export default {
 
 img.active-rune {
    opacity: 1;
-   filter: saturate(1.35);
+   filter: saturate(1.15);
 }
 
 .tldr-primary, .tldr-secondary, .tldr-flex {

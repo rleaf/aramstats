@@ -31,14 +31,14 @@ export default {
 
 <style scoped>
    .screen-width-main {
+      position: fixed;
+      width: 100%;
       padding: 0.5rem 1rem;
-      line-height: 1.5;
-      height: 30px;
       display: flex;
-      align-items: center;
       justify-content: center;
-      font-size: 0.95rem;
-      background-color: var(--light-13);
+      font-size: 0.9rem;
+      background-color: var(--light-12);
       color: var(--color-font);
+      z-index: 1;
    }
 </style>

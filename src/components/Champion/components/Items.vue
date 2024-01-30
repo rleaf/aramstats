@@ -1,7 +1,11 @@
 <script>
 import { championStore } from '@/stores/championConfig'
+import Tooltip from './Tooltip.vue'
 
 export default {
+   components: {
+      Tooltip
+   },
    data() {
       return {
          config: championStore(),
@@ -27,6 +31,7 @@ export default {
       },
 
       slotPopularity(i) {
+         // Normalize data between 0 and 1?
          if (!this.item || !(this.item in this.champion.items[i])) return '0'
          return (this.champion.items[i][this.item].games / this.champion.games * 100).toFixed(1) + '%'
       },
@@ -34,7 +39,7 @@ export default {
       slotWinrate(i) {
          if (!this.item || !(this.item in this.champion.items[i])) return '0'
          return this.winrate(this.champion.items[i][this.item].games, this.champion.items[i][this.item].wins)
-      }
+      },
    },
 
    computed: {
@@ -57,33 +62,42 @@ export default {
    <div class="items-main">
       <div class="section-header">
          Items
-         <img @click="this.config.modals.items = true" class="settings" src="@/assets/ellipses.svg" alt="">
+         <!-- <img @click="this.config.modals.items = true" class="settings" src="@/assets/ellipses.svg" alt=""> -->
       </div>
       <div class="section">
          <div class="synopsis">
             <div class="synopsis-header">
                <div class="image-wrapper">
-                  <img :src="this.itemImage(this.item)" alt="">
+                  <img v-if="this.item" :src="this.itemImage(this.item)" @click="this.item = null" alt="">
                </div>
-               {{ getItemName }}
+               <div v-if="this.item">{{ getItemName }}</div>
+               <div class="placeholder" v-else>Click an item</div>
             </div>
             <div class="popularity">
-               <h4>Popularity</h4>
+               <div>
+                  <h4>Popularity</h4>
+                  <Tooltip :tip="'popularity'" />
+               </div>
                <svg>
                   <g v-for="i in 6" :key="i">
-                     <text class="text" x="5%" :y="`${(i - 1) * 17 + 10}%`">{{ this.slotPopularity(i) }}</text>
-                     <rect class="backdrop" x="0" :y="`${(i - 1) * 17}%`" width="100%" height="32"></rect>
-                     <rect class="value" x="0" :y="`${(i - 1) * 17}%`" :width="this.slotPopularity(i)" height="32"></rect>
+                     <text class="slot" x="1%" :y="`${(i - 1) * 17 + 10}%`">{{ i }}</text>
+                     <text class="text" x="18%" :y="`${(i - 1) * 17 + 10}%`">{{ this.slotPopularity(i) }}</text>
+                     <rect class="backdrop" x="13%" :y="`${(i - 1) * 17}%`" width="100%" height="32"></rect>
+                     <rect class="value" x="13%" :y="`${(i - 1) * 17}%`" :width="this.slotPopularity(i)" height="32"></rect>
                   </g>
                </svg>
             </div>
             <div class="winrate">
-               <h4>Winrate</h4>
+               <div>
+                  <h4>Winrate</h4>
+                  <Tooltip :tip="'winrate'"/>
+               </div>
                <svg>
                   <g v-for="i in 6" :key="i">
-                     <text class="text" x="5%" :y="`${(i - 1) * 17 + 10}%`">{{ this.slotWinrate(i) }}</text>
-                     <rect class="backdrop" x="0" :y="`${(i - 1) * 17}%`" width="100%" height="32"></rect>
-                     <rect class="value" x="0" :y="`${(i - 1) * 17}%`" :width="this.slotWinrate(i)" height="32"></rect>
+                     <text class="slot" x="1%" :y="`${(i - 1) * 17 + 10}%`">{{ i }}</text>
+                     <text class="text" x="18%" :y="`${(i - 1) * 17 + 10}%`">{{ this.slotWinrate(i) }}</text>
+                     <rect class="backdrop" x="13%" :y="`${(i - 1) * 17}%`" width="100%" height="32"></rect>
+                     <rect class="value" x="13%" :y="`${(i - 1) * 17}%`" :width="this.slotWinrate(i)" height="32"></rect>
                   </g>
                </svg>
             </div>
@@ -94,11 +108,10 @@ export default {
             </div>
             <div class="table-data">
                <div class="column" :class="{ 'column-bg': (i + 1) % 2 === 0 }" v-for="i in 6" :key="i">
-                  <!-- <h3>{{ i }}</h3> -->
-                  <div class="element" v-for="([k, v], j) of Object.entries(this.champion.items[i])" :key="j">
-                     <img :src="this.itemImage(k)" @click="this.setItem(k)" alt="">
+                  <div class="element" v-for="([k, v], j) of Object.entries(this.champion.items[i]).sort((a, b) => b[1].games - a[1].games)" :key="j">
+                     <img :class="{'item-fade' : this.item != k && this.item }" :src="this.itemImage(k)" @click="this.setItem(k)" alt="">
                      <div>
-                        <div class="winrate">{{ this.winrate(v.games, v.wins) }}</div>
+                        <div :class="{ 'font-fade': this.item != k && this.item }" class="winrate">{{ this.winrate(v.games, v.wins) }}</div>
                         <div class="games">{{ v.games }}</div>
                      </div>
                   </div>
@@ -131,14 +144,26 @@ export default {
    font-weight: bold;
 }
 
+.placeholder {
+   font-size: 0.75rem;
+   font-weight: normal;
+   font-style: italic;
+   color: var(--color-font-faded);
+}
+
 .synopsis .popularity, .synopsis .winrate {
    padding-top: 40px;
+}
+
+.popularity div, .winrate div {
+   display: flex;
+   gap: 20px;
 }
 h4 {
    margin: 0;
    font-weight: normal;
    font-size: 0.9rem;
-   padding-bottom: 1rem;
+   margin-bottom: 1rem;
    color: var(--color-font);
 }
 
@@ -149,7 +174,11 @@ svg {
 
 text.text {
    fill: var(--color-font);
-   font-size: 0.9rem;
+   font-size: 0.8rem;
+}
+text.slot {
+   fill: var(--color-font);
+   font-size: 0.75rem;
 }
 rect.backdrop {
    fill: var(--cell-backdrop);
@@ -166,12 +195,14 @@ rect.value {
 .image-wrapper {
    width: 42px;
    height: 42px;
+   border: 1px solid var(--cell-border);
    background: var(--alpha-01);
 }
 .image-wrapper img {
-   width: 42px;
-   height: 42px;
-   border: 1px solid var(--cell-border);
+   width: inherit;
+   height: inherit;
+   cursor: pointer;
+   /* border: 1px solid var(--cell-border); */
 }
 
 .table {
@@ -185,6 +216,7 @@ rect.value {
    display: flex;
    justify-content: space-around;
 }
+
 
 .headers {
    width: 100%;
@@ -201,7 +233,6 @@ rect.value {
 }
 
 .column {
-   text-align: center;
    padding: 20px;
    border-radius: 5px;
    overflow-y: scroll;
@@ -229,8 +260,18 @@ rect.value {
 .winrate {
    color: var(--color-font);
    font-size: 0.8rem;
+   transition: 0.25s ease-in-out;
 }
-
+.element {
+   margin-bottom: 10px;
+   text-align: center;
+   -webkit-touch-callout: none; /* iOS Safari */
+   -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Old versions of Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+   user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
 .games {
    color: var(--color-font-faded);
    font-size: 0.75rem;
@@ -246,12 +287,18 @@ rect.value {
    width: 34px;
    cursor: pointer;
    border: 1px solid var(--cell-border);
+   transition: 0.25s ease-in-out;
 }
 
-.column img:hover {
-   background: tomato;
+img.item-fade {
+   filter: saturate(0);
+   opacity: 0.3;
+   /* border: 1px solid var(--light-03); */
 }
-.element {
-   margin-bottom: 10px;
+
+.font-fade {
+   color: var(--color-font-faded);
 }
+
+
 </style>
