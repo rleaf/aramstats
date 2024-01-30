@@ -8,7 +8,7 @@ export default {
       `Each slot is shown with two items where each item is accompanied with the winrate and total games observed for that core build.`,
    ],
    'runes': [
-      `Runes first looks at the, depending on your settings, highest winrate or most popular tree. Afterwards it finds the, again depending on your settings, highest winrate or most popular rune in each row for that tree.`
+      `Runes are computed by looking at the, depending on your settings, highest winrate or most popular primary and secondary tree. Afterwards it finds the, again depending on your settings, highest winrate or most popular rune in each row for that tree.`
    ],
    'starting': [
       `Starting items are the items purchased within the first minute of game start.`,

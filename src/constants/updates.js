@@ -12,12 +12,13 @@
 
 const updates = [
    {
-      title: "Breaking changes expected on patch 14.1",
+      title: "*1/29 update* Breaking changes expected on patch 14.1",
       version: "",
       date: "1/9/24 - now",
       body: [
          `Working on fixing them. With the new patch, some things will require a significant redesign such as the champion stats pages so it may take a hot minute. I'll be sprinkling in minor updates here.`,
          `1/15: Finished designing mythicless UI & streamlining data hoarding to improve load times.`,
+         `1/29: Tldr section for a champion stat page is ~95% complete. Pushing for sneak peak. The data is play data and does not accurately represent the live patch.`,
       ],
       links: [],
       img: [], // Expected webp format

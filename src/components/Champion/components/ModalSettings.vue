@@ -76,7 +76,7 @@ export default {
                </svg>
             </div>
             <p>
-               Data defaults to showing by popularity. Instead, sort information by highest winrate.
+               Data defaults to ordering by popularity. Instead, sort information by highest winrate. Note that there may be low/no observations for certain data.
             </p>
          </div>
          <div class="setting">

@@ -37,7 +37,6 @@ export default {
          }
          // (this.config.visibleCore) ? this.organizedCore = this.organizedCore.slice(0, 10) : this.organizedCore
          // this.organizedCore = this.organizedCore.slice(0, this.config.visibleCore)
-         console.log('organized core', this.organizedCore)
       },
 
       setCoreFocus(i) {
@@ -168,8 +167,9 @@ export default {
             const pre = secondaries[c].reduce((a, b) => ({ ...a, [b]: this.organizedCore[this.coreFocus].runes.secondary[b] }), {})
             baguette.push(this.masterSort(pre))
          }
-
+         
          (this.config.winrateSort) ? filter = baguette.map(x => (x[2] / x[1]) || 0) : filter = baguette.map(x => x[1])
+         
          const j = filter.indexOf(Math.min(...filter))
          baguette.splice(j, 1)
 
@@ -206,15 +206,17 @@ export default {
 
       levels() {
          if (this.config.winrateSort) {
+            let potato
             let roll = 0
             for (const i in this.organizedCore[this.coreFocus].levels) {
                if ((this.organizedCore[this.coreFocus].levels[i][1] / this.organizedCore[this.coreFocus].games) < this.config.winrateThreshold) break
-               if (this.organizedCore[this.coreFocus].levels[i][2] / this.organizedCore[this.coreFocus].levels[i][1] > roll) {
-                  roll = this.organizedCore[this.coreFocus].levels[i]
+               if ((this.organizedCore[this.coreFocus].levels[i][2] / this.organizedCore[this.coreFocus].levels[i][1]) > roll) {
+                  potato = this.organizedCore[this.coreFocus].levels[i]
+                  roll = (this.organizedCore[this.coreFocus].levels[i][2] / this.organizedCore[this.coreFocus].levels[i][1])
                }
             }
 
-            return roll
+            return potato
          } else {
             return this.organizedCore[this.coreFocus].levels[0]
          }
@@ -312,8 +314,16 @@ export default {
                   <span class="title">Runes</span>
                   <div class="sub-rhs">
                      <div class="misc">
-                        <h3>{{ this.winrate(primaryRunes[1], primaryRunes[2]) }}</h3>
-                        <h3>{{ primaryRunes[1] }}</h3>
+                        <div>
+                           <img :src="this.runeImage(primaryRunes[0])"/>
+                           <h3>{{ this.winrate(primaryRunes[1], primaryRunes[2]) }}</h3>
+                           <h3>{{ primaryRunes[1] }}</h3>
+                        </div>
+                        <div>
+                           <img :src="this.runeImage(secondaryRunes[0])"/>
+                           <h3>{{ this.winrate(secondaryRunes[1], secondaryRunes[2]) }}</h3>
+                           <h3>{{ secondaryRunes[1] }}</h3>
+                        </div>
                      </div>
                      <Tooltip :tip="'runes'" />
                   </div>
@@ -554,6 +564,7 @@ img.starting-image {
 .items-column img {
    display: block;
    margin: 0 auto;
+   margin-bottom: 3px;
    width: 32px;
    border: 1px solid var(--cell-border);
 }

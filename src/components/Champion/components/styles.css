@@ -15,8 +15,6 @@
 .section-header .settings {
    cursor: pointer;
    transition: 0.2s ease-in-out;
-
-   /* padding: 7px; */
    border-radius: 7px;
    padding: 3px 5px;
    /* background: crimson; */
@@ -58,6 +56,22 @@
 
 .misc {
    margin-right: 1rem;
+   display: flex;
+   align-items: center;
+}
+
+.misc div {
+   display: flex;
+   align-items: center;
+   padding-left: 20px;
+}
+
+.misc div h3:nth-child(2) {
+   color: var(--color-font);
+}
+
+.misc img {
+   width: 18px;
 }
 
 .misc h3 {

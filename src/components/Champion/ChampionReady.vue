@@ -19,7 +19,8 @@ export default {
          title: '',
          abilities: [],
          name: champions.humanName[this.champion._id],
-         backName: champions.imageName[this.champion._id]
+         backName: champions.imageName[this.champion._id],
+         itemData: null,
       }
 
    },
@@ -27,6 +28,7 @@ export default {
    created() {
       console.log(this.champion)
       this.getChampData()
+      this.getItemData()
    },
 
    methods: {
@@ -40,6 +42,13 @@ export default {
             for (const spell of tomato.spells) {
                this.abilities.push(spell.image.full)
             }
+         })
+      },
+
+      getItemData() {
+         const url = `https://ddragon.leagueoflegends.com/cdn/${this.patch}/data/en_US/item.json`
+         axios.get(url).then(res => {
+            this.itemData = res.data.data
          })
       },
 
@@ -127,7 +136,7 @@ export default {
 
       <div class="champion-body">
           <Tldr :champion="this.champion" :patch="this.patch" />
-          <Items :champion="this.champion" />
+          <Items :champion="this.champion" :patch="this.patch" :itemData="this.itemData"/>
           <Runes :champion="this.champion" />
           <StartingSpells :champion="this.champion" />
       </div>

@@ -78,7 +78,7 @@
       [
          8306, // Hextech Flash
          8304, // Magical Footwear
-         8313, // Perfect Timing
+         8313, // Triple Tonic
       ],
       [
          8321, // Futures Market
