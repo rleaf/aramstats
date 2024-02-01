@@ -1,11 +1,9 @@
 <script>
 import axios from 'axios'
 import champions from '../constants/champions'
-import Wip from '../components/Wip.vue'
 
 export default {
    components: {
-      Wip 
    },
    data() {
       return {
@@ -44,39 +42,40 @@ export default {
       lookup() {
          const url = `/api/championsList`
          axios.get(url).then(res => {
+            console.log('tye', res.data)
             this.champions = res.data
-            this.total = this.champions.reduce((c, a) => c + a.games, 0)
-            this.populate()
+            // this.total = this.champions.reduce((c, a) => c + a.games, 0)
+            // this.populate()
          }).catch(e => {
             console.log('error', e)
          })
       },
-      populate() {
-         for (const i in this.champions) {
-            const c = this.champions[i]
-            // c.frontName = this.getName(c._id)
-            c.pickrate = this.getPickRate(c.games)
-            c.winrate = this.getWinrate(c.wins, c.games)
-            if (c.winrate > this.winrates.max) this.winrates.max = c.winrate
-            if (c.winrate < this.winrates.min) this.winrates.min = c.winrate
-         }
+      // populate() {
+      //    for (const i in this.champions) {
+      //       const c = this.champions[i]
+      //       // c.frontName = this.getName(c._id)
+      //       c.pickrate = this.getPickRate(c.games)
+      //       c.winrate = this.getWinrate(c.wins, c.games)
+      //       if (c.winrate > this.winrates.max) this.winrates.max = c.winrate
+      //       if (c.winrate < this.winrates.min) this.winrates.min = c.winrate
+      //    }
 
-         this.winrates.delta = this.winrates.max - this.winrates.min
+      //    this.winrates.delta = this.winrates.max - this.winrates.min
 
-         for (const i in this.champions.sort((a, b) => b.winrate - a.winrate)) {
-            const rank = Number(i) + 1
-            this.champions[i].rank = rank
-            this.champions[i].grade = this.getGrade(rank, this.champions.length)
-         }
-      },
-      getGrade(rank, total) {
-         const val = rank / total
-         if (val < 0.02) return 'S'
-         if (val < 0.06) return 'A'
-         if (val < 0.2) return 'B'
-         if (val < 0.42) return 'C'
-         return 'D'
-      },
+      //    for (const i in this.champions.sort((a, b) => b.winrate - a.winrate)) {
+      //       const rank = Number(i) + 1
+      //       this.champions[i].rank = rank
+      //       this.champions[i].grade = this.getGrade(rank, this.champions.length)
+      //    }
+      // },
+      // getGrade(rank, total) {
+      //    const val = rank / total
+      //    if (val < 0.02) return 'S'
+      //    if (val < 0.06) return 'A'
+      //    if (val < 0.2) return 'B'
+      //    if (val < 0.42) return 'C'
+      //    return 'D'
+      // },
       getWinrate(w, g) {
          return Math.round((w / g) * 10000) / 100
       },
@@ -147,7 +146,6 @@ export default {
 </script>
 
 <template>
-   <Wip />
    <div v-if="this.champions" class="champ-list-main">
       <div class="champ-table">
          <!-- <div class="filters">

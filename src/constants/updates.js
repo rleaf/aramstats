@@ -12,9 +12,20 @@
 
 const updates = [
    {
+      title: "Champion stats functional",
+      version: "3.3.0",
+      date: "1/30/24",
+      body: [
+         `Champion stat pages is about 90% complete and the crawler is active again. The redesign has been taking longer than expected because I was trimming a lot of the fat for how data is stored & parsed in order to improve load times. I'll be tossing in little mini updates here too as that 90% goes to 100%.`
+      ],
+      links: [],
+      img: [], // Expected webp format
+      imgCaption: ""
+   },
+   {
       title: "*1/30 update* Breaking changes expected on patch 14.1",
       version: "",
-      date: "1/9/24 - now",
+      date: "1/9/24 - 1/30/24",
       body: [
          `Working on fixing them. With the new patch, some things will require a significant redesign such as the champion stats pages so it may take a hot minute. I'll be sprinkling in minor updates here.`,
          `1/15: Finished designing mythicless UI & streamlining data hoarding to improve load times.`,

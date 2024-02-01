@@ -34,7 +34,7 @@ class ChampionParser():
       for match in self.match_collection.find(skip=index):
          if (index % 50 == 0):
             print(f'Updating index: {index}')
-            # self.meta_collection.update_one({ "_id": self.champion_stats_name }, { "$set": {"champ_parse_index": index} })
+            self.meta_collection.update_one({ "_id": self.champion_stats_name }, { "$set": {"champ_parse_index": index} })
 
          bin = self.forward(match)
          index += 1
