@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
    const coll = await loadChampionStatsCollection()
-   const pancakes = await coll.find({}, {projection: { _id: 1, games: 1, wins: 1 }}).toArray()
+   const pancakes = await coll.find({}, {projection: { _id: 1, games: 1, wins: 1, pickRate: 1 }}).toArray()
    res.send(pancakes)
 })
 

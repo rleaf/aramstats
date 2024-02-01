@@ -11,7 +11,7 @@ export default {
          patch: null,
          total: null,
          region: 'Global',
-         sort: 'grade',
+         sort: 'rank',
          sortOrder: 1,
          winrates: {
             max: 0,
@@ -45,37 +45,37 @@ export default {
             console.log('tye', res.data)
             this.champions = res.data
             // this.total = this.champions.reduce((c, a) => c + a.games, 0)
-            // this.populate()
+            this.populate()
          }).catch(e => {
             console.log('error', e)
          })
       },
-      // populate() {
-      //    for (const i in this.champions) {
-      //       const c = this.champions[i]
-      //       // c.frontName = this.getName(c._id)
-      //       c.pickrate = this.getPickRate(c.games)
-      //       c.winrate = this.getWinrate(c.wins, c.games)
-      //       if (c.winrate > this.winrates.max) this.winrates.max = c.winrate
-      //       if (c.winrate < this.winrates.min) this.winrates.min = c.winrate
-      //    }
+      populate() {
+         for (const i in this.champions) {
+            const c = this.champions[i]
+            // c.frontName = this.getName(c._id)
+            // c.pickrate = this.getPickRate(c.games)
+            c.winrate = this.getWinrate(c.wins, c.games)
+            if (c.winrate > this.winrates.max) this.winrates.max = c.winrate
+            if (c.winrate < this.winrates.min) this.winrates.min = c.winrate
+         }
 
-      //    this.winrates.delta = this.winrates.max - this.winrates.min
+         this.winrates.delta = this.winrates.max - this.winrates.min
 
-      //    for (const i in this.champions.sort((a, b) => b.winrate - a.winrate)) {
-      //       const rank = Number(i) + 1
-      //       this.champions[i].rank = rank
-      //       this.champions[i].grade = this.getGrade(rank, this.champions.length)
-      //    }
-      // },
-      // getGrade(rank, total) {
-      //    const val = rank / total
-      //    if (val < 0.02) return 'S'
-      //    if (val < 0.06) return 'A'
-      //    if (val < 0.2) return 'B'
-      //    if (val < 0.42) return 'C'
-      //    return 'D'
-      // },
+         for (const i in this.champions.sort((a, b) => b.winrate - a.winrate)) {
+            const rank = Number(i) + 1
+            this.champions[i].rank = rank
+            this.champions[i].grade = this.getGrade(rank, this.champions.length)
+         }
+      },
+      getGrade(rank, total) {
+         const val = rank / total
+         if (val < 0.02) return 'S'
+         if (val < 0.06) return 'A'
+         if (val < 0.2) return 'B'
+         if (val < 0.42) return 'C'
+         return 'D'
+      },
       getWinrate(w, g) {
          return Math.round((w / g) * 10000) / 100
       },
@@ -121,21 +121,21 @@ export default {
    computed: {
       getChampionsList() {
          if (this.champions) {
-            const table = {
-               'S' : 1,
-               'A' : 2,
-               'B' : 3,
-               'C' : 4,
-               'D' : 5
-            }
+            // const table = {
+            //    'S' : 1,
+            //    'A' : 2,
+            //    'B' : 3,
+            //    'C' : 4,
+            //    'D' : 5
+            // }
 
             if (this.sort === '_id') {
                return this.champions.sort((a, b) => champions.humanName[a[this.sort]].localeCompare(champions.humanName[b[this.sort]]) * this.sortOrder)
             }
 
-            if (this.sort === 'grade') {
-               return this.champions.sort((a, b) => (table[a[this.sort]] - table[b[this.sort]]) * this.sortOrder)
-            }
+            // if (this.sort === 'grade') {
+            //    return this.champions.sort((a, b) => (table[a[this.sort]] - table[b[this.sort]]) * this.sortOrder)
+            // }
 
             return this.champions.sort((a, b) => (a[this.sort] - b[this.sort]) * this.sortOrder)
          }
@@ -179,8 +179,8 @@ export default {
                </svg>
             </div>
             <div class="pickrate">
-               <h2 @click="this.headerSort('pickrate')">Pickrate</h2>
-               <svg v-if="this.sort === 'pickrate'" class="triangle" :class="{ 'descending': this.sortOrder === 1 }">
+               <h2 @click="this.headerSort('pickRate')">Pickrate</h2>
+               <svg v-if="this.sort === 'pickRate'" class="triangle" :class="{ 'descending': this.sortOrder === 1 }">
                   <polygon points="7 5, 14 14, 0 14"/>
                </svg>
             </div>
@@ -192,9 +192,6 @@ export default {
             </div>
          </div>
          <div :class="{'o': i % 2 === 0}" class="champion" v-for="(champ, i) in getChampionsList" :key="i">
-            <!-- <div class="rank">
-               {{ champ.rank }}
-            </div> -->
             <div class="name-image">
                <router-link :to="{ name: 'champions', params: {champion: this.champMap(champ._id)} }">
                   <img class="champ-image" rel="preload" :src="this.champIcon(champ._id)" alt="">
@@ -203,14 +200,11 @@ export default {
                   </div>
                </router-link>
             </div>
-            <!-- <div class="grade">
-               {{ champ.grade }}
-            </div> -->
             <div :style="{ color: this.computeColor(champ.winrate) }" class="winrate">
                {{ champ.winrate }}%
             </div>
             <div class="pickrate">
-               {{ champ.pickrate }}
+               {{ champ.pickRate }}
             </div>
             <div class="games">
                {{ champ.games }}

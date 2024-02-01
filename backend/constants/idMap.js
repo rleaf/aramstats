@@ -122,6 +122,7 @@ const map = {
    "sion": 14,
    "sivir": 15,
    "skarner": 72,
+   "smolder": 901,
    "sona": 37,
    "soraka": 16,
    "swain": 50,
