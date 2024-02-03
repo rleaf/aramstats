@@ -16,7 +16,8 @@ const updates = [
       version: "3.3.0",
       date: "1/30/24",
       body: [
-         `Champion stat pages is about 90% complete and the crawler is active again. The redesign has been taking longer than expected because I was trimming a lot of the fat for how data is stored & parsed in order to improve load times. I'll be tossing in little mini updates here too as that 90% goes to 100%.`
+         `Champion stat pages is about 90% complete and the crawler is active again. The redesign has been taking longer than expected because I was trimming a lot of the fat for how data is stored & parsed in order to improve load times. I'll be tossing in little mini updates here too as that 90% goes to 100%.`,
+         `2/3: v3.3.1`,
       ],
       links: [],
       img: [], // Expected webp format
