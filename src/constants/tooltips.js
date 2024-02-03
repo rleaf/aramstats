@@ -28,6 +28,6 @@ export default {
    ],
    'winrate': [
       `General data about item winrate.`,
-      `<b>Item Winrate</b>: The winrate...of the item.`,
+      `<b>Item Winrate</b>: ...the winrate of the item.`,
    ],
 }

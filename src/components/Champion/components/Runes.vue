@@ -65,15 +65,6 @@ export default {
          return (this.champion.runes.tertiary[table[i]][id]) ? this.champion.runes.tertiary[table[i]][id].games : 0
       },
 
-      popularityBackground(games) {
-         const x = this.champion.games
-         return 'none'
-      },
-
-      winrateBackground() {
-
-      },
-
       heatmap(id, i, tree, flex) {
          if (!this.config.runes.heatmap) return
 
@@ -134,14 +125,14 @@ export default {
 
             <div class="tree" v-for="[tree, i] of Object.entries(this.runes)" :key="tree">
                <div class="rune-wrapper">
-                  <img class="tree-image" :src="this.runeImage(tree)" alt="">
+                  <!-- <img class="tree-image" :src="this.runeImage(tree)" alt=""> -->
                   <div class="winrate"></div>
                   <div class="games"></div>
                </div>
                <div class="primary">
                   <div :class="{'keystone' : j2 === 0}" class="row" v-for="(j, j2) in i" :key="j2">
                      <div :style="{ 'background': this.heatmap(k, 'primary', tree) }" class="rune-wrapper" v-for="k in j" :key="k">
-                        <img :src="this.runeImage(k)" alt="">
+                        <img :class="{ 'inactive': !this.champion.runes.primary[k] || this.champion.runes.primary[k].games === 0 }" :src="this.runeImage(k)" alt="">
                         <div class="winrate">{{ this.primaryRuneWinrate(k) }}</div>
                         <div class="games">{{ this.primaryRuneGames(k) }}</div>
                      </div>
@@ -150,7 +141,7 @@ export default {
                <div class="secondary">
                   <div class="row" v-for="(j, j2) in i.slice(1)" :key="j2">
                      <div :style="{'background' : this.heatmap(k, 'secondary', tree) }" class="rune-wrapper" v-for="k in j" :key="k">
-                        <img :src="this.runeImage(k)" alt="">
+                        <img :class="{ 'inactive': !this.champion.runes.secondary[k] || this.champion.runes.secondary[k].games === 0 }" :src="this.runeImage(k)" alt="">
                         <div class="winrate">{{ this.secondaryRuneWinrate(k) }}</div>
                         <div class="games">{{ this.secondaryRuneGames(k) }}</div>
                      </div>
@@ -180,6 +171,7 @@ export default {
 
 .main-runes {
    display: flex;
+   padding-top: 10px;
    justify-content: space-around;
    padding-bottom: 50px;
 }
@@ -220,11 +212,15 @@ img.tree-image {
 .rune-wrapper {
    display: inline-block;
    text-align: center;
-   margin: 3px 1px;
-   padding: 2px;
+   margin: 1px;
+   padding: 2px 1px;
    width: 45px;
-   border-radius: 5px;
+   border-radius: 3px;
    transition: 0.25s ease-in-out;
+}
+
+.inactive {
+   filter: saturate(0);
 }
 
 .winrate {

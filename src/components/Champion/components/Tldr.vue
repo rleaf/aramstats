@@ -22,6 +22,7 @@ export default {
 
    created() {
       this.sortCore()
+      // console.log('organs', this.organizedCore)
    },
 
    methods: {
@@ -32,9 +33,11 @@ export default {
          }
          this.organizedCore.sort((a, b) => b.games - a.games)
          
-         if (!this.config.visibleCore) {
-            this.organizedCore = this.organizedCore.slice(0, 10)
-         }
+         this.organizedCore = this.organizedCore.slice(0, 10)
+
+         // if (!this.config.visibleCore) {
+         //    this.organizedCore = this.organizedCore.slice(0, 10)
+         // }
          // (this.config.visibleCore) ? this.organizedCore = this.organizedCore.slice(0, 10) : this.organizedCore
          // this.organizedCore = this.organizedCore.slice(0, this.config.visibleCore)
       },

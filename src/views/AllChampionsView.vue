@@ -244,7 +244,7 @@ export default {
       align-items: center;
       width: 100%;
       height: 45px;
-      border-radius: 10px;
+      border-radius: 4px;
       font-size: 0.9rem;
    }
 

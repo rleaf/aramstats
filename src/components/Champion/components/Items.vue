@@ -280,7 +280,6 @@ rect.rect-focus {
    width: inherit;
    height: inherit;
    cursor: pointer;
-   /* border: 1px solid var(--cell-border); */
 }
 
 .table {
@@ -371,7 +370,6 @@ rect.rect-focus {
 img.item-fade {
    filter: saturate(0);
    opacity: 0.3;
-   /* border: 1px solid var(--light-03); */
 }
 
 .font-fade {

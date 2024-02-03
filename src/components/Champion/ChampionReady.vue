@@ -26,7 +26,7 @@ export default {
    },
 
    created() {
-      console.log(this.champion)
+      // console.log(this.champion)
       this.getChampData()
       this.getItemData()
    },
