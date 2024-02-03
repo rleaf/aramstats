@@ -22,11 +22,12 @@ export default {
 
    'popularity': [
       `General data about item popularity.`,
-      `<b>Slot</b>: The number of times the item has been purchased for the last slot hovered over.`,
-      `<b>Total</b>: The total number of times the item has been purchased.`,
-      `<b>Popularity</b>: A percentage of how often the item has been purchased.`,
+      `<b>Item Popularity</b>: A percentage of how often the item has been purchased.`,
+      `<b>Slot Frequency</b>: The number of times the item has been purchased for the corresponding slot (mouseover a bar).`,
+      `<b>Total Frequency</b>: The total number of times the item has been purchased.`,
    ],
    'winrate': [
-      `Winrate represents an items winrate for a corresponding slot.`
+      `General data about item winrate.`,
+      `<b>Item Winrate</b>: The winrate...of the item.`,
    ],
 }

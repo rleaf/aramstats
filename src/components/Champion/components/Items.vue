@@ -1,5 +1,5 @@
 <script>
-import { championStore } from '@/stores/championConfig'
+// import { championStore } from '@/stores/championConfig'
 import Tooltip from './Tooltip.vue'
 
 export default {
@@ -8,36 +8,56 @@ export default {
    },
    data() {
       return {
-         config: championStore(),
+         // config: championStore(),
          item: null,
+         wins: 0,
          total: 0,
          mean: 0,
          popularity: 0,
-         slotPopularityFocus: 0,
-         slotWinrateFocus: 0,
+         slotPopularity: [0, 0, 0, 0, 0, 0],
+         popularityFocus: null,
+         slotWinrate: [0, 0, 0, 0, 0, 0],
       }
    },
 
-   created() {
-      // console.log(this.itemData)
-   },
-   
    methods: {
       setItem(id) {
-         this.item = id
+         this.setLabels(id)
 
-         this.total = 0
-         this.mean = 0
-         this.popularity = 0
-
-         for (const o in this.champion.items) {
-            if (this.champion.items[o][this.item]) {
-               this.total += this.champion.items[o][this.item].games
+         for (const [k , v] of Object.entries(this.champion.items)) {
+            if (v[this.item]) {
+               this.wins += v[this.item].wins
+               this.slotPopularity[k-1] = (v[this.item].games / this.total)
+               this.slotWinrate[k-1] = (v[this.item].wins / v[this.item].games)
             }
          }
-
          this.popularity = (this.total / this.champion.games * 100).toFixed(1) + '%' 
-         console.log(this.total)
+      },
+
+      setLabels(o) {
+         if (o) {
+            this.item = o
+            this.total = this.itemSum()
+         } else {
+            this.item = null
+            this.total = 0
+         }
+
+         this.wins = 0
+         this.mean = 0
+         this.popularity = 0
+         this.slotPopularity = [0, 0, 0, 0, 0, 0]
+         this.slotWinrate = [0, 0, 0, 0, 0, 0]
+      },
+
+      itemSum() {
+         let lobster = 0
+         for (const o in this.champion.items) {
+            if (this.champion.items[o][this.item]) {
+               lobster += this.champion.items[o][this.item].games
+            }
+         }
+         return lobster
       },
 
       itemImage(id) {
@@ -48,29 +68,6 @@ export default {
          return (win / total * 100)
       },
 
-      slotPopularity(i) {
-         // Normalize data between 0 and 1?
-         if (!this.item || !(this.item in this.champion.items[i])) return '0'
-         return (this.champion.items[i][this.item].games / this.total).toFixed(2)
-      },
-      
-      slotWinrate(i) {
-         if (!this.item || !(this.item in this.champion.items[i])) return '0'
-         console.log(this.champion.items[i][this.item])
-         // console.log(this.winrate(this.champion.items[i][this.item].games, this.champion.items[i][this.item].wins))
-         return (this.champion.items[i][this.item].wins / this.champion.items[i][this.item].games)
-      },
-
-      // total(i) {
-      //    let sum = 0
-      //    for (const o in this.champion.items) {
-      //       if (this.champion.items[o][this.item]) {
-      //          sum += this.champion.items[o][this.item].games
-      //       }
-      //    }
-
-      //    return sum
-      // }
    },
 
    computed: {
@@ -100,7 +97,7 @@ export default {
          <div class="synopsis">
             <div class="synopsis-header">
                <div class="image-wrapper">
-                  <img v-if="this.item" :src="this.itemImage(this.item)" @click="this.item = null" alt="">
+                  <img v-if="this.item" :src="this.itemImage(this.item)" @click="this.setLabels()" alt="">
                </div>
                <div v-if="this.item">{{ getItemName }}</div>
                <div class="placeholder" v-else>Click an item</div>
@@ -110,45 +107,35 @@ export default {
                <div>
                   <div class="chart-header">
                      <h4>Popularity</h4>
-                     <Tooltip :tip="'popularity'" />
+                     <Tooltip :align="'left'" :tip="'popularity'" />
                   </div>
                   <svg>
-                     <g v-for="i in 6" :key="i">
-                        <text :x="`${(i - 1) * 37 + 18}`" y="95%">{{ (this.slotPopularity(i) * 100).toFixed(0) + '%'}}</text>
-                        <rect @mouseover="this.slotPopularityFocus = i" :class="{ 'rect-focus': this.slotPopularityFocus === i }" class="backdrop" :x="`${(i - 1) * 37 + 5}`" y="20%" rx="2" width="24" height="80%"></rect>
-                        <rect @mouseover="this.slotPopularityFocus = i" class="value" :x="`${(i - 1) * 37 + 5}`" y="20%" rx="2" width="24" :height="this.slotPopularity(i) * 80"></rect>
+                     <g v-for="(k, i) in 6" :key="i">
+                        <text :x="`${i * 37 + 18}`" y="95%">{{ (this.slotPopularity[i] * 100).toFixed(1) + '%'}}</text>
+                        <rect @mouseenter="this.popularityFocus = k" :class="{ 'rect-focus': this.popularityFocus === k }" class="backdrop" :x="`${i * 37 + 5}`" y="20%" rx="2" width="24" height="80%"></rect>
+                        <rect @mouseenter="this.popularityFocus = k" class="value" :x="`${i * 37 + 5}`" y="20%" rx="2" width="24" :height="this.slotPopularity[i] * 80"></rect>
                      </g>
                   </svg>
                   <div class="details">
-                     <div>
-                        <div>Slot: <span style="color: var(--color-font);"> {{ (this.slotPopularityFocus && this.item) ? this.champion.items[this.slotPopularityFocus][this.item].games : '-' }} </span></div>
-                        <div>Total: <span style="color: var(--color-font);">{{ this.total }}</span></div>
-                     </div>
-                     <div>
-                        <div>Popularity: <span style="color: var(--color-font);">{{ (this.item) ? this.popularity : '-' }}</span></div>
-                     </div>
+                     <div>Item Popularity: <span class="value">{{ (this.item) ? this.popularity : '-' }}</span></div>
+                     <div>Slot Frequency: <span class="value"> {{ (this.popularityFocus && this.item) ? this.champion.items[this.popularityFocus][this.item].games : '-' }} </span></div>
+                     <div>Total Frequency: <span class="value">{{ this.total || '-' }}</span></div>
                   </div>
                </div>
                <div>
                   <div class="chart-header">
                      <h4>Winrate</h4>
-                     <Tooltip :tip="'popularity'" />
+                     <Tooltip :align="'left'" :tip="'winrate'" />
                   </div>
                   <svg>
-                     <g v-for="i in 6" :key="i">
-                        <text :x="`${(i - 1) * 37 + 18}`" y="95%">{{ (this.slotWinrate(i) * 100).toFixed(0) + '%'}}</text>
-                        <rect @mouseover="this.slotWinrateFocus = i" :class="{ 'rect-focus': this.slotWinrateFocus === i }" class="backdrop" :x="`${(i - 1) * 37 + 5}`" y="20%" rx="2" width="24" height="80%"></rect>
-                        <rect @mouseover="this.slotWinrateFocus = i" class="value" :x="`${(i - 1) * 37 + 5}`" y="20%" rx="2" width="24" :height="this.slotWinrate(i) * 80"></rect>
+                     <g v-for="(_, i) in 6" :key="i">
+                        <text :x="`${i * 37 + 18}`" y="95%">{{ (this.slotWinrate[i] * 100).toFixed(0) + '%'}}</text>
+                        <rect class="backdrop" :x="`${i * 37 + 5}`" y="20%" rx="2" width="24" height="80%"></rect>
+                        <rect class="value" :x="`${i * 37 + 5}`" y="20%" rx="2" width="24" :height="this.slotWinrate[i] * 80"></rect>
                      </g>
                   </svg>
                   <div class="details">
-                     <div>
-                        <div>Slot: <span style="color: var(--color-font);"> {{ (this.slotWinrateFocus && this.item) ? this.champion.items[this.slotWinrateFocus][this.item].games : '-' }} </span></div>
-                        <div>Total: <span style="color: var(--color-font);">{{ this.total }}</span></div>
-                     </div>
-                     <div>
-                        <div>Popularity: <span style="color: var(--color-font);">{{ (this.item) ? this.popularity : '-' }}</span></div>
-                     </div>
+                     <div>Item winrate: <span class="value">{{ (this.item) ? ((this.wins / this.total) * 100).toFixed(1) + '%' : '-'  }}</span></div>
                   </div>
                </div>
             </div>
@@ -203,7 +190,8 @@ export default {
 }
 
 .synopsis-body > div {
-   margin-bottom: 50px;
+   margin-bottom: 30px;
+   width: 220px;
 }
 
 .placeholder {
@@ -227,7 +215,7 @@ h4 {
 }
 
 svg {
-   width: 220px;
+   width: inherit;
    height: 100px;
    margin-top: 10px;
    margin-bottom: 5px;
@@ -243,17 +231,18 @@ text.slot {
    font-size: 0.75rem;
 }
 
-rect {
+.synopsis-body > div:first-child rect {
    cursor : pointer;
 }
+
 rect.backdrop {
    fill: var(--cell-backdrop);
    transform: rotate(180deg) scaleX(-1);
    transform-origin: center center;
-   transition: 0.25s ease-in-out; 
+   transition: 0.15s ease-in-out; 
 }
 rect.value {
-   fill: var(--alpha-09);
+   fill: var(--alpha-12);
    transform: rotate(180deg) scaleX(-1);
    transform-origin: center center;
    transition: height 0.5s;
@@ -264,12 +253,21 @@ rect.rect-focus {
 }
 
 .details {
-   display: flex;   
-   justify-content: space-between;
    font-size: 0.8rem;
-   width: 220px;
-   margin: 0;
+   width: 180px;
    color: var(--color-font-faded);
+}
+
+.details > div {
+   display: flex;
+   justify-content: space-between;
+   margin-bottom: 0.25rem;
+   margin-left: 5px;
+}
+
+.details .value {
+   min-width: 50px;
+   color: var(--color-font);
 }
 
 .image-wrapper {

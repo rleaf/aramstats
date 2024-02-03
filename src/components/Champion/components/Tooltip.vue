@@ -73,8 +73,15 @@ export default {
    margin-left: -360px;
 }
 
+.left {
+   left: 50%;
+   margin-left: 0;
+}
+
 .tip ul {
    padding-left: 1rem;
+   list-style-type: none;
+   padding: 0;
 }
 
 .tip ul li:not(:last-child) { 
