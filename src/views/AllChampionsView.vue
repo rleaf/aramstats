@@ -42,9 +42,7 @@ export default {
       lookup() {
          const url = `/api/championsList`
          axios.get(url).then(res => {
-            console.log('tye', res.data)
             this.champions = res.data
-            // this.total = this.champions.reduce((c, a) => c + a.games, 0)
             this.populate()
          }).catch(e => {
             console.log('error', e)
