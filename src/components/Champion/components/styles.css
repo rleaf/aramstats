@@ -2,10 +2,14 @@
    display: flex;
    align-items: center;
    gap: 20px;
-   font-family: 'Thestral';
    color: var(--color-font);
+   padding: 1.25rem 0;
+}
+
+.section-header h1 {
+   font-family: 'Thestral';
+   margin: 0;
    font-size: 2rem;
-   padding-bottom: 1.25rem;
 }
 
 .section {
@@ -96,7 +100,15 @@
    font-size: 1.3rem;
    color: var(--color-font);
 }
-
+.sub-section-header a {
+   text-decoration: none;
+   transition: 0.15s ease-in-out;
+   border-radius: 3px;
+   padding: 1px 3px;
+}
+.sub-section-header a:hover {
+   background: var(--cold-blue-focus);
+}
 .sub-section-header .misc {
    padding-left: 15px;
    color: var(--color-font);

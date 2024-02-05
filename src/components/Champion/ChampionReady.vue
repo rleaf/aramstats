@@ -138,7 +138,7 @@ export default {
           <Tldr :champion="this.champion" :patch="this.patch" />
           <Items :champion="this.champion" :patch="this.patch" :itemData="this.itemData"/>
           <Runes :champion="this.champion" :patch="this.patch" />
-          <StartingSpells :champion="this.champion" :patch="this.patch" />
+          <StartingSpells :champion="this.champion" :patch="this.patch" :abilities="this.abilities"/>
       </div>
    </div>
 </template>
@@ -231,13 +231,12 @@ export default {
 
 .spell-letter {
    position: relative;
-   top: -21px;
+   top: -23px;
    left: -9px;
    font-size: 0.85rem;
    background: var(--color-background);
-   font-weight: normal;
    text-align: center;
-   width: 0.9rem;
+   width: 1rem;
 }
 
 .header-lhs-image {

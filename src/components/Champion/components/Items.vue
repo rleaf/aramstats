@@ -88,9 +88,9 @@ export default {
 </script>
 
 <template>
-   <div class="items-main">
+   <div class="items-main" id="items">
       <div class="section-header">
-         Items
+         <h1>Items</h1>
          <!-- <img @click="this.config.modals.items = true" class="settings" src="@/assets/ellipses.svg" alt=""> -->
       </div>
       <div class="section">

@@ -41,6 +41,7 @@ export default {
 
 .tooltip {
    position: relative;
+   z-index: 2;
    display: inline-block;
    height: 16px;
 }

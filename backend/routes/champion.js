@@ -25,10 +25,13 @@ async function aggregateChampion(coll, champion) {
             $arrayToObject: { $slice: [{ $sortArray: { input: { $objectToArray: "$core" }, sortBy: { "v.games": -1 } } }, 10] }
          },
          starting: { 
-            $arrayToObject: { $slice: [{ $sortArray: { input: { $objectToArray: "$starting" }, sortBy: { "v.games": -1 } } }, 20] }
+            $slice: [{ $sortArray: { input: { $objectToArray: "$starting" }, sortBy: { "v.games": -1 } } }, 10]
          },
          spells: {
-            $arrayToObject: { $slice: [{ $sortArray: { input: { $objectToArray: "$spells" }, sortBy: { "v.games": -1 } } }, 10] }
+            $slice: [{ $sortArray: { input: { $objectToArray: "$spells" }, sortBy: { "v.games": -1 } } }, 10]
+         },
+         skills: {
+            $sortArray: { input: { $objectToArray: "$skills" }, sortBy: { "v.games": -1 } }
          },
          games: 1,
          wins: 1,
@@ -36,7 +39,6 @@ async function aggregateChampion(coll, champion) {
          pickRate: 1,
          rank: 1,
          items: 1,
-         skills: 1
       } }
    ]).toArray()
 }

@@ -1,5 +1,5 @@
 <script>
-import TldrModal from './TldrModal.vue'
+import TldrModal from './modals/TldrModal.vue'
 import Tooltip from './Tooltip.vue'
 import { championStore } from '@/stores/championConfig'
 import _runes from '@/constants/runes'
@@ -17,6 +17,8 @@ export default {
          config: championStore(),
          runes: _runes,
          flex: _flex,
+         maxWinrate: 0,
+         minWinrate: 2
       }
    },
 
@@ -29,31 +31,26 @@ export default {
       sortCore() {
          for (const c in this.champion.core) {
             this.champion.core[c].core = c
+            this.champion.core[c].winrate = this.champion.core[c].wins / this.champion.core[c].games
+            if (this.champion.core[c].winrate > this.maxWinrate) this.maxWinrate = this.champion.core[c].winrate
+            if (this.champion.core[c].winrate < this.minWinrate) this.minWinrate = this.champion.core[c].winrate
             this.organizedCore.push(this.champion.core[c])
          }
-         this.organizedCore.sort((a, b) => b.games - a.games)
-         
-         this.organizedCore = this.organizedCore.slice(0, 10)
 
-         // if (!this.config.visibleCore) {
-         //    this.organizedCore = this.organizedCore.slice(0, 10)
-         // }
-         // (this.config.visibleCore) ? this.organizedCore = this.organizedCore.slice(0, 10) : this.organizedCore
-         // this.organizedCore = this.organizedCore.slice(0, this.config.visibleCore)
+         this.organizedCore.sort((a, b) => b.games - a.games) 
       },
 
       setCoreFocus(i) {
          this.coreFocus = i
       },
 
-      getRunes() {
-         let primary = []
-         for (const c in this.runes[this.primaryRunes[0]]) {
-            console.log(this.runes[this.primaryRunes[0]][c])
-            const pre = this.runes[this.primaryRunes[0]][c].reduce((a, b) => ({ ...a, [b]: this.champion.runes.primary[b] }), {})
-            primary.push(this.masterSort(pre)[0])
-         }
-         console.log(primary)
+      lerpColors(wr) {
+         const val = (wr - this.minWinrate) / (this.maxWinrate - this.minWinrate)
+         const green = [79, 201, 79]
+         const red = [201, 40, 0]
+
+         const lerp = green.map((p, i) => p * val + red[i] * (1 - val))
+         return `rgba(${lerp[0]},${lerp[1]},${lerp[2]})`
       },
 
       coreItemImage(id) {
@@ -139,8 +136,9 @@ export default {
          return peaches 
       },
 
-      winrate(total, win) {
-         return (win / total * 100).toFixed(1) + '%'
+      filteredWinrate(wr) {
+         return (wr * 100).toFixed(1) + '%'
+         // return (win / total * 100).toFixed(1) + '%'
       },
       itemBackground(i) {
          if (i % 2 === 0) {
@@ -235,12 +233,9 @@ export default {
 
 <template>
    <div class="tldr-main">
-      <TldrModal v-show="this.config.modals.tldr"
-         :title="'Tldr'" />
       <div class="section-header">
-         Tldr
-         <img @click="this.config.modals.tldr = true" class="settings" src="@/assets/ellipses.svg" alt="">
-         
+         <h1>Tldr</h1>
+         <TldrModal />
       </div>
       <div class="section">
          <div class="core-selection">
@@ -251,7 +246,7 @@ export default {
             <div class="combinations">
                <div class="core" :class="{'core-focus' : this.coreFocus === i}" @click="this.setCoreFocus(i)" v-for="(c, i) in this.organizedCore" :key="i">
                   <div class="core-numbers">
-                     <div class="winrate">{{ this.winrate(c.games, c.wins) }}</div>
+                     <div :style="{ 'color': this.lerpColors(c.winrate) }" class="winrate">{{ this.filteredWinrate(c.winrate) }}</div>
                      <div class="total">{{ c.games }}</div>
                   </div>
                   <div class="core-img">
@@ -264,7 +259,7 @@ export default {
             <div class="items">
                <div class="sub-section-header">
                   <div class="sub-lhs">
-                     <span class="title">Items</span>
+                     <a href="#items" class="title">Items</a>
                   </div>
                   <Tooltip :tip="'items'" />
                </div>
@@ -272,9 +267,9 @@ export default {
    
                   <div class="items-column" :class="{ 'column-bg': (i+1) % 2 === 0 }" v-for="i in 6" :key="i">
                      <span style="color: var(--color-font-faded);">{{ i }}</span> <!-- KEEP? -->
-                     <div v-for="(i, k) in this.itemSort(this.organizedCore[this.coreFocus].items[i]).slice(0, this.config.itemsExtended)" :key="k">
+                     <div v-for="(i, k) in this.itemSort(this.organizedCore[this.coreFocus].items[i]).slice(0, 2)" :key="k">
                         <img :src="this.itemImage(i[0])" alt="">
-                        <div class="winrate">{{ this.winrate(i[1], i[2]) }}</div>
+                        <div class="winrate">{{ this.filteredWinrate(i[2] / i[1]) }}</div>
                         <div class="total">{{ i[1] }}</div>
                      </div>
                   </div>
@@ -284,10 +279,10 @@ export default {
             <div class="starting-spells">
                <div class="starting">
                   <div class="sub-section-header">
-                     <span class="title">Starting</span>
+                     <a href="#spells" class="title">Starting</a>
                      <div class="sub-rhs">
                         <div class="misc">
-                           <h3>{{ this.winrate(startingItems[1], startingItems[2]) }}</h3>
+                           <h3>{{ this.filteredWinrate(startingItems[2] / startingItems[1]) }}</h3>
                            <h3>{{ startingItems[1] }}</h3>
                         </div>
                         <Tooltip :tip="'starting'" />
@@ -298,10 +293,10 @@ export default {
                </div>
                <div class="spells">
                   <div class="sub-section-header">
-                     <span class="title">Spells</span>
+                     <a href="#spells" class="title">Spells</a>
                      <div class="sub-rhs">
                         <div class="misc">
-                           <h3>{{ this.winrate(startingSpells[1], startingSpells[2]) }}</h3>
+                           <h3>{{ this.filteredWinrate(startingSpells[2] / startingSpells[1]) }}</h3>
                            <h3>{{ startingSpells[1] }}</h3>
                         </div>
                         <Tooltip :tip="'spells'"/>
@@ -314,17 +309,17 @@ export default {
          <div class="runes-leveling">
             <div class="runes">
                <div class="sub-section-header">
-                  <span class="title">Runes</span>
+                  <a href="#runes" class="title">Runes</a>
                   <div class="sub-rhs">
                      <div class="misc">
                         <div>
                            <img :src="this.runeImage(primaryRunes[0])"/>
-                           <h3>{{ this.winrate(primaryRunes[1], primaryRunes[2]) }}</h3>
+                           <h3>{{ this.filteredWinrate(primaryRunes[2] / primaryRunes[1]) }}</h3>
                            <h3>{{ primaryRunes[1] }}</h3>
                         </div>
                         <div>
                            <img :src="this.runeImage(secondaryRunes[0])"/>
-                           <h3>{{ this.winrate(secondaryRunes[1], secondaryRunes[2]) }}</h3>
+                           <h3>{{ this.filteredWinrate(secondaryRunes[2] / secondaryRunes[1]) }}</h3>
                            <h3>{{ secondaryRunes[1] }}</h3>
                         </div>
                      </div>
@@ -353,10 +348,10 @@ export default {
             </div>
             <div class="leveling">
                <div class="sub-section-header">
-                  <span class="title">Level Order</span>
+                  <a href="#spells" class="title">Level Order</a>
                   <div class="sub-rhs">
                      <div class="misc">
-                        <h3>{{ this.winrate(levels[1], levels[2]) }}</h3>
+                        <h3>{{ this.filteredWinrate(levels[2] / levels[1]) }}</h3>
                         <h3>{{ levels[1] }}</h3>
                      </div>
                      <Tooltip :align="'right'" :tip="'levels'" />

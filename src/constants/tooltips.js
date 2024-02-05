@@ -30,4 +30,7 @@ export default {
       `General data about item winrate.`,
       `<b>Item Winrate</b>: ...the winrate of the item.`,
    ],
+   'skillPriority': [
+      `Observed popularity and winrate of skill permutations.`
+   ]
 }

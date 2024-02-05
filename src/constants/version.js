@@ -12,6 +12,21 @@
 
 const version = [
    {
+      version: "3.3.2",
+      date: "2/4/24",
+      notes: "Champion stats finished.",
+      add: [
+         `Starting/Spells/Skills section`,
+      ],
+      remove: [],
+      fix: [],
+      adjust: [
+         `Color coded winrates in Tldr section`,
+         `Headers in Tldr section are anchors to corresponding section`,
+         `General cleaning up`
+      ]
+   }, 
+   {
       version: "3.3.1",
       date: "2/3/24",
       notes: "",
@@ -21,8 +36,8 @@ const version = [
       remove: [],
       fix: [],
       adjust: [
-         `UX/UI for Items section`,
-         `UX/UI for Runes section`,
+         `Items section UX/UI`,
+         `Runes section UX/UI`,
       ]
    }, 
    {
@@ -30,17 +45,16 @@ const version = [
       date: "1/30/24",
       notes: "Overhauled (redesigned & developed) champion stat pages for new season.",
       add: [
-         
       ],
       remove: [],
       fix: [],
       adjust: [
          `Baseline version for champion stats sans mythics available. (Limited functionality)`,
-         `UX/UI`,
+         `Champion stats UX/UI`,
          `Instead of the now deprecate mythics, the Tldr section consolidates data by a core build combination`,
          `Items section doesn't take 10 years to load & shows item-specific data`,
-         `Runes section has a heatmap to quickly & easily view rune combinations`,
-         `DB schemas (still wip)`,
+         `Heatmap to runes section to quickly & easily view combinations`,
+         `DB schemas`,
       ]
    }, 
    {

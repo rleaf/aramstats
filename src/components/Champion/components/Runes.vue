@@ -1,5 +1,5 @@
 <script>
-import RunesModal from './RunesModal.vue'
+import RunesModal from './modals/RunesModal.vue'
 import _runes from '@/constants/runes'
 import _flex from '@/constants/flex'
 import { championStore } from '@/stores/championConfig'
@@ -114,11 +114,10 @@ export default {
 </script>
 
 <template>
-   <div class="runes-main">
-      <RunesModal v-show="this.config.modals.runes" />
+   <div class="runes-main" id="runes">
       <div class="section-header">
-         Runes
-         <img @click="this.config.modals.runes = true" class="settings" src="@/assets/ellipses.svg" alt="">
+         <h1>Runes</h1>
+         <RunesModal />
       </div>
       <div class="section">
          <div class="main-runes" :class="{ 'active-heatmap': clarity }">
