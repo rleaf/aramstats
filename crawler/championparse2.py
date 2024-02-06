@@ -1,105 +1,123 @@
 import os
 import util
-import time
 import validators as V
-from multiprocessing import Pool
+import time
 from pymongo import MongoClient, UpdateOne
 from dotenv import load_dotenv
 
-import pprint
-pp = pprint.PrettyPrinter()
 load_dotenv()
 
-db = MongoClient(os.environ['DB_CONNECTION_STRING'])['aramstats']
-patch = util.get_latest_patch()
-collection_list = db.list_collection_names()
-match_collection_name = f"{patch}_matches"
-champion_collection = f"{patch}_championstats"
-items = util.get_items()
-runes = util.get_runes()
-batch_size = 10 # Number of match documents in a batch. Care bear: 1 match = 10 champions, so bulk_writing to 100 champion documents for a 10 batch size
+class ChampionParser():
+   def __init__(self) -> None:
+      db = MongoClient(os.environ['DB_CONNECTION_STRING'])['aramstats']
+      collection_list = db.list_collection_names()
+      patch = util.get_latest_patch()
+      match_collection_name = f"{patch}_matches"
+      self.champion_stats_name = "crawler"
+      champion_collection = f"{patch}_championstats"
+      self.items = util.get_items()
+      self.runes = util.get_runes()
 
-def get_batches():
-   """ 
-   Batch match documents from collection
-   """
-   batch = []
-   i = 0
-   for i, doc in enumerate(match_collection.find(skip=index)):
-      if i % batch_size == 0 and i > 0:
-         yield batch
-         del batch[:]
-      i += 1
-      batch.append(doc)
-   yield batch
+      if match_collection_name in collection_list:
+         self.match_collection = db[match_collection_name]
+      if champion_collection in collection_list:
+         self.champion_stats_collection = db[champion_collection]
+      else:
+         self.champion_stats_collection = db.create_collection(champion_collection, validator=V.champion_schema)
+      if "meta" in collection_list:
+         self.meta_collection = db["meta"]
+         self.meta_collection.update_one({ "_id": self.champion_stats_name }, { "$set": {"patch": patch} })
+         index = self.meta_collection.find_one({ "_id": self.champion_stats_name })["champ_parse_index"]
 
-def levels(i):
-   """ 
-   Reduce redundant levels. Sort input in descending and combine the wins & games of lower leveled skillpaths.
-   Do I have to manually watch for champs that auto point into an ability such as Azir and Zeri? Test w/out for now but eyeballs open. 
-   """
-   raw = sorted(i[1], key=lambda x: len(x[0]), reverse=True)
-   cleaned = [[raw[0][0], raw[0][1]["games"], raw[0][1]["wins"]]]
-   for o in raw[1:]: #  ('123114222211334334', {'games': 1, 'wins': 0})
-      cleaned_levels = ''.join(sorted(o[0][:3])) + o[0][3:] # Use combinations > permutations for levels 1-3. (112 == 121)
-      push = True
+      print("Starting champion parser")
+      for match in self.match_collection.find(skip = index):
+         if (index % 50 == 0):
+            print(f'Updating index: {index}')
+            self.meta_collection.update_one({ "_id": self.champion_stats_name }, { "$set": {"champ_parse_index": index} })
 
-      for x in cleaned:
-         if o[0] in x[0]:
-            x[1] += o[1]["games"]
-            x[2] += o[1]["wins"]
-            push = False
-            break
+         start = time.perf_counter()
+         bin = self.forward(match)
+         index += 1
 
-      if push:
-         cleaned.append([cleaned_levels, o[1]["games"], o[1]["wins"]])
+         if len(bin) != 0:
+            try:
+               self.champion_stats_collection.bulk_write(bin)
+            except Exception as e:
+               raise e
+         finish = time.perf_counter()
 
-   cleaned.sort(key=lambda x: x[2], reverse=True)
-   return [i[0], cleaned]
+         print(f'Single match finished in {round(finish-start, 2)} second(s)')
+      print("Champion parser done, processing champion stats...")
 
-def preprocess():
-   """ 
-   Preprocess data that can significantly detriment user experience on frontend.
-   Data to be preprocessed will be in raw field.
+      self.preprocess()
 
-   Care bear on runtime for this & monitor runtime to ensure doesn't overlap cronjobs.
-   """
-   champion_winrate_pickrate = []
-   total = 0
+      print('Fin champion parser.')
+      
+      
+   def preprocess(self):
+      """ 
+      Preprocess data that can significantly detriment user experience on frontend.
+      Data to be preprocessed will be in raw field.
 
-   for doc in champion_stats_collection.find():
-      # start = time.perf_counter()
-      champion_winrate_pickrate.append({ "_id": doc["_id"], "games": doc["games"], "wins": doc["wins"]})
-      total += doc["games"]
+      Care bear on runtime for this & monitor runtime to ensure doesn't overlap cronjobs.
+      """
+      champion_winrate_pickrate = []
+      total = 0
 
-      data = [[core, list(doc["raw"]["core"][core]["levels"].items())] for core in doc["raw"]["core"]]
+      for doc in self.champion_stats_collection.find():
+         champion_winrate_pickrate.append({ "_id": doc["_id"], "games": doc["games"], "wins": doc["wins"]})
+         total += doc["games"]
 
-      with Pool() as p:
-         cleaned_levels = p.map(levels, data)
+         bin = []
+         for core in doc["raw"]["core"]:
+            cleaned_levels = self.levels(doc["raw"]["core"][core]["levels"].items())
+            bin.append(UpdateOne({"_id": doc["_id"]}, {"$set": {f"core.{core}.levels": cleaned_levels}}, upsert=True))
+            
+         self.champion_stats_collection.bulk_write(bin)
 
-      bin = [UpdateOne({"_id": doc["_id"]}, {"$set": {f"core.{o[0]}.levels": o[1]}}, upsert=True) for o in cleaned_levels]
-      champion_stats_collection.bulk_write(bin)
-      # finish = time.perf_counter()
-      # print(f"Processed {doc['_id']} in {round(finish - start, 2)}s")
+      for champion in champion_winrate_pickrate:
+         champion["pickRate"] = round((champion["games"] / total) * 100, 2)
+         champion["winRate"] = round((champion["wins"] / champion["games"]) * 100, 2)
 
-   for champion in champion_winrate_pickrate:
-      champion["pickRate"] = round((champion["games"] / total) * 100, 2)
-      champion["winRate"] = round((champion["wins"] / champion["games"]) * 100, 2)
+      champion_winrate_pickrate = sorted(champion_winrate_pickrate, key=lambda x: x["winRate"], reverse=True)
 
-   champion_winrate_pickrate = sorted(champion_winrate_pickrate, key=lambda x: x["winRate"], reverse=True)
-
-   for i, doc in enumerate(champion_winrate_pickrate):
-      update = {
-         "$set": {
-            "rank": i+1,
-            "pickRate": doc["pickRate"],
+      for i, doc in enumerate(champion_winrate_pickrate):
+         update = {
+            "$set": {
+               "rank": i+1,
+               "pickRate": doc["pickRate"],
+            }
          }
-      }
 
-      champion_stats_collection.update_one({ "_id": doc["_id"] }, update, upsert=True)
-   print("Fin rank/pickrate")
+         self.champion_stats_collection.update_one({ "_id": doc["_id"] }, update, upsert=True)
+      print("Fin rank/pickrate")
 
-def forward(match):
+   def levels(self, i):
+      """ 
+      Reduce redundant levels. Sort input in descending and combine the wins & games of lower leveled skillpaths.
+      Do I have to manually watch for champs that auto point into an ability such as Azir and Zeri? Test w/out for now but eyeballs open. 
+      """
+      raw = sorted(i, key=lambda x: len(x[0]), reverse=True)
+      cleaned = [[raw[0][0], raw[0][1]["games"], raw[0][1]["wins"]]]
+      for o in raw[1:]: #  ('123114222211334334', {'games': 1, 'wins': 0})
+         cleaned_levels = ''.join(sorted(o[0][:3])) + o[0][3:] # Use combinations > permutations for levels 1-3. (112 == 121)
+         push = True
+
+         for x in cleaned:
+            if o[0] in x[0]:
+               x[1] += o[1]["games"]
+               x[2] += o[1]["wins"]
+               push = False
+               break
+
+         if push:
+            cleaned.append([cleaned_levels, o[1]["games"], o[1]["wins"]])
+
+      cleaned.sort(key=lambda x: x[2], reverse=True)
+
+      return cleaned
+
+   def forward(self, match):
       """
       Iterate through matchdata and update champion documents for observed champions.
       """
@@ -119,7 +137,7 @@ def forward(match):
          path = [participant[f"item{x}"] for x in range(6)]
 
          # <[str]> List containing filtered (desired) items.
-         filtered_items = list(filter(lambda x: util.item_filter(x, items), path))
+         filtered_items = list(filter(lambda x: util.item_filter(x, self.items), path))
          filtered_items = list(map(util.item_evolutions, filtered_items))
 
          if len(filtered_items) == 0: continue # Terminate iter if champ has 0 filtered items (undesired data)
@@ -128,6 +146,10 @@ def forward(match):
          for i in item_timeline:
             if i["type"] != "ITEM_PURCHASED" or i["itemId"] not in filtered_items or i["itemId"] in item_order: continue
             item_order.append(i["itemId"])
+
+         # <str> Build path string ID used as field in database.
+         # build = '_'.join([str(x) for x in item_order])
+         # core = '_'.join([str(item_order[i]) for i in range(3) if len(item_order) > 2])
 
          # Core item **combination**. Sorted to consolidate permutations. 
          boots = ["1001", "3005", "3047", "3117", "3006", "3009", "3020", "3111", "3158", "2422"]
@@ -186,16 +208,60 @@ def forward(match):
             elif len(arr) == 1:
                level_order += table[arr[0]]
 
+         # <str> Rune path string ID used as field in database.
+         rune_order = [
+            '8112', '8124', '8128', '9923', '8126', '8139', '8143', '8136', '8120', '8138', '8135', '8134', '8105', '8106',
+            '8351', '8360', '8369', '8306', '8304', '8313', '8321', '8316', '8345', '8347', '8410', '8352',
+            '8005', '8008', '8021', '8010', '9101', '9111', '8009', '9104', '9105', '9103', '8014', '8017', '8299',
+            '8437', '8439', '8465', '8446', '8463', '8401', '8429', '8444', '8473', '8451', '8453', '8242',
+            '8214', '8229', '8230', '8224', '8226', '8275', '8210', '8234', '8233', '8237', '8232', '8236'
+         ]
+
+         rune_tier = [
+            ['8126', '8139', '8143', '8306', '8304', '8313', '9101', '9111', '8009', '8446', '8463', '8401', '8224', '8226', '8275'],
+            ['8136', '8120', '8138', '8321', '8316', '8345', '9104', '9105', '9103', '8429', '8444', '8473', '8210', '8234', '8233'],
+            ['8135', '8134', '8105', '8106', '8347', '8410', '8352', '8014', '8017', '8299', '8451', '8453', '8242', '8237', '8232', '8236'],
+         ]
+
+         def get_rune_tier(id):
+            for i, arr in enumerate(rune_tier):
+               if id in arr: return i
+
+         # for x in match["info"]["participants"]:
+         #    if x["participantId"] == participant["participantId"]:
+         #       primary_runes = [str(y["perk"]) for y in x["perks"]["styles"][0]["selections"]]
+         #       primary_tree = x["perks"]["styles"][0]["style"]
+         #       # primary_runes.sort(key=lambda x: rune_order.index(x))
+         #       primary = f'{primary_tree}|' + '_'.join(primary_runes) + '|'
+
+         #       secondary_runes = [str(y["perk"]) for y in x["perks"]["styles"][1]["selections"]]
+         #       secondary_tree = x["perks"]["styles"][1]["style"]
+         #       secondary_runes.sort(key=lambda x: rune_order.index(x))
+         #       secondary = f'{secondary_tree}|' + '_'.join(secondary_runes) + '|'
+
+         #       tertiary_offense = x["perks"]["statPerks"]["offense"]
+         #       tertiary_flex = x["perks"]["statPerks"]["flex"]
+         #       tertiary_defense = x["perks"]["statPerks"]["defense"]
+         #       tertiary = f'{tertiary_offense}_{tertiary_flex}_{tertiary_defense}'
          primary_runes = [str(y["perk"]) for y in participant["perks"]["styles"][0]["selections"]]
          primary_tree = participant["perks"]["styles"][0]["style"]
+         # primary_runes.sort(key=lambda x: rune_order.index(x))
+         # primary = f'{primary_tree}|' + '_'.join(primary_runes) + '|'
 
          secondary_runes = [str(y["perk"]) for y in participant["perks"]["styles"][1]["selections"]]
          secondary_tree = participant["perks"]["styles"][1]["style"]
+         # secondary_runes.sort(key=lambda x: rune_order.index(x))
+         # secondary = f'{secondary_tree}|' + '_'.join(secondary_runes) + '|'
 
          tertiary_offense = participant["perks"]["statPerks"]["offense"]
          tertiary_flex = participant["perks"]["statPerks"]["flex"]
          tertiary_defense = participant["perks"]["statPerks"]["defense"]
+         # tertiary = f'{tertiary_offense}_{tertiary_flex}_{tertiary_defense}'
+         # rune_path = primary + secondary + tertiary
 
+         # secondary_rune_one_tier = get_rune_tier(secondary_runes[0])
+         # secondary_rune_two_tier = get_rune_tier(secondary_runes[1])
+         # <str> Starting items string ID used as field in database. 
          starting_build = []
          for x in item_timeline:
             if x["timestamp"] < 60000:
@@ -209,7 +275,14 @@ def forward(match):
          starting_build.sort()
          starting_build = '_'.join(str(x) for x in starting_build)
          if starting_build == '': starting_build = '0000'
+         # <[str]> List containing friendly championIds in each match
+         # f = [str(x["championId"]) for x in match["info"]["participants"] if x["teamId"] == participant["teamId"] and x["championId"] != id]
+         # <[str]> List containing enemy championIds in each match
+         # e = [str(x["championId"]) for x in match["info"]["participants"] if x["teamId"] != participant["teamId"]]
 
+         # print('primaryrune', primary_runes)
+         # print('secondary', secondary_runes)
+         # print(toad)
          update = {
             "$inc": {
                "games": 1,
@@ -295,45 +368,4 @@ def forward(match):
       return bin
 
 if __name__ == "__main__":
-   if match_collection_name in collection_list:
-      match_collection = db[match_collection_name]
-   if champion_collection in collection_list:
-      champion_stats_collection = db[champion_collection]
-   else:
-      champion_stats_collection = db.create_collection(champion_collection, validator=V.champion_schema)
-   if "meta" in collection_list:
-      meta_collection = db["meta"]
-      meta_collection.update_one({ "_id": "crawler" }, { "$set": {"patch": patch} })
-      index = meta_collection.find_one({ "_id": "crawler" })["champ_parse_index"]
-
-   print("Starting champion parser")
-   roll = 0
-
-   for i, batch in enumerate(get_batches()):
-      roll += len(batch)
-      if (i % 5 == 0 and i > 0): # Update every 50 matches
-         index += roll
-         print(f"Updating index")
-         meta_collection.update_one({ "_id": "crawler" }, { "$set": {"champ_parse_index": index} })
-         roll = 0
-
-      # start = time.perf_counter()
-      print(f"On batch {i}")
-
-      with Pool() as p:
-         bin = p.map(forward, batch)
-         flat = [x for xs in bin for x in xs]
-         champion_stats_collection.bulk_write(flat)
-         time.sleep(0.2)
-
-      # finish = time.perf_counter()
-      # print(f"Finished batch {i} in {round(finish-start, 2)} second(s)")
-
-   if roll > 0:
-      index += roll
-      print(f"Updating index")
-      meta_collection.update_one({ "_id": "crawler" }, { "$set": {"champ_parse_index": index} })
-
-   print("Finished champion parser...Starting preprocess.")
-   
-   preprocess()
+   champion_parse = ChampionParser()
