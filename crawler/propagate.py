@@ -2,8 +2,8 @@ import util
 import pymongo
 
 class Propagate():
-   def __init__(self, patch: str, region: str, puuid_collection, match_collection, meta_collection, config_index) -> None:
-      start = config_index if config_index is not None else meta_collection.find_one({ "_id": "crawler"})[region]["index"]
+   def __init__(self, patch: str, region: str, puuid_collection, match_collection, meta_collection) -> None:
+      start = meta_collection.find_one({ "_id": "crawler"})[region]["index"] 
       batch_size = 50 # batch_size for cursor batch & matchlist batch
       self.puuid_collection = puuid_collection
       self.match_collection = match_collection
@@ -60,7 +60,8 @@ class Propagate():
          timeline_bin = [skill_level_bin, item_bin]
 
          match_batch.append({
-            '_id': match['metadata']['matchId'],
+            # '_id': match['metadata']['matchId'],
+            'matchId': match['metadata']['matchId'],
             'region': match_region,
             'metadata': match['metadata'],
             'info': match['info'],

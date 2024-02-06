@@ -14,7 +14,10 @@ router.get('/:champion', async (req, res) => {
 async function loadChampionStatsCollection() {
    const client = await mongodb.MongoClient.connect(process.env.DB_CONNECTION_STRING)
    const dbPatch = (await client.db('aramstats').collection('meta').findOne( {'_id': 'crawler'})).patch
-   return client.db('aramstats').collection(`${dbPatch}_championstats`)
+   const collectionSize = await client.db('aramstats').collection(`${dbPatch[1]}_championstats`).countDocuments()
+   const livePatch = (collectionSize) ? dbPatch[1] : dbPatch[0]
+
+   return client.db('aramstats').collection(`${livePatch}_championstats`)
 }
 
 async function aggregateChampion(coll, champion) {

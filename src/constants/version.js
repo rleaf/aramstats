@@ -12,6 +12,22 @@
 
 const version = [
    {
+      version: "3.3.3",
+      date: "2/6/24",
+      notes: "Backend stuff.",
+      add: [],
+      remove: [],
+      fix: [
+         `Patch rollback if latest ddragon patch != live patch (ddragon patch data is occasionally ahead of live)`,
+      ],
+      adjust: [
+         `Faster match pagination`,
+         `Region indexing -> matchId indexing`,
+         `Restore { _id: Object ids }`,
+         `Multiprocess preprocessing & champion forward stages`,
+      ]
+   }, 
+   {
       version: "3.3.2",
       date: "2/4/24",
       notes: "Champion stats finished.",

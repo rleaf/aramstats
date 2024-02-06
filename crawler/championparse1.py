@@ -14,7 +14,7 @@ db = MongoClient(os.environ['DB_CONNECTION_STRING'])['aramstats']
 patch = util.get_latest_patch()
 collection_list = db.list_collection_names()
 match_collection_name = f"{patch}_matches"
-champion_collection = f"{patch}_championstats"
+champion_collection = f"TEST_{patch}_championstats"
 items = util.get_items()
 runes = util.get_runes()
 batch_size = 10 # Number of match documents in a batch. Care bear: 1 match = 10 champions, so bulk_writing to 100 champion documents for a 10 batch size
@@ -25,7 +25,8 @@ def get_batches():
    """
    batch = []
    i = 0
-   for i, doc in enumerate(match_collection.find(skip=index)):
+   # for i, doc in enumerate(match_collection.find(skip=index)):
+   for i, doc in enumerate(match_collection.find()):
       if i % batch_size == 0 and i > 0:
          yield batch
          del batch[:]
@@ -68,19 +69,19 @@ def preprocess():
    total = 0
 
    for doc in champion_stats_collection.find():
-      # start = time.perf_counter()
+      start = time.perf_counter()
       champion_winrate_pickrate.append({ "_id": doc["_id"], "games": doc["games"], "wins": doc["wins"]})
       total += doc["games"]
 
-      data = [[core, list(doc["raw"]["core"][core]["levels"].items())] for core in doc["raw"]["core"]]
+      data = ([core, list(doc["raw"]["core"][core]["levels"].items())] for core in doc["raw"]["core"])
 
       with Pool() as p:
          cleaned_levels = p.map(levels, data)
 
       bin = [UpdateOne({"_id": doc["_id"]}, {"$set": {f"core.{o[0]}.levels": o[1]}}, upsert=True) for o in cleaned_levels]
       champion_stats_collection.bulk_write(bin)
-      # finish = time.perf_counter()
-      # print(f"Processed {doc['_id']} in {round(finish - start, 2)}s")
+      finish = time.perf_counter()
+      print(f"Processed {doc['_id']} in {round(finish - start, 2)}s")
 
    for champion in champion_winrate_pickrate:
       champion["pickRate"] = round((champion["games"] / total) * 100, 2)
@@ -307,15 +308,12 @@ if __name__ == "__main__":
       index = meta_collection.find_one({ "_id": "crawler" })["champ_parse_index"]
 
    print("Starting champion parser")
-   roll = 0
 
    for i, batch in enumerate(get_batches()):
-      roll += len(batch)
-      if (i % 5 == 0 and i > 0): # Update every 50 matches
-         index += roll
-         print(f"Updating index")
-         meta_collection.update_one({ "_id": "crawler" }, { "$set": {"champ_parse_index": index} })
-         roll = 0
+      index += len(batch)
+      # if (i % 5 == 0 and i > 0): # Update every 50 matches
+      #    print(f"Updating index")
+      #    meta_collection.update_one({ "_id": "crawler" }, { "$set": {"champ_parse_index": index} })
 
       # start = time.perf_counter()
       print(f"On batch {i}")
@@ -329,10 +327,8 @@ if __name__ == "__main__":
       # finish = time.perf_counter()
       # print(f"Finished batch {i} in {round(finish-start, 2)} second(s)")
 
-   if roll > 0:
-      index += roll
-      print(f"Updating index")
-      meta_collection.update_one({ "_id": "crawler" }, { "$set": {"champ_parse_index": index} })
+   # print(f"Updating index")
+   # meta_collection.update_one({ "_id": "crawler" }, { "$set": {"champ_parse_index": index} })
 
    print("Finished champion parser...Starting preprocess.")
    

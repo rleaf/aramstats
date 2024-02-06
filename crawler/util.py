@@ -25,9 +25,12 @@ class Timer():
       delta = time.perf_counter() - self.start_time
       print(f"*****{self.name}***** :{delta:0.4f} seconds.")
 
-def get_latest_patch(discrete=False) -> str:
+def get_latest_patch(discrete=False, two=False) -> str:
    # print(lol_watcher.data_dragon.versions_for_region(region)['v'].split('.')[0:2])
    url = 'https://ddragon.leagueoflegends.com/api/versions.json'
+   if two:
+      res = ['.'.join(p.split('.')[0:2]) for p in requests.get(url).json()[:2]]
+      return res
    if discrete:
       res = requests.get(url).json()[0].split('.')[0:3]
    else:
