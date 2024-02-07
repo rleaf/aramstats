@@ -2,6 +2,8 @@
 import Dropdown from '../components/Dropdown.vue'
 import champions from '../constants/champions'
 
+import axios from 'axios'
+
 export default {
    components: {
       Dropdown,
@@ -19,11 +21,11 @@ export default {
          containerFocus: false,
          championNames: null,
          champions: [],
+         patch: null,
       }
    },
 
    created() {
-
       const localRegion = localStorage.getItem('region')
       if (localRegion) this.region = localRegion
 
@@ -31,12 +33,16 @@ export default {
          let x = {}
          x.back = (champion[1] === "MonkeyKing") ? 'wukong' : champion[1].toLowerCase()
          x.front = champion[2]
-         x.image = `https://ddragon.leagueoflegends.com/cdn/13.20.1/img/champion/${champion[1]}.png`
+         // x.image = `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/champion/${champion[1]}.png`
+         x.image = champion[1].toLowerCase()
          this.champions.push(x)
       }
    },
 
    methods: {
+      getImage(name) {
+         return new URL(`../assets/champion_icons/${name}.png`, import.meta.url).href
+      },
       inputFocus() {
          this.containerFocus = true
          this.showRegions = false
@@ -124,7 +130,7 @@ export default {
 
 <template>
    <div class="search-main">
-      <img src="../assets/logo.svg" class="logo" alt="">
+      <img src="../assets/svg/logo.svg" class="logo" alt="">
       <div ref="container" class="container" :class="{ focus: this.containerFocus}">
          <input ref="input" type="text" spellcheck="false" autocomplete="off"
             @focus="inputFocus"
@@ -147,7 +153,7 @@ export default {
       </transition>
       <div ref="champions" class="champion-search" v-show="this.containerFocus && this.input.length > 0">
          <router-link :to="{ name: 'champions', params: {champion: champ.back} }" v-for="champ in filteredChamps">
-            <img :src="champ.image" alt="" srcset="" rel="preload">
+            <img :src="this.getImage(champ.image)" alt="" srcset="" rel="preload">
             {{ champ.front }}
          </router-link>
       </div>
@@ -181,24 +187,27 @@ export default {
 .champion-search {
    position: relative;
    background: var(--cold-blue-focus);
-   font-size: 0.8rem;
+   font-size: 0.85rem;
    margin-top: 5px;
    width: calc(380px);
+   border-radius: 5px;
+   overflow: hidden;
 }
 
 .champion-search > a {
    display: flex;
    align-items: center;
-   gap: 0.5rem;
+   gap: 10px;
    position: relative;
    z-index: 2;
    color: var(--color-font);
    text-decoration: none;
-   padding: 0.3rem 1rem;
+   padding: 4px;
+   margin: 4px 4px;
    padding-left: 1.5rem;
-   transition: 0.25s;
+   border-radius: 5px;
+   transition: 0.15s;
 }
-
 
 .champion-search > a:hover {
    background: var(--alpha-06);
@@ -206,7 +215,7 @@ export default {
 }
 
 .champion-search img {
-   width: 33px;
+   width: 32px;
 }
 
 .region-selection {
@@ -252,15 +261,9 @@ button.region:hover {
 
 img.logo {
    width: 250px;
-   padding-bottom: 2rem;
+   padding-bottom: 4rem;
    filter: var(--logo-filter);
 }
-
-/* @media (prefers-color-scheme: light) {
-   img.logo {
-      filter: var(--logo-)
-   }
-} */
 
 .search-main {
    display: flex;
@@ -275,10 +278,10 @@ img.logo {
    background: var(--cell-panel);
    display: flex;
    align-items: center;
-   padding: 0.7rem 2rem;
+   padding: 0.5rem 2rem;
    border: 1px solid var(--cell-border);
    border-radius: 50px;
-   width: 380px;
+   width: 400px;
    transition: 0.25s;
 }
 

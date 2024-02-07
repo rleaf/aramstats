@@ -162,7 +162,7 @@ export default {
       },
 
       bongocat() { 
-         return new URL(`../../assets/bongo-cat.gif`, import.meta.url).href
+         return new URL(`../../assets/images/bongo-cat.gif`, import.meta.url).href
       },
 
       winrate() {
@@ -449,19 +449,19 @@ img.bongo-cat {
    line-height: 2;
 }
 .triple {
-   background-image: url('../../assets/triangle.svg');
+   background-image: url('../../assets/svg/triangle.svg');
    background-size: 85%;
    width: 60px;
 }
 
 .quadra {
-   background-image: url('../../assets/diamond.svg');
+   background-image: url('../../assets/svg/diamond.svg');
    background-size: 75%;
    width: 60px;
 }
 
 .penta {
-   background-image: url('../../assets/pentagon.svg');
+   background-image: url('../../assets/svg/pentagon.svg');
    background-size: 80%;
    width: 55px;
 }

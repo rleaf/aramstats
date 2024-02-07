@@ -1,0 +1,1 @@
+https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Smolder_0.jpg

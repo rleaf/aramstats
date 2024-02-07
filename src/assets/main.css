@@ -159,7 +159,7 @@
   --parse75: #38CA46;
   --parse50: #F44D4D;
 
-  --theme-icon: url('./solari.svg');
+  --theme-icon: url('./svg/solari.svg');
   --theme-mask-size: 100%;
 
 }
@@ -188,7 +188,7 @@
   --parse75: #17a025;
   --parse50: #ec2121;
 
-  --theme-icon: url('./lunari.svg');
+  --theme-icon: url('./svg/lunari.svg');
   --theme-mask-size: 80%;
 
   /* Blues */

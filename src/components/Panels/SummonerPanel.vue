@@ -2,7 +2,7 @@
 import StackedBarplot from '../StackedBarplot.vue'
 import Challenges from '../Challenges.vue'
 import Wip from '../Wip.vue'
-import { classBook } from '../../assets/aram_champ_classes'
+import { classBook } from '@/constants/champClasses.js'
 
 export default {
    components: {

@@ -108,7 +108,7 @@ export default {
    <div class="match-container" :class="(this.match.w) ? 'win' : 'loss'">
       <div class="match-left">
          <button @click="matchDetail">
-            <img src="../assets/arrow3.svg" alt="" :style="rotateArrow"/>
+            <img src="../assets/svg/arrow3.svg" alt="" :style="rotateArrow"/>
          </button>
          <div class="match-date">
             <span class="date-minor">{{ this.daysSince }} days ago</span>
@@ -312,15 +312,15 @@ export default {
 }
 
 .triple {
-   background-image: url('../assets/triple_small.svg')      
+   background-image: url('../assets/svg/triple_small.svg')      
 }
 
 .quadra {
-   background-image: url('../assets/diamond_small.svg')
+   background-image: url('../assets/svg/diamond_small.svg')
 }
 
 .penta {
-   background-image: url('../assets/penta_small.svg')
+   background-image: url('../assets/svg/penta_small.svg')
 }
 
 h5 {

@@ -63,7 +63,7 @@ export default {
    <div>
       <div class="champion-main" :style="{ background: background}">
          <button class="dropdown" @click="this.expand =! this.expand">
-            <img src="../assets/arrow2.svg" alt="" :class="{ expand: this.expand }">
+            <img src="../assets/svg/arrow2.svg" alt="" :class="{ expand: this.expand }">
          </button>
          <div class="lhs">
             <h2>{{ getChampionName(this.champion.name) }}</h2>
@@ -271,15 +271,15 @@ export default {
    }
 
    .triple {
-      background-image: url('../assets/triple_small.svg');
+      background-image: url('../assets/svg/triple_small.svg');
    }
 
    .quadra {
-      background-image: url('../assets/diamond_small.svg');
+      background-image: url('../assets/svg/diamond_small.svg');
    }
 
    .penta {
-      background-image: url('../assets/penta_small.svg');
+      background-image: url('../assets/svg/penta_small.svg');
    }
 
    .rhs-stats {

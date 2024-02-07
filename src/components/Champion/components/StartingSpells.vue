@@ -64,7 +64,7 @@ export default {
                      <div class="total">{{ i.v.games }}</div>
                   </div>
                   <div class="images">
-                     <img v-if="i.k === '0000'" src="@/assets/no_items.jpg">
+                     <img v-if="i.k === '0000'" src="@/assets/images/no_items.jpg">
                      <img v-else :src="this.itemImage(o)" v-for="(o, o2) in i.k.split('_')" :key="o2">
                   </div>
                   

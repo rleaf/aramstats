@@ -13,7 +13,7 @@ export default {
 
    methods: {
       getImage(fileName) {
-         return new URL(`../assets/${fileName}.webp`, import.meta.url).href
+         return new URL(`../assets/images/${fileName}.webp`, import.meta.url).href
       }
    },
 }

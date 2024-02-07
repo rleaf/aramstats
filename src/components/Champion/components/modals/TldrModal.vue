@@ -35,10 +35,6 @@ export default {
             localStorage.removeItem('localStorage')
             localStorage.removeItem('winrateSort')
             localStorage.removeItem('winrateThreshold')
-
-            // for (const o in this.config) {
-            //    localStorage.removeItem(o)
-            // }
          }
       }
    }
@@ -46,7 +42,7 @@ export default {
 </script>
 
 <template>
-   <img @click="this.showModal = true" class="settings" src="@/assets/ellipses.svg" alt="">
+   <img @click="this.showModal = true" class="settings" src="@/assets/svg/ellipses.svg" alt="">
    <div v-if="this.showModal" class="modal-main">
       <div class="modal">
          <div class="head">

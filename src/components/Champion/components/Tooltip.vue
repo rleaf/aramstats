@@ -17,7 +17,7 @@ export default {
 
 <template>
    <div class="tooltip">
-      <img src="@/assets/information.svg" alt="">
+      <img src="@/assets/svg/information.svg" alt="">
       <div :class="this.align" class="tip">
          <ul>
             <li v-for="(t, i) in this.tooltips[this.tip]" :key="i">

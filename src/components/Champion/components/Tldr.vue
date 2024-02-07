@@ -55,7 +55,7 @@ export default {
 
       coreItemImage(id) {
          // For custom images not on ddragon cdn
-         return (id === '10010') ? new URL(`../../../assets/boots.png`, import.meta.url).href :
+         return (id === '10010') ? new URL(`../../../assets/images/boots.png`, import.meta.url).href :
             `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/item/${id}.png`
       },
 

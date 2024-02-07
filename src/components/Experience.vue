@@ -1,5 +1,5 @@
 <script>
-import Experience from '../assets/Experience/Experience'
+import Experience from '@/experience/Experience'
 
 export default {
    data() {
