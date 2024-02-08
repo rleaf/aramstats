@@ -1,9 +1,11 @@
 <script>
+import Loading from '../components/Loading.vue'
 import axios from 'axios'
 import champions from '../constants/champions'
 
 export default {
    components: {
+      Loading
    },
    data() {
       return {
@@ -211,7 +213,7 @@ export default {
       </div>
    </div>
    <div v-else class="loading-champ-list">
-      Loading data...
+      <Loading />
    </div>
    
 </template>
@@ -235,6 +237,7 @@ export default {
 
    .champ-table {
       width: 1100px;
+      padding-bottom: 15vh;
       color: var(--color-font)
    }
 

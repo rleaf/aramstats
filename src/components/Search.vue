@@ -1,8 +1,8 @@
 <script>
 import Dropdown from '../components/Dropdown.vue'
 import champions from '../constants/champions'
+import { championsSearch } from '../stores/championsSearch.js'
 
-import axios from 'axios'
 
 export default {
    components: {
@@ -22,21 +22,13 @@ export default {
          championNames: null,
          champions: [],
          patch: null,
+         store: championsSearch()
       }
    },
 
    created() {
       const localRegion = localStorage.getItem('region')
       if (localRegion) this.region = localRegion
-
-      for (const champion of champions.names) {
-         let x = {}
-         x.back = (champion[1] === "MonkeyKing") ? 'wukong' : champion[1].toLowerCase()
-         x.front = champion[2]
-         // x.image = `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/champion/${champion[1]}.png`
-         x.image = champion[1].toLowerCase()
-         this.champions.push(x)
-      }
    },
 
    methods: {
@@ -109,19 +101,13 @@ export default {
          localStorage.setItem('region', this.region)
          this.$refs.input.focus()
          this.showRegions = false
-      },
-      
-      focusContainer() {
-         console.log(this.$refs.container)
-         this.containerFocus = true
-         console.log(this.containerFocus)
-      }
+      }, 
    },
 
    computed: {
       filteredChamps() {
          if (!this.input) return
-         return this.champions.filter(champ => champ.front.toLowerCase().startsWith(this.input.toLowerCase())).slice(0, 5)
+         return this.store.champions.filter(champ => champ.front.toLowerCase().startsWith(this.input.toLowerCase())).slice(0, 5)
       }
    }
 }

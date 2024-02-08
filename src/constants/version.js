@@ -8,9 +8,23 @@
       fix: [],
       adjust: []
    }, 
-*/
-
-const version = [
+   */
+  
+  const version = [
+   {
+      version: "3.4.0",
+      date: "2/8/24",
+      notes: "",
+      add: [
+         `Nav search bar`
+      ],
+      remove: [],
+      fix: [],
+      adjust: [
+         `Clean up assets`,
+         `Move computed properties to global stores (so much fuuuuun...)`,
+      ]
+   },  
    {
       version: "3.3.3",
       date: "2/6/24",

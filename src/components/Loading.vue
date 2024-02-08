@@ -1,18 +1,20 @@
 <script>
+// import { superStore } from '@/stores/superStore'
+
 export default {
    data() {
       return {
-
+         // config: superStore()
       }
    },
-
-   created() {
-
-   },
-
+   
    mounted() {
-
+      // this.config.loading = true
    },
+
+   unmounted() {
+      // this.config.loading = false
+   }
 }
 
 

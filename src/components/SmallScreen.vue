@@ -39,6 +39,6 @@ export default {
       font-size: 0.9rem;
       background-color: var(--light-12);
       color: var(--color-font);
-      z-index: 1;
+      z-index: 10;
    }
 </style>

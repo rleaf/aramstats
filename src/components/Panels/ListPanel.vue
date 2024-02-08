@@ -144,7 +144,7 @@ export default {
          </div>
 
          <button class="order-button" @click="this.order =! this.order">
-            <img src="../../assets/arrow2.svg" alt="" :class="{ up: !this.order}">
+            <img src="../../assets/svg/arrow2.svg" alt="" :class="{ up: !this.order}">
          </button>
 
          <div class="search">
