@@ -2,7 +2,7 @@
 import Nav from './components/Nav.vue'
 import SmallScreen from './components/SmallScreen.vue';
 import champions from './constants/champions';
-import { championsSearch } from './stores/championsSearch'
+import { superStore } from './stores/superStore'
 // import Header from './components/Header.vue'
 </script>
 
@@ -10,7 +10,7 @@ import { championsSearch } from './stores/championsSearch'
 export default {
     data() {
         return {
-            store: championsSearch()
+            store: superStore()
         }
     },
 

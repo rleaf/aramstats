@@ -1,7 +1,7 @@
 <script>
 import Dropdown from '../components/Dropdown.vue'
 import champions from '../constants/champions'
-import { championsSearch } from '../stores/championsSearch.js'
+import { superStore } from '../stores/superStore.js'
 
 
 export default {
@@ -11,9 +11,10 @@ export default {
 
    data() {
       return {
+         store: superStore(),
          input: '',
          tagLine: '',
-         region: 'rg',
+         region: 'RG',
          inputAlert: false,
          alertMessage: '',
          regionOptions: ['na','euw','eune','kr','lan','las','oce','tr','ru','jp','br','vn','tw','th','sg','ph'],
@@ -22,7 +23,6 @@ export default {
          championNames: null,
          champions: [],
          patch: null,
-         store: championsSearch()
       }
    },
 
@@ -41,6 +41,8 @@ export default {
       },
 
       summonerSearch() {
+         if (!this.input) return
+
          const table = {
             'na': 'NA1',
             'euw': 'EUW',
@@ -59,26 +61,17 @@ export default {
             'sg': 'SG2',
             'ph': 'PH2',
          }
-         if (this.input === '' || !this.regionOptions.includes(this.region)) {
-            const str = 'Enter a summoner name and/or region.'
-            this.showAlert(str)
+         if (this.region === 'RG') {
+            this.$refs.regionButton.classList.add('shake')
+            setTimeout(() => {
+               this.$refs.regionButton.classList.remove('shake')
+            }, 830)
             return
          }
 
          const identifiers = this.input.split('#')
          let _gameName = identifiers[0]
-         let _tagLine
-         if (identifiers.length === 2) {
-            _tagLine = identifiers[1]
-         } else {
-            if (!this.regionOptions.includes(this.region)) {
-               const str = `Click a region or enter a tagLine. Having a region selected will default to that region's tagline.`
-               this.showAlert(str)
-               return
-            }
-
-            _tagLine = table[this.region]
-         }
+         let _tagLine = (identifiers.length === 2) ? identifiers[1] : table[this.region]
 
          this.$router.push({ name: `user`, params: {
             region: this.region,
@@ -87,16 +80,7 @@ export default {
          }})
       },
 
-      showAlert(str) {
-         this.alertMessage = str
-         this.inputAlert = true
-         setTimeout(() => {
-            this.inputAlert = false
-         }, 1200)
-      },
-
       regionSelect(region) {
-         
          this.region = region
          localStorage.setItem('region', this.region)
          this.$refs.input.focus()
@@ -123,7 +107,7 @@ export default {
             @keyup.enter="summonerSearch"
             placeholder="Summoner or Champion"
             v-model="input">
-         <button class="region" @click="this.showRegions = true, this.containerFocus = false">
+         <button ref="regionButton" class="region" @click="this.showRegions = true, this.containerFocus = false">
             {{ this.region.toUpperCase() }}
          </button>
       </div>
@@ -132,21 +116,12 @@ export default {
             {{ region.toUpperCase() }}
          </div>
       </div>
-      <transition name="fade">
-         <div class="region-alert" v-show="inputAlert">
-            {{ this.alertMessage }}
-         </div>
-      </transition>
       <div ref="champions" class="champion-search" v-show="this.containerFocus && this.input.length > 0">
          <router-link :to="{ name: 'champions', params: {champion: champ.back} }" v-for="champ in filteredChamps">
             <img :src="this.getImage(champ.image)" alt="" srcset="" rel="preload">
             {{ champ.front }}
          </router-link>
       </div>
-      <!-- <div class="transition-wrapper">
-         <transition name="slide">
-         </transition>
-      </div> -->
    </div>
    <div class="back" @click="this.containerFocus = false" v-if="this.containerFocus"></div>
 </template>
@@ -213,7 +188,7 @@ export default {
    text-align: center;
    font-size: 0.9rem;
    margin: 0 .2rem;
-   padding: .2rem .4rem;
+   padding: 3px 6px;
    display: inline-block;
    background: var(--light-13);
    border-radius: 5px;
@@ -232,12 +207,16 @@ button.region {
    color: var(--color-font);
    font-family: var(--font-main);
    font-size: 0.9rem;
-   background: none;
-   font-size: 1rem;
-   border-radius: 5px;
+   background: var(--alpha-04);
+   border-radius: 4px;
    cursor: pointer;
    border: none;
-   padding: 0.2rem 0.4rem;
+   margin: 0;
+   padding: 2px 6px;
+}
+
+.shake {
+   animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
 }
 
 button.region:hover {
@@ -264,7 +243,7 @@ img.logo {
    background: var(--cell-panel);
    display: flex;
    align-items: center;
-   padding: 0.5rem 2rem;
+   padding: 0.7rem 2rem;
    border: 1px solid var(--cell-border);
    border-radius: 50px;
    width: 400px;
@@ -334,5 +313,23 @@ button {
 }
 .slide-leave-to {
    transform: translate(0, -100%)
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-3px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(3px, 0, 0);
+  }
 }
 </style>

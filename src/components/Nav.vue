@@ -1,19 +1,23 @@
 <script>
-   import { RouterLink, RouterView } from 'vue-router'
-   import { championsSearch } from '../stores/championsSearch.js'
+   import { superStore } from '../stores/superStore.js'
 
    export default {
       inheritAttrs: false,
       data() {
          return {
+            store: superStore(),
             day: false,
             focus: false,
             input: '',
-            showRegions: false,
+            regionFocus: false,
             region: 'RG',
             regionOptions: ['na', 'euw', 'eune', 'kr', 'lan', 'las', 'oce', 'tr', 'ru', 'jp', 'br', 'vn', 'tw', 'th', 'sg', 'ph'],
-            store: championsSearch()
          }
+      },
+
+      created() {
+         const localRegion = localStorage.getItem('region')
+         if (localRegion) this.region = localRegion
       },
 
       mounted() {
@@ -28,7 +32,7 @@
          },
          selectRegion(region) {
             this.region = region
-            this.showRegions = false
+            this.regionFocus = false
             this.$refs.input.focus()
          },
          focusInput() {
@@ -36,7 +40,7 @@
             this.$refs.input.focus()
          },
          terminate() {
-            this.showRegions = false
+            this.regionFocus = false
             this.focus = false
             this.input = ''
          },
@@ -47,14 +51,13 @@
             this.focus = false
             this.input = ''
          },
-         showAlert(str) {
-            this.alertMessage = str
-            this.inputAlert = true
-            setTimeout(() => {
-               this.inputAlert = false
-            }, 1200)
+         showRegions() {
+            this.regionFocus = true
+            // this.$refs.input.blur()
          },
          summonerSearch() {
+            if (!this.input) return
+
             const table = {
                'na': 'NA1',
                'euw': 'EUW',
@@ -73,26 +76,17 @@
                'sg': 'SG2',
                'ph': 'PH2',
             }
-            if (this.input === '' || !this.regionOptions.includes(this.region)) {
-               const str = 'Enter a summoner name and/or region.'
-               this.showAlert(str)
+            if (this.region = 'RG') {
+               this.$refs.regionButton.classList.add('shake')
+               setTimeout(() => {
+                  this.$refs.regionButton.classList.remove('shake')
+               }, 830)
                return
             }
 
             const identifiers = this.input.split('#')
             let _gameName = identifiers[0]
-            let _tagLine
-            if (identifiers.length === 2) {
-               _tagLine = identifiers[1]
-            } else {
-               if (!this.regionOptions.includes(this.region)) {
-                  const str = `Click a region or enter a tagLine. Having a region selected will default to that region's tagline.`
-                  this.showAlert(str)
-                  return
-               }
-
-               _tagLine = table[this.region]
-            }
+            let _tagLine = (identifiers.length === 2) ? identifiers[1] : table[this.region]
 
             this.$router.push({
                name: `user`, params: {
@@ -127,44 +121,56 @@
 <template>
    <nav>
       <div class="left">
-         <RouterLink class="nav-route" to="/">Home</RouterLink>
-         <RouterLink class="nav-route" to="/champions">Champions</RouterLink>
+         <router-link class="nav-route" to="/">Home</router-link>
+         <router-link class="nav-route" to="/champions">Champions</router-link>
       </div>
+
       <div v-if="navSearch">
-         <div :class="{'focus': this.focus}" @click="this.focusInput()" class="nav-search">
+         <div :class="{'focus': this.focus}" class="nav-search">
             <input ref="input" @focus="this.focusInput()" type="text" spellcheck="false" autocomplete="off"
             placeholder="Summoner or Champion"
             @keyup.enter="this.summonerSearch()"
             v-model="input">
-            <button @click="this.showRegions = true">{{ this.region.toUpperCase() }}</button>
+            <button ref="regionButton" @click="this.regionFocus = true">{{ this.region.toUpperCase() }}</button>
          </div>
-         <div class="regions" v-if="this.showRegions">
+         <div class="regions" v-if="this.regionFocus">
             <button v-for="region in this.regionOptions" @click="this.selectRegion(region)">
                {{ region.toUpperCase() }}
             </button>
          </div>
-         <div class="champion-search" v-if="this.focus && !this.showRegions">
+         <div class="champion-search" v-if="this.focus && !this.regionFocus">
             <router-link @click="this.champSearch()" :to="{ name: 'champions', params: { champion: champ.back } }" v-for="champ in filteredChamps">
                <img :src="this.getImage(champ.image)" alt="" srcset="" rel="preload">
                {{ champ.front }}
             </router-link>
          </div>
-         <div v-if="this.focus" class="bg" @click="this.terminate()"></div>
+         <div v-if="this.focus || this.regionFocus" class="bg" @click="this.terminate()"></div>
       </div>
+      
       <div class="right">
          <div class="toad">
          </div>
          <button @click="this.theme()" :class="{day: this.day}">
             <div class="theme"></div>
          </button>
-         <RouterLink class="nav-route" to="/updates">Updates</RouterLink>
-         <RouterLink class="nav-route" to="/about">About</RouterLink>
+         <router-link class="nav-route" to="/updates">Updates</router-link>
+         <router-link class="nav-route" to="/about">About</router-link>
       </div>
    </nav>
-   <RouterView />
+   <router-view />
 </template>
 
 <style scoped>
+.region-alert {
+   position: absolute;
+   transform: translateX(calc(203px - 50%));
+   background: var(--alpha-04);
+   border-radius: 5px;
+   margin-top: 5px;
+   padding: 4px 6px;
+   color: var(--color-font);
+   font-size: 0.85rem;
+}
 
 .bg {
    position: fixed;
@@ -189,6 +195,11 @@
    font-size: 0.9rem;
    transition: 0.25s ease-in-out;
 }
+
+.shake {
+   animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+}
+
 .regions button:hover {
    color: var(--color-font-focus);
    background: var(--light-12);
@@ -268,15 +279,16 @@
 }
 
 .nav-search button {
+   background: var(--alpha-04);
    color: var(--color-font-faded);
-   font-size: 0.85rem;
-   padding: 3px 7px;
+   font-size: 0.8rem;
+   padding: 2px 5px;
    border-radius: 3px;
    transition: 0.1s ease-in-out;
 }
 .nav-search button:hover {
    background: var(--alpha-06);
-   color: var(--color-font);
+   color: var(--color-font-focus);
 }
 
 nav {
@@ -354,5 +366,23 @@ button {
    -webkit-mask-position: center;
    -webkit-mask-size: var(--theme-mask-size);
    -webkit-mask-repeat: no-repeat;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-3px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(3px, 0, 0);
+  }
 }
 </style>

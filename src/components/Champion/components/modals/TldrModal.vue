@@ -1,5 +1,5 @@
 <script>
-import { championStore } from '@/stores/championConfig'
+import { championStore } from '@/stores/championStore'
 
 export default {
    data() {

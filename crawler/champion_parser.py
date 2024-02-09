@@ -5,6 +5,7 @@ import validators as V
 from itertools import repeat
 from multiprocessing import Pool
 from pymongo import MongoClient, UpdateOne
+from bson.objectid import ObjectId
 from dotenv import load_dotenv
 
 import pprint
@@ -17,7 +18,7 @@ class ChampionParser():
       patch = util.get_latest_patch(two=True)
       collection_list = db.list_collection_names()
       match_collection_name = f"{patch[0]}_matches"
-      champion_collection = f"{patch[0]}_championstats"
+      champion_collection = f"PREP_{patch[0]}_championstats"
       self.items = util.get_items()
       self.batch_size = 10 # Number of match documents in a batch. Care bear: 1 match = 10 champions, so bulk_writing to 100 champion documents for a 10 batch size
 
@@ -32,22 +33,23 @@ class ChampionParser():
          if meta_collection.find_one({ "_id": "crawler" })["patch"] != patch:
             meta_collection.update_one({ "_id": "crawler" }, { "$set": {"patch": patch, "champ_parse_index": 0} })
             self.index = 0
+            self.trail = None
          else:
             self.index = meta_collection.find_one({ "_id": "crawler" })["champ_parse_index"]
+            self.trail = meta_collection.find_one({ "_id": "crawler" })["trail"]
+      self.query = {} if self.trail is None else { '_id': { "$gt": self.trail } }
 
       print("Starting champion parser")
 
+      trail_id = None
       for i, batch in enumerate(self.get_batches()):
-         self.index += len(batch)
+         trail_id = batch[-1]['_id']
          if (i % 5 == 0 and i > 0): # Update every 50 matches
-            print(f"Updating index")
-            meta_collection.update_one({ "_id": "crawler" }, { "$set": {"champ_parse_index": self.index} })
-
+            meta_collection.update_one({ "_id": "crawler" }, { "$set": {"trail": ObjectId(trail_id)} })
          # start = time.perf_counter()
          print(f"On batch {i}")
          
          with Pool() as p:
-            # bin = p.map(forward, batch)
             bin = p.starmap(forward, zip(batch, repeat(self.items)))
             flat = [x for xs in bin for x in xs]
             self.champion_stats_collection.bulk_write(flat)
@@ -57,7 +59,7 @@ class ChampionParser():
          # print(f"Finished batch {i} in {round(finish-start, 2)} second(s)")
 
       print(f"Updating index")
-      meta_collection.update_one({ "_id": "crawler" }, { "$set": {"champ_parse_index": self.index} })
+      if trail_id is not None: meta_collection.update_one({ "_id": "crawler" }, { "$set": {"trail": ObjectId(trail_id)} })
       self.preprocess()
 
    def preprocess(self):
@@ -109,7 +111,8 @@ class ChampionParser():
       """
       batch = []
       i = 0
-      for i, doc in enumerate(self.match_collection.find(skip=self.index)):
+      # for i, doc in enumerate(self.match_collection.find(skip=self.index)):
+      for i, doc in enumerate(self.match_collection.find(self.query).sort("_id", 1)):
          if i % self.batch_size == 0 and i > 0:
             yield batch
             del batch[:]

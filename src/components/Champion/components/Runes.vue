@@ -2,7 +2,7 @@
 import RunesModal from './modals/RunesModal.vue'
 import _runes from '@/constants/runes'
 import _flex from '@/constants/flex'
-import { championStore } from '@/stores/championConfig'
+import { championStore } from '@/stores/championStore'
 
 export default {
    components: {

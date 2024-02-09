@@ -11,7 +11,6 @@ import ChampSearch from '../ChampSearch.vue'
 import Danger from '../Danger.vue'
 import axios from 'axios'
 
-import { userReadyStore } from '../../stores/userReady'
 
 export default {
    components: {
@@ -52,7 +51,6 @@ export default {
                penta: 0
             },
          },
-         store: userReadyStore()
       }
    },
 
@@ -65,18 +63,8 @@ export default {
       }
    },
 
-   created() {
-      this.store.userReady = true
-      
-      // if (this.championData) { error handling for summoners w/ 0 aram matches
-      // }
+   created() {      
       this.summonerAverages()
-      // Pull patch data from https://ddragon.leagueoflegends.com/api/versions.json
-
-   },
-
-   unmounted() {
-      this.store.userReady = false
    },
 
    methods: {

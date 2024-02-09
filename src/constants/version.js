@@ -13,15 +13,17 @@
   const version = [
    {
       version: "3.4.0",
-      date: "2/8/24",
+      date: "2/9/24",
       notes: "",
       add: [
-         `Nav search bar`
+         `Search bar to nav`
       ],
       remove: [],
       fix: [],
       adjust: [
+         `More reliable pagination for aggregating champion stats`,
          `Clean up assets`,
+         `Clean up frontend`,
          `Move computed properties to global stores (so much fuuuuun...)`,
       ]
    },  
