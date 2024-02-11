@@ -123,7 +123,7 @@ export default {
          <div class="unit-dropdown">
             <button @click="button">
                {{ Object.keys(this.book)[this.unit] }}
-               <img src="../assets/arrow3.svg" alt="" :style="arrow" />
+               <img src="../assets/svg/arrow3.svg" alt="" :style="arrow" />
             </button>
             <div class="unit-drop" v-if="this.unitDrop">
                <div class="unit" v-for="([k, v], i) of Object.entries(this.book)" :key="unit"

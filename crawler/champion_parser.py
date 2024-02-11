@@ -18,7 +18,7 @@ class ChampionParser():
       patch = util.get_latest_patch(two=True)
       collection_list = db.list_collection_names()
       match_collection_name = f"{patch[0]}_matches"
-      champion_collection = f"PREP_{patch[0]}_championstats"
+      champion_collection = f"{patch[0]}_championstats"
       self.items = util.get_items()
       self.batch_size = 10 # Number of match documents in a batch. Care bear: 1 match = 10 champions, so bulk_writing to 100 champion documents for a 10 batch size
 

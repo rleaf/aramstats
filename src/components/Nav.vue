@@ -76,7 +76,7 @@
                'sg': 'SG2',
                'ph': 'PH2',
             }
-            if (this.region = 'RG') {
+            if (this.region === 'RG') {
                this.$refs.regionButton.classList.add('shake')
                setTimeout(() => {
                   this.$refs.regionButton.classList.remove('shake')

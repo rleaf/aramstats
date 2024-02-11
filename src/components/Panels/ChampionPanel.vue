@@ -163,7 +163,7 @@ export default {
          <div class="stat-dropdown">
             <button @click="changeUnit">
                {{ this.statFilter[0] }}
-               <img src="../../assets/arrow3.svg" alt="" :class="{ down: this.statDrop }">
+               <img src="../../assets/svg/arrow3.svg" alt="" :class="{ down: this.statDrop }">
             </button>
             <div class="stat-drop" v-if="this.statDrop">
                <div class="stat" v-for="[k, v] of Object.entries(statBook)" :key="k" @click="() => {
