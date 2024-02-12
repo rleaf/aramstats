@@ -71,6 +71,14 @@ export default {
                return 'R'
          }
       },
+
+      scrollTo(val) {
+         const top = document.querySelector(`#${val}`).offsetTop
+         window.scrollTo({
+            top: top
+            // behavior: 'smooth'
+         })
+      }
    },
 
    computed: {
@@ -86,7 +94,7 @@ export default {
 
       championWinrate() {
          return `${Math.round((this.champion.wins / this.champion.games) * 1000) / 10}%`
-      },
+      }
    },
    
    props: {
@@ -135,10 +143,10 @@ export default {
       </div>
 
       <div class="champion-body">
-          <Tldr :champion="this.champion" :patch="this.patch" />
-          <Items :champion="this.champion" :patch="this.patch" :itemData="this.itemData"/>
-          <Runes :champion="this.champion" :patch="this.patch" />
-          <StartingSpells :champion="this.champion" :patch="this.patch" :abilities="this.abilities"/>
+         <Tldr  @scroll="scrollTo" :champion="this.champion" :patch="this.patch" />
+         <Items :champion="this.champion" :patch="this.patch" :itemData="this.itemData"/>
+         <Runes :champion="this.champion" :patch="this.patch" />
+         <StartingSpells :champion="this.champion" :patch="this.patch" :abilities="this.abilities"/>
       </div>
    </div>
 </template>

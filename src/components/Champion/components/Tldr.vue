@@ -259,7 +259,7 @@ export default {
             <div class="items">
                <div class="sub-section-header">
                   <div class="sub-lhs">
-                     <a href="#items" class="title">Items</a>
+                     <a @click="$emit('scroll', 'items')" class="title">Items</a>
                   </div>
                   <Tooltip :tip="'items'" />
                </div>
@@ -279,7 +279,7 @@ export default {
             <div class="starting-spells">
                <div class="starting">
                   <div class="sub-section-header">
-                     <a href="#spells" class="title">Starting</a>
+                     <a @click="$emit('scroll', 'spells')" class="title">Starting</a>
                      <div class="sub-rhs">
                         <div class="misc">
                            <h3>{{ this.filteredWinrate(startingItems[2] / startingItems[1]) }}</h3>
@@ -293,7 +293,7 @@ export default {
                </div>
                <div class="spells">
                   <div class="sub-section-header">
-                     <a href="#spells" class="title">Spells</a>
+                     <a @click="$emit('scroll', 'spells')" class="title">Spells</a>
                      <div class="sub-rhs">
                         <div class="misc">
                            <h3>{{ this.filteredWinrate(startingSpells[2] / startingSpells[1]) }}</h3>
@@ -309,7 +309,7 @@ export default {
          <div class="runes-leveling">
             <div class="runes">
                <div class="sub-section-header">
-                  <a href="#runes" class="title">Runes</a>
+                  <a @click="$emit('scroll', 'runes')" class="title">Runes</a>
                   <div class="sub-rhs">
                      <div class="misc">
                         <div>
@@ -348,7 +348,7 @@ export default {
             </div>
             <div class="leveling">
                <div class="sub-section-header">
-                  <a href="#spells" class="title">Level Order</a>
+                  <a @click="$emit('scroll', 'spells')" class="title">Level Order</a>
                   <div class="sub-rhs">
                      <div class="misc">
                         <h3>{{ this.filteredWinrate(levels[2] / levels[1]) }}</h3>

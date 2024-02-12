@@ -104,6 +104,7 @@
    text-decoration: none;
    transition: 0.15s ease-in-out;
    border-radius: 3px;
+   cursor: pointer;
    padding: 1px 3px;
 }
 .sub-section-header a:hover {

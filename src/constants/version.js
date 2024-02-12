@@ -12,6 +12,18 @@
   
   const version = [
    {
+      version: "3.4.1",
+      date: "2/12/24",
+      notes: "",
+      add: [],
+      remove: [],
+      fix: [
+         `Anchor scrolling on champion stats`,
+         `Patch rollback speed from 3.3.3`
+      ],
+      adjust: []
+   },  
+   {
       version: "3.4.0",
       date: "2/9/24",
       notes: "",
