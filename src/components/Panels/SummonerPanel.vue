@@ -1,14 +1,12 @@
 <script>
 import StackedBarplot from '../StackedBarplot.vue'
 import Challenges from '../Challenges.vue'
-import Wip from '../Wip.vue'
 import { classBook } from '@/constants/champClasses.js'
 
 export default {
    components: {
       StackedBarplot,
       Challenges,
-      Wip
    },
 
    data() {
@@ -80,7 +78,6 @@ export default {
 
 <template>
    <div class="summoner-main">
-      <Wip />
       <StackedBarplot :data="this.classProfile"/>
       <Challenges :data="this.challengeData"/> 
    </div>

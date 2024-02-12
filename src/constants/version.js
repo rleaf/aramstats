@@ -15,7 +15,10 @@
       version: "3.4.1",
       date: "2/12/24",
       notes: "",
-      add: [],
+      add: [
+         `Redesign notification to summoner page`
+
+      ],
       remove: [],
       fix: [
          `Anchor scrolling on champion stats`,

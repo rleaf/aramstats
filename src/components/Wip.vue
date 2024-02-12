@@ -11,7 +11,7 @@ export default {
 
 <template>
    <div class="wip-main">
-      🚧 This section is a work in progress - the UI may be a little weird. Champion stat pages are showing 13.24 data. 🚧
+      🚧 Hello, I am currently redesigning this entire page. Things may look a little weird currently. 🚧
    </div>
 </template>
 

@@ -5,6 +5,7 @@ import Encounters from '../Encounters.vue'
 import ListPanel from '../Panels/ListPanel.vue'
 import SummonerPanel from '../Panels/SummonerPanel.vue'
 import ChampionPanel from '../Panels/ChampionPanel.vue'
+import Wip from '../Wip.vue'
 
 import Histogram from '../Histogram.vue'
 import ChampSearch from '../ChampSearch.vue'
@@ -21,7 +22,8 @@ export default {
       ListPanel,
       SummonerPanel,
       ChampionPanel,
-      Danger
+      Danger,
+      Wip
    },
 
    data() {
@@ -192,6 +194,7 @@ export default {
 </script>
 
 <template>
+   <Wip />
    <div class="user-ready-main" :key="this.updateKey">
       <div class="lhs">
          <div class="profile" :style="background">
