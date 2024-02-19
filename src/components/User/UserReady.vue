@@ -194,7 +194,7 @@ export default {
 </script>
 
 <template>
-   <Wip />
+   <!-- <Wip /> -->
    <div class="user-ready-main" :key="this.updateKey">
       <div class="lhs">
          <div class="profile" :style="background">

@@ -2,7 +2,7 @@
 export default {
    data() {
       return {
-
+         link: null,
       }
       
    }, 
@@ -10,9 +10,9 @@ export default {
 </script>
 
 <template>
-   <div class="wip-main">
-      🚧 Hello, I am currently redesigning this entire page. Things may look a little weird currently. 🚧
-   </div>
+<div class="wip-main">
+   🚧  🚧
+</div>
 </template>
 
 <style scoped>
@@ -25,7 +25,12 @@ export default {
       font-size: 0.8rem;
       margin: 0 auto;
       margin-top: 20px;
-      width: max-content;
+      width: 480px;
       border-radius: 15px;
+   }
+
+   .wip-main a {
+      color: var(--color-font);
+
    }
 </style>

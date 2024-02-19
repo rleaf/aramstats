@@ -3,7 +3,7 @@ import Nav from './components/Nav.vue'
 import SmallScreen from './components/SmallScreen.vue';
 import champions from './constants/champions';
 import { superStore } from './stores/superStore'
-// import Header from './components/Header.vue'
+import Header from './components/Header.vue'
 </script>
 
 <script>
@@ -29,7 +29,7 @@ export default {
 
 <template>
     <SmallScreen />
-    <!-- <Header /> -->
+    <Header />
     <Nav />
 </template>
 
