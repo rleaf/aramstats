@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 const summonerSchema = new mongoose.Schema({
    // puuid: String,
-   _id: String,
+   _id: String, // Summoner puuid
    gameName: String,
    tagLine: String,
    name: String, // Slowly being removed
