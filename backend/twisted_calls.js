@@ -57,10 +57,6 @@ async function getAccount(gameName, tagLine) {
 async function getSummoner(puuid, region) {
    return (await lolApi.Summoner.getByPUUID(puuid, REGION_CONSTANTS[region])).response
 }
-// async function getSummoner(summoner, region) {
-//    return (await lolApi.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
-// }
-
 
 /* 
 * Variable match history for ARAM (450). Used for utility.
@@ -116,11 +112,14 @@ async function getSummonerMatchesOnPatch(puuid, region, patch) {
 * Match info.
 */
 async function getMatchInfo(matchId, region) {
-   try {
-      return (await lolApi.MatchV5.get(matchId, REGION_GROUPS[region])).response
-   } catch (e) {
-      throw e.body.status
-   }
+   return (await lolApi.MatchV5.get(matchId, REGION_GROUPS[region])).response
+}
+
+/* 
+* Match timeline info.
+*/
+async function getMatchTimeline(matchId, region) {
+   return (await lolApi.MatchV5.timeline(matchId, REGION_GROUPS[region])).response
 }
 
 /* 
@@ -138,5 +137,6 @@ module.exports = {
    getAllSummonerMatches,
    getSummonerMatchesOnPatch,
    getMatchInfo,
+   getMatchTimeline,
    playerChallenges
 }

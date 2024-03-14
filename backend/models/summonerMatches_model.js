@@ -61,4 +61,4 @@ const summonerMatchesSchema = new mongoose.Schema({
    }
 })
 
-module.exports = mongoose.model('summoner_matches', summonerMatchesSchema)
+module.exports = mongoose.model('summoner_matches_TEST', summonerMatchesSchema)

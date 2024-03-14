@@ -32,10 +32,10 @@ import axios from 'axios'
          //    }
          // }, 5000)
 
-         this.poll = setInterval(() => {
-            this.unique++
-            this.lookup()
-         }, 30000)
+         // this.poll = setInterval(() => {
+         //    this.unique++
+         //    this.lookup()
+         // }, 30000)
       },
       
       mounted() {

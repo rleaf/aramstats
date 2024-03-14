@@ -20,8 +20,8 @@ mongoose.connect(process.env.DB_CONNECTION_STRING, {dbName: 'aramstats'})
       throw err
    })
 
-const summoners = require('./routes/summoner')
-// const summoners = require('./routes/summonerNew')
+// const summoners = require('./routes/summoner')
+const summoners = require('./routes/summonerNew')
 const matchInfo = require('./routes/matchInfo')
 const championInfo = require('./routes/champion')
 const championsList = require('./routes/championsList')

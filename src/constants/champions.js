@@ -1,6 +1,6 @@
 /* 
-   12/2/23
-   Newest champ: Hwei
+   3/13/24
+   Newest champ: Smoler
    0: Champion id, 1: For code, 2: For humans 
 */
 
