@@ -64,8 +64,10 @@ function parseTimeline(timeline, playerIndex) {
       let e = timeline.info.frames[i].events
       let victims = []
       let participants = new Set()
-      let t1p = false
-      let t2p = false
+      let tf_1
+      let k1
+      let tf = false
+      let tfContainer = []
       
       for (let j = 0; j < e.length; j++) {
          if (capFlag && e[j].type === 'BUILDING_KILL') {
@@ -73,41 +75,75 @@ function parseTimeline(timeline, playerIndex) {
             capFlag = false
          }
          
-         if (e[j].type === 'CHAMPION_KILL') {
-            if (!('assistingParticipantIds' in e[j]) || e[j].assistingParticipantIds.length < 3) continue
-            if (e[j].killerId <= 5) {
-               t1p = true
-            } else {
-               t2p = true
-            }
+         // if (e[j].type === 'CHAMPION_KILL') {
+         //    tf_1 = e[j].timestamp
+         //    k1 = e[j].killerId
+         //    for (let o = j + 1; o < e.length; o++) {
+         //       if ((e[j].timestamp - e[o].timestamp) >= 15000) break
+         //       if (e[o].type !== 'CHAMPION_KILL') continue
+         //       tfContainer.push(e[o])
+         //    }
 
-            victims.push(e[j].victimId)
-            e[j].assistingParticipantIds.forEach(p => participants.add(p))
-            
-            if ((t1p && t2p) && j === e.length - 1) {
-               timelineData.freq++
+         //    if (!('assistingParticipantIds' in e[j]) || e[j].assistingParticipantIds.length < 3) continue
 
-               let teamVictims = victims.filter(el => {
-                  if (playerIndex <= 5) {
-                     return el <= 5
-                  } else {
-                     return el > 5
-                  }
-               })
+         //    e[j].assistingParticipantIds.forEach(p => participants.add(p))
+         //    victims.push(e[j].victimId)
 
-               timelineData.exp += teamVictims.findIndex(el => el === playerIndex) + 1
-               timelineData.use += teamVictims.length - victims.length
+
+         //    for (let k = 0; k < tfContainer.length; k++) {
+         //       victims.push(e[k].victimId)
+         //       e[k].assistingParticipantIds.forEach(p => participants.add(p))
+         //       if (!('assistingParticipantIds' in e[k]) || e[k].assistingParticipantIds.length < 3) continue
+         //       if ((e[k].killerId <= 5 && k1 <= 5) || (e[k].killerId > 5 && k1 > 5)) continue
+         //       tf = true
+
+         //       if (k === tfContainer.length - 1) j += k
+         //    }
+
+         //    if (tf) {
+         //       console.log(`teamfight detected on frame ${i}, timestamp ${tf_1}`)
+         //       let t = 0
+         //       let e = 0
+         //       let f = []
+
+         //       timelineData.freq++
+
+         //       victims.forEach(v => {
+         //          if (v <= 5 && playerIndex <= 5) {
+         //             f.push(v)
+         //             t++
+         //          } else {
+         //             e++
+         //          }
+
+         //          if (v > 5 && playerIndex > 5) {
+         //             t++
+         //          } else {
+         //             e++
+         //          }
+         //       })
                
-               if (participants.has(playerIndex)) timelineData.part++
-               if (!capFlag) capFlag = false
-            }
+         //       timelineData.use += f.findIndex(o => o === playerIndex) + 1
+         //       timelineData.exp += (t - e)               
+         //       if (participants.has(playerIndex)) timelineData.part++
+         //       if (!capFlag) capFlag = false
+         //       // t1p = null
+         //       // t2p = null
+         //       tf = false
+         //    }
    
-         }
+         // }
       }
    }
-   // Expectation
-   console.log(timelineData, 'toadies')
-   console.log(toadies)
+
+   if (timelineData.freq) {
+      const af = (o) => {
+         return Math.round((o / timelineData.freq) * 10) / 10
+      }
+      timelineData.exp = af(timelineData.exp)
+      timelineData.use = af(timelineData.use)
+   }
+
    return timelineData
 }
 
@@ -147,8 +183,10 @@ async function parseMatchlist(summonerDocument, matchlist, update=false) {
 
       if (timeline) {
          timelineData = parseTimeline(timeline, playerIndex)
+         console.log(timelineData, 'toadies')
       }
-      
+      // console.log(turkeys)
+
       const matchDocument = new summonerMatchesModel({
          m: summonerDocument._id,
          mId: match.metadata.matchId,
@@ -260,13 +298,13 @@ async function parseMatchlist(summonerDocument, matchlist, update=false) {
          }
       }
 
-      // await puuidModel.bulkWrite(participantPuuids)
-      //    .catch(e => {
-      //       throw e
-      //    })
+      await puuidModel.bulkWrite(participantPuuids)
+         .catch(e => {
+            throw e
+         })
 
-      // await matchDocument.save()
-      // await summonerDocument.save()
+      await matchDocument.save()
+      await summonerDocument.save()
    }
 }
 
