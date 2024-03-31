@@ -16,8 +16,10 @@ const championEmbedSchema = new mongoose.Schema({
       exp: { type: Number, default: 0 },       // expectation
       cap: { type: Number, default: 0 },       // capitalization
       use: { type: Number, default: 0 },       // usefullness
+      death: { type: Number, default: 0 },     // death probability
       part: { type: Number, default: 0 },      // participation
       freq: { type: Number, default: 0 },      // frequency
+      fs: { type: Number, default: 0 },        // fountain sitting
    },
    mk: {                                       // multikills
       t: { type: Number, default: 0 },         // triple

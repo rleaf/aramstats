@@ -3,8 +3,8 @@ const a = {a: 1, b: 2, c: 3}
 const b = {a: 1, b: 2, d: 3}
 let c
 let d = 5
-console.log(c + d)
-if (c+d) console.log('toad')
+console.log(arr[9])
+if (arr[9]) console.log('toad')
 let f1
 if (10 - c > 5) console.log('rhino');
 if (!f1) console.log('turkey');
@@ -15,7 +15,8 @@ console.log(Math.pow(-2, 2))
 
 delete arr[3]
 arr
-
+const af = o => (o ** 2)
+console.log(af(3))
 let arr2 = [
    {
       assistingParticipantIds: [Array],

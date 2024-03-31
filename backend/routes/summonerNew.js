@@ -58,6 +58,7 @@ function parseTimeline(timeline, playerIndex, playerTeam) {
       exp: 0,   // expectation
       cap: 0,   // capitalization
       use: 0,   // usefullness
+      death: 0, // death probability
       part: 0,  // participation
       freq: 0,  // frequency
       fs: 1,    // fountain sitting
@@ -117,6 +118,7 @@ function parseTimeline(timeline, playerIndex, playerTeam) {
 
    for (let i = 0; i < teamfights.length; i++) {
       let use = []
+      let death = false
       let part = false
       for (let j = 0; j < teamfights[i].length; j++) {
          const cell = teamfights[i][j]
@@ -125,24 +127,34 @@ function parseTimeline(timeline, playerIndex, playerTeam) {
          if ((playerIndex <= 5 && cell.killerId <= 5) || (playerIndex > 5 && cell.killerId > 5)) timelineData.exp++
          if ((playerIndex <= 5 && cell.victimId <= 5) || (playerIndex > 5 && cell.victimId > 5)) timelineData.exp--
          
-         // Participation
-         if (cell.assistingParticipantIds[playerIndex] || cell.killerId === playerIndex) part = true
+         if (('assistingParticipantIds' in cell
+            && cell.assistingParticipantIds[playerIndex])
+            || cell.killerId === playerIndex
+            || cell.victimId === playerIndex) {
+               // Participation
+               part = true
 
-         // Usefullness
-         if ((playerIndex <= 5 && cell.victimId <= 5) || (playerIndex > 5 && cell.victimId > 5)) use.push(cell.victimId)
+               // Usefullness
+               if ((playerIndex <= 5 && cell.victimId <= 5) || (playerIndex > 5 && cell.victimId > 5)) use.push(cell.victimId)
+            }
+
+         // Death Probability
+         if (cell.victimId === playerIndex) death = true
       }
+
       if (part) timelineData.part++
+      if (death) timelineData.death++
       
       // Usefullness
-      timelineData.use += use.findIndex(o => o === playerIndex) + 1
+      let player = (use.findIndex(o => o === playerIndex) + 1) ? use.findIndex(o => o === playerIndex) + 1 : 6
+      timelineData.use += player
    }
 
-   const af = (o) => {
-      return Math.round((o / timelineData.freq) * 10) / 10
-   }
+   const af = (n, d) => (Math.round((n / d) * 10) / 10)
 
-   timelineData.exp = af(timelineData.exp)
-   timelineData.use = af(timelineData.use)
+   timelineData.exp = af(timelineData.exp, timelineData.freq)
+   timelineData.use = af(timelineData.use, timelineData.part)
+   timelineData.death = af(timelineData.death, timelineData.part)
 
    return timelineData
 }
@@ -200,7 +212,7 @@ async function parseMatchlist(summonerDocument, matchlist, update=false) {
          timelineData = parseTimeline(timeline, playerIndex, playerTeam)
          console.log(timelineData, 'toadies')
       }
-      console.log(turkeys)
+      // console.log(turkeys)
 
       const matchDocument = new summonerMatchesModel({
          m: summonerDocument._id,
@@ -284,9 +296,11 @@ async function parseMatchlist(summonerDocument, matchlist, update=false) {
       if (timelineData) {
          championEmbed.tf.exp += timelineData.exp
          championEmbed.tf.cap += timelineData.cap
-         championEmbed.tf.rel += timelineData.rel
+         championEmbed.tf.use += timelineData.use
+         championEmbed.tf.death += timelineData.death
          championEmbed.tf.part += timelineData.part
          championEmbed.tf.freq += timelineData.freq
+         championEmbed.tf.fs += timelineData.fs
       }
 
       for (const participant of match.info.participants) {
@@ -313,13 +327,13 @@ async function parseMatchlist(summonerDocument, matchlist, update=false) {
          }
       }
 
-      // await puuidModel.bulkWrite(participantPuuids)
-      //    .catch(e => {
-      //       throw e
-      //    })
+      await puuidModel.bulkWrite(participantPuuids)
+         .catch(e => {
+            throw e
+         })
 
-      // await matchDocument.save()
-      // await summonerDocument.save()
+      await matchDocument.save()
+      await summonerDocument.save()
    }
 }
 
