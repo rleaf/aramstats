@@ -1,3 +1,4 @@
+const config  = require('../../config')
 const twisted = require('../../twisted_calls')
 const summonerMatchesModel = require('../../models/summonerMatches_model')
 const summonerModel = require('../../models/summoner_model')
@@ -43,6 +44,7 @@ class Summoner {
       }
       let teamfights = []
       let bin = []
+      let c1, c2
       let initTimestamp
       let capFlag
       let tfPrerequisite = 0
@@ -63,7 +65,7 @@ class Summoner {
             }
 
             if (e[j].timestamp - initTimestamp > CONTIGUITY) {
-               if (tfPrerequisite > 1 && bin.length > 3 && averageDistance(bin) < AVG_TEAMFIGHT_DISTANCE) {
+               if (tfPrerequisite > 1 && bin.length > 3 && this.averageDistance(bin) < AVG_TEAMFIGHT_DISTANCE) {
                   teamfights.push(bin)
                   capFlag = e[j].timestamp
                }
@@ -151,9 +153,9 @@ class Summoner {
       return avg
    }
 
-   async parseMatchlist(summonerDocument, matchlist, update = false) {
-
+   async parseMatchlist(summonerDocument, matchlist, championIds) {
       summonerDocument.parse.total = matchlist.length
+      summonerDocument.parse.status = config.STATUS_PARSING
       summonerDocument.lastMatchId = matchlist[0]
       await summonerDocument.save() // for sanity?
 
@@ -163,6 +165,7 @@ class Summoner {
          let timeline
          let timelineData
          let playerIndex
+         let playerTeam
          let player
          let championEmbed
          let participantPuuids = []
@@ -186,12 +189,13 @@ class Summoner {
          player = match.info.participants.find(p => p.puuid === summonerDocument._id)
          playerIndex = player.participantId
          playerTeam = player.teamId
+         if (championIds) championIds.add(player.championId)
 
          try {
             timeline = await twisted.getMatchTimeline(matchId, summonerDocument.region)
          } catch (e) { }
 
-         if (timeline) timelineData = parseTimeline(timeline, playerIndex, playerTeam)
+         if (timeline) timelineData = this.parseTimeline(timeline, playerIndex, playerTeam)
 
          const matchDocument = new summonerMatchesModel({
             m: summonerDocument._id,
@@ -203,9 +207,9 @@ class Summoner {
             k: player.kills,
             d: player.deaths,
             a: player.assists,
-            kp: getKillParticipation(player, match.info.participants),
-            ds: getDamageShare(player, match.info.participants),
-            i: getItems(player),
+            kp: this.getKillParticipation(player, match.info.participants),
+            ds: this.getDamageShare(player, match.info.participants),
+            i: this.getItems(player),
             s1: player.summoner1Id,
             s2: player.summoner2Id,
             pr: player.perks.styles[0].selections[0].perk,
@@ -318,88 +322,161 @@ class Summoner {
 
       summonerDocument.parse.current = 0
       summonerDocument.parse.total = 0
-      summonerDocument.updated = Date.now()
+      summonerDocument.parse.status = config.STATUS_CHAMPION_AVERAGES // computing averages always follows
 
+      await summonerDocument.save()
+      if (championIds) return championIds
+   }
+
+   async computeChampionAverages(summonerDocument, championIds) {
+      for (const champion of summonerDocument.championData) {
+
+         if (championIds && championIds.has(champion.championId)) {
+            Object.keys(champion.avg).forEach(v => champion.avg[v] = 0)
+         }
+
+         const matches = await summonerMatchesModel.find({ '_id': { $in: champion.matches } })
+
+         for (const match of matches) {
+            champion.avg.ahpm += Math.round(match.t.ah / match.gd)
+            champion.avg.a += match.a
+            champion.avg.dpm += Math.round(match.t.dtc / match.gd)
+            champion.avg.ds += match.ds * 100
+            champion.avg.dtpm += Math.round(match.t.dt / match.gd)
+            champion.avg.d += match.d
+            champion.avg.ge += match.t.g
+            champion.avg.gpm += Math.round(match.t.g / match.gd)
+            champion.avg.hpm += Math.round(match.t.h / match.gd)
+            champion.avg.ah += match.t.ah
+            champion.avg.kp += match.kp * 100
+            champion.avg.k += match.k
+            champion.avg.smpm += Math.round(match.t.sm / match.gd)
+            champion.avg.tdd += match.t.dtc
+            champion.avg.tdt += match.t.dt
+            champion.avg.th += match.t.h
+            champion.avg.tsm += match.t.sm
+         }
+
+         for (const [k, v] of Object.entries(champion.avg)) {
+            champion.avg[k] = Math.round(v / matches.length)
+         }
+      }
+
+      summonerDocument.parse.status = config.STATUS_COMPLETE
+      summonerDocument.updated = Date.now()
       await summonerDocument.save()
    }
 
-   async aggregateSummoner(puuid) {
-   return await summonerModel.aggregate([
-      { $match: { _id: puuid } },
-      { $unwind: "$championData" },
-      {
-         $lookup: {
-            from: "test_summoner_matches",
-            localField: "championData.matches",
-            foreignField: "_id",
-            as: "championData.matches",
-            pipeline: [ // For Encounters.vue
-               {
-                  $lookup: {
-                     from: "test_summoner_puuids",
-                     localField: "te",
-                     foreignField: "_id",
-                     as: "te",
-                     pipeline: [
-                        {
-                           $project: {
-                              _id: 0,
-                           }
-                        }
-                     ]
-                  }
-               },
-               {
-                  $lookup: {
-                     from: "test_summoner_puuids",
-                     localField: "ee",
-                     foreignField: "_id",
-                     as: "ee",
-                     pipeline: [
-                        {
-                           $project: {
-                              _id: 0,
-                           }
-                        }
-                     ]
-                  }
-               },
-               {
-                  $project: {
-                     _id: 0,
-                     __v: 0
-                  }
-               }
-            ]
-         }
-      },
-      // Lookup does not guarantee order https://stackoverflow.com/questions/67396937/array-is-reordered-when-using-lookup
-      // {$sort: {
-      //    "championData.gameCreation": 1 # something like this
-      // }},
-      {
-         $group: {
-            _id: "$_id",
-            puuid: { $first: "$puuid" },
-            level: { $first: "$level" },
-            gameName: { $first: "$gameName" },
-            tagLine: { $first: "$tagLine" },
-            // name: { $first: "$name" },
-            region: { $first: "$region" },
-            profileIcon: { $first: "$profileIcon" },
-            // pull: { $first: "$pull" },
-            challenges: { $first: "$challenges" },
-            championData: { $push: "$championData" }
-         }
-      },
-      {
-         $project: {
-            _id: 0,
-            puuid: 0,
-         }
+   getItems(player) {
+      let items = []
+
+      for (let i = 0; i < 6; i++) {
+         items.push(player[`item${i}`])
       }
-   ])
-}
+
+      return items
+   }
+
+   getDamageShare(player, participants) {
+      let total = 0
+      participants.forEach((participant) => {
+         if (participant.teamId === player.teamId) {
+            total += participant.totalDamageDealtToChampions
+         }
+      })
+
+      let cowabunga = Math.round(player.totalDamageDealtToChampions / total * 100) / 100
+      return cowabunga || 0
+   }
+
+   getKillParticipation(player, participants) {
+      let total = 0
+      participants.forEach((participant) => {
+         if (participant.teamId === player.teamId) {
+            total += participant.kills
+         }
+      })
+      let kp = Math.round((player.kills + player.assists) / total * 100) / 100
+      return kp || 0
+   }
+
+   async aggregateSummoner(puuid) {
+      return await summonerModel.aggregate([
+         { $match: { _id: puuid } },
+         { $unwind: "$championData" },
+         {
+            $lookup: {
+               from: "test_summoner_matches",
+               localField: "championData.matches",
+               foreignField: "_id",
+               as: "championData.matches",
+               pipeline: [ // For Encounters.vue
+                  {
+                     $lookup: {
+                        from: "test_summoner_puuids",
+                        localField: "te",
+                        foreignField: "_id",
+                        as: "te",
+                        pipeline: [
+                           {
+                              $project: {
+                                 _id: 0,
+                              }
+                           }
+                        ]
+                     }
+                  },
+                  {
+                     $lookup: {
+                        from: "test_summoner_puuids",
+                        localField: "ee",
+                        foreignField: "_id",
+                        as: "ee",
+                        pipeline: [
+                           {
+                              $project: {
+                                 _id: 0,
+                              }
+                           }
+                        ]
+                     }
+                  },
+                  {
+                     $project: {
+                        _id: 0,
+                        __v: 0
+                     }
+                  }
+               ]
+            }
+         },
+         // Lookup does not guarantee order https://stackoverflow.com/questions/67396937/array-is-reordered-when-using-lookup
+         // {$sort: {
+         //    "championData.gameCreation": 1 # something like this
+         // }},
+         {
+            $group: {
+               _id: "$_id",
+               puuid: { $first: "$puuid" },
+               level: { $first: "$level" },
+               gameName: { $first: "$gameName" },
+               tagLine: { $first: "$tagLine" },
+               // name: { $first: "$name" },
+               region: { $first: "$region" },
+               profileIcon: { $first: "$profileIcon" },
+               // pull: { $first: "$pull" },
+               challenges: { $first: "$challenges" },
+               championData: { $push: "$championData" }
+            }
+         },
+         {
+            $project: {
+               _id: 0,
+               puuid: 0,
+            }
+         }
+      ])
+   }
 }
 
 module.exports = new Summoner()

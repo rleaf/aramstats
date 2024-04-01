@@ -69,15 +69,20 @@ async function getSummonerMatches(puuid, region, start, count) {
 /* 
 * Total match history for ARAM (450). matchList[0] is most recent match.
 */
-async function getAllSummonerMatches(puuid, region) {
+async function getAllSummonerMatches(puuid, region, lastMatchId) {
    let matchList = []
    let stop = true
 
    for (let i = 0; stop; i+=100) {
-      const pull = await lolApi.MatchV5.list(puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })
-      matchList.push(pull.response)
+      const pull = (await lolApi.MatchV5.list(puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })).response
+      if (lastMatchId && pull.includes(lastMatchId)) {
+         pull = pull.slice(0, pull.indexOf(lastMatchId))
+         stop = false
+      }
 
-      if (pull.response.length === 0) stop = false
+      matchList.push(pull)
+      
+      if (pull.length === 0) stop = false
    }
    
    return matchList.flat()

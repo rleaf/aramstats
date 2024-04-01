@@ -27,10 +27,12 @@ const summonerSchema = new mongoose.Schema({
    parse: {
       current: { type: Number, default: 0 },
       total: { type: Number, default: 0 },
+      status: String,
    },
    queue: {
       current: { type: Number, default: 0 },
       total: { type: Number, default: 0 },
+      status: String,
    },
    lastMatchId: { type: String, default: '' },
    challenges: [challengeSchema],
