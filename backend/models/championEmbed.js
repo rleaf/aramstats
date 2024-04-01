@@ -19,7 +19,6 @@ const championEmbedSchema = new mongoose.Schema({
       death: { type: Number, default: 0 },     // death probability
       part: { type: Number, default: 0 },      // participation
       freq: { type: Number, default: 0 },      // frequency
-      fs: { type: Number, default: 0 },        // fountain sitting
    },
    mk: {                                       // multikills
       t: { type: Number, default: 0 },         // triple

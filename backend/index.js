@@ -6,54 +6,60 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
+const summonerRoutes = require('./api/summoner/summoner.routes')
+const championRoutes = require('./api/champion/champion.routes')
+const matchRoutes = require('./api/match/match.routes')
 
-dotenv.config()
+class Server {
+   constructor() {
+      dotenv.config()
 
-const app = express()
+      this.app = express()
+      this.app.use(bodyParser.json())
+      this.app.use(cors())
 
-app.use(bodyParser.json())
-app.use(cors())
+      this.initRoutes()
+      this.startServer()
+   }
 
-mongoose.connect(process.env.DB_CONNECTION_STRING, {dbName: 'aramstats'})
-   .catch((err) => {
-      console.log('pancakes')
-      throw err
-   })
+   initRoutes() {
+      summonerRoutes.initRoutes(this.app)
+      championRoutes.initRoutes(this.app)
+   }
 
-// const summoners = require('./routes/summoner')
-const summoners = require('./routes/summonerNew')
-const matchInfo = require('./routes/matchInfo')
-const championInfo = require('./routes/champion')
-const championsList = require('./routes/championsList')
+   startServer() {
+      // Connect to database
+      try {
+         mongoose.connect(process.env.DB_CONNECTION_STRING, { dbName: 'aramstats' })
+      } catch (e) {
+         console.log('pancakes')
+         throw new Error(e instanceof Error ? e.message : e)
+      }
 
-app.use('/api/summoners', summoners)
-app.use('/api/matchInfo', matchInfo)
-app.use('/api/champion', championInfo)
-app.use('/api/championsList', championsList)
-app.use(express.static(__dirname + '/public'))
+      // Setup & start server
+      if (process.env.NODE_ENV === 'dev') {
+         this.server = http.createServer(this.app)
+      }
 
-let server
+      if (process.env.NODE_ENV === 'production') {
+         http.createServer(this.app).listen(80)
+         this.app.enable('trust proxy')
+         this.app.use((req, res, next) => {
+            req.secure ? next() : res.redirect('https://' + req.headers.host + req.url)
+         })
 
-if (process.env.NODE_ENV === 'dev') {
-   server = http.createServer(app)
+         this.app.use(express.static(__dirname + '/public/'))
+         this.app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'))
+
+         this.server = https.createServer({
+            key: fs.readFileSync('/etc/letsencrypt/live/www.aramstats.lol/privkey.pem'),
+            cert: fs.readFileSync('/etc/letsencrypt/live/www.aramstats.lol/fullchain.pem')
+         }, this.app)
+      }
+
+      const port = process.env.PORT || 5000
+      this.server.listen(port, () => console.log(`Server started on ${port}`))
+   }
 }
 
-if (process.env.NODE_ENV === 'production') {
-   http.createServer(app).listen(80)
-   app.enable('trust proxy')
-   app.use((req, res, next) => {
-      req.secure ? next() : res.redirect('https://' + req.headers.host + req.url)
-   })
-
-   app.use(express.static(__dirname + '/public/'))
-   app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'))
-
-   server = https.createServer({
-      key: fs.readFileSync('/etc/letsencrypt/live/www.aramstats.lol/privkey.pem'),
-      cert: fs.readFileSync('/etc/letsencrypt/live/www.aramstats.lol/fullchain.pem')
-   }, app)
-}
-
-const port = process.env.PORT || 5000
-
-server.listen(port, () => console.log(`Server started on ${port}`))
+(() => new Server())()

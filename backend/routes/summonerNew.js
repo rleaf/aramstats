@@ -65,7 +65,6 @@ function parseTimeline(timeline, playerIndex, playerTeam) {
    }
    let teamfights = []
    let bin = []
-   let c1, c2
    let initTimestamp
    let capFlag
    let tfPrerequisite = 0
@@ -123,23 +122,24 @@ function parseTimeline(timeline, playerIndex, playerTeam) {
       for (let j = 0; j < teamfights[i].length; j++) {
          const cell = teamfights[i][j]
 
-         // Expectation
-         if ((playerIndex <= 5 && cell.killerId <= 5) || (playerIndex > 5 && cell.killerId > 5)) timelineData.exp++
-         if ((playerIndex <= 5 && cell.victimId <= 5) || (playerIndex > 5 && cell.victimId > 5)) timelineData.exp--
-         
          if (('assistingParticipantIds' in cell
             && cell.assistingParticipantIds[playerIndex])
             || cell.killerId === playerIndex
             || cell.victimId === playerIndex) {
+
                // Participation
                part = true
 
+               // Expectation
+               if ((playerIndex <= 5 && cell.killerId <= 5) || (playerIndex > 5 && cell.killerId > 5)) timelineData.exp++
+               if ((playerIndex <= 5 && cell.victimId <= 5) || (playerIndex > 5 && cell.victimId > 5)) timelineData.exp--
+
                // Usefullness
                if ((playerIndex <= 5 && cell.victimId <= 5) || (playerIndex > 5 && cell.victimId > 5)) use.push(cell.victimId)
-            }
 
-         // Death Probability
-         if (cell.victimId === playerIndex) death = true
+               // Death Probability
+               if (cell.victimId === playerIndex) death = true
+            }
       }
 
       if (part) timelineData.part++
@@ -150,11 +150,11 @@ function parseTimeline(timeline, playerIndex, playerTeam) {
       timelineData.use += player
    }
 
-   const af = (n, d) => (Math.round((n / d) * 10) / 10)
+   const af = (n) => (Math.round((n / timelineData.part) * 10) / 10)
 
-   timelineData.exp = af(timelineData.exp, timelineData.freq)
-   timelineData.use = af(timelineData.use, timelineData.part)
-   timelineData.death = af(timelineData.death, timelineData.part)
+   timelineData.exp = af(timelineData.exp)
+   timelineData.use = af(timelineData.use)
+   timelineData.death = af(timelineData.death)
 
    return timelineData
 }
@@ -174,6 +174,11 @@ function averageDistance(bin) {
 }
 
 async function parseMatchlist(summonerDocument, matchlist, update=false) {
+
+   summonerDocument.parse.total = matchlist.length
+   summonerDocument.lastMatchId = matchlist[0]
+   await summonerDocument.save() // for sanity?
+
    for (let i = 0; i < matchlist.length; i++) {
       let matchId = matchlist[matchlist.length - i - 1]
       let match
@@ -208,11 +213,7 @@ async function parseMatchlist(summonerDocument, matchlist, update=false) {
          timeline = await twisted.getMatchTimeline(matchId, summonerDocument.region)
       } catch(e) {}
 
-      if (timeline) {
-         timelineData = parseTimeline(timeline, playerIndex, playerTeam)
-         console.log(timelineData, 'toadies')
-      }
-      // console.log(turkeys)
+      if (timeline) timelineData = parseTimeline(timeline, playerIndex, playerTeam)
 
       const matchDocument = new summonerMatchesModel({
          m: summonerDocument._id,
@@ -247,7 +248,6 @@ async function parseMatchlist(summonerDocument, matchlist, update=false) {
          tId: player.teamId,
       })
 
-      summonerDocument.pull.current = i
       // Consider storing championData as a map for constant lookup.
       championEmbed = summonerDocument.championData.find(c => c.championId === player.championId)
       if (!championEmbed) {
@@ -300,7 +300,7 @@ async function parseMatchlist(summonerDocument, matchlist, update=false) {
          championEmbed.tf.death += timelineData.death
          championEmbed.tf.part += timelineData.part
          championEmbed.tf.freq += timelineData.freq
-         championEmbed.tf.fs += timelineData.fs
+         summonerDocument.fountainSitter += timelineData.fs
       }
 
       for (const participant of match.info.participants) {
@@ -331,27 +331,24 @@ async function parseMatchlist(summonerDocument, matchlist, update=false) {
          .catch(e => {
             throw e
          })
-
+      
+      summonerDocument.parse.current = i
+      
       await matchDocument.save()
       await summonerDocument.save()
    }
+   
+   summonerDocument.parse.current = 0
+   summonerDocument.parse.total = 0
+   summonerDocument.updated = Date.now()
+
+   await summonerDocument.save()
 }
 
 router.get('/:region/:gameName/:tagLine', async (req, res) => {
-   /* 
-      Use ryi#na1
-
-      0. Check to see if summoner exists in Riot DB, if not return DNE
-      1. Check to see if summoner document exists in summoner collection in DB
-         2. If exists, send summoner document
-         3. If DNE, init pull
-
-      Initial pull:
-         1. Get total matchlist.
-         2. 
-   */
    let summoner
-   let summonerResponse = null
+   let summonerResponse
+   let summonerDoc
    
    try {
       summoner = await findSummoner(req.params.gameName, req.params.tagLine, req.params.region)
@@ -371,16 +368,16 @@ router.get('/:region/:gameName/:tagLine', async (req, res) => {
       }
    }
    
-   const summonerDoc = await summonerModel.findOne({ '_id': summoner.puuid })
+   summonerDoc = await summonerModel.findOne({ '_id': summoner.puuid })
    
    if (summonerDoc) {
-      if (summonerDoc.pull.active) {
-         // Consider long polling
-         res.send(summonerDoc.pull)
+      if (summonerDoc.parse.total || summonerDoc.queue.total) {
+         res.send({ ...summonerDoc.parse, ...summonerDoc.queue })
          return
       }
       
-      // summonerResponse = aggregateSummoner()
+      summonerResponse = (await aggregateSummoner(summoner.puuid))[0]
+      console.log(summonerResponse, 'toads')
       res.send(summonerResponse)
       return
    }
@@ -398,21 +395,13 @@ router.get('/:region/:gameName/:tagLine', async (req, res) => {
       region: summoner.region,
       level: summoner.summonerLevel,
       profileIcon: summoner.profileIconId,
-      updated: Date.now(),
-      pull: {
-         active: true,
-         current: 0,
-         queue: null, // matchlist.length
-         lastMatchId: null // last match id for updating
-      },
       challenges: challenges,
    })
 
    await parseMatchlist(summonerDocument, matchlist)
+   await computeChampionAverages(summonerDocument)
 
-   summonerDocument.pull.active = false
-   await summonerDocument.save()
-   // summonerResponse = aggregateSummoner()
+   summonerResponse = (await aggregateSummoner(summoner.puuid))[0]
    res.send(summonerResponse)
 })
 
@@ -423,6 +412,120 @@ router.put('/update/:region/:summonerURI', async (req, res) => {
 router.delete('/delete/:region/:summonerURI', async (req, res) => {
    
 })
+
+async function computeChampionAverages(summonerDocument) {
+   for (const champion of summonerDocument.championData) {
+      const matches = await summonerMatchesModel.find({ '_id': { $in: champion.matches } })
+
+      for (const match of matches) {
+         if (match.w) champion.wins++
+         champion.avg.ahpm += Math.round(match.t.ah / match.gd)
+         champion.avg.a += match.a
+         champion.avg.dpm += Math.round(match.t.dtc / match.gd)
+         champion.avg.ds += match.ds * 100
+         champion.avg.dtpm += Math.round(match.t.dt / match.gd)
+         champion.avg.d += match.d
+         champion.avg.ge += match.t.g
+         champion.avg.gpm += Math.round(match.t.g / match.gd)
+         champion.avg.hpm += Math.round(match.t.h / match.gd)
+         champion.avg.ah += match.t.ah
+         champion.avg.kp += match.kp * 100
+         champion.avg.k += match.k
+         champion.avg.smpm += Math.round(match.t.sm / match.gd)
+         champion.avg.tdd += match.t.dtc
+         champion.avg.tdt += match.t.dt
+         champion.avg.th += match.t.h
+         champion.avg.tsm += match.t.sm
+         champion.mk.t += match.mk[0]
+         champion.mk.q += match.mk[1]
+         champion.mk.p += match.mk[2]
+      }
+
+      for (const [k, v] of Object.entries(champion.avg)) {
+         champion.avg[k] = Math.round(v / matches.length)
+      }
+
+      await summonerDocument.save()
+   }
+}
+
+async function aggregateSummoner(puuid) {
+   return await summonerModel.aggregate([
+      { $match: { _id: puuid } },
+      { $unwind: "$championData" },
+      {
+         $lookup: {
+            from: "test_summoner_matches",
+            localField: "championData.matches",
+            foreignField: "_id",
+            as: "championData.matches",
+            pipeline: [ // For Encounters.vue
+               {
+                  $lookup: {
+                     from: "test_summoner_puuids",
+                     localField: "te",
+                     foreignField: "_id",
+                     as: "te",
+                     pipeline: [
+                        {
+                           $project: {
+                              _id: 0,
+                           }
+                        }
+                     ]
+                  }
+               },
+               {
+                  $lookup: {
+                     from: "test_summoner_puuids",
+                     localField: "ee",
+                     foreignField: "_id",
+                     as: "ee",
+                     pipeline: [
+                        {
+                           $project: {
+                              _id: 0,
+                           }
+                        }
+                     ]
+                  }
+               },
+               {
+                  $project: {
+                     _id: 0,
+                     __v: 0
+                  }
+               }
+            ]
+         }
+      },
+      // Lookup does not guarantee order https://stackoverflow.com/questions/67396937/array-is-reordered-when-using-lookup
+      // {$sort: {
+      //    "championData.gameCreation": 1 # something like this
+      // }},
+      {
+         $group: {
+            _id: "$_id",
+            puuid: { $first: "$puuid" },
+            level: { $first: "$level" },
+            gameName: { $first: "$gameName" },
+            tagLine: { $first: "$tagLine" },
+            // name: { $first: "$name" },
+            region: { $first: "$region" },
+            profileIcon: { $first: "$profileIcon" },
+            // pull: { $first: "$pull" },
+            challenges: { $first: "$challenges" },
+            championData: { $push: "$championData" }
+         }
+      },
+      {
+         $project: {
+            _id: 0,
+            puuid: 0,
+         }
+      }
+   ])
+}
 
 function getGameDuration(info) {
 

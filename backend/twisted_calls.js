@@ -73,14 +73,13 @@ async function getAllSummonerMatches(puuid, region) {
    let matchList = []
    let stop = true
 
-   for (let i = 0; stop; i=i+100) {
+   for (let i = 0; stop; i+=100) {
       const pull = await lolApi.MatchV5.list(puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })
       matchList.push(pull.response)
 
-      if (pull.response.length === 0) {
-         stop = false
-      }
+      if (pull.response.length === 0) stop = false
    }
+   
    return matchList.flat()
 }
 
