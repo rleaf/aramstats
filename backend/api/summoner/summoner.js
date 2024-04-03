@@ -17,7 +17,7 @@ class Summoner {
 
          return { ...riotId, ...summoner, region: region }
       } catch (e) {
-         throw e.body.status
+         if (e instanceof Error) throw e.body.status
       }
    }
 
@@ -26,6 +26,54 @@ class Summoner {
       const challenges = challengesDto.challenges.filter(el => challengeIds.includes(el.challengeId))
 
       return challenges
+   }
+
+   async skeletonizeSummoner(summoner, queuePosition) {
+      // const doc = new summonerModel({
+      //       _id: summoner.puuid,
+      //       gameName: summoner.gameName,
+      //       tagLine: summoner.tagLine,
+      //       region: summoner.region,
+      //       level: summoner.summonerLevel,
+      //       profileIcon: summoner.profileIconId,
+      // })
+      
+      console.log(position, 'position')
+      // return doc
+      await summonerModel.create({
+         _id: summoner.puuid,
+         gameName: summoner.gameName,
+         tagLine: summoner.tagLine,
+         region: summoner.region,
+         level: summoner.summonerLevel,
+         profileIcon: summoner.profileIconId,
+         queue: { current: queuePosition }
+      })
+
+   }
+
+   async initialParse(summonerDoc) {
+      const [matchlist, challenges] = await Promise.all([
+         twisted.getAllSummonerMatches(summonerDoc._id, summonerDoc.region),
+         this.challengeScribe(summonerDoc._id, summonerDoc.region)
+      ])
+
+      // const doc = new summonerModel({
+      //    _id: summoner.puuid,
+      //    gameName: summoner.gameName,
+      //    tagLine: summoner.tagLine,
+      //    region: summoner.region,
+      //    level: summoner.summonerLevel,
+      //    profileIcon: summoner.profileIconId,
+      //    challenges: challenges,
+      // })
+      summonerDoc.challenges = challenges
+      await this.parseMatchlist(summonerDoc, matchlist)
+      await this.computeChampionAverages(summonerDoc)
+   }
+
+   async deleteSummoner(puuid) {
+
    }
 
    parseTimeline(timeline, playerIndex, playerTeam) {

@@ -1,18 +1,17 @@
-const mongodb = require('mongodb')
+// const mongodb = require('mongodb')
 
 class Champion {
 
-   async loadChampionStatsCollection() {
-      const client = await mongodb.MongoClient.connect(process.env.DB_CONNECTION_STRING)
-      const dbPatch = (await client.db('aramstats').collection('meta').findOne({ '_id': 'crawler' })).patch
+   async loadChampionStatsCollection(db) {
+      const dbPatch = (await db.collection('meta').findOne({ '_id': 'crawler' })).patch
       let livePatch
-      if (await client.db('aramstats').collection(`${dbPatch[0]}_championstats`).findOne({}, { projection: { _id: 1 } })) {
+      if (await db.collection(`${dbPatch[0]}_championstats`).findOne({}, { projection: { _id: 1 } })) {
          livePatch = dbPatch[0]
       } else {
          livePatch = dbPatch[1]
       }
 
-      return client.db('aramstats').collection(`${livePatch}_championstats`)
+      return db.collection(`${livePatch}_championstats`)
    }
 
    async aggregateChampion(coll, champion) {

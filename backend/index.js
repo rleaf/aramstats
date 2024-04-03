@@ -5,6 +5,7 @@ const fs = require('fs')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
+const { MongoClient } = require('mongodb')
 const dotenv = require('dotenv')
 const summonerRoutes = require('./api/summoner/summoner.routes')
 const championRoutes = require('./api/champion/champion.routes')
@@ -18,17 +19,18 @@ class Server {
       this.app.use(bodyParser.json())
       this.app.use(cors())
 
+      this.initDatabaseConnection()
       this.initRoutes()
       this.startServer()
    }
 
    initRoutes() {
-      summonerRoutes.initRoutes(this.app)
-      championRoutes.initRoutes(this.app)
+      summonerRoutes.initRoutes(this.app, this.db)
+      championRoutes.initRoutes(this.app, this.db)
    }
 
-   startServer() {
-      // Connect to database
+   initDatabaseConnection() {
+      this.db = new MongoClient(process.env.DB_CONNECTION_STRING).db('aramstats')
       try {
          mongoose.connect(process.env.DB_CONNECTION_STRING, { dbName: 'aramstats' })
       } catch (e) {
@@ -36,7 +38,10 @@ class Server {
          throw new Error(e instanceof Error ? e.message : e)
       }
 
-      // Setup & start server
+      // this.client = await mongodb.MongoClient.connect(process.env.DB_CONNECTION_STRING)
+   }
+
+   startServer() {
       if (process.env.NODE_ENV === 'dev') {
          this.server = http.createServer(this.app)
       }
