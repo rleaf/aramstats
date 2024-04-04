@@ -82,6 +82,12 @@ async function getAllSummonerMatches(puuid, region, lastMatchId) {
 
       matchList.push(pull)
       
+      try {
+         await getMatchInfo(pull[pull.length - 1], region)
+      } catch (e) {
+         if (e.status === 404) return matchList.flat()
+      }
+      
       if (pull.length === 0) stop = false
    }
    

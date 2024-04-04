@@ -29,17 +29,6 @@ class Summoner {
    }
 
    async skeletonizeSummoner(summoner, queuePosition) {
-      // const doc = new summonerModel({
-      //       _id: summoner.puuid,
-      //       gameName: summoner.gameName,
-      //       tagLine: summoner.tagLine,
-      //       region: summoner.region,
-      //       level: summoner.summonerLevel,
-      //       profileIcon: summoner.profileIconId,
-      // })
-      
-      console.log(position, 'position')
-      // return doc
       await summonerModel.create({
          _id: summoner.puuid,
          gameName: summoner.gameName,
@@ -49,7 +38,6 @@ class Summoner {
          profileIcon: summoner.profileIconId,
          queue: { current: queuePosition }
       })
-
    }
 
    async initialParse(summonerDoc) {
@@ -57,16 +45,7 @@ class Summoner {
          twisted.getAllSummonerMatches(summonerDoc._id, summonerDoc.region),
          this.challengeScribe(summonerDoc._id, summonerDoc.region)
       ])
-
-      // const doc = new summonerModel({
-      //    _id: summoner.puuid,
-      //    gameName: summoner.gameName,
-      //    tagLine: summoner.tagLine,
-      //    region: summoner.region,
-      //    level: summoner.summonerLevel,
-      //    profileIcon: summoner.profileIconId,
-      //    challenges: challenges,
-      // })
+      
       summonerDoc.challenges = challenges
       await this.parseMatchlist(summonerDoc, matchlist)
       await this.computeChampionAverages(summonerDoc)
@@ -143,10 +122,13 @@ class Summoner {
       // Frequency
       timelineData.freq = teamfights.length
 
+      // ITER TEAMFIGHTS
       for (let i = 0; i < teamfights.length; i++) {
          let use = []
          let death = false
          let part = false
+
+         // ITER TEAMFIGHT EVENTS
          for (let j = 0; j < teamfights[i].length; j++) {
             const cell = teamfights[i][j]
 
@@ -169,20 +151,27 @@ class Summoner {
                if (cell.victimId === playerIndex) death = true
             }
          }
+         
+         if (part) {
+            // Participation
+            timelineData.part++
 
-         if (part) timelineData.part++
+            // Usefullness
+            let player = (use.findIndex(o => o === playerIndex) + 1) ? use.findIndex(o => o === playerIndex) + 1 : 6
+            timelineData.use += player
+         }
+
          if (death) timelineData.death++
-
-         // Usefullness
-         let player = (use.findIndex(o => o === playerIndex) + 1) ? use.findIndex(o => o === playerIndex) + 1 : 6
-         timelineData.use += player
       }
 
       const af = (n) => (Math.round((n / timelineData.part) * 10) / 10)
 
-      timelineData.exp = af(timelineData.exp)
-      timelineData.use = af(timelineData.use)
-      timelineData.death = af(timelineData.death)
+      if (timelineData.part) {
+         timelineData.cap = af(timelineData.cap)      
+         timelineData.exp = af(timelineData.exp)
+         timelineData.use = af(timelineData.use)
+         timelineData.death = af(timelineData.death)
+      }
 
       return timelineData
    }
@@ -324,6 +313,7 @@ class Summoner {
          championEmbed.matches.unshift(matchDocument._id)
 
          if (timelineData) {
+            // Average it out on the front end (datum / games)
             championEmbed.tf.exp += timelineData.exp
             championEmbed.tf.cap += timelineData.cap
             championEmbed.tf.use += timelineData.use

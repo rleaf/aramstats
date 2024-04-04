@@ -12,27 +12,17 @@ for (const i of arr) {
    i
 } 
 
+const f = () => {
+   for (const i of arr) {
+      if (i === 3) return false
+      i
+   }
+}
+
+ f()
+
+ console.log( 0/0)
+
 delete arr[3]
 arr
 const af = o => (o ** 2)
-
-const REGION_GROUPS = {
-   na: 'toad',
-   euw: 'toad',
-   eune: 'toad',
-   kr: 'toad',
-   lan: 'toad',
-   las: 'toad',
-   oce: 'toad',
-   tr: 'toad',
-   ru: 'toad',
-   jp: 'toad',
-   br: 'toad',
-   vn: 'toad',
-   tw: 'toad',
-   th: 'toad',
-   sg: 'toad',
-   ph: 'toad',
-}
-
-console.log(Object.keys(REGION_GROUPS))

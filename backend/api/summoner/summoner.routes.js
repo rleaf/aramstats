@@ -12,11 +12,12 @@ class SummonerRoutes {
          .get(config.SUMMONER_PREFIX, this.getSummoner.bind(this))
          .put(config.UPDATE_SUMMONER_PREFIX, this.updateSummoner)
    }
-
+   
    async getSummoner(req, res) {
       let summoner
       let summonerResponse
       let summonerDoc
+      let check
 
       try {
          summoner = await util.findSummoner(req.params.gameName, req.params.tagLine, req.params.region)
@@ -38,12 +39,17 @@ class SummonerRoutes {
             return
          } 
       }
-      
+
+      check = await this.queue.check(summoner.puuid)
+      if (typeof check === 'number') {
+         console.log(`${summoner.gameName} is already in the Queue.`)
+         res.status(200).send(`${config.STATUS_IN_QUEUE} ${check}` )
+         return
+      }
+
       summonerDoc = await summonerModel.findOne({ '_id': summoner.puuid })
 
       if (summonerDoc) {
-         // if ((summonerDoc.parse.status && summonerDoc.parse.status !== config.STATUS_COMPLETE)
-         // || (summonerDoc.queue.status && summonerDoc.queue.status !== config.STATUS_COMPLETE)) {
          if (summonerDoc.parse.status && summonerDoc.parse.status !== config.STATUS_COMPLETE) {
             res.send({ parse: summonerDoc.parse, queue: summonerDoc.queue })
             return
@@ -57,21 +63,21 @@ class SummonerRoutes {
       // Summoner exists & DNE in Aramstats DB. Need to parse.
 
       /**
-       * Temporary(?) queue management that works via "baton passing".
+       * "Temporary" queue management that works via baton passing.
        * Longterm, probably more ideal to create a separate node script that runs via cronjobs to ping the queue for a given region every ~minute. Can build this in python too.
       */
       const queuePosition = await this.queue.regionCount(summoner.region)
       await util.skeletonizeSummoner(summoner, queuePosition)
       await this.queue.add(summoner.puuid, summoner.region)
-
+      
       if (this.queue.inactiveRegions.has(summoner.region)) { // if baton is not held
          this.queue.inactiveRegions.delete(summoner.region) // take baton
 
          let qSummoner = await this.queue.get(summoner.region)
-         summonerDoc = await summonerModel.findOne({ '_id': qSummoner.qPuuid })
          
          while (qSummoner) {
-            // await util.queueBump()
+            summonerDoc = await summonerModel.findOne({ '_id': qSummoner.qPuuid })
+            await this.queue.update(summoner.region)
             await util.initialParse(summonerDoc)
             qSummoner = await this.queue.get(summoner.region)
             if (qSummoner) summonerDoc = await summonerModel.findOne({ '_id': qSummoner.qPuuid })
@@ -81,8 +87,6 @@ class SummonerRoutes {
       }
 
       console.log('fin')
-      // summonerResponse = (await util.aggregateSummoner(summoner.puuid))[0]
-      // res.status(200).send(summonerResponse)
    }
 
    async updateSummoner(req, res) {

@@ -15,7 +15,7 @@ class Config {
    STATUS_COMPLETE = 'Complete'
    STATUS_PARSING = 'Parsing summoner...'
    STATUS_CHAMPION_AVERAGES = 'Computing champion averages...'
-   STATUS_QUEUE = 'In queue...'
+   STATUS_IN_QUEUE = 'In queue...'
 }
 
 module.exports = new Config()
