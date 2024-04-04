@@ -18,6 +18,7 @@ const updates = [
       body: [
          `I am currently in the long process of redesigning, both front and backend, the entire Summoner page (what you see when you look up your profile). The goals of this redesign are to: 1) match the UI/aesthetic seen on the champion stat pages and 2) show a lot more information that is idiosyncratic to you, the player. There's a link below to some wip concepts I'm intending to implement. This redesign means I will be wiping the summoner database again (I'll post another update warning when I'm going to do it). If you've any neat ideas/things you'd like to see, hmu.`,
          `3/13: Finished designing UI.`,
+         `4/14: Finished backend.`,
       ],
       links: [
          [`FigJam Ideas`, `https://www.figma.com/file/iOKkrg5bBTd5IFp3ghjSS0/Aramstats?type=whiteboard&node-id=2%3A345&t=gvPh7LevVFuodZJx-1`]

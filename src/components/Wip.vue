@@ -11,7 +11,7 @@ export default {
 
 <template>
 <div class="wip-main">
-   🚧 This page is being redesigned. Check <router-link :to="{name: 'updates'}">Updates</router-link> for more. 🚧
+   🚧 This section is being redesigned. Check <router-link :to="{name: 'updates'}">Updates</router-link> for more. 🚧
 </div>
 </template>
 
