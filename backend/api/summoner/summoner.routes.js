@@ -20,8 +20,10 @@ class SummonerRoutes {
       let check
 
       try {
+         console.log('looking for ' + req.params.gameName + '#' + req.params.tagLine + ' (' + req.params.region + ')')
          summoner = await util.findSummoner(req.params.gameName, req.params.tagLine, req.params.region)
       } catch (e) {
+         console.log(e, 'huh')
          if (e.status_code < 500) {
             console.log(`${req.params.gameName}#${req.params.tagLine} (${req.params.region}) DNE`)
             res.status(e.status_code).send(e.message)

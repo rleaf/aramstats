@@ -1,6 +1,6 @@
 <script>
 import TldrModal from './modals/TldrModal.vue'
-import Tooltip from './Tooltip.vue'
+import Tooltip from '@/components/Tooltip.vue'
 import { championStore } from '@/stores/championStore'
 import _runes from '@/constants/runes'
 import _flex from '@/constants/flex'

@@ -1,4 +1,8 @@
 export default {
+   /**
+   * Champion Tooltips  
+   */
+
    'core': [
       `To consolidate data, these selections represent <b>combinations</b> of core builds - they are core builds irrespective of buy order. This means <b>[boots, kraken, ie]</b> is the same as <b>[kraken, ie, boots]</b> and any other arrangement of those items.`,
       `The boot icon represents all boots.`
@@ -32,5 +36,13 @@ export default {
    ],
    'skillPriority': [
       `Observed popularity and winrate of skill permutations.`
+   ],
+
+   /** 
+   * Summoner Tooltips  
+   */
+
+   'account': [
+      `Top level information about your account.`,
    ]
 }

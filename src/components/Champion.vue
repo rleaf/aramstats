@@ -1,315 +1,292 @@
 <script>
+import names from '@/constants/champions.js'
 import Match from './Match.vue'
-import Wip from './Wip.vue'
-import championNameBook from '../constants/championNames'
 
 export default {
    components: {
-      Match,
+      Match
    },
-
    data() {
       return {
-         championIcon: `https://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/champion/${this.champion.name}.png`,
-         expand: false,
+         iconTable: names.urlName,
+         humanTable: names.humanName,
+         matchToggle: false,
+         classTransition: {
+            'max-height': `${this.data.matches.length * 39}px;` 
+         },
+         matchHeight: `${this.data.matches.length * 39}px`
       }
    },
 
-   created() {
-      // fix this sometime by using champions
-      if (this.champion.name == 'FiddleSticks') this.champion.name = 'Fiddlesticks'
+   mounted() {
+      console.log(this.data.matches)
    },
 
    methods: {
-      getChampionName(name) {
-         return (name in championNameBook) ? championNameBook[name] : name
-      }
+      toggleMatches() {
+         console.log('toad')
+      },
+
+      beforeEnter(el) {
+         console.log('toad')
+         el.style.maxHeight = `${this.data.matches.length * 39}px`
+      },
+
+      beforeLeave(el) {
+         el.style.maxHeight = `${this.data.matches.length * 39}px`
+      },
+
+
    },
 
    computed: {
-      background() {
-         // const img = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${this.champion.name}_0.jpg`
-         const img = new URL(`../assets/champion_splash/${this.champion.name.toLowerCase()}.webp`, import.meta.url).href
-         if (this.lazy) {
-            return `linear-gradient(to right, rgba(var(--cell-panel-rgb), 0.8), rgba(var(--cell-panel-rgb), 0.85) 10%, var(--cell-panel) 60%), no-repeat -110% 20%/80% url('${img}')`
-         }
+      championIcon() {
+         return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/champion/${this.iconTable[this.data.championId]}.png`
       },
+
       winrate() {
-         return Math.round((this.champion.wins / this.champion.games) * 100)
-      },
-
-      size() {
-         return `${this.champion.wins}/${this.champion.games}`
-      },
-
-      kda() {
-         return `${this.champion.avg.k}/${this.champion.avg.d}/${this.champion.avg.a}`
-      },
-
-      sortMatches() {
-         return this.champion.matches.sort((a, b) => b.gc - a.gc)
+         return Math.round((this.data.wins / this.data.games) * 100)
       }
    },
 
    props: {
-      champion: Object,
-      currentPatch: null,
-      lazy: Boolean
+      data: Object,
+      patch: String
    }
-}  
+}
 </script>
 
 <template>
-   <div>
-      <div class="champion-main" :style="{ background: background}">
-         <button class="dropdown" @click="this.expand =! this.expand">
-            <img src="../assets/svg/arrow2.svg" alt="" :class="{ expand: this.expand }">
-         </button>
-         <div class="lhs">
-            <h2>{{ getChampionName(this.champion.name) }}</h2>
-            <div class="lhs-stats">
-               <img v-if="lazy" :src="this.championIcon" :alt="this.champion.name">
-               <div class="champ-winrate">
-                  <div class="title">
-                     Winrate
-                  </div>
-                  <div class="body">
-                     {{ winrate }}%
-                  </div>
-                  <div class="sub">
-                     {{ size }}
-                  </div>
-               </div>
-               <div class="champ-kda">
-                  <div class="title">
-                     KDA
-                  </div>
-                  <div class="body">
-                     {{ kda }}
-                  </div>
-                  <div class="sub">
-                     {{ this.champion.avg.kp }}% KP
-                  </div>
-               </div>
+   <div class="champion-main">
+      
+      <div class="lhs">
+         <img class="dropdown" src="@/assets/svg/arrow3.svg" @click="this.matchToggle = !this.matchToggle" :class="{ 'show-matches': this.matchToggle}">
+         <div class="name-wrapper">
+            <div class="icon-wrapper">
+               <img class="icon" :src="championIcon" alt="">
+            </div>
+            {{ this.humanTable[this.data.championId] }}
+         </div>
+         <div class="winrate">
+            {{ winrate }}% ({{ this.data.wins }}/{{ this.data.games }})
+         </div>
+
+      </div>
+
+      <div class="rhs">
+         <div class="kda">
+            {{ this.data.avg.k }}/{{ this.data.avg.d }}/{{ this.data.avg.a }}
+         </div>
+         <div class="kp">
+            {{ this.data.avg.kp }}%
+         </div>
+   
+         <!-- Damage -->
+         <div class="primary-stat">
+            {{ this.data.avg.tdd }}
+            <div class="per-minute-sub">
+               {{ this.data.avg.dpm }}
             </div>
          </div>
-         <div class="multi-kills">
-            <div class="triple">{{ this.champion.mk.t }}</div>
-            <div class="quadra">{{ this.champion.mk.q }}</div>
-            <div class="penta">{{ this.champion.mk.p }}</div>
+   
+         <!-- Taken -->
+         <div class="primary-stat">
+            {{ this.data.avg.tdt }}
+            <div class="per-minute-sub">
+               {{ this.data.avg.dtpm }}
+            </div>
          </div>
-         <div class="rhs-stats">
-            <div>
-               <div class="title">
-                  Damage
-               </div>
-               <div class="secondary-body">
-                  {{ this.champion.avg.tdd }}, {{ this.champion.avg.ds }}%
-               </div>
-               <div class="secondary-sub">
-                  {{ this.champion.avg.dpm }}/m
-               </div>
+   
+         <!-- Mitigated -->
+         <div class="primary-stat">
+            {{ this.data.avg.tsm }}
+            <div class="per-minute-sub">
+               {{ this.data.avg.smpm }}
             </div>
-            <div>
-               <div class="title">
-                  Healing
-               </div>
-               <div class="secondary-body">
-                  {{ this.champion.avg.th }}
-               </div>
-               <div class="secondary-sub">
-                  {{ this.champion.avg.hpm }}/m
-               </div>
+         </div>
+   
+         <!-- Healing -->
+         <div class="primary-stat">
+            {{ this.data.avg.th }}
+            <div class="per-minute-sub">
+               {{ this.data.avg.hpm }}
             </div>
-            <div>
-               <div class="title">
-                  Ally Healing
-               </div>
-               <div class="secondary-body">
-                  {{ this.champion.avg.ah }}
-               </div>
-               <div class="secondary-sub">
-                  {{ this.champion.avg.ahpm }}/m
-               </div>
-            </div>
-            <div>
-               <div class="title">
-                  Damage Taken
-               </div>
-               <div class="secondary-body">
-                  {{ this.champion.avg.tdt }}
-               </div>
-               <div class="secondary-sub">
-                  {{ this.champion.avg.dtpm  }}/m
-               </div>
-            </div>
-            <div>
-               <div class="title">
-                  Damage Mitigated
-               </div>
-               <div class="secondary-body">
-                  {{ this.champion.avg.tsm  }}
-               </div>
-               <div class="secondary-sub">
-                  {{ this.champion.avg.smpm  }}/m
-               </div>
-            </div>
-            <div>
-               <div class="title">
-                  Gold
-               </div>
-               <div class="secondary-body">
-                  {{ this.champion.avg.ge }}
-               </div>
-               <div class="secondary-sub">
-                  {{ this.champion.avg.gpm }}/m
-               </div>
+         </div>
+   
+         <!-- Ally Healing -->
+         <div class="primary-stat">
+            {{ this.data.avg.ah }}
+            <div class="per-minute-sub">
+               {{ this.data.avg.ahpm }}
+            </div>        
+         </div>
+   
+         <!-- Gold Earned -->
+         <div class="primary-stat">
+            {{ this.data.avg.gpm }}
+            <div class="per-minute-sub">
+               {{ this.data.avg.dpm }}
             </div>
          </div>
       </div>
-      <div class="match" v-if="this.expand">
-         <Match v-if="currentPatch" v-for="match in sortMatches"
-            :key="match.matchId"
-            :match="match"
-            :currentPatch="this.currentPatch"/>
-      </div>
+
    </div>
+   <Transition
+      leave-from-class="testo"
+      enter-to-class="testo">
+   <!-- <Transition> -->
+      <div v-show="this.matchToggle">
+            <Match v-for="(m, i) in this.data.matches" :key="i" :data="m" />
+      </div>
+   </Transition>
+   <!-- <div class="matches-main-wrapper">
+   </div> -->
 </template>
 
 <style scoped>
-   .champion-main {
+   /* .matches-main-wrapper {
+      overflow: hidden;
+      background: blue;
+      min-height: 0;
+      transition: 0.3s ease-in-out;
+   }
+
+   .matches-main-wrapper > div {
+      max-height: 1000px;
+      overflow: hidden;
+      transition: 0.3s ease-in-out;
+   } */
+   .testo {
+      max-height: 41px;
+   }
+   .v-enter-active,
+   .v-leave-active {
+      overflow: hidden;
+      transition: all 0.3s ease-in-out;
+   }
+
+   .v-enter-from,
+   .v-leave-to {
+      opacity: 0;      
+      max-height: 0;
+   }
+
+   /* .v-leave-from,
+   .v-enter-to {
+      max-height: v-bind('data.matches.length * 41 + "px"');
+   } */
+   
+   .testo {
+      max-height: v-bind('data.matches.length * 41 + "px"');
+      /* max-height: 41px; */
+   }
+
+   .icon-wrapper {
+      height: 34px;
+      width: 34px;
+      /* overflow: hidden; */
+      border: 1px solid var(--cell-border);
+   }
+
+   img.icon {
       width: 100%;
-      background-color: var(--cell-panel);
-      margin-bottom: 20px;
-      height: 120px;
-      border-radius: 15px;
+      transform: scale(1.1);
+   }
+   .champion-main {
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1px;
+      height: 38px;
+      width: 100%;
+      cursor: pointer;
+      padding: 2px 0;
+      border-radius: 3px;
+      transition: 0.1s ease-in-out
+   }
+
+   .champion-main:hover {
+      background: var(--cell-panel);
+   }
+
+   .name-wrapper {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+   }
+
+   .per-minute-sub {
+      font-size: 0.72rem;
+      color: var(--color-font-faded);
+      font-style: italic;
+   }
+   
+   .rhs, .lhs {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+   }
+
+   .name-wrapper {
+      width: 120px;
+   }
+
+   .icon-wrapper {
+      margin-right: 8px;
+      z-index: 5;
+   }
+
+   .rhs {
+      justify-content: flex-end;
+   }
+   
+   .rhs div {
+      width: 70px;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+   }
+
+   .rhs div:nth-child(1) {
+      width: 65px; /* KP */
+   }
+
+   .rhs div:nth-child(2) {
+      width: 40px; /* KP */
+   }
+   
+   .rhs div:nth-child(4) {
+      width: 60px; /* KP */
+   }
+
+   .rhs div:nth-child(6) {
+      width: 55px; /* Healed */
+   }
+
+   .rhs div:nth-child(7) {
+      width: 75px; /* Ally Healing */
+   }
+
+   .rhs div:nth-child(8) {
+      margin-left: 5px;
+      width: 40px; /* Gold */
    }
 
    .dropdown {
-      height: 100%;
-      width: 30px;
-      background: none;
-      border: none;
-      transition: 0.25s;
-      border-radius: 15px 0 0 15px;
-      cursor: pointer;
-   }
-
-   .dropdown img {
-      transition: filter 0.25s;
-   }
-
-   button.dropdown:hover {
-      background: var(--alpha-05);
-   }
-
-   button.dropdown:hover img {
-      filter: brightness(0) invert(1);
-   }
-
-   .expand {
-      transform: rotate(180deg);
-   }
-
-   .lhs {
-      display: flex;
-      justify-content: center;
-      margin: 0 10px;
-      flex-direction: column;
-      width: max-content;
-   }
-
-   .lhs h2 {
-      font-size: 1.1rem;
-      margin-top: -5px;
-      margin-bottom: 10px;
-   }
-   .lhs img {
-      width: 65px;
-      height: 65px;
-      border-radius: 3px;
-   }
-
-   .lhs-stats {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-width: 240px;
-      gap: 25px;
-   }
-
-   .body {
-      font-size: 1.2rem;
-      font-weight: normal;
+      margin-left: 7px;
+      margin-right: 5px;
+      padding: 10px 0;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
    }
    
-   .title {
-      display: block;
-      color: var(--color-font-faded);
-      font-size: 0.8rem;
-      line-height: 0.9;
-      font-weight: normal;
-   }
-
-   .sub {
-      display: block;
-      color: var(--color-font-faded);
-      font-size: 0.9rem;
-      font-weight: normal;
-   }
-
-   .multi-kills div{
-      padding: 5px 15px;
-      margin: 0 10px;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 60%;
-      text-align: center;
-   }
-
-   .triple {
-      background-image: url('../assets/svg/triple_small.svg');
-   }
-
-   .quadra {
-      background-image: url('../assets/svg/diamond_small.svg');
-   }
-
-   .penta {
-      background-image: url('../assets/svg/penta_small.svg');
-   }
-
-   .rhs-stats {
-      display: grid;
-      height: 100%;
-      align-items: center;
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      column-gap: 30px;
-      margin-left: 10px;
-   }
-
-   .secondary-stats {
-      display: flex;
-      width: 100%;
-      justify-content: space-around;
-   }
-
-   .secondary-stats div {
-      width: max-content;
-   }
-
-   .secondary-body {
-      line-height: 1.4;
-      font-size: 0.9rem;
-   }
-
-   .secondary-sub {
-      color: var(--color-font-faded);
-      font-size: 0.75rem;
-      line-height: 0.9;
+   .show-matches {
+      transform: rotate(180deg);
    }
 </style>

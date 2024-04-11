@@ -1,5 +1,5 @@
 <script>
-import Tooltip from './Tooltip.vue'
+import Tooltip from '@/components/Tooltip.vue'
 import StartingSpellsModal from './modals/StartingSpellsModal.vue'
 
 export default {

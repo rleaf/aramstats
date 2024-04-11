@@ -1,6 +1,6 @@
 /* 
    3/13/24
-   Newest champ: Smoler
+   Newest champ: Smolder
    0: Champion id, 1: For code, 2: For humans 
 */
 

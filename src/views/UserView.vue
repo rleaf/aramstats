@@ -16,7 +16,7 @@ import axios from 'axios'
             response: null,
             responseStatus: null,
             error: null,
-            currentPatch: null,
+            patch: null,
             poll: null,
             unique: 0,
          }
@@ -48,7 +48,7 @@ import axios from 'axios'
 
             try {
                // this.currentPatch = (await axios.get(url)).data[0].split('.').slice(0, 2).join('.')
-               this.currentPatch = (await axios.get(url)).data[0]
+               this.patch = (await axios.get(url)).data[0]
             } catch (e) {
                console.log(e, 'getCurrentPatch')
             }
@@ -106,8 +106,8 @@ import axios from 'axios'
          :responseStatus="this.responseStatus"/>
       <UserReady
          v-if="responseStatus === 1"
-         :response="this.response"
-         :currentPatch="this.currentPatch"/>
+         :data="this.response"
+         :patch="this.patch"/>
       <UserError
          v-if="responseStatus === 2"
          :user="{

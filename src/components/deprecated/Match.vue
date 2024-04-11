@@ -1,24 +1,29 @@
 <script>
+import MatchInfo from './MatchInfo.vue'
+
 export default {
+   components: {
+      MatchInfo
+   },
+
    data() {
       return {
          gamePlayed: Number,
          daysSince: Number,
          gameDuration: Number,
          date: null,
-         kda: `${this.match.kills}/${this.match.deaths}/${this.match.assists}`,
-         primaryRune: this.match.primaryRune,
-         secondaryTree: this.match.secondaryTree,
-         items: [
-
-         ],
+         kda: `${this.match.k}/${this.match.d}/${this.match.a}`,
+         // primaryRune: this.match.primaryRune,
+         // secondaryTree: this.match.secondaryTree,
+         items: [[], []],
+         matchInfo: false,
       }
    },
 
    created() {
       this.timeSet()
-      this.itemImages()
 
+      this.itemImages()
       // const url = `http://ddragon.leagueoflegends.com/cdn/12.23.1/data/en_US/runesReforged.json`
       // axios.get(url)
       //    .then((res) => {
@@ -26,14 +31,25 @@ export default {
       //    })
       // console.log(this.match)
    },
-   
+
+   // watch: {
+   //    currentPatch(curr, _) {
+   //       /* 
+   //          Component loads faster than async getCurrentPatch() responds on UserReady,
+   //          so only fire when this.currentPatch not falsey
+   //       */
+   //       if (curr) this.itemImages()
+   //    }
+   // },
+
    props: {
-      match: Object
+      match: Object,
+      currentPatch: ''
    },
 
    methods: {
       timeSet() {
-         this.date = new Date(this.match.gameCreation)
+         this.date = new Date(this.match.gc)
          const now = Date.now()
          const diffTime = Math.abs(this.date - now)
          this.daysSince = Math.round(diffTime / (1000 * 60 * 60 * 24))
@@ -42,254 +58,280 @@ export default {
 
       itemImages() {
          for (let i = 0; i < 6; i++) {
-            if (this.match.items) {
-               if (this.match.items[i] != 0) {
-                  let x = `http://ddragon.leagueoflegends.com/cdn/12.23.1/img/item/${this.match.items[i]}.png`
-                  this.items.push(x)
+            if (this.match.i) {
+               if (this.match.i[i] != 0) {
+                  let x = `https://ddragon.leagueoflegends.com/cdn/${this.currentPatch}/img/item/${this.match.i[i]}.png`
+                  if (i < 3) {
+                     this.items[0].push(x)
+                  } else {
+                     this.items[1].push(x)
+                  }
                }
             }
          }
       },
+
+      matchDetail() {
+         // console.log('soon.tm')
+         this.matchInfo =! this.matchInfo
+      },
+
+      perMinute(unit) {
+         return Math.round(unit / this.match.gd)
+      }
    },
 
    computed: {
       primary() {
-         return new URL(`../assets/runes/${this.primaryRune}.png`, import.meta.url).href
+         return new URL(`../assets/runes/${this.match.pr}.png`, import.meta.url).href
       },
       secondary() {
-         return new URL(`../assets/runes/${this.secondaryTree}.png`, import.meta.url).href
-      },
-      matchWinLoss() {
-         return (this.match.win) ? 'win' : 'loss'
+         return new URL(`../assets/runes/${this.match.sr}.png`, import.meta.url).href
       },
       damageShare() {
-         return Math.round(this.match.damageShare * 100)
+         return Math.round(this.match.ds * 100)
       },
       killParticipation() {
-         return Math.round(this.match.killParticipation * 100)
+         // return `${this.match.killParticipation}`
+         return Math.round(this.match.kp * 100)
       },
+      rotateArrow() {
+         return (this.matchInfo) ? 'transform: rotate(180deg);' : ''
+      }
+
    },
 
 }
 </script>
 
 <template>
-   <div class="match-container">
-      <div class="left-box">
-         <div class="win-loss" :class="matchWinLoss"></div>
-         <div class="time">
-            {{ this.daysSince }} days ago
-            <div class="date">
-               {{ this.date }}, <span class="duration">{{ this.match.gameDuration }} min</span>
-            </div>
+   <div class="match-container" :class="(this.match.w) ? 'win' : 'loss'">
+      <div class="match-left">
+         <button @click="matchDetail">
+            <img src="../assets/svg/arrow3.svg" alt="" :style="rotateArrow"/>
+         </button>
+         <div class="match-date">
+            <span class="date-minor">{{ this.daysSince }} days ago</span>
+            <span>{{ this.match.gd }} min</span>
+            <span class="date-minor">{{ this.date }}</span>
          </div>
-         <div class="runes" v-if="primary">
-            <img class="primaryRune" :src="primary" alt="">
-            <img class="secondaryTree" :src="secondary" alt="">
+         <div class="match-runes">
+            <img class="primary" :src="primary" alt="">
+            <img class="secondary" :src="secondary" alt="">
          </div>
-         <div class="kda">
-            <p class="kda">
-               {{ this.kda }} <span class="unit">KDA</span>
-            </p>
-            {{ this.match.kda || '-' }},
-            {{ killParticipation || '-' }}% <span class="unit">KP</span>
+         <div class="match-kda">
+            <!-- <span class="match-minor">KDA</span> -->
+            <span class="kda">{{ this.kda }}</span>
+            {{ killParticipation || 0 }}% <span class="unit">KP</span>
          </div>
          <div class="match-items">
-            <img v-for="item in this.items"
-               :key="item"
-               :src="item">
+            <img v-for="(item, i) in this.items[0]"
+               :key="i"
+               :src="item"/>
+               <br>
+            <img v-for="(item, i) in this.items[1]"
+               :key="i"
+               :src="item"/>
          </div>
-         <div class="tqp-match-wrapper">
-               <div class="tqp-match">
-                  <span class="unit">T</span> {{ this.match.tripleKills }}
-               </div>
-               <div class="tqp-match">
-                  <span class="unit">Q</span> {{ this.match.quadraKills }}
-               </div>
-               <div class="tqp-match">
-                  <span class="unit">P</span> {{ this.match.pentaKills }}
-               </div>
-            </div>
       </div>
-      <div class="right-box">
-         <div class="total-dmg">
-            {{ this.match.totalDamageDealtToChampions }}, {{ damageShare || '-' }}% <span class="unit"> DS</span>
+      <div class="match-right">
+         <div class="multikills">
+            <span class="triple">{{ this.match.mk.t }}</span>
+            <span class="quadra">{{ this.match.mk.q }}</span>
+            <span class="penta">{{ this.match.mk.p }}</span>
+         </div>
+         <div class="damage">
+            <h5>Damage</h5>
+            {{ this.match.t.dtc }}, {{ damageShare }}% <span class="unit">DS</span>
             <div class="per-minute">
-               {{ this.match.damagePerMinute }} <span class="unit">/ m</span>
+               {{ perMinute(this.match.t.dtc) }} / m
             </div>
          </div>
-         <div class="total-heal">
-            {{ this.match.totalHeal }}
+         <div class="healing">
+            <h5>Healing</h5>
+            {{ this.match.t.h }}
             <div class="per-minute">
-               {{ this.match.healPerMinute }} <span class="unit">/ m</span>
+               {{ perMinute(this.match.t.h) }} / m
             </div>
          </div>
-         <div class="total-ally-healing">
-            {{ this.match.totalHealsOnTeammates }}
+         <div class="ally">
+            <h5>Ally Heals</h5>
+            {{ this.match.t.ah }}
             <div class="per-minute">
-               {{ this.match.allyHealPerMinute }} <span class="unit">/ m</span>
+               {{ perMinute(this.match.t.ah) }} / m
             </div>
          </div>
-         <div class="total-dmg-taken">
-            {{ this.match.totalDamageTaken }}
+         <div class="taken">
+            <h5>Taken</h5>
+            {{ this.match.t.dt }}
             <div class="per-minute">
-               {{ this.match.damageTakenPerMinute }} <span class="unit">/ m</span>
+               {{ perMinute(this.match.t.dt) }} / m
             </div>
          </div>
-         <div class="total-mitigated-dmg">
-            {{ this.match.totalSelfMitigated }}
+         <div class="mitigated">
+            <h5>Mitigated</h5>
+            {{ this.match.t.sm }}
             <div class="per-minute">
-               {{ this.match.selfMitigatedPerMinute }} <span class="unit">/ m</span>
+               {{ perMinute(this.match.t.sm) }} / m
             </div>
          </div>
-         <div class="gold-earned">
-            {{ this.match.goldEarned }}
+         <div class="gold">
+            <h5>Gold</h5>
+            {{ this.match.t.g }}
             <div class="per-minute">
-               {{ this.match.goldPerMinute }} <span class="unit">/ m</span>
+               {{ perMinute(this.match.t.g) }} / m
             </div>
          </div>
       </div>
    </div>
+   <MatchInfo v-if="this.matchInfo" :matchId="this.match.mId" :currentPatch="this.currentPatch"/>
 </template>
 
 <style scoped>
 @import url('../assets/stats.css');
 
-
-.runes {
+.match-container {
    display: flex;
-   width: 70px;
+   width: 745px;
+   height: 65px;
+   background: var(--cell-panel);
+   margin-bottom: 10px;
+   margin-left: auto;
+   border-radius: 15px;
+   font-size: 0.8rem;
    align-items: center;
-   /* gap: 2px; */
-}
-
-.primaryRune {
-   width: 28px;
-}
-.secondaryTree {
-   width: 16px;
-   background: var(--secondary-tree);
-   padding: 4px;
-   border-radius: 100%;
-   
-}
-.per-minute {
-   font-size: 12px;
-   font-style: oblique;
-   color: var(--light900);
-}
-
-.kda {
-   width: 105px;
-}
-
-p.kda {
-   margin: 0;
-   /* font-weight: 500; */
-}
-
-.match-items {
-   display: flex;
-   align-items: center;
-   width: 195px;
-}
-
-.match-items img {
-   width: 26px;
-   margin-left: 2px;
-}
-
-.time {
-   color: var(--light900);
-   width: 115px;
-   padding-left: 10px;
-}
-
-.date {
-   /* font-style: oblique; */
-   font-size: 11px;
-}
-
-.duration {
-   width: 50px;
-   font-size: 14px;
-   color: var(--color-font);
-}
-
-.unit {
-   font-size: 13px;
-   color: var(--light900);
-}
-
-.tqp-match-wrapper {
-   display: flex;
-   /* width: 55px; */
-   flex-direction: column;
-   /* gap: 9px; */
-   font-size: 13px;
-   line-height: 1;
-
-}
-
-.left-box {
-   display: flex;
-   align-items: center;
-   height: inherit;
-   color: var(--color-font);
-}
-
-.right-box {
-   display: flex;
-   align-items: center;
-   height: inherit;
-   color: var(--color-font);
-}
-
-.total-dmg {
-   width: 120px;
-}
-
-.total-heal {
-   width: 75px;
-}
-
-.total-ally-healing {
-   width: 90px;
-}
-
-.total-dmg-taken {
-   width: 110px;
-}
-
-.total-mitigated-dmg {
-   width: 130px;
-}
-
-.gold-earned {
-   width: 70px;
 }
 
 .win {
-   /* background: linear-gradient(90deg, var(--win), rgba(0, 0, 0, 0)) */
-   background: var(--win);
+   background: linear-gradient(to right, var(--win) 0%, var(--cell-panel));
 }
 
 .loss {
-   /* background: linear-gradient(90deg, var(--loss), rgba(0, 0, 0, 0)) */
-   background: var(--loss);
+   background: linear-gradient(to right, var(--loss) 0%, var(--cell-panel));
 }
 
-.match-container {
+.match-left {
    display: flex;
-   justify-content: space-between;
-   font-size: 14px;
-   height: 50px;
-   border-top: 1px solid var(--matches-border-top);
-}
-
-.win-loss {
-   width: 22px;
    height: inherit;
+   align-items: center;
+   justify-content: space-between;
+   width: 500px;
 }
 
+.match-right {
+   align-items: center;
+   height: inherit;
+   width: 100%;
+   padding-right: 10px;
+   justify-content: space-evenly;
+   font-size: 0.9rem;
+}
+
+.match-left button {
+   background: none;
+   border: none;
+   height: 100%;
+   transition: 0.25s;
+   cursor: pointer;
+   border-radius: 15px 0 0 15px;
+}
+
+.match-left button:hover {
+   background: var(--alpha-05);
+}
+
+.match-date {
+   display: flex;
+   flex-direction: column;
+}
+
+.match-right {
+   display: flex;
+   align-items: center;
+}
+
+.date-minor {
+   color: var(--color-font-faded);
+   font-size: 0.7rem;
+}
+
+.match-runes {
+   text-align: center;
+}
+
+.primary {
+   width: 28px;
+   filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 1));
+}
+
+.secondary {
+   margin-left: -17px;
+   margin-bottom: -5px;
+   filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 1)) saturate(1.25);
+   border-radius: 15px;
+   padding: 2px;
+   width: 17px;
+}
+
+
+.kda {
+   display: block;
+   font-size: 1rem;
+   margin-bottom: 2px;
+}
+
+.unit {
+   font-size: 0.75rem;
+   color: var(--color-font-faded);
+}
+
+.match-items {
+   min-width: 75px;
+}
+
+.match-items img {
+
+   width: 23px;
+   padding-left: 2px;
+   border-radius: 3px;
+}
+
+.multikills {
+   display: flex;
+   gap: 2px;
+   flex-direction: column;
+   justify-content: center;
+}
+
+.multikills span {
+   background-repeat: no-repeat;
+   background-position: center;
+   background-size: 60%;
+   text-align: center;
+   width: 30px;
+}
+
+.triple {
+   background-image: url('../assets/svg/triple_small.svg')      
+}
+
+.quadra {
+   background-image: url('../assets/svg/diamond_small.svg')
+}
+
+.penta {
+   background-image: url('../assets/svg/penta_small.svg')
+}
+
+h5 {
+   margin: 0;
+   color: var(--color-font-faded);
+   font-weight: normal;
+   font-size: 0.75rem;
+}
+
+.per-minute {
+   color: var(--color-font-faded);
+   font-size: 0.75rem;
+}
 </style>

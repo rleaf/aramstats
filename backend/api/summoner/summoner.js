@@ -233,13 +233,13 @@ class Summoner {
          } catch (e) { }
 
          if (timeline) timelineData = this.parseTimeline(timeline, playerIndex, playerTeam)
-
+         
          const matchDocument = new summonerMatchesModel({
             m: summonerDocument._id,
             mId: match.metadata.matchId,
-            gc: match.info.matchCreation,
+            gc: match.info.gameCreation,
             gd: (match.info.gameEndTimestamp) ? Math.round(match.info.gameDuration / 60) : Math.round(match.info.gameDuration / 60000),
-            gv: match.info.matchVersion,
+            gv: match.info.gameVersion,
             w: player.win,
             k: player.kills,
             d: player.deaths,
@@ -378,6 +378,7 @@ class Summoner {
          for (const match of matches) {
             champion.avg.ahpm += Math.round(match.t.ah / match.gd)
             champion.avg.a += match.a
+            champion.avg.dmg += match.t.dtc
             champion.avg.dpm += Math.round(match.t.dtc / match.gd)
             champion.avg.ds += match.ds * 100
             champion.avg.dtpm += Math.round(match.t.dt / match.gd)
