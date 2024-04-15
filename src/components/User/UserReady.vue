@@ -1,20 +1,27 @@
 <script>
-import axios from 'axios'
 import RadarChart from '../RadarChart.vue'
 import Tooltip from '@/components/Tooltip.vue'
 import Champion from '../Champion.vue'
+import Heatmap from '../Heatmap.vue'
+import _names from '@/constants/champions.js'
+import { summonerStore } from '@/stores/summonerStore'
 
 export default {
    components: {
       RadarChart,
       Tooltip,
-      Champion
+      Champion,
+      Heatmap
    },
 
    data() {
       return {
+         names: _names,
          championFilter: '',
-         championPool: []
+         championPool: summonerStore().championPool,
+         sortFilter: null,
+         toggleState: false,
+         descending: false,
       }
    },
 
@@ -30,20 +37,97 @@ export default {
    methods: {
       championSearchFocus(e) {
          if (e.key !== 's' || document.activeElement === this.$refs.championSearch) return
+
          e.preventDefault()
-         if (this.championFilter.length) this.championFilter = ''
          this.$refs.championSearch.focus()
       },
 
       toggleAll() {
-         // Add all champions to championPool
+         this.toggleState = !this.toggleState
+
+         if (this.toggleState) {
+            for (const c of this.data.championData) {
+               this.championPool.add(c.championId)
+            }
+         } else {
+            this.championPool.clear()
+         }
+
+      },
+
+      sort(idx) {
+         if (idx === this.sortFilter) {
+            (this.descending) ? this.sortFilter = null : this.descending = true
+
+         } else {
+            this.sortFilter = idx
+            this.descending = false
+         }
+      },
+
+      updateProfile() {
+
+      },
+
+      deleteProfile() {
+
       }
    },
    
    computed: {
+
+      filteredChampions() {
+         return this.data.championData.filter(c => this.names.urlName[c.championId].toLowerCase().includes(this.championFilter.toLowerCase()))
+      },
+      
+      sortedChampions() {
+         switch (this.sortFilter) {
+            case 0:
+               return (this.descending) ? this.filteredChampions.sort((a, b) => this.names.urlName[b.championId].localeCompare(this.names.urlName[a.championId])) : 
+                  this.filteredChampions.sort((a, b) => this.names.urlName[a.championId].localeCompare(this.names.urlName[b.championId]))
+            case 1:
+               return (this.descending) ? this.filteredChampions.sort((a, b) => (a.wins / a.games) - (b.wins / b.games)) : 
+                  this.filteredChampions.sort((a, b) => (b.wins / b.games) - (a.wins / a.games))
+            case 2:
+               return (this.descending) ? this.filteredChampions.sort((a, b) => ((a.avg.k + a.avg.a) / a.avg.d) - ((b.avg.k + b.avg.a) / b.avg.d)) :
+                  this.filteredChampions.sort((a, b) => ((b.avg.k + b.avg.a) / b.avg.d) - ((a.avg.k + a.avg.a) / a.avg.d))
+            case 3:
+               return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.kp) - (b.avg.kp)) :
+                  this.filteredChampions.sort((a, b) => (b.avg.kp) - (a.avg.kp))
+            case 4:
+               return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.tdd) - (b.avg.tdd)) :
+                  this.filteredChampions.sort((a, b) => (b.avg.tdd) - (a.avg.tdd))
+            case 5:
+               return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.tdt) - (b.avg.tdt)) :
+                  this.filteredChampions.sort((a, b) => (b.avg.tdt) - (a.avg.tdt))
+            case 6:
+               return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.tsm) - (b.avg.tsm)) :
+                  this.filteredChampions.sort((a, b) => (b.avg.tsm) - (a.avg.tsm))
+            case 7:
+               return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.th) - (b.avg.th)) :
+                  this.filteredChampions.sort((a, b) => (b.avg.th) - (a.avg.th))
+            case 8:
+               return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.ah) - (b.avg.ah)) :
+                  this.filteredChampions.sort((a, b) => (b.avg.ah) - (a.avg.ah))
+            case 9:
+               return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.ge) - (b.avg.ge)) :
+                  this.filteredChampions.sort((a, b) => (b.avg.ge) - (a.avg.ge))
+            default:
+               return this.filteredChampions.sort((a, b) => (b.games) - (a.games))
+         }
+      },
+
       profileIcon() {
-         // clogs 403 initially because getpatch hasn't run. once responds w/ patch will update reactively.
-         return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/profileicon/${this.data.profileIcon}.png`      },
+         return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/profileicon/${this.data.profileIcon}.png`
+      },
+
+      lhsHeaders() {
+         return ['Champion', 'Winrate']
+      },
+
+      rhsHeaders() {
+         return ['KDA', 'KP', 'Damage', 'Taken', 'Mitigated', 'Healed', 'Ally Healing', 'Gold']
+      }
    },
 
    props: {
@@ -68,8 +152,8 @@ export default {
                   <div class="tagLine">#{{ this.data.tagLine }}</div>
                </div>
                <div class="buttons">
-                  <div class="update">Update</div>
-                  <div class="delete">Delete</div>
+                  <button @click="this.updateProfile()">Update</button>
+                  <button @click="this.deleteProfile()">Delete</button>
                </div>
             </div>
          </div>
@@ -79,6 +163,7 @@ export default {
          </div>
       </div>
       <div class="body">
+         
          <div class="lhs-body">
             <div class="account">
                <div class="section-header">
@@ -94,41 +179,51 @@ export default {
                
             </div>
          </div>
+
          <div class="rhs-body">
-            <div class="timeline">Timeline</div>
+            <Heatmap :data="this.data.championData" />
             <div class="champions-panel-header">
                <div class="utility">
                   <div>
-                     <!-- <input ref="championSearch" :placeholder="this.testo" @keydown.enter="this.championSearchFocus()" type="text" v-model="this.championFilter"> -->
-                     <input ref="championSearch" @click="this.championFilter = ''" @keydown.enter="this.championSearchFocus()" type="text" v-model="this.championFilter">
+                     <input ref="championSearch" @keyup.escape="this.$refs.championSearch.blur()" @click="this.championFilter = ''" type="text" v-model="this.championFilter" spellcheck="false">
                      <span v-show="!this.championFilter.length" class="keyboard-shortcut">
-                        Press <kbd>s</kbd> to filter
+                        Press <kbd>s</kbd> to search
                      </span>
                   </div>
-                  <button @click="this.toggleAll()">Toggle All</button>
+                  <div class="toggle" style="margin-left: auto;">
+                     <button @click="this.toggleAll()">Toggle All</button>
+                     <!-- <span :class="{ 'toggled': this.toggleState }">
+                        Toggle All
+                     </span>
+                     <svg @click="this.toggleAll()" fill="none">
+                        <rect x="0.5" y="0.5" rx="12"/>
+                        <circle :class="{ 'toggle-all': this.toggleState }" ref="svgCircle" cx="13" cy="50%" r="9" rx="12"/>
+                     </svg> -->
+                  </div>
+                  <Tooltip :align="'right'" :tip="'championsTable'"/>
                </div>
                <div class="table-headers">
                   <div class="lhs">
-                     <div>Champion</div>
-                     <div>Winrate (W/L)</div>
+                     <div @click="this.sort(i)" v-for="(h, i) in lhsHeaders" :key="i">
+                        {{ h }}
+                        <hr v-show="this.sortFilter === i" :class="{ 'descending': this.descending }">
+                     </div>
                   </div>
                   <div class="rhs">
-                     <div>K/D/A</div>
-                     <div>KP</div>
-                     <div>Damage</div>
-                     <div>Taken</div>
-                     <div>Mitigated</div>
-                     <div>Healed</div>
-                     <div>Ally Healing</div>
-                     <div>Gold</div>
+                     <div @click="this.sort(i+2)" v-for="(h, i) in rhsHeaders" :key="i">
+                        {{ h }}
+                        <hr v-show="this.sortFilter === i+2" :class="{ 'descending': this.descending }">
+                     </div>
                   </div>
                </div>
+               <hr>
             </div>
             <div class="champions">
-               <Champion :data="c" v-for="c in this.data.championData" :patch="this.patch" :key="c.championId" />
+               <Champion
+                  :data="c" v-for="c in sortedChampions"
+                  :patch="this.patch"
+                  :key="c.championId" />
             </div>
-            <!-- <div class="champions-panel">
-            </div> -->
          </div>
       </div>
    </div>
@@ -151,7 +246,7 @@ export default {
    width: 100%;
    margin-top: 5vh;
    padding-top: 4vh;
-   padding-bottom: 4vh;
+   padding-bottom: 6vh;
    border-top: 1px solid var(--cell-border);
    /* background: radial-gradient(ellipse at top, var(--cell-panel), var(--cell-panel-rgb) 25%); */
 }
@@ -178,24 +273,31 @@ export default {
 
 .buttons {
    display: flex;
-   gap: 10px;
+   gap: 8px;
    padding-top: 10px;
 }
 
-.buttons div {
-   padding: 0.3rem 0.8rem;
-   /* background: var(--cell-panel); */
-   background: tomato;
-   border-radius: 5px;
-   font-size: 0.9rem;
+.buttons button {
+   padding: 0.5rem 1rem;
    cursor: pointer;
-   transition: 0.15s ease-in-out;
-   -webkit-touch-callout: none;
-   -webkit-user-select: none;
-   -khtml-user-select: none;
-   -moz-user-select: none;
-   -ms-user-select: none;
-   user-select: none;
+   border-radius: 3px;
+   /* height: 30px; */
+   border: 1px solid var(--cell-border);
+   background: var(--cold-blue);
+   color: var(--color-font);
+   font-size: 0.8rem;
+   transition: 150ms ease-in-out;
+}
+
+.buttons button:hover {
+   border: 1px solid var(--light-08);
+   /* background: var(--ice-blue); */
+   color: var(--color-font-focus);
+}
+
+.buttons button:last-child:hover {
+   background: var(--danger);
+   color: var(--color-font-focus);
 }
 
 .buttons div:hover {
@@ -230,6 +332,7 @@ export default {
 .body {
    display: flex;
    justify-content: space-between;
+   padding-bottom: 10vh;
 }
 
 .section-header {
@@ -249,18 +352,47 @@ export default {
 }
 
 .champions-panel-header .table-headers {
+   /* background: rgba(255, 255, 255, 0.05); */
    display: flex;
    font-size: 0.8rem;
    align-items: center;
    justify-content: space-between;
-   height: 35px;
-   margin-bottom: 5px;
-   border-bottom: 1px solid var(--cell-border);
+   height: 30px;
+   /* margin-bottom: 4px; */
+   /* border-bottom: 1px solid var(--cell-border); */
    /* border-top: 1px solid var(--cell-border); */
+   -webkit-touch-callout: none;
+   -webkit-user-select: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
 }
 
+
+.champions-panel-header hr {
+   height: 1px;
+   margin: 0;
+   border: none;
+   background-color: var(--cell-border);
+   outline: none;
+   transition: transform .1s ease-in-out; 
+}
+
+.table-headers hr {
+   margin-top: -4px;
+}
+
+.descending {
+   transform: translateY(8px);
+}
+
+.champions {
+   margin-top: 5px;
+}
 .utility {
    display: flex;
+   align-items: center;
    margin-bottom: 15px;
 }
 
@@ -290,56 +422,77 @@ export default {
 }
 
 .utility input {
-   background: var(--color-background);
+   background: var(--off-blue);
    border: 1px solid var(--cell-border);
    color: var(--color-font);
-   padding: .45rem .45rem;
-   border-radius: 4px;
+   padding: .4rem .45rem;
+   border-radius: 3px;
    transition: .2s;
 }
 
 .utility input:focus {
    outline: none;
+   background: var(--cold-blue-focus);
+   /* background: #141820; */
 }
 
 .utility button {
-   padding: 0 0.25rem;
+   padding: 0 1rem;
    margin: 0;
    cursor: pointer;
-   border-radius: 5px;
+   border-radius: 3px;
    border: 0;
-   margin-left: 10px;
-   background: tomato;
+   margin-right: 10px;
+   height: 30px;
+   border: 1px solid var(--cell-border);
+   background: var(--off-blue);
    color: var(--color-font);
-   font-size: 0.8rem;
+   font-size: 0.75rem;
+   transition: background 150ms ease-in-out;
 }
 
-.table-headers .lhs, .table-headers .rhs  {
+.utility button:hover {
+   background: var(--cold-blue-focus);
+}
+
+.lhs div, .rhs div {
+   cursor: pointer;
+   line-height: 30px;
+}
+
+div.ascending {
+   border-bottom: 2px solid var(--cell-border);
+   /* background: linear-gradient(to bottom, var(--alpha-01), 50%, transparent 100%); */
+   /* background: radial-gradient(ellipse at bottom, tomato 0, transparent 40%); */
+}
+
+div.descending {
+   line-height: 50px;
+}
+
+.table-headers .lhs, .table-headers .rhs {
+   /* color: var(--color-font-faded); */
    display: flex;
    font-weight: 600;
-}
-
-.table-headers .lhs {
    gap: 5px;
    justify-content: flex-end;
-}
-.table-headers .lhs {
-   gap: 5px;
-   justify-content: flex-end;
-}
-
-.table-headers .rhs {
-   gap: 5px;
-   justify-content: flex-end;
+   height: 100%;
 }
 
 .table-headers .rhs div {
+   /* background: tomato; */
    width: 70px;
+   /* padding: 8px 0; */
+   /* height: 30px; */
 }
 
 .table-headers .lhs div:first-child {
    margin-left: 29px;
-   width: 120px;
+   width: 160px;
+}
+
+.table-headers .lhs div:nth-child(2) {
+   width: 50px;
 }
 
 .table-headers .rhs div:nth-child(1) {
@@ -352,6 +505,7 @@ export default {
 
 .table-headers .rhs div:nth-child(4) {
    width: 60px; /* Taken */
+   /* margin-right: 20px; */
 }
 
 .table-headers .rhs div:nth-child(6) {
@@ -373,5 +527,55 @@ export default {
    margin: 0;
 }
 
+svg {
+   width: 45px;
+   height: 26px;
+   overflow: hidden;
+   cursor: pointer;
+   -webkit-touch-callout: none;
+   /* iOS Safari */
+   -webkit-user-select: none;
+   /* Safari */
+   -khtml-user-select: none;
+   /* Konqueror HTML */
+   -moz-user-select: none;
+   /* Old versions of Firefox */
+   -ms-user-select: none;
+   /* Internet Explorer/Edge */
+   user-select: none;
+   /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
 
+rect {
+   width: calc(100% - 1px);
+   height: calc(100% - 1px);
+   stroke: var(--light-10);
+}
+
+circle {
+   fill: var(--alpha-07);
+   transition: 0.2s cubic-bezier(.25, .52, .64, .84);
+}
+
+circle.toggle-all {
+   transform: translateX(42%);
+   /* fill: var(--light-01); */
+   fill: var(--color-font);
+}
+
+.toggle {
+   display: flex;
+   align-items: center;
+}
+
+.toggle span {
+   font-size: 0.8rem;
+   color: var(--color-font-faded);
+   padding-right: 5px;
+   transition: color 0.3s cubic-bezier(.25, .52, .64, .84);
+}
+
+span.toggled {
+   color: var(--color-font);
+}
 </style>

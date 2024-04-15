@@ -1,6 +1,7 @@
 <script>
 import names from '@/constants/champions.js'
 import Match from './Match.vue'
+import { summonerStore } from '../stores/summonerStore'
 
 export default {
    components: {
@@ -11,31 +12,32 @@ export default {
          iconTable: names.urlName,
          humanTable: names.humanName,
          matchToggle: false,
-         classTransition: {
-            'max-height': `${this.data.matches.length * 39}px;` 
-         },
-         matchHeight: `${this.data.matches.length * 39}px`
+         championPool: summonerStore().championPool
       }
    },
 
    mounted() {
-      console.log(this.data.matches)
+
    },
 
    methods: {
       toggleMatches() {
-         console.log('toad')
+         this.matchToggle = !this.matchToggle
+
+         if (this.matchToggle) {
+            this.$refs.matchContainer.style.display = 'block'
+            this.$refs.matchContainer.style.opacity = `1`
+            setTimeout(() => this.$refs.matchContainer.style['max-height'] = `${this.data.matches.length * 39}px`, 10)
+         } else {
+            this.$refs.matchContainer.style['max-height'] = `0px`
+            this.$refs.matchContainer.style.opacity = `0`
+            setTimeout(() => this.$refs.matchContainer.style.display = 'none', 200)
+         }
       },
 
-      beforeEnter(el) {
-         console.log('toad')
-         el.style.maxHeight = `${this.data.matches.length * 39}px`
+      toggleChampion(id) {
+         (this.championPool.has(id)) ? this.championPool.delete(id) : this.championPool.add(id)
       },
-
-      beforeLeave(el) {
-         el.style.maxHeight = `${this.data.matches.length * 39}px`
-      },
-
 
    },
 
@@ -51,16 +53,16 @@ export default {
 
    props: {
       data: Object,
-      patch: String
+      patch: String,
    }
 }
 </script>
 
 <template>
-   <div class="champion-main">
+   <div class="champion-main" ref="championMain" :class="{ 'active-champion': this.championPool.has(this.data.championId) }" @click="this.toggleChampion(this.data.championId)">
       
       <div class="lhs">
-         <img class="dropdown" src="@/assets/svg/arrow3.svg" @click="this.matchToggle = !this.matchToggle" :class="{ 'show-matches': this.matchToggle}">
+         <img class="dropdown" src="@/assets/svg/arrow3.svg" @click.stop="this.toggleMatches()" :class="{ 'show-matches': this.matchToggle }">
          <div class="name-wrapper">
             <div class="icon-wrapper">
                <img class="icon" :src="championIcon" alt="">
@@ -68,7 +70,10 @@ export default {
             {{ this.humanTable[this.data.championId] }}
          </div>
          <div class="winrate">
-            {{ winrate }}% ({{ this.data.wins }}/{{ this.data.games }})
+            {{ winrate }}%
+            <div class="per-minute-sub">
+               {{ this.data.wins }}/{{ this.data.games }}
+            </div>
          </div>
 
       </div>
@@ -123,68 +128,36 @@ export default {
    
          <!-- Gold Earned -->
          <div class="primary-stat">
-            {{ this.data.avg.gpm }}
+            {{ this.data.avg.ge }}
             <div class="per-minute-sub">
-               {{ this.data.avg.dpm }}
+               {{ this.data.avg.gpm }}
             </div>
          </div>
       </div>
 
    </div>
-   <Transition
-      leave-from-class="testo"
-      enter-to-class="testo">
-   <!-- <Transition> -->
-      <div v-show="this.matchToggle">
-            <Match v-for="(m, i) in this.data.matches" :key="i" :data="m" />
-      </div>
-   </Transition>
-   <!-- <div class="matches-main-wrapper">
-   </div> -->
+   <div class="match-container" ref="matchContainer">
+         <Match v-for="(m, i) in this.data.matches" :key="i" :data="m" />
+   </div>
 </template>
 
 <style scoped>
-   /* .matches-main-wrapper {
+   .match-container {
+      display: none;
       overflow: hidden;
-      background: blue;
-      min-height: 0;
-      transition: 0.3s ease-in-out;
-   }
-
-   .matches-main-wrapper > div {
-      max-height: 1000px;
-      overflow: hidden;
-      transition: 0.3s ease-in-out;
-   } */
-   .testo {
-      max-height: 41px;
-   }
-   .v-enter-active,
-   .v-leave-active {
-      overflow: hidden;
-      transition: all 0.3s ease-in-out;
-   }
-
-   .v-enter-from,
-   .v-leave-to {
-      opacity: 0;      
       max-height: 0;
+      opacity: 1;
+      transition: all 200ms ease-in-out;
    }
 
-   /* .v-leave-from,
-   .v-enter-to {
-      max-height: v-bind('data.matches.length * 41 + "px"');
-   } */
-   
-   .testo {
-      max-height: v-bind('data.matches.length * 41 + "px"');
-      /* max-height: 41px; */
+   .active-champion {
+      background-color: var(--cold-blue-focus);
    }
 
    .icon-wrapper {
       height: 34px;
       width: 34px;
-      /* overflow: hidden; */
+      overflow: hidden;
       border: 1px solid var(--cell-border);
    }
 
@@ -192,6 +165,7 @@ export default {
       width: 100%;
       transform: scale(1.1);
    }
+   
    .champion-main {
       font-size: 0.8rem;
       display: flex;
@@ -202,12 +176,22 @@ export default {
       cursor: pointer;
       padding: 2px 0;
       border-radius: 3px;
-      transition: 0.1s ease-in-out
+      border: 1px solid transparent;
+      transition: background .2s ease-in-out, border .1s ease-in-out;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
    }
 
-   .champion-main:hover {
-      background: var(--cell-panel);
+   .champion-main:hover:not(.active-champion) {
+      border: 1px solid var(--cell-border);
    }
+   /* .dropdown:hover {
+      border: 1px solid tomato;
+   } */
 
    .name-wrapper {
       display: flex;
@@ -227,7 +211,7 @@ export default {
    }
 
    .name-wrapper {
-      width: 120px;
+      width: 160px;
    }
 
    .icon-wrapper {
@@ -241,12 +225,6 @@ export default {
    
    .rhs div {
       width: 70px;
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
    }
 
    .rhs div:nth-child(1) {

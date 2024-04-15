@@ -10,7 +10,7 @@ export default {
 
    props: {
       tip: null,
-      align: null
+      align: null,
    }
 }
 </script>
@@ -58,7 +58,7 @@ export default {
    font-size: 0.8rem;
    line-height: 1.35;
    font-style: normal;
-   background: var(--cold-blue);
+   background: var(--off-blue);
    border: 1px solid var(--cell-border);
    border-radius: 8px;
    padding: 0.2rem 1.5rem;

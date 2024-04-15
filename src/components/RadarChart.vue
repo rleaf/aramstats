@@ -26,8 +26,6 @@ export default {
 
    methods: {
       processData() {
-
-         console.log(this.data, 'toad')
          for (const c of this.data) {
             for (const v of classBook[c.championId]) {
                switch (v) {
@@ -60,7 +58,7 @@ export default {
       },
 
       initChart() {
-         const myChart = echarts.init(this.$refs.chart);
+         const myChart = echarts.init(this.$refs.chart, null, { renderer: 'svg' });
 
          const option = {
             tooltip: {
@@ -86,12 +84,13 @@ export default {
                // shape: 'circle',
                splitNumber: 5,
                axisName: {
-                  color: '#cfcfcf',
+                  color: 'var(--color-font)',
                   formatter: (value) => `{${value}|}\n${value}`,
                   rich: {
                      'Controller': {
                         height: 25,
-                        lineHeight: 30,
+                        width: 25,
+                        lineHeight: 22,
                         align: 'center',
                         backgroundColor: {
                            image: new URL('../assets/class_images/Controller_icon.webp', import.meta.url).href
@@ -99,6 +98,7 @@ export default {
                      },
                      'Fighter': {
                         height: 22,
+                        width: 22,
                         lineHeight: 30,
                         align: 'center',
                         backgroundColor: {
@@ -107,6 +107,7 @@ export default {
                      },
                      'Mage': {
                         height: 22,
+                        width: 22,
                         align: 'center',
                         lineHeight: 30,
                         backgroundColor: {
@@ -115,6 +116,7 @@ export default {
                      },
                      'Marksman': {
                         height: 22,
+                        width: 22,
                         align: 'center',
                         lineHeight: 30,
                         backgroundColor: {
@@ -123,6 +125,7 @@ export default {
                      },
                      'Slayer': {
                         height: 22,
+                        width: 22,
                         align: 'center',
                         lineHeight: 30,
                         backgroundColor: {
@@ -130,8 +133,9 @@ export default {
                         },
                      },
                      'Tank': {
-                        height: 22,
-                        lineHeight: 30,
+                        height: 20,
+                        width: 20,
+                        lineHeight: 23,
                         align: 'center',
                         backgroundColor: {
                            image: new URL('../assets/class_images/Tank_icon.webp', import.meta.url).href
@@ -139,6 +143,7 @@ export default {
                      },
                      'Specialist': {
                         height: 22,
+                        width: 22,
                         lineHeight: 30,
                         align: 'center',
                         backgroundColor: {
@@ -150,12 +155,12 @@ export default {
                splitLine: {
                   lineStyle: {
                      color: [
-                        'rgba(153, 153, 153, 1)',
-                        'rgba(153, 153, 153, 0.8)',
-                        'rgba(153, 153, 153, 0.6)',
-                        'rgba(153, 153, 153, 0.4)',
-                        'rgba(153, 153, 153, 0.2)',
-                        'rgba(153, 153, 153, 0.1)',
+                        'var(--alpha-07)',
+                        'var(--alpha-07)',
+                        'var(--alpha-06)',
+                        'var(--alpha-05)',
+                        'var(--alpha-04)',
+                        'var(--alpha-03)',
                      ]
                   }
                },
@@ -164,7 +169,7 @@ export default {
                },
                axisLine: {
                   lineStyle: {
-                  color: 'rgba(153, 153, 153, 0.5)'
+                  color: 'var(--alpha-07)'
                   }
                }
             },
@@ -176,7 +181,7 @@ export default {
                   data: [Object.values(this.tally)],
                   symbol: 'none',
                   itemStyle: {
-                  color: '#7a90ca' // ice blue
+                  color: 'var(--ice-blue)' // ice blue
                   },
                   areaStyle: {
                      opacity: 0.25

@@ -44,5 +44,11 @@ export default {
 
    'account': [
       `Top level information about your account.`,
-   ]
+   ],
+   'championsTable': [
+      `Hello, if you see this please tell me that I forgot about this part.`
+   ],
+   'heatmap': [
+      `The heatmap shows the summoner's playrate for the selected year. Each cell represents a day where the brighter the color indicates more games played. Cells are hoverable for specific information.`,
+   ],
 }

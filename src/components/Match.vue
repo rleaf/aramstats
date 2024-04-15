@@ -33,33 +33,6 @@ export default {
          return this.data.gv.split('.').slice(0, 2).join('.') + '.1'
       },
 
-      kda() {
-         return `${this.data.k}/${this.data.d}/${this.data.a}`
-      },
-
-      damage() {
-         return this.data.d
-      },
-
-      taken() {
-
-      },
-
-      mitigated() {
-
-      },
-
-      healed() {
-
-      },
-
-      allyHealing() {
-
-      },
-
-      gold() {
-
-      }
    },
 
    props: {
@@ -86,11 +59,10 @@ export default {
             <div v-for="item in this.data.i"> 
                <img :src="`https://ddragon.leagueoflegends.com/cdn/${cleanedGameVersion}/img/item/${item}.png`" alt="">
             </div>
-            <!-- <img v-for="item in this.data.i" :src="`https://ddragon.leagueoflegends.com/cdn/${cleanedGameVersion}/img/item/${item}.png`" alt=""> -->
          </div>
          <div class="match-rhs">
             <div> <!-------- KDA ----------->
-               {{ kda }}
+               {{ `${this.data.k}/${this.data.d}/${this.data.a}` }}
             </div>
             <div> <!-------- KP ------------>
                {{ this.data.kp * 100 }}%
@@ -140,7 +112,6 @@ export default {
    .match-main {
       display: flex;
       gap: 16px;
-      /* min-height: 39px; */
    }
 
    hr {
@@ -205,7 +176,6 @@ export default {
       display: flex;
       align-items: center;
       gap: 5px;
-      /* width: 100%; */
       justify-content: flex-end;
    }
 

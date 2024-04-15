@@ -110,8 +110,14 @@
   
   /* Blues */
   --cold-blue: hsl(232, 21%, 14%);
-  --cold-blue-focus: hsl(232, 21%, 18%);
+  /* --cold-blue-focus: hsl(232, 21%, 18%); */
+  --cold-blue-focus: #181c25;
+  --cold-blue-focus-rgb: 36, 39, 56;
   --ice-blue: #7a90ca;
+  --off-blue: #141820;
+
+  /* Danger */
+  --danger: rgb(150, 33, 33);
 
   /* alphas */
   --alpha-00: var(--white-alpha-0);
@@ -194,8 +200,10 @@
   /* Blues */
   --cold-blue: hsl(0, 0%, 87%);
   --cold-blue-rgb: 209, 211, 225;
+  --cold-blue-focus: rgb(204, 204, 204);
   --cold-blue-focus: hsl(0, 0%, 80%);
   --ice-blue: #7a90ca;
+  --off-blue: hsl(0, 0%, 80%);
 
   --alpha-00: var(--black-alpha-6);
   --alpha-01: var(--black-alpha-1);
