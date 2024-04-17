@@ -10,8 +10,10 @@ const championEmbedSchema = new mongoose.Schema({
    tg: { type: Number, default: 0 },           // turrets gained
    tl: { type: Number, default: 0 },           // turrets lost
    fbk: { type: Number, default: 0 },          // first blood kill
-   rw: { type: Number, default: 0 },           // red side wins
+   rw: { type: Number, default: 0 },           // red side wins (bsg = games - rsg)
+   rsg: { type: Number, default: 0 },          // red side games
    bw: { type: Number, default: 0 },           // blue side wins
+   fs: { type: Number, default: 0 },           // fountain sitting
    tf: {
       exp: { type: Number, default: 0 },       // expectation
       cap: { type: Number, default: 0 },       // capitalization

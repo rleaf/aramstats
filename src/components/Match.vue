@@ -33,6 +33,16 @@ export default {
          return this.data.gv.split('.').slice(0, 2).join('.') + '.1'
       },
 
+      gameDuration() {
+         if (Number.isInteger(this.data.gd)) {
+            return `${this.data.gd}m`
+         } else {
+            let x = this.data.gd.toString().split('.')
+            x[1] = Math.floor((+`.${x[1]}` * 60))
+            return `${x[0]}m ${x[1]}s`
+         }
+      }
+
    },
 
    props: {
@@ -52,7 +62,8 @@ export default {
                {{ this.date }}
             </div>
             <div class="delta">
-               {{ this.daysSince }} days ago
+               <!-- {{ this.daysSince }} days ago -->
+               {{ this.gameDuration }}
             </div>
          </div>
          <div class="items">
@@ -65,7 +76,7 @@ export default {
                {{ `${this.data.k}/${this.data.d}/${this.data.a}` }}
             </div>
             <div> <!-------- KP ------------>
-               {{ this.data.kp * 100 }}%
+               {{ Math.round(this.data.kp * 100) }}%
             </div>
             <div> <!-------- Damage -------->
                {{ this.data.t.dtc }}

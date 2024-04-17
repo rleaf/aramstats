@@ -159,7 +159,10 @@
 
   --win: rgba(21, 106, 128, 0.2);
   --loss: rgba(150, 33, 33, 0.2);
-  
+
+  --red-side: #AD5757;
+  --blue-side: #4B6CDF;
+
   --parse100: #fabb1c;
   --parse85: #C76BFF;
   --parse75: #38CA46;

@@ -3,6 +3,7 @@ import RadarChart from '../RadarChart.vue'
 import Tooltip from '@/components/Tooltip.vue'
 import Champion from '../Champion.vue'
 import Heatmap from '../Heatmap.vue'
+import StatDropdown from '../StatDropdown.vue'
 import _names from '@/constants/champions.js'
 import { summonerStore } from '@/stores/summonerStore'
 
@@ -10,15 +11,16 @@ export default {
    components: {
       RadarChart,
       Tooltip,
+      StatDropdown,
       Champion,
       Heatmap
    },
 
    data() {
       return {
+         store: summonerStore(),
          names: _names,
          championFilter: '',
-         championPool: summonerStore().championPool,
          sortFilter: null,
          toggleState: false,
          descending: false,
@@ -47,10 +49,10 @@ export default {
 
          if (this.toggleState) {
             for (const c of this.data.championData) {
-               this.championPool.add(c.championId)
+               this.store.championPool.add(c.championId)
             }
          } else {
-            this.championPool.clear()
+            this.store.championPool.clear()
          }
 
       },
@@ -127,6 +129,277 @@ export default {
 
       rhsHeaders() {
          return ['KDA', 'KP', 'Damage', 'Taken', 'Mitigated', 'Healed', 'Ally Healing', 'Gold']
+      },
+
+      convertChampionData() {
+         return this.data.championData.reduce((o, c) => {
+            o[c.championId] = c
+            return o
+         }, {})
+      },
+
+      computeAccountStats() {
+         let a_g = 0, a_w = 0, a_tp = 0
+         let rsg = 0, rw = 0, bw = 0
+
+         for (const c of this.data.championData) {
+            a_g += c.games
+            a_w += c.wins
+            rsg += c.rsg
+            bw += c.bw
+            rw += c.rw
+            
+            for (const m of c.matches) {
+               a_tp += m.gd
+            }
+         }
+
+         return [
+            `${(a_w / a_g * 100).toFixed(2)}%`,
+            `${Math.round(a_tp / 1440 * 100 ) / 100} days`,
+            `${a_g}`,
+            `${a_g - rsg}`, 
+            `${rsg}`,
+            `${(bw / a_g * 100).toFixed(2)}%`,
+            `${(rw / a_g * 100).toFixed(2)}%`,
+         ]
+      },
+
+      aggregatedStats() {
+         let c_kda = [0, 0, 0]
+         let stats = {
+            // Generals
+            'kda': '',
+            'matches': 0,
+            'gameLength' : 0,
+            'deathTime' : 0,
+            'damage' : 0,
+            'damageTaken' : 0,
+            'damageMitigated' : 0,
+            'healed' : 0,
+            'allyHealed' : 0,
+            'gold' : 0,
+            'killParticpation' : 0,
+            // Multikills
+            'triples' : 0,
+            'quadras' : 0,
+            'pentas' : 0,
+            // Structures
+            'towersDestroyed': 0,
+            'towersLost': 0,
+            // Teamfights
+            'expectation': 0,
+            'capitalization': 0,
+            'usefulness': 0,
+            'participation': 0,
+            'frequency': 0,
+            // Spell casts
+            'q': 0,
+            'w': 0,
+            'e': 0,
+            'r': 0,
+            // Pings
+            'allIn': 0,
+            'missing': 0,
+            'basic': 0,
+            'command': 0,
+            'danger': 0,
+            'enMiss': 0,
+            'enVis': 0,
+            'back': 0,
+            'hold': 0,
+            'vis': 0,
+            'omw': 0,
+            'push': 0,
+            'visClear': 0,
+            // Items
+            // 'slot1': 0,
+            // 'slot2': 0,
+            // 'slot3': 0,
+            // 'slot4': 0,
+            // 'slot5': 0,
+            // 'slot6': 0,
+
+         }
+
+         let championAveragedStats = [
+            'killParticipation',
+            'damage',
+            'damageTaken',
+            'damageMitigated',
+            'healed',
+            'allyHealed',
+            'gold',
+            'expectation',
+            'capitalization',
+            'usefulness',
+            'participation',
+            'frequency',
+         ]
+
+         let matchAveragedStats = [
+            'deathTime',
+            'gameLength',
+         ]
+
+         const formatTime = (o) => {
+            // Prettify time ie: 5.2m --> 5m 12s
+            if (Number.isInteger(o)) {
+               return `${o}m`
+            } else {
+               const s = o.toString().split('.')
+               return s[0] + 'm ' + Math.floor(Number(`.${s[1]}`) * 60) + 's'
+            }
+         }
+
+         for (const c of this.store.championPool) {
+            const o = this.convertChampionData[c]
+
+            c_kda[0]+= o.avg.k
+            c_kda[1]+= o.avg.d
+            c_kda[2]+= o.avg.a
+            stats.killParticpation += o.avg.kp
+            stats.damage += o.avg.tdd
+            stats.damageTaken += o.avg.tdt
+            stats.damageMitigated += o.avg.tsm
+            stats.healed += o.avg.th
+            stats.allyHealed += o.avg.ah
+            stats.gold += o.avg.ge
+            stats.triples += o.mk.t
+            stats.quadras += o.mk.q
+            stats.pentas += o.mk.p
+            stats.towersLost += o.tl
+            stats.towersDestroyed += o.tg
+            stats.expectation += o.tf.exp
+            stats.capitalization += o.tf.cap
+            stats.usefulness += o.tf.use
+            stats.participation += o.tf.part
+            stats.frequency += o.tf.freq
+            stats.q += o.sc.q
+            stats.w += o.sc.w
+            stats.e += o.sc.e
+            stats.r += o.sc.r
+            stats.allIn += o.p.all
+            stats.missing += o.p.assist
+            stats.basic += o.p.back
+            stats.command += o.p.comm
+            stats.danger += o.p.danger
+            stats.enMiss += o.p.enMiss
+            stats.enVis += o.p.enVis
+            stats.back += o.p.hold
+            stats.hold += o.p.omw
+            stats.vis += o.p.vis
+            stats.omw += o.p.omw
+            stats.push += o.p.push
+            stats.visClear += o.p.visClr
+            
+            stats.matches += o.matches.length
+
+            for (const m of o.matches) {
+               stats.gameLength += m.gd
+               stats.deathTime += m.tsd
+            }
+         }
+
+         /**
+          * CHAMPION AVERAGE STATS
+          * Stats that are already averaged for the champion on the backend and need to be divided against the amount of champions selected.
+          */
+         const divByChamps = (o) => Math.round(o / this.store.championPool.size)
+         c_kda = c_kda.map(x => divByChamps(x))
+
+         championAveragedStats.forEach(o => stats[o] = Math.round(stats[o] / this.store.championPool.size))
+         stats.kda = `${c_kda[0]}/${c_kda[1]}/${c_kda[2]}`
+
+
+         /**
+          * MATCH AVERAGE STATS
+          * Match stats that need to be summed, then divided by the match count. These are stats that are not precomputed on the backend.
+         */
+         matchAveragedStats.forEach(o => stats[o] = (stats[o] / stats.matches).toFixed(1))
+
+         stats.gameLength = formatTime(stats.gameLength) // Game duration
+         stats.deathTime = formatTime(stats.deathTime / 60) // Death time (/=60 cause tsd is in seconds)
+
+         return stats
+      },
+
+      getAccountStats() {
+         return [
+            ['Winrate', this.computeAccountStats[0]],
+            ['Time Played', this.computeAccountStats[1]],
+            ['Games', this.computeAccountStats[2]],
+            ['Red Side Winrate', this.computeAccountStats[6]],
+            ['Blue Side Winrate', this.computeAccountStats[5]],
+         ]
+      },
+
+      getGeneralStats() {
+         return [
+            ['KDA', this.aggregatedStats['kda']],
+            ['Matches', this.aggregatedStats['matches']],
+            ['Kill Participation', this.aggregatedStats['killParticpation']],
+            ['Game Length', this.aggregatedStats['gameLength']],
+            ['Death Time', this.aggregatedStats['deathTime']], 
+            ['Damage', this.aggregatedStats['damage']],
+            ['Damage Taken', this.aggregatedStats['damageTaken']],
+            ['Damage Mitigated', this.aggregatedStats['damageMitigated']],
+            ['Healing', this.aggregatedStats['healed']],
+            ['Ally Healing', this.aggregatedStats['allyHealed']],
+            ['Gold', this.aggregatedStats['gold']],
+         ]
+      },
+
+      getMultiKills() {
+         return [
+            ['Triples', this.aggregatedStats['triples']],
+            ['Quadras', this.aggregatedStats['quadras']],
+            ['Pentas', this.aggregatedStats['pentas']],
+         ]
+      },
+
+      getStructures() {
+         return [
+            ['Towers Destroyed', this.aggregatedStats['towersDestroyed']],
+            ['Towers Lost', this.aggregatedStats['towersLost']],
+         ]
+      },
+
+      getTeamfights() {
+         return [
+            ['Expectation', this.aggregatedStats['expectation']],
+            ['Capitalization', this.aggregatedStats['capitalization']],
+            ['Usefulness', this.aggregatedStats['usefulness']],
+            ['Participation', this.aggregatedStats['participation']],
+            ['Frequency', this.aggregatedStats['frequency']],
+         ]
+      },
+
+      getSpellCasts() {
+         return [
+            ['Q', this.aggregatedStats['q']],
+            ['W', this.aggregatedStats['w']],
+            ['E', this.aggregatedStats['e']],
+            ['R', this.aggregatedStats['r']],
+         ]
+      },
+
+      getPings() {
+         return [
+            ['All In', this.aggregatedStats['allIn']],
+            ['Missing', this.aggregatedStats['missing']],
+            ['Basic', this.aggregatedStats['basic']],
+            ['Comman', this.aggregatedStats['command']],
+            ['Danger', this.aggregatedStats['danger']],
+            ['Enemy Missing', this.aggregatedStats['enMiss']],
+            ['Enemy Vision', this.aggregatedStats['enVis']],
+            ['Back', this.aggregatedStats['back']],
+            ['Hold', this.aggregatedStats['hold']],
+            ['Need Vision', this.aggregatedStats['vis']],
+            ['On My Way', this.aggregatedStats['omw']],
+            ['Push', this.aggregatedStats['push']],
+            ['Vision Clear', this.aggregatedStats['visClear']],
+         ]
       }
    },
 
@@ -170,12 +443,71 @@ export default {
                   <h2>Account</h2>
                   <Tooltip :align="'left'" :tip="'account'" />
                </div>
+
+               <StatDropdown
+                  :stats="getAccountStats"
+                  :persist="true"
+                  :tooltip="'implement'"/>
+
+               <div class="side-stats">
+                  <h3>Playrate</h3>
+                  <div class="visual">
+                     <span :style="{'width': (this.computeAccountStats[4] / this.computeAccountStats[2] * 100 - 0.5) + '%'}"></span>
+                     <span :style="{'width': (this.computeAccountStats[3] / this.computeAccountStats[2] * 100 - 0.5) + '%'}"></span>
+                  </div>
+                  <div class="details">
+                     <div>
+                        <svg width="10" height="10">
+                           <circle fill="var(--red-side)" cx="5" cy="5" r="5" />
+                        </svg>
+                        {{ Math.round(this.computeAccountStats[4] / this.computeAccountStats[2] * 100) }}%
+                        <span class="game-count">{{ this.computeAccountStats[4] }}</span>
+                     </div>
+                     <div>
+                        <svg width="10" height="10">
+                           <circle fill="var(--blue-side)" cx="5" cy="5" r="5" />
+                        </svg>
+                        {{ Math.round(this.computeAccountStats[3] / this.computeAccountStats[2] * 100) }}%
+                        <span class="game-count">{{ this.computeAccountStats[3] }}</span>
+                     </div>
+                  </div>
+               </div>
+
             </div>
             <div class="champion-stats">
                <div class="section-header">
                   <h2>Champion Stats</h2>
-   
                </div>
+
+               <StatDropdown
+                  :header="'General'"
+                  :stats="getGeneralStats"
+                  :tooltip="'implement'"/>
+
+               <StatDropdown
+                  :header="'Multikills'"
+                  :stats="getMultiKills"
+                  :tooltip="'implement'"/>
+
+               <StatDropdown
+                  :header="'Structures'"
+                  :stats="getStructures"
+                  :tooltip="'implement'"/>
+
+               <StatDropdown
+                  :header="'Teamfights'"
+                  :stats="getTeamfights"
+                  :tooltip="'implement'"/>
+
+               <StatDropdown
+                  :header="'Spellcasts'"
+                  :stats="getSpellCasts"
+                  :tooltip="'implement'"/>
+
+               <StatDropdown
+                  :header="'Pings'"
+                  :stats="getPings"
+                  :tooltip="'implement'"/>
                
             </div>
          </div>
@@ -192,13 +524,6 @@ export default {
                   </div>
                   <div class="toggle" style="margin-left: auto;">
                      <button @click="this.toggleAll()">Toggle All</button>
-                     <!-- <span :class="{ 'toggled': this.toggleState }">
-                        Toggle All
-                     </span>
-                     <svg @click="this.toggleAll()" fill="none">
-                        <rect x="0.5" y="0.5" rx="12"/>
-                        <circle :class="{ 'toggle-all': this.toggleState }" ref="svgCircle" cx="13" cy="50%" r="9" rx="12"/>
-                     </svg> -->
                   </div>
                   <Tooltip :align="'right'" :tip="'championsTable'"/>
                </div>
@@ -283,7 +608,7 @@ export default {
    border-radius: 3px;
    /* height: 30px; */
    border: 1px solid var(--cell-border);
-   background: var(--cold-blue);
+   background: var(--off-blue);
    color: var(--color-font);
    font-size: 0.8rem;
    transition: 150ms ease-in-out;
@@ -337,6 +662,7 @@ export default {
 
 .section-header {
    border-bottom: 1px solid var(--cell-border);
+   margin-bottom: 20px;
    display: flex;
    align-items: center;
    justify-content: space-between;
@@ -346,6 +672,67 @@ export default {
    /* width: 260px; */
    flex: 0 0 260px;
 }
+
+.account {
+   padding-bottom: 5vh;
+}
+
+.side-stats h3 {
+   margin: 0;
+   margin-bottom: 10px;
+   padding-left: 0.5rem;
+   font-size: 0.9rem;
+   /* font-weight: normal; */
+}
+
+.side-stats .visual {
+   display: flex;
+   justify-content: space-between;
+   height: 10px;
+   width: 100%;
+}
+
+.side-stats .details {
+   display: flex;
+   justify-content: space-between;
+   width: 100%;
+   font-size: 0.8rem;
+   padding-top: 10px;
+}
+
+.details .game-count {
+   color: var(--color-font-faded);
+   padding-left: 3px;
+   font-style: italic;
+}
+
+.visual span:first-child {
+   border-radius: 5px 0 0 5px;
+   background: var(--red-side);
+}
+.visual span:last-child {
+   border-radius: 0 5px 5px 0;
+   background: var(--blue-side);
+}
+
+/* svg {
+   width: 100%;
+   height: 20px;
+   overflow: hidden;
+   cursor: pointer;
+   -webkit-touch-callout: none;
+   -webkit-user-select: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+} */
+
+/* rect {
+   width: calc(100% - 1px);
+   height: calc(100% - 1px);
+   stroke: var(--light-10);
+} */
 
 .rhs-body {
    flex: 0 0 800px;
@@ -527,41 +914,15 @@ div.descending {
    margin: 0;
 }
 
-svg {
-   width: 45px;
-   height: 26px;
-   overflow: hidden;
-   cursor: pointer;
-   -webkit-touch-callout: none;
-   /* iOS Safari */
-   -webkit-user-select: none;
-   /* Safari */
-   -khtml-user-select: none;
-   /* Konqueror HTML */
-   -moz-user-select: none;
-   /* Old versions of Firefox */
-   -ms-user-select: none;
-   /* Internet Explorer/Edge */
-   user-select: none;
-   /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
-}
-
-rect {
-   width: calc(100% - 1px);
-   height: calc(100% - 1px);
-   stroke: var(--light-10);
-}
-
-circle {
+/* circle {
    fill: var(--alpha-07);
    transition: 0.2s cubic-bezier(.25, .52, .64, .84);
 }
 
 circle.toggle-all {
    transform: translateX(42%);
-   /* fill: var(--light-01); */
    fill: var(--color-font);
-}
+} */
 
 .toggle {
    display: flex;

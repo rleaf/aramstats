@@ -49,6 +49,11 @@ export default {
       `Hello, if you see this please tell me that I forgot about this part.`
    ],
    'heatmap': [
-      `The heatmap shows the summoner's playrate for the selected year. Each cell represents a day where the brighter the color indicates more games played. Cells are hoverable for specific information.`,
+      `The heatmap is a visual representation of the summoner's playrate for a selected year. Each cell represents a day where the brighter the color indicates more games played. Cells are hoverable for specific information.`,
    ],
+   
+   'implement': [
+      `Hello, if you see this please tell me that I forgot about this part.`
+   ],
+
 }

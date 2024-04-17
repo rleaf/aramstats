@@ -53,7 +53,7 @@ export default {
 .tip {
    visibility: hidden;
    position: absolute;
-   z-index: 1;
+   z-index: 10;
    color: var(--color-font-faded);
    font-size: 0.8rem;
    line-height: 1.35;

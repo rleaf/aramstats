@@ -18,6 +18,7 @@ const summonerMatchesSchema = new mongoose.Schema({
    i: [Number],         // items
    s1: Number,          // summoner1
    s2: Number,          // summoner2
+   tsd: Number,          // damage taken
    pr: Number,          // primary rune
    sr: Number,          // secondary rune
    t: {                 // TOTAL

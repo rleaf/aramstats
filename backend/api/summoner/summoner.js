@@ -71,8 +71,8 @@ class Summoner {
       }
       let teamfights = []
       let bin = []
-      let c1, c2
       let initTimestamp
+      let c1, c2
       let capFlag
       let tfPrerequisite = 0
 
@@ -127,6 +127,15 @@ class Summoner {
          let use = []
          let death = false
          let part = false
+         let exp = 0
+
+         // exp: 0,   // expectation
+         // cap: 0,   // capitalization
+         // use: 0,   // usefullness
+         // death: 0, // death probability
+         // part: 0,  // participation
+         // freq: 0,  // frequency
+         // fs: 1,    // fountain sitting
 
          // ITER TEAMFIGHT EVENTS
          for (let j = 0; j < teamfights[i].length; j++) {
@@ -141,11 +150,19 @@ class Summoner {
                part = true
 
                // Expectation
-               if ((playerIndex <= 5 && cell.killerId <= 5) || (playerIndex > 5 && cell.killerId > 5)) timelineData.exp++
-               if ((playerIndex <= 5 && cell.victimId <= 5) || (playerIndex > 5 && cell.victimId > 5)) timelineData.exp--
+               // if ((playerIndex <= 5 && cell.killerId <= 5) || (playerIndex > 5 && cell.killerId > 5)) timelineData.exp++
+               // if ((playerIndex <= 5 && cell.victimId <= 5) || (playerIndex > 5 && cell.victimId > 5)) timelineData.exp--
+               if ((playerIndex <= 5 && cell.killerId <= 5) || (playerIndex > 5 && cell.killerId > 5)) {
+                  exp++
+               } else {
+                  exp--
+
+                  // Usefullness
+                  use.push(cell.victimId)
+               }
 
                // Usefullness
-               if ((playerIndex <= 5 && cell.victimId <= 5) || (playerIndex > 5 && cell.victimId > 5)) use.push(cell.victimId)
+               // if ((playerIndex <= 5 && cell.victimId <= 5) || (playerIndex > 5 && cell.victimId > 5)) 
 
                // Death Probability
                if (cell.victimId === playerIndex) death = true
@@ -159,20 +176,24 @@ class Summoner {
             // Usefullness
             let player = (use.findIndex(o => o === playerIndex) + 1) ? use.findIndex(o => o === playerIndex) + 1 : 6
             timelineData.use += player
+            console.log('expectation:', exp)
+            timelineData.exp += exp
          }
 
          if (death) timelineData.death++
       }
 
-      const af = (n) => (Math.round((n / timelineData.part) * 10) / 10)
+      // Average out values since they're just iterating through and summing
+      console.log('participation:', timelineData.part)
+      const af = (n, d) => (Math.round((n / d) * 10) / 10)
 
       if (timelineData.part) {
-         timelineData.cap = af(timelineData.cap)      
-         timelineData.exp = af(timelineData.exp)
-         timelineData.use = af(timelineData.use)
-         timelineData.death = af(timelineData.death)
+         timelineData.cap = af(timelineData.cap, timelineData.freq)      
+         timelineData.exp = af(timelineData.exp, timelineData.part)
+         timelineData.use = af(timelineData.use, timelineData.part)
+         timelineData.death = af(timelineData.death, timelineData.part)
       }
-
+      console.log(timelineData)
       return timelineData
    }
 
@@ -238,11 +259,12 @@ class Summoner {
             m: summonerDocument._id,
             mId: match.metadata.matchId,
             gc: match.info.gameCreation,
-            gd: (match.info.gameEndTimestamp) ? Math.round(match.info.gameDuration / 60) : Math.round(match.info.gameDuration / 60000),
+            gd: (match.info.gameEndTimestamp) ? (match.info.gameDuration / 60).toFixed(1) : (match.info.gameDuration / 60000).toFixed(1),
             gv: match.info.gameVersion,
             w: player.win,
             k: player.kills,
             d: player.deaths,
+            tsd: player.totalTimeSpentDead,
             a: player.assists,
             kp: this.getKillParticipation(player, match.info.participants),
             ds: this.getDamageShare(player, match.info.participants),
@@ -280,8 +302,10 @@ class Summoner {
          championEmbed.tl += player.turretsLost
          championEmbed.fbk += player.firstBloodKill
          // color-side wins
-         championEmbed.bw += (player.teamId === 100) ? 1 : 0
-         championEmbed.rw += (player.teamId === 200) ? 1 : 0
+         championEmbed.bw += (player.teamId === 100 && player.win) ? 1 : 0
+         championEmbed.rw += (player.teamId === 200 && player.win) ? 1 : 0
+         // color-side games
+         championEmbed.rsg += (player.teamId === 200) ? 1 : 0
          // multikills
          championEmbed.mk.t += player.tripleKills
          championEmbed.mk.q += player.quadraKills
@@ -320,7 +344,7 @@ class Summoner {
             championEmbed.tf.death += timelineData.death
             championEmbed.tf.part += timelineData.part
             championEmbed.tf.freq += timelineData.freq
-            summonerDocument.fountainSitter += timelineData.fs
+            summonerDocument.fs += timelineData.fs
          }
 
          for (const participant of match.info.participants) {

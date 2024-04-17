@@ -16,29 +16,28 @@ export default {
       }
    },
 
-   mounted() {
-
-   },
-
    methods: {
-      toggleMatches() {
-         this.matchToggle = !this.matchToggle
-
-         if (this.matchToggle) {
-            this.$refs.matchContainer.style.display = 'block'
-            this.$refs.matchContainer.style.opacity = `1`
-            setTimeout(() => this.$refs.matchContainer.style['max-height'] = `${this.data.matches.length * 39}px`, 10)
-         } else {
-            this.$refs.matchContainer.style['max-height'] = `0px`
-            this.$refs.matchContainer.style.opacity = `0`
-            setTimeout(() => this.$refs.matchContainer.style.display = 'none', 200)
-         }
-      },
-
       toggleChampion(id) {
          (this.championPool.has(id)) ? this.championPool.delete(id) : this.championPool.add(id)
       },
 
+      onBeforeEnter(el) {
+         // el.style.overflow = `hidden`
+         el.style.opacity = `0`
+         el.style.maxHeight = `0`
+         el.style.overflow = `hidden`
+      },
+      
+      onAfterEnter(el) {
+         el.style.opacity = `1`
+         el.style.transition = `all 200ms ease-in-out`
+         el.style.maxHeight = `${this.data.matches.length * 39}px`
+      },
+
+      onBeforeLeave(el) {
+         el.style.opacity = `0`
+         el.style.maxHeight = `0`
+      }    
    },
 
    computed: {
@@ -48,7 +47,11 @@ export default {
 
       winrate() {
          return Math.round((this.data.wins / this.data.games) * 100)
-      }
+      },
+
+      cssHeight() {
+         return this.data.matches.length * 39
+      },
    },
 
    props: {
@@ -62,7 +65,7 @@ export default {
    <div class="champion-main" ref="championMain" :class="{ 'active-champion': this.championPool.has(this.data.championId) }" @click="this.toggleChampion(this.data.championId)">
       
       <div class="lhs">
-         <img class="dropdown" src="@/assets/svg/arrow3.svg" @click.stop="this.toggleMatches()" :class="{ 'show-matches': this.matchToggle }">
+         <img class="dropdown" src="@/assets/svg/arrow3.svg" @click.stop="this.matchToggle = !this.matchToggle" :class="{ 'show-matches': this.matchToggle }">
          <div class="name-wrapper">
             <div class="icon-wrapper">
                <img class="icon" :src="championIcon" alt="">
@@ -136,20 +139,17 @@ export default {
       </div>
 
    </div>
-   <div class="match-container" ref="matchContainer">
+   <Transition
+      @before-enter="this.onBeforeEnter"
+      @after-enter="this.onAfterEnter"
+      @before-leave="this.onBeforeLeave">
+      <div class="match-container" v-if="this.matchToggle">
          <Match v-for="(m, i) in this.data.matches" :key="i" :data="m" />
-   </div>
+      </div>
+   </Transition>
 </template>
 
 <style scoped>
-   .match-container {
-      display: none;
-      overflow: hidden;
-      max-height: 0;
-      opacity: 1;
-      transition: all 200ms ease-in-out;
-   }
-
    .active-champion {
       background-color: var(--cold-blue-focus);
    }
@@ -216,7 +216,6 @@ export default {
 
    .icon-wrapper {
       margin-right: 8px;
-      z-index: 5;
    }
 
    .rhs {
