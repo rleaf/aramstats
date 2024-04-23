@@ -28,18 +28,19 @@ class SummonerRoutes {
             console.log(`${req.params.gameName}#${req.params.tagLine} (${req.params.region}) DNE`)
             res.status(e.status_code).send(e.message)
             return
-         } else {
-            summonerDoc = await summonerModel.findOne({ '_id': puuid })
+         }
+         // else {
+         //    summonerDoc = await summonerModel.findOne({ '_id': summoner.puuid })
 
-            if (!summonerDoc) {
-               res.status(e.status_code).send(e.message)
-               return
-            }
+         //    if (!summonerDoc) {
+         //       res.status(e.status_code).send(e.message)
+         //       return
+         //    }
 
-            summonerResponse = (await util.aggregateSummoner(summoner.puuid))[0]
-            res.send(summonerResponse)
-            return
-         } 
+         //    summonerResponse = (await util.aggregateSummoner(summoner.puuid))[0]
+         //    res.send(summonerResponse)
+         //    return
+         // } 
       }
 
       check = await this.queue.check(summoner.puuid)

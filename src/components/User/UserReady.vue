@@ -4,6 +4,8 @@ import Tooltip from '@/components/Tooltip.vue'
 import Champion from '../Champion.vue'
 import Heatmap from '../Heatmap.vue'
 import StatDropdown from '../StatDropdown.vue'
+import Challenges from '../Challenges.vue'
+import Encounters from '../Encounters.vue'
 import _names from '@/constants/champions.js'
 import { summonerStore } from '@/stores/summonerStore'
 
@@ -13,7 +15,9 @@ export default {
       Tooltip,
       StatDropdown,
       Champion,
-      Heatmap
+      Heatmap,
+      Challenges,
+      Encounters
    },
 
    data() {
@@ -24,6 +28,8 @@ export default {
          sortFilter: null,
          toggleState: false,
          descending: false,
+         moduleStats: false,
+         statsSelection: 'Champion Stats',
       }
    },
 
@@ -160,8 +166,8 @@ export default {
             `${a_g}`,
             `${a_g - rsg}`, 
             `${rsg}`,
-            `${(bw / a_g * 100).toFixed(2)}%`,
-            `${(rw / a_g * 100).toFixed(2)}%`,
+            `${(bw / a_w * 100).toFixed(2)}%`,
+            `${(rw / a_w * 100).toFixed(2)}%`,
          ]
       },
 
@@ -179,7 +185,7 @@ export default {
             'healed' : 0,
             'allyHealed' : 0,
             'gold' : 0,
-            'killParticpation' : 0,
+            'killParticipation' : 0,
             // Multikills
             'triples' : 0,
             'quadras' : 0,
@@ -193,6 +199,7 @@ export default {
             'usefulness': 0,
             'participation': 0,
             'frequency': 0,
+            'death': 0,
             // Spell casts
             'q': 0,
             'w': 0,
@@ -230,16 +237,20 @@ export default {
             'healed',
             'allyHealed',
             'gold',
+         ]
+         
+         let matchAveragedStats = [
+            'deathTime',
+            'gameLength',
+         ]
+
+         let teamfightStats = [
             'expectation',
             'capitalization',
             'usefulness',
             'participation',
             'frequency',
-         ]
-
-         let matchAveragedStats = [
-            'deathTime',
-            'gameLength',
+            'death',
          ]
 
          const formatTime = (o) => {
@@ -258,7 +269,7 @@ export default {
             c_kda[0]+= o.avg.k
             c_kda[1]+= o.avg.d
             c_kda[2]+= o.avg.a
-            stats.killParticpation += o.avg.kp
+            stats.killParticipation += o.avg.kp
             stats.damage += o.avg.tdd
             stats.damageTaken += o.avg.tdt
             stats.damageMitigated += o.avg.tsm
@@ -275,6 +286,7 @@ export default {
             stats.usefulness += o.tf.use
             stats.participation += o.tf.part
             stats.frequency += o.tf.freq
+            stats.death += o.tf.death
             stats.q += o.sc.q
             stats.w += o.sc.w
             stats.e += o.sc.e
@@ -311,12 +323,17 @@ export default {
          championAveragedStats.forEach(o => stats[o] = Math.round(stats[o] / this.store.championPool.size))
          stats.kda = `${c_kda[0]}/${c_kda[1]}/${c_kda[2]}`
 
-
          /**
           * MATCH AVERAGE STATS
           * Match stats that need to be summed, then divided by the match count. These are stats that are not precomputed on the backend.
          */
          matchAveragedStats.forEach(o => stats[o] = (stats[o] / stats.matches).toFixed(1))
+
+         const af = (n, d) => (Math.round(n / d * 1000) / 1000)
+         stats.capitalization = af(stats.capitalization, stats.frequency)
+         stats.expectation = af(stats.expectation, stats.participation)
+         stats.usefulness = af(stats.usefulness, stats.participation)
+         stats.death = af(stats.death, stats.participation)
 
          stats.gameLength = formatTime(stats.gameLength) // Game duration
          stats.deathTime = formatTime(stats.deathTime / 60) // Death time (/=60 cause tsd is in seconds)
@@ -338,7 +355,7 @@ export default {
          return [
             ['KDA', this.aggregatedStats['kda']],
             ['Matches', this.aggregatedStats['matches']],
-            ['Kill Participation', this.aggregatedStats['killParticpation']],
+            ['Kill Participation', this.aggregatedStats['killParticipation'] + '%'],
             ['Game Length', this.aggregatedStats['gameLength']],
             ['Death Time', this.aggregatedStats['deathTime']], 
             ['Damage', this.aggregatedStats['damage']],
@@ -367,11 +384,12 @@ export default {
 
       getTeamfights() {
          return [
-            ['Expectation', this.aggregatedStats['expectation']],
-            ['Capitalization', this.aggregatedStats['capitalization']],
-            ['Usefulness', this.aggregatedStats['usefulness']],
-            ['Participation', this.aggregatedStats['participation']],
             ['Frequency', this.aggregatedStats['frequency']],
+            ['Expectation', this.aggregatedStats['expectation'].toFixed(2)],
+            ['Longevity', this.aggregatedStats['usefulness'].toFixed(2)],
+            ['Participation', (this.aggregatedStats['participation'] / this.aggregatedStats['frequency'] * 100).toFixed(2) + '%'],
+            ['Death', (this.aggregatedStats['death'] * 100).toFixed(1) + '%'],
+            ['Capitalization', (this.aggregatedStats['capitalization'] * 100).toFixed(1) + '%'],
          ]
       },
 
@@ -389,7 +407,7 @@ export default {
             ['All In', this.aggregatedStats['allIn']],
             ['Missing', this.aggregatedStats['missing']],
             ['Basic', this.aggregatedStats['basic']],
-            ['Comman', this.aggregatedStats['command']],
+            ['Command', this.aggregatedStats['command']],
             ['Danger', this.aggregatedStats['danger']],
             ['Enemy Missing', this.aggregatedStats['enMiss']],
             ['Enemy Vision', this.aggregatedStats['enVis']],
@@ -438,7 +456,7 @@ export default {
       <div class="body">
          
          <div class="lhs-body">
-            <div class="account">
+            <div class="section">
                <div class="section-header">
                   <h2>Account</h2>
                   <Tooltip :align="'left'" :tip="'account'" />
@@ -474,40 +492,63 @@ export default {
                </div>
 
             </div>
-            <div class="champion-stats">
+            <div class="section">
                <div class="section-header">
-                  <h2>Champion Stats</h2>
+                  <div class="module">
+                     <div class="burger" @click="this.moduleStats = !this.moduleStats" :class="{ 'module-menu-active': this.moduleStats }">
+                        <span v-for="i in 4" :key="i"></span>
+                     </div>
+                     <h2>{{ this.statsSelection }}</h2>
+                  </div>
+                  <!-- <img class="arrow"  src="@/assets/svg/arrow3.svg" :class=" 'arrow-up'" alt=""> -->
+               </div>
+               <div v-if="this.moduleStats" class="stats-selection">
+                  <div class="selections">
+                     <div @click="this.statsSelection='Champion Stats'; this.moduleStats = false">Champion Stats</div>
+                     <div @click="this.statsSelection='Challenges'; this.moduleStats = false">Challenges</div>
+                     <div @click="this.statsSelection='Encounters'; this.moduleStats = false">Encounters</div>
+                  </div>
+                  <div class="outer-click" @click="this.moduleStats = false"></div>
+               </div>
+               <div v-if="this.statsSelection=='Champion Stats'">
+                  <StatDropdown
+                     :header="'General'"
+                     :stats="getGeneralStats"
+                     :tooltip="'implement'"/>
+   
+                  <StatDropdown
+                     :header="'Multikills'"
+                     :stats="getMultiKills"
+                     :tooltip="'implement'"/>
+   
+                  <StatDropdown
+                     :header="'Structures'"
+                     :stats="getStructures"
+                     :tooltip="'implement'"/>
+   
+                  <StatDropdown
+                     :header="'Teamfights'"
+                     :stats="getTeamfights"
+                     :tooltip="'implement'"/>
+   
+                  <StatDropdown
+                     :header="'Spellcasts'"
+                     :stats="getSpellCasts"
+                     :tooltip="'implement'"/>
+   
+                  <StatDropdown
+                     :header="'Pings'"
+                     :stats="getPings"
+                     :tooltip="'implement'"/>
                </div>
 
-               <StatDropdown
-                  :header="'General'"
-                  :stats="getGeneralStats"
-                  :tooltip="'implement'"/>
+               <div v-if="this.statsSelection=='Challenges'">
+                  <Challenges :data="this.data.challenges" />
+               </div>
 
-               <StatDropdown
-                  :header="'Multikills'"
-                  :stats="getMultiKills"
-                  :tooltip="'implement'"/>
-
-               <StatDropdown
-                  :header="'Structures'"
-                  :stats="getStructures"
-                  :tooltip="'implement'"/>
-
-               <StatDropdown
-                  :header="'Teamfights'"
-                  :stats="getTeamfights"
-                  :tooltip="'implement'"/>
-
-               <StatDropdown
-                  :header="'Spellcasts'"
-                  :stats="getSpellCasts"
-                  :tooltip="'implement'"/>
-
-               <StatDropdown
-                  :header="'Pings'"
-                  :stats="getPings"
-                  :tooltip="'implement'"/>
+               <div v-if="this.statsSelection=='Encounters'">
+                  <Encounters :data="this.data.championData" />
+               </div>
                
             </div>
          </div>
@@ -668,13 +709,118 @@ export default {
    justify-content: space-between;
 }
 
+.section-header .module {
+   display: flex;
+   gap: 10px;
+   /* align-items: baseline; */
+   /* border-radius: 3px;
+   padding: 0.1rem 0.25rem;
+   margin: 0.21rem 0;
+   transition: 200ms ease-in-out; */
+}
+
 .lhs-body {
    /* width: 260px; */
    flex: 0 0 260px;
 }
 
-.account {
+.section {
    padding-bottom: 5vh;
+}
+
+.burger {
+   cursor: pointer;
+   border-radius: 3px;
+   padding: 4px;
+   /* padding-top: 2px; */
+   /* margin: 0.25rem 0; */
+   position: relative;
+   width: 22px;
+   height: 18px;
+   transition: all 200ms ease-in-out;
+   -webkit-touch-callout: none;
+   -webkit-user-select: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+   transition: background 200ms ease-in-out;
+}
+
+.burger:hover {
+   background: var(--cold-blue-focus);
+}
+
+.burger span {
+   position: absolute;
+   width: 22px;
+   height: 1px;
+   background-color: var(--cell-border);
+   transition: all 100ms ease-in-out;
+}
+
+.burger span:nth-child(1) {
+   top: 8px;
+}
+.burger span:nth-child(2), .burger span:nth-child(3) {
+   top: 13px;
+}
+.burger span:nth-child(4) {
+   top: 18px;
+}
+
+.section-header .burger:hover {
+   background: var(--cold-blue-focus);
+}
+
+.module-menu-active span:nth-child(1), .module-menu-active span:nth-child(4) {
+   transform: scale(0);
+   top: 13px;
+}
+
+.module-menu-active span:nth-child(2) {
+   transform: rotate(45deg);
+}
+.module-menu-active span:nth-child(3) {
+   transform: rotate(-45deg);
+}
+
+.selections {
+   position: absolute;
+   z-index: 2;
+   transform: translateY(-15px);
+   background: var(--menu-blue);
+   /* background: tomato; */
+   padding: 0.25rem 0.5rem;
+   border-radius: 3px;
+   border: 1px solid var(--cell-border);
+}
+
+.selections div {
+   cursor: pointer;
+   font-size: 0.9rem;
+   margin: 3px 0;
+   padding: 0.25rem 0.5rem;
+   border-radius: 3px;
+   font-weight: 600;
+   transition: 200ms ease-in-out;
+   -webkit-touch-callout: none;
+   -webkit-user-select: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+}
+
+.selections div:hover {
+   background: var(--alpha-01);
+}
+.outer-click {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100vh;
 }
 
 .side-stats h3 {

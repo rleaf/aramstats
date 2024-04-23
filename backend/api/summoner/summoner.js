@@ -17,7 +17,7 @@ class Summoner {
 
          return { ...riotId, ...summoner, region: region }
       } catch (e) {
-         if (e instanceof Error) throw e.body.status
+         if (e instanceof Error) throw e
       }
    }
 
@@ -127,7 +127,6 @@ class Summoner {
          let use = []
          let death = false
          let part = false
-         let exp = 0
 
          // exp: 0,   // expectation
          // cap: 0,   // capitalization
@@ -150,19 +149,14 @@ class Summoner {
                part = true
 
                // Expectation
-               // if ((playerIndex <= 5 && cell.killerId <= 5) || (playerIndex > 5 && cell.killerId > 5)) timelineData.exp++
-               // if ((playerIndex <= 5 && cell.victimId <= 5) || (playerIndex > 5 && cell.victimId > 5)) timelineData.exp--
                if ((playerIndex <= 5 && cell.killerId <= 5) || (playerIndex > 5 && cell.killerId > 5)) {
-                  exp++
+                  timelineData.exp++
                } else {
-                  exp--
+                  timelineData.exp--
 
                   // Usefullness
                   use.push(cell.victimId)
                }
-
-               // Usefullness
-               // if ((playerIndex <= 5 && cell.victimId <= 5) || (playerIndex > 5 && cell.victimId > 5)) 
 
                // Death Probability
                if (cell.victimId === playerIndex) death = true
@@ -174,26 +168,21 @@ class Summoner {
             timelineData.part++
 
             // Usefullness
-            let player = (use.findIndex(o => o === playerIndex) + 1) ? use.findIndex(o => o === playerIndex) + 1 : 6
-            timelineData.use += player
-            console.log('expectation:', exp)
-            timelineData.exp += exp
+            timelineData.use += (use.findIndex(o => o === playerIndex) + 1) || 6
          }
 
          if (death) timelineData.death++
       }
 
       // Average out values since they're just iterating through and summing
-      console.log('participation:', timelineData.part)
-      const af = (n, d) => (Math.round((n / d) * 10) / 10)
+      const af = (n, d) => (Math.round(n / d * 1000) / 1000)
 
-      if (timelineData.part) {
-         timelineData.cap = af(timelineData.cap, timelineData.freq)      
-         timelineData.exp = af(timelineData.exp, timelineData.part)
-         timelineData.use = af(timelineData.use, timelineData.part)
-         timelineData.death = af(timelineData.death, timelineData.part)
-      }
-      console.log(timelineData)
+      // if (timelineData.part) {
+      //    timelineData.cap = af(timelineData.cap, timelineData.freq)      
+      //    timelineData.exp = af(timelineData.exp, timelineData.part)
+      //    timelineData.use = af(timelineData.use, timelineData.part)
+      //    timelineData.death = af(timelineData.death, timelineData.part)
+      // }
       return timelineData
    }
 
@@ -353,7 +342,7 @@ class Summoner {
                   filter: { _id: participant.puuid },
                   update: {
                      _id: participant.puuid,
-                     gn: participant.riotIdGameName || participant.riotIdName,
+                     gn: participant.riotIdGameName,
                      tl: participant.riotIdTagline,
                   },
                   upsert: true

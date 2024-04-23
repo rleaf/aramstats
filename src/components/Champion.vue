@@ -9,7 +9,7 @@ export default {
    },
    data() {
       return {
-         iconTable: names.urlName,
+         iconTable: names.imageName,
          humanTable: names.humanName,
          matchToggle: false,
          championPool: summonerStore().championPool
@@ -201,7 +201,7 @@ export default {
    .per-minute-sub {
       font-size: 0.72rem;
       color: var(--color-font-faded);
-      font-style: italic;
+      /* font-style: italic; */
    }
    
    .rhs, .lhs {

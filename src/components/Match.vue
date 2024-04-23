@@ -62,7 +62,6 @@ export default {
                {{ this.date }}
             </div>
             <div class="delta">
-               <!-- {{ this.daysSince }} days ago -->
                {{ this.gameDuration }}
             </div>
          </div>
