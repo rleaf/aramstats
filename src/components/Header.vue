@@ -12,7 +12,7 @@ export default {
 <template>
    <div class="header-main">
       <!-- Riot API is experiencing some issues so summoner lookup may be non-functional (1/3 DD/MM). -->
-      <!-- <RouterLink to="/updates">{{ this.msg }}</RouterLink> -->
+      <RouterLink to="/updates">{{ this.msg }}</RouterLink>
    </div>
 </template>
 

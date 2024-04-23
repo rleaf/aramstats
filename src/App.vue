@@ -29,7 +29,7 @@ export default {
 
 <template>
     <SmallScreen />
-    <!-- <Header /> -->
+    <Header />
     <Nav />
 </template>
 

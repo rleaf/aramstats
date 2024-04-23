@@ -12,6 +12,19 @@
 
 const updates = [
    {
+      title: "Looking for feedback the new summoner page UI (click me)",
+      version: "",
+      date: "4/23/24 - today",
+      body: [
+         `I've a working prototype for the new Summoner page UI - check it out in the link below. It's still incomplete, however you'll have a general idea of how things are going to be laid out. My Discord is in the 'About' section. Thanks.`,
+      ],
+      links: [
+         [`Prototype`, `https://662059d07b1026c327002486--mellow-parfait-bc28d6.netlify.app/`]
+      ],
+      img: [], // Expected webp format
+      imgCaption: ""
+   },
+   {
       title: "Redesigning Summoner pages",
       version: "",
       date: "2/19/24 - today",
