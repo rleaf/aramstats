@@ -33,6 +33,8 @@ export default {
       header: null,
       stats: null,
       persist: false,
+      encounters: false,
+      tooltip: null,
    }
 }
 </script>
@@ -44,10 +46,23 @@ export default {
          {{ this.header }}
          <img class="arrow"  src="@/assets/svg/arrow3.svg" :class="{ 'arrow-up': this.state }" alt="">
       </div>
-      <Tooltip v-if="!this.persist" :align="'left'" :tip="'implement'" />
+      <Tooltip v-if="!this.persist" :align="'left'" :tip="this.tooltip" />
    </div>
    <div class="stat-body" :class="{ 'truncated': this.state, 'bordered': !this.persist }" :style="`max-height: ${this.stats.length * 25}px`">
-      <div v-for="(s, i) in this.stats" :class="{ 'o': i % 2 === 0 }" :key="i">
+      
+      <div v-if="this.encounters" class="encounters" v-for="(s, i) in this.stats" :class="{ 'o': i % 2 === 0 }" :key="i">
+         <span>
+            {{ s[0] }}
+         </span>
+         <span>
+            {{ s[1][0] }}/{{ s[1][1] }}
+         </span>
+         <span>
+            {{ Math.round(s[1][0] / s[1][1] * 1000) / 10 }}%
+         </span>
+      </div>
+
+      <div v-else v-for="(s, j) in this.stats" :class="{ 'o': j % 2 === 0 }" :key="j">
          {{ s[0] }}
          <span v-if="this.persist">{{ s[1] }}</span>
          <span v-else-if="this.store.championPool.size > 0">{{ s[1] }}</span>
@@ -58,8 +73,6 @@ export default {
 </template>
 
 <style scoped>
-
-
 .stat-main {
    padding-bottom: 25px;
 }
@@ -78,14 +91,13 @@ export default {
 .stat-header {
    display: flex;
    font-size: 0.85rem;
-   font-weight: 600;
    align-items: center;
    justify-content: space-between;
-   /* padding: 0 0.5rem; */
    margin-bottom: 5px;
 }
 
 .stat-header .header-title {
+   font-weight: 600;
    cursor: pointer;
    -webkit-touch-callout: none;
    -webkit-user-select: none;
@@ -135,6 +147,18 @@ div.truncated {
 .stat-body span {
    font-size: 0.8rem;
 }
+
+.encounters span:first-child {
+   width: 60%;
+   overflow-wrap: break-word;
+}
+
+.encounters span:last-child {
+   width: 16%;
+   text-align: right;
+   /* margin-left: auto; */
+}
+
 
 .o {
    background: var(--alpha-01);

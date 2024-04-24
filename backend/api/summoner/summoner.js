@@ -154,7 +154,7 @@ class Summoner {
                } else {
                   timelineData.exp--
 
-                  // Usefullness
+                  // Usefullness/Longevity
                   use.push(cell.victimId)
                }
 
@@ -167,7 +167,7 @@ class Summoner {
             // Participation
             timelineData.part++
 
-            // Usefullness
+            // Usefullness/Longevity
             timelineData.use += (use.findIndex(o => o === playerIndex) + 1) || 6
          }
 
@@ -337,6 +337,7 @@ class Summoner {
          }
 
          for (const participant of match.info.participants) {
+            if (!participant.riotIdGameName) continue
             participantPuuids.push({
                updateOne: {
                   filter: { _id: participant.puuid },

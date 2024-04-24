@@ -514,32 +514,32 @@ export default {
                   <StatDropdown
                      :header="'General'"
                      :stats="getGeneralStats"
-                     :tooltip="'implement'"/>
+                     :tooltip="'general'"/>
    
                   <StatDropdown
                      :header="'Multikills'"
                      :stats="getMultiKills"
-                     :tooltip="'implement'"/>
+                     :tooltip="'multikills'"/>
    
                   <StatDropdown
                      :header="'Structures'"
                      :stats="getStructures"
-                     :tooltip="'implement'"/>
+                     :tooltip="'structures'"/>
    
                   <StatDropdown
                      :header="'Teamfights'"
                      :stats="getTeamfights"
-                     :tooltip="'implement'"/>
+                     :tooltip="'teamfights'"/>
    
                   <StatDropdown
                      :header="'Spellcasts'"
                      :stats="getSpellCasts"
-                     :tooltip="'implement'"/>
+                     :tooltip="'spellcasts'"/>
    
                   <StatDropdown
                      :header="'Pings'"
                      :stats="getPings"
-                     :tooltip="'implement'"/>
+                     :tooltip="'pings'"/>
                </div>
 
                <div v-if="this.statsSelection=='Challenges'">

@@ -31,6 +31,7 @@ export default {
 <style scoped>
 .tooltip img {
    cursor: pointer;
+   z-index: 1;
    -webkit-touch-callout: none; /* iOS Safari */
    -webkit-user-select: none; /* Safari */
    -khtml-user-select: none; /* Konqueror HTML */
@@ -41,7 +42,6 @@ export default {
 
 .tooltip {
    position: relative;
-   z-index: 2;
    display: inline-block;
    height: 16px;
 }
@@ -86,6 +86,6 @@ export default {
 }
 
 .tip ul li:not(:last-child) { 
-   margin-bottom: 0.5rem;  
+   margin-bottom: 0.7rem;  
 }
 </style>
