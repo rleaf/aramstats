@@ -14,19 +14,19 @@ export default {
    },
    
    methods: {
-      toggle() {
-         this.state = !this.state
+      // toggle() {
+      //    this.state = !this.state
 
-         if (this.state) {
-            this.$refs.matchContainer.style.display = 'block'
-            this.$refs.matchContainer.style.opacity = `1`
-            setTimeout(() => this.$refs.matchContainer.style['max-height'] = `${this.data.matches.length * 39}px`, 500)
-         } else {
-            this.$refs.matchContainer.style['max-height'] = `0px`
-            this.$refs.matchContainer.style.opacity = `0`
-            setTimeout(() => this.$refs.matchContainer.style.display = 'none', 500)
-         }
-      },
+      //    if (this.state) {
+      //       this.$refs.matchContainer.style.display = 'block'
+      //       this.$refs.matchContainer.style.opacity = `1`
+      //       setTimeout(() => this.$refs.matchContainer.style['max-height'] = `${this.data.matches.length * 39}px`, 500)
+      //    } else {
+      //       this.$refs.matchContainer.style['max-height'] = `0px`
+      //       this.$refs.matchContainer.style.opacity = `0`
+      //       setTimeout(() => this.$refs.matchContainer.style.display = 'none', 500)
+      //    }
+      // },
    },
 
    props: {

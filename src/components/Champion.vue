@@ -52,6 +52,10 @@ export default {
       cssHeight() {
          return this.data.matches.length * 39
       },
+
+      reverseMatches() {
+         return this.data.matches.reverse()
+      }
    },
 
    props: {
@@ -144,7 +148,7 @@ export default {
       @after-enter="this.onAfterEnter"
       @before-leave="this.onBeforeLeave">
       <div class="match-container" v-if="this.matchToggle">
-         <Match v-for="(m, i) in this.data.matches" :key="i" :data="m" />
+         <Match v-for="(m, i) in this.reverseMatches" :key="i" :data="m" />
       </div>
    </Transition>
 </template>

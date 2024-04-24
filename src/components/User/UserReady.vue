@@ -73,6 +73,24 @@ export default {
          }
       },
 
+      onBeforeEnter(el) {
+         // el.style.overflow = `hidden`
+         el.style.opacity = `0`
+         el.style.maxHeight = `0`
+         el.style.overflow = `hidden`
+      },
+      
+      onAfterEnter(el) {
+         el.style.opacity = `1`
+         el.style.transition = `all 200ms ease-in-out`
+         el.style.maxHeight = `106px`
+      },
+
+      onBeforeLeave(el) {
+         el.style.opacity = `0`
+         el.style.maxHeight = `0`
+      },
+
       updateProfile() {
 
       },
@@ -418,7 +436,9 @@ export default {
             ['Push', this.aggregatedStats['push']],
             ['Vision Clear', this.aggregatedStats['visClear']],
          ]
-      }
+      },
+
+      
    },
 
    props: {
@@ -502,14 +522,21 @@ export default {
                   </div>
                   <!-- <img class="arrow"  src="@/assets/svg/arrow3.svg" :class=" 'arrow-up'" alt=""> -->
                </div>
-               <div v-if="this.moduleStats" class="stats-selection">
-                  <div class="selections">
-                     <div @click="this.statsSelection='Champion Stats'; this.moduleStats = false">Champion Stats</div>
-                     <div @click="this.statsSelection='Challenges'; this.moduleStats = false">Challenges</div>
-                     <div @click="this.statsSelection='Encounters'; this.moduleStats = false">Encounters</div>
+               <!-- <Transition name="module"
+                  @before-enter="this.onBeforeEnter"
+                  @after-enter="this.onAfterEnter"
+                  @before-leave="this.onBeforeLeave"> -->
+               <Transition name="module">
+                  <div v-if="this.moduleStats" class="module-menu">
+                     <div class="selections">
+                        <div @click="this.statsSelection='Champion Stats'; this.moduleStats = false">Champion Stats</div>
+                        <div @click="this.statsSelection='Challenges'; this.moduleStats = false">Challenges</div>
+                        <div @click="this.statsSelection='Encounters'; this.moduleStats = false">Encounters</div>
+                     </div>
                   </div>
-                  <div class="outer-click" @click="this.moduleStats = false"></div>
-               </div>
+               </Transition>
+               <div v-if="this.moduleStats" class="outer-click" @click="this.moduleStats = false"></div>
+
                <div v-if="this.statsSelection=='Champion Stats'">
                   <StatDropdown
                      :header="'General'"
@@ -785,14 +812,43 @@ export default {
    transform: rotate(-45deg);
 }
 
-.selections {
+/* .stats-selection {
+   width: 300px;
+} */
+
+.module-enter-active,
+.module-leave-active {
+   transition: all 200ms ease-in-out;
+   /* transition: max-height 200ms ease-in-out, opacity 300ms; */
+}
+
+.module-enter-from,
+.module-leave-to {
+   /* opacity: 0; */
+   max-height: 0px;
+}
+
+.module-enter-to,
+.module-leave-from {
+   /* opacity: 1; */
+   max-height: 106px;
+}
+
+.module-menu {
    position: absolute;
    z-index: 2;
-   transform: translateY(-15px);
+   overflow: hidden;  
+   transform: translateY(-19px);
+}
+
+
+
+.selections {
+   width: 242px;
+   z-index: 2;
    background: var(--menu-blue);
-   /* background: tomato; */
    padding: 0.25rem 0.5rem;
-   border-radius: 3px;
+   border-radius: 0 0 3px 3px;
    border: 1px solid var(--cell-border);
 }
 
@@ -815,8 +871,10 @@ export default {
 .selections div:hover {
    background: var(--alpha-01);
 }
+
 .outer-click {
    position: fixed;
+   z-index: 1;
    top: 0;
    left: 0;
    width: 100%;
@@ -828,7 +886,6 @@ export default {
    margin-bottom: 10px;
    padding-left: 0.5rem;
    font-size: 0.9rem;
-   /* font-weight: normal; */
 }
 
 .side-stats .visual {
