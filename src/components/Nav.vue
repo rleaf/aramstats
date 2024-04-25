@@ -7,7 +7,7 @@
          return {
             store: superStore(),
             day: false,
-            focus: false,
+            // focus: false,
             input: '',
             regionFocus: false,
             region: 'RG',
@@ -36,19 +36,19 @@
             this.$refs.input.focus()
          },
          focusInput() {
-            this.focus = true
+            this.store.focus = true
             this.$refs.input.focus()
          },
          terminate() {
             this.regionFocus = false
-            this.focus = false
+            this.store.focus = false
             this.input = ''
          },
          getImage(name) {
             return new URL(`../assets/champion_icons/${name}.png`, import.meta.url).href
          },
          champSearch() {
-            this.focus = false
+            this.store.focus = false
             this.input = ''
          },
          showRegions() {
@@ -96,7 +96,7 @@
                }
             })
             this.input = ''
-            this.focus = false
+            this.store.focus = false
             this.$refs.input.blur()
          }
       },
@@ -126,7 +126,7 @@
       </div>
 
       <div v-if="navSearch">
-         <div :class="{'focus': this.focus}" class="nav-search">
+         <div :class="{'focus': this.store.focus}" class="nav-search">
             <input ref="input" @focus="this.focusInput()" type="text" spellcheck="false" autocomplete="off"
             placeholder="Summoner or Champion"
             @keyup.enter="this.summonerSearch()"
@@ -138,13 +138,13 @@
                {{ region.toUpperCase() }}
             </button>
          </div>
-         <div class="champion-search" v-if="this.focus && !this.regionFocus">
+         <div class="champion-search" v-if="this.store.focus && !this.regionFocus">
             <router-link @click="this.champSearch()" :to="{ name: 'champions', params: { champion: champ.back } }" v-for="champ in filteredChamps">
                <img :src="this.getImage(champ.image)" alt="" srcset="" rel="preload">
                {{ champ.front }}
             </router-link>
          </div>
-         <div v-if="this.focus || this.regionFocus" class="bg" @click="this.terminate()"></div>
+         <div v-if="this.store.focus || this.regionFocus" class="bg" @click="this.terminate()"></div>
       </div>
       
       <div class="right">

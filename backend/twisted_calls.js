@@ -74,7 +74,7 @@ async function getAllSummonerMatches(puuid, region, lastMatchId) {
    let stop = true
 
    for (let i = 0; stop; i+=100) {
-      const pull = (await lolApi.MatchV5.list(puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })).response
+      let pull = (await lolApi.MatchV5.list(puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })).response
       if (lastMatchId && pull.includes(lastMatchId)) {
          pull = pull.slice(0, pull.indexOf(lastMatchId))
          stop = false

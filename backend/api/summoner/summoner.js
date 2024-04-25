@@ -383,8 +383,12 @@ class Summoner {
    async computeChampionAverages(summonerDocument, championIds) {
       for (const champion of summonerDocument.championData) {
 
-         if (championIds && championIds.has(champion.championId)) {
-            Object.keys(champion.avg).forEach(v => champion.avg[v] = 0)
+         if (championIds) {
+            if (championIds.has(champion.championId)) {
+               Object.keys(champion.avg).forEach(v => champion.avg[v] = 0)
+            } else {
+               continue
+            }
          }
 
          const matches = await summonerMatchesModel.find({ '_id': { $in: champion.matches } })

@@ -1,4 +1,5 @@
 <script>
+import axios from 'axios'
 import RadarChart from '../RadarChart.vue'
 import Tooltip from '@/components/Tooltip.vue'
 import Champion from '../Champion.vue'
@@ -8,6 +9,7 @@ import Challenges from '../Challenges.vue'
 import Encounters from '../Encounters.vue'
 import _names from '@/constants/champions.js'
 import { summonerStore } from '@/stores/summonerStore'
+import { superStore } from '../../stores/superStore'
 
 export default {
    components: {
@@ -22,7 +24,8 @@ export default {
 
    data() {
       return {
-         store: summonerStore(),
+         superStore: superStore(),
+         summonerStore: summonerStore(),
          names: _names,
          championFilter: '',
          sortFilter: null,
@@ -30,6 +33,7 @@ export default {
          descending: false,
          moduleStats: false,
          statsSelection: 'Champion Stats',
+         updateKey: 0,                       // For re-rendering post summoner update
       }
    },
 
@@ -44,7 +48,7 @@ export default {
    
    methods: {
       championSearchFocus(e) {
-         if (e.key !== 's' || document.activeElement === this.$refs.championSearch) return
+         if (e.key !== 's' || document.activeElement === this.$refs.championSearch || this.superStore.focus) return
 
          e.preventDefault()
          this.$refs.championSearch.focus()
@@ -55,10 +59,10 @@ export default {
 
          if (this.toggleState) {
             for (const c of this.data.championData) {
-               this.store.championPool.add(c.championId)
+               this.summonerStore.championPool.add(c.championId)
             }
          } else {
-            this.store.championPool.clear()
+            this.summonerStore.championPool.clear()
          }
 
       },
@@ -73,29 +77,34 @@ export default {
          }
       },
 
-      onBeforeEnter(el) {
-         // el.style.overflow = `hidden`
-         el.style.opacity = `0`
-         el.style.maxHeight = `0`
-         el.style.overflow = `hidden`
-      },
-      
-      onAfterEnter(el) {
-         el.style.opacity = `1`
-         el.style.transition = `all 200ms ease-in-out`
-         el.style.maxHeight = `106px`
+      async updateProfile() {
+         const url = `/api/update/${this.$route.params.region}/${this.$route.params.gameName}/${this.$route.params.tagLine}`
+
+         const promise = new Promise((res, rej) => {
+            setTimeout(() => {
+               res()
+            }, 2000)
+         })
+
+         console.log(promise, 'promise')
+         try {
+            this.$refs.updateButton.innerHTML = 'Updating...'
+            this.$refs.updateButton.disabled = true
+            this.$refs.updateButton.classList.add('disabled')
+            // const test = await promise
+            const test = (await axios.get(url)).data
+         } catch (e) {
+            console.log(e, 'updateProfile error')
+         } finally {
+            this.$refs.updateButton.innerHTML = 'Update'
+            this.$refs.updateButton.disabled = false
+            this.$refs.updateButton.classList.remove('disabled')
+            this.updateKey++
+         }
+
       },
 
-      onBeforeLeave(el) {
-         el.style.opacity = `0`
-         el.style.maxHeight = `0`
-      },
-
-      updateProfile() {
-
-      },
-
-      deleteProfile() {
+      async deleteProfile() {
 
       }
    },
@@ -262,15 +271,6 @@ export default {
             'gameLength',
          ]
 
-         let teamfightStats = [
-            'expectation',
-            'capitalization',
-            'usefulness',
-            'participation',
-            'frequency',
-            'death',
-         ]
-
          const formatTime = (o) => {
             // Prettify time ie: 5.2m --> 5m 12s
             if (Number.isInteger(o)) {
@@ -281,7 +281,7 @@ export default {
             }
          }
 
-         for (const c of this.store.championPool) {
+         for (const c of this.summonerStore.championPool) {
             const o = this.convertChampionData[c]
 
             c_kda[0]+= o.avg.k
@@ -335,10 +335,10 @@ export default {
           * CHAMPION AVERAGE STATS
           * Stats that are already averaged for the champion on the backend and need to be divided against the amount of champions selected.
           */
-         const divByChamps = (o) => Math.round(o / this.store.championPool.size)
+         const divByChamps = (o) => Math.round(o / this.summonerStore.championPool.size)
          c_kda = c_kda.map(x => divByChamps(x))
 
-         championAveragedStats.forEach(o => stats[o] = Math.round(stats[o] / this.store.championPool.size))
+         championAveragedStats.forEach(o => stats[o] = Math.round(stats[o] / this.summonerStore.championPool.size))
          stats.kda = `${c_kda[0]}/${c_kda[1]}/${c_kda[2]}`
 
          /**
@@ -450,7 +450,7 @@ export default {
 </script>
 
 <template>
-   <div class="summoner-ready-main">
+   <div class="summoner-ready-main" :key="this.updateKey">
       <div class="gradient-bg" />
       <div class="header">
          <div class="header-lhs">
@@ -463,7 +463,7 @@ export default {
                   <div class="tagLine">#{{ this.data.tagLine }}</div>
                </div>
                <div class="buttons">
-                  <button @click="this.updateProfile()">Update</button>
+                  <button ref="updateButton" @click="this.updateProfile()">Update</button>
                   <button @click="this.deleteProfile()">Delete</button>
                </div>
             </div>
@@ -522,10 +522,6 @@ export default {
                   </div>
                   <!-- <img class="arrow"  src="@/assets/svg/arrow3.svg" :class=" 'arrow-up'" alt=""> -->
                </div>
-               <!-- <Transition name="module"
-                  @before-enter="this.onBeforeEnter"
-                  @after-enter="this.onAfterEnter"
-                  @before-leave="this.onBeforeLeave"> -->
                <Transition name="module">
                   <div v-if="this.moduleStats" class="module-menu">
                      <div class="selections">
@@ -838,15 +834,13 @@ export default {
    position: absolute;
    z-index: 2;
    overflow: hidden;  
-   transform: translateY(-19px);
+   transform: translateY(-21px);
 }
-
-
 
 .selections {
    width: 242px;
    z-index: 2;
-   background: var(--menu-blue);
+   background: var(--cold-blue-focus);
    padding: 0.25rem 0.5rem;
    border-radius: 0 0 3px 3px;
    border: 1px solid var(--cell-border);

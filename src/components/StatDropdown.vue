@@ -54,12 +54,12 @@ export default {
          <span>
             {{ s[0] }}
          </span>
-         <span>
-            {{ s[1][0] }}/{{ s[1][1] }}
-         </span>
-         <span>
+         <div class="encounters-stat">
             {{ Math.round(s[1][0] / s[1][1] * 1000) / 10 }}%
-         </span>
+            <div>
+               {{ s[1][0] }}/{{ s[1][1] }}
+            </div>
+         </div>
       </div>
 
       <div v-else v-for="(s, j) in this.stats" :class="{ 'o': j % 2 === 0 }" :key="j">
@@ -153,11 +153,25 @@ div.truncated {
    overflow-wrap: break-word;
 }
 
-.encounters span:last-child {
+.encounters div {
+   padding: 0;
+   margin: 0;
+}
+
+div.encounters-stat {
+   padding: 1px 0;
+}
+
+.encounters-stat div {
+   padding-left: 0.5rem;
+   /* font-size: 0.75rem; */
+   color: var(--color-font-faded);
+}
+
+/* .encounters span:last-child {
    width: 16%;
    text-align: right;
-   /* margin-left: auto; */
-}
+} */
 
 
 .o {

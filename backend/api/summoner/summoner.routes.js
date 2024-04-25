@@ -10,7 +10,7 @@ class SummonerRoutes {
       
       app
          .get(config.SUMMONER_PREFIX, this.getSummoner.bind(this))
-         .put(config.UPDATE_SUMMONER_PREFIX, this.updateSummoner)
+         .get(config.UPDATE_SUMMONER_PREFIX, this.updateSummoner)
    }
    
    async getSummoner(req, res) {
@@ -93,7 +93,9 @@ class SummonerRoutes {
    }
 
    async updateSummoner(req, res) {
+      console.log('Updating ' + req.params.gameName + '#' + req.params.tagLine + ' (' + req.params.region + ')')
       let summoner
+      let summonerResponse
       let summonerDocument
       let championIds = new Set()
 
@@ -106,30 +108,32 @@ class SummonerRoutes {
                res.status(e.status_code).send(e.message)
                return
             } else {
-               summonerDocument = await summonerModel.findOne({ '_id': puuid })
+               throw e
+               // summonerDocument = await summonerModel.findOne({ '_id': puuid })
 
-               if (!summonerDocument) {
-                  res.status(e.status_code).send(e.message)
-                  return
-               }
+               // if (!summonerDocument) {
+               //    res.status(e.status_code).send(e.message)
+               //    return
+               // }
 
-               summonerResponse = (await util.aggregateSummoner(summoner.puuid))[0]
-               res.send(summonerResponse)
-               return
+               // summonerResponse = (await util.aggregateSummoner(summoner.puuid))[0]
+               // res.send(summonerResponse)
+               // return
             }
          } else {
             throw e
          }
       }
 
-      const [matchlist, challenges] = Promise.all([
+      summonerDocument = await summonerModel.findOne({ _id: summoner.puuid })
+
+      const [matchlist, challenges] = await Promise.all([
          twisted.getAllSummonerMatches(summoner.puuid, summoner.region, summonerDocument.lastMatchId),
          util.challengeScribe(summoner.puuid, summoner.region)
       ])
 
       if (!matchlist.length) res.status(200).send('No new matches found.')
 
-      summonerDocument = await summonerModel.findOne({ _id: summoner.puuid })
 
       summonerDocument.challenges = challenges
       summonerDocument.gameName = summoner.gameName
@@ -139,6 +143,7 @@ class SummonerRoutes {
       summonerDocument.profileIcon = summoner.profileIconId
       
       championIds = await util.parseMatchlist(summonerDocument, matchlist, championIds)
+      console.log(championIds, 'champIds')
       await util.computeChampionAverages(summonerDocument, championIds)
 
       summonerResponse = (await util.aggregateSummoner(summoner.puuid))[0]
