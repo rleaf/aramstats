@@ -24,15 +24,16 @@ export default {
 
    data() {
       return {
-         superStore: superStore(),
-         summonerStore: summonerStore(),
-         names: _names,
-         championFilter: '',
-         sortFilter: null,
-         toggleState: false,
-         descending: false,
-         moduleStats: false,
-         statsSelection: 'Champion Stats',
+         data: this._data,                   // Proxy data so it can mutate on Update click
+         superStore: superStore(),           // Store for global settings
+         summonerStore: summonerStore(),     // Store for summoner settings
+         names: _names,                      // Constant names to map championId to name
+         championFilter: '',                 // Filter for table champion search 
+         sortFilter: null,                   // Determine if sort is active
+         toggleState: false,                 // Determine if toggle all button has been clicked
+         descending: false,                  // Determine if sort is in descending
+         moduleStats: false,                 // Determine if module stats window is active
+         statsSelection: 'Champion Stats',   // Stats window to be rendered on lhs.
          updateKey: 0,                       // For re-rendering post summoner update
       }
    },
@@ -80,19 +81,11 @@ export default {
       async updateProfile() {
          const url = `/api/update/${this.$route.params.region}/${this.$route.params.gameName}/${this.$route.params.tagLine}`
 
-         const promise = new Promise((res, rej) => {
-            setTimeout(() => {
-               res()
-            }, 2000)
-         })
-
-         console.log(promise, 'promise')
          try {
             this.$refs.updateButton.innerHTML = 'Updating...'
             this.$refs.updateButton.disabled = true
             this.$refs.updateButton.classList.add('disabled')
-            // const test = await promise
-            const test = (await axios.get(url)).data
+            this.data = (await axios.get(url)).data
          } catch (e) {
             console.log(e, 'updateProfile error')
          } finally {
@@ -101,7 +94,6 @@ export default {
             this.$refs.updateButton.classList.remove('disabled')
             this.updateKey++
          }
-
       },
 
       async deleteProfile() {
@@ -442,7 +434,7 @@ export default {
    },
 
    props: {
-      data: Object,
+      _data: Object,
       patch: null
    }
 
@@ -520,7 +512,6 @@ export default {
                      </div>
                      <h2>{{ this.statsSelection }}</h2>
                   </div>
-                  <!-- <img class="arrow"  src="@/assets/svg/arrow3.svg" :class=" 'arrow-up'" alt=""> -->
                </div>
                <Transition name="module">
                   <div v-if="this.moduleStats" class="module-menu">

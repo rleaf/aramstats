@@ -132,7 +132,10 @@ class SummonerRoutes {
          util.challengeScribe(summoner.puuid, summoner.region)
       ])
 
-      if (!matchlist.length) res.status(200).send('No new matches found.')
+      if (!matchlist.length) {
+         res.status(404).send('No new matches found.')
+         return
+      }
 
 
       summonerDocument.challenges = challenges
@@ -143,7 +146,6 @@ class SummonerRoutes {
       summonerDocument.profileIcon = summoner.profileIconId
       
       championIds = await util.parseMatchlist(summonerDocument, matchlist, championIds)
-      console.log(championIds, 'champIds')
       await util.computeChampionAverages(summonerDocument, championIds)
 
       summonerResponse = (await util.aggregateSummoner(summoner.puuid))[0]

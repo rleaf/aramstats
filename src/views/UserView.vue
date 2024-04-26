@@ -106,7 +106,7 @@ import axios from 'axios'
          :responseStatus="this.responseStatus"/>
       <UserReady
          v-if="responseStatus === 1"
-         :data="this.response"
+         :_data="this.response"
          :patch="this.patch"/>
       <UserError
          v-if="responseStatus === 2"

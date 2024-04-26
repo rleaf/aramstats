@@ -36,6 +36,8 @@ const summonerSchema = new mongoose.Schema({
    // },
    lastMatchId: { type: String, default: '' },
    challenges: [challengeSchema],
+   // championData: { type: Object, default: {} },
+   // championData: { type: Map, default: {} },
    championData: [championEmbedSchema]
 }, { versionKey: false })
 

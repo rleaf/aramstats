@@ -214,6 +214,7 @@ class Summoner {
          let playerIndex
          let playerTeam
          let player
+         let proxy
          let championEmbed
          let participantPuuids = []
 
@@ -278,7 +279,118 @@ class Summoner {
             tId: player.teamId,
          })
 
-         // Consider storing championData as a map for constant lookup.
+         // const model = {
+         //    wins: 0,
+         //    games: 0,
+         //    tg: 0,
+         //    tl: 0,
+         //    fbk: 0,
+         //    bw: 0,
+         //    rw: 0,
+         //    rsg: 0,
+         //    mk: {
+         //       t: 0,
+         //       q: 0,
+         //       p: 0,
+         //    },
+         //    sc: {
+         //       q: 0,
+         //       w: 0,
+         //       e: 0,
+         //       r: 0,
+         //    },
+         //    ss: {},
+         //    p: {
+         //       all: 0,
+         //       assist: 0,
+         //       basic: 0,
+         //       comm: 0,
+         //       danger: 0,
+         //       enMiss: 0,
+         //       enVis: 0,
+         //       back: 0,
+         //       hold: 0,
+         //       vis: 0,
+         //       omw: 0,
+         //       push: 0,
+         //       visClr: 0,
+         //    },
+         //    tf: {
+         //       exp: 0,
+         //       cap: 0,
+         //       use: 0,
+         //       death: 0,
+         //       part: 0,
+         //       freq: 0,
+         //    },
+         //    matches: [],
+         // }
+
+         // proxy = summonerDocument.championData[player.championId] || model
+
+         // proxy.wins += (player.win) ? 1 : 0
+         // proxy.games += 1
+         // proxy.tg += match.info.participants.find(p => p.teamId !== player.teamId).turretsLost
+         // proxy.tl += player.turretsLost
+         // proxy.fbk += player.firstBloodKill
+         // // color-side wins
+         // proxy.bw += (player.teamId === 100 && player.win) ? 1 : 0
+         // proxy.rw += (player.teamId === 200 && player.win) ? 1 : 0
+         // // color-side games
+         // proxy.rsg += (player.teamId === 200) ? 1 : 0
+         // // multikills
+         // proxy.mk.t += player.tripleKills
+         // proxy.mk.q += player.quadraKills
+         // proxy.mk.p += player.pentaKills
+         // // champion spells
+         // proxy.sc.q += player.spell1Casts
+         // proxy.sc.w += player.spell2Casts
+         // proxy.sc.e += player.spell3Casts
+         // proxy.sc.r += player.spell4Casts
+         // // summoner spells
+         // proxy.ss[player.summoner1Id] ??= { games: 0, casts: 0 }
+         // proxy.ss[player.summoner2Id] ??= { games: 0, casts: 0 }
+
+         // proxy.ss[player.summoner1Id].games += 1 || 0
+         // proxy.ss[player.summoner1Id].casts += player.summoner1Casts
+         // proxy.ss[player.summoner2Id].games += 1
+         // proxy.ss[player.summoner2Id].casts += player.summoner2Casts
+         // // (proxy.ss[player.summoner1Id] ??= {}).games += 1;
+         // // (proxy.ss[player.summoner1Id] ??= {}).casts += player.summoner1Casts;
+         // // (proxy.ss[player.summoner2Id] ??= {}).games += 1;
+         // // (proxy.ss[player.summoner2Id] ??= {}).casts += player.summoner2Casts;
+         // // pings
+         // proxy.p.all += player.allInPings
+         // proxy.p.assist += player.assistMePings
+         // proxy.p.basic += player.basicPings
+         // proxy.p.comm += player.commandPings
+         // proxy.p.danger += player.dangerPings
+         // proxy.p.enMiss += player.enemyMissingPings
+         // proxy.p.enVis += player.enemyVisionPings
+         // proxy.p.back += player.getBackPings
+         // proxy.p.hold += player.holdPings
+         // proxy.p.vis += player.needVisionPings
+         // proxy.p.omw += player.onMyWayPings
+         // proxy.p.push += player.pushPings
+         // proxy.p.visClr += player.visionClearedPings
+         // proxy.matches.unshift(matchDocument._id)
+
+         // if (timelineData) {
+         //    // Average it out on the front end (datum / games)
+         //    proxy.tf.exp += timelineData.exp
+         //    proxy.tf.cap += timelineData.cap
+         //    proxy.tf.use += timelineData.use
+         //    proxy.tf.death += timelineData.death
+         //    proxy.tf.part += timelineData.part
+         //    proxy.tf.freq += timelineData.freq
+         //    summonerDocument.fs += timelineData.fs
+         // }
+
+         // if (!summonerDocument.championData.get(player.championId)) {
+         //    summonerDocument.championData.set() = proxy
+         // }
+         // console.log(summonerDocument.championData[player.championId], ';toad')
+
          championEmbed = summonerDocument.championData.find(c => c.championId === player.championId)
          if (!championEmbed) {
             summonerDocument.championData.push({ championId: player.championId })
@@ -382,41 +494,61 @@ class Summoner {
 
    async computeChampionAverages(summonerDocument, championIds) {
       for (const champion of summonerDocument.championData) {
-
+         let proxy
+         
          if (championIds) {
-            if (championIds.has(champion.championId)) {
-               Object.keys(champion.avg).forEach(v => champion.avg[v] = 0)
-            } else {
-               continue
+            if (!championIds.has(champion.championId)) continue
+            proxy = {
+               "ahpm": 0,
+               "a": 0,
+               "dpm": 0,
+               "ds": 0,
+               "dtpm": 0,
+               "d": 0,
+               "ge": 0,
+               "gpm": 0,
+               "hpm": 0,
+               "ah": 0,
+               "kp": 0,
+               "k": 0,
+               "smpm": 0,
+               "tdd": 0,
+               "tdt": 0,
+               "th": 0,
+               "tsm": 0,
             }
+         } else {
+            proxy = champion.avg
          }
 
          const matches = await summonerMatchesModel.find({ '_id': { $in: champion.matches } })
-
+         
          for (const match of matches) {
-            champion.avg.ahpm += Math.round(match.t.ah / match.gd)
-            champion.avg.a += match.a
-            champion.avg.dmg += match.t.dtc
-            champion.avg.dpm += Math.round(match.t.dtc / match.gd)
-            champion.avg.ds += match.ds * 100
-            champion.avg.dtpm += Math.round(match.t.dt / match.gd)
-            champion.avg.d += match.d
-            champion.avg.ge += match.t.g
-            champion.avg.gpm += Math.round(match.t.g / match.gd)
-            champion.avg.hpm += Math.round(match.t.h / match.gd)
-            champion.avg.ah += match.t.ah
-            champion.avg.kp += match.kp * 100
-            champion.avg.k += match.k
-            champion.avg.smpm += Math.round(match.t.sm / match.gd)
-            champion.avg.tdd += match.t.dtc
-            champion.avg.tdt += match.t.dt
-            champion.avg.th += match.t.h
-            champion.avg.tsm += match.t.sm
+            proxy.ahpm += Math.round(match.t.ah / match.gd)
+            proxy.a += match.a
+            proxy.dmg += match.t.dtc
+            proxy.dpm += Math.round(match.t.dtc / match.gd)
+            proxy.ds += match.ds * 100
+            proxy.dtpm += Math.round(match.t.dt / match.gd)
+            proxy.d += match.d
+            proxy.ge += match.t.g
+            proxy.gpm += Math.round(match.t.g / match.gd)
+            proxy.hpm += Math.round(match.t.h / match.gd)
+            proxy.ah += match.t.ah
+            proxy.kp += match.kp * 100
+            proxy.k += match.k
+            proxy.smpm += Math.round(match.t.sm / match.gd)
+            proxy.tdd += match.t.dtc
+            proxy.tdt += match.t.dt
+            proxy.th += match.t.h
+            proxy.tsm += match.t.sm
          }
 
-         for (const [k, v] of Object.entries(champion.avg)) {
-            champion.avg[k] = Math.round(v / matches.length)
+         for (const [k, v] of Object.entries(proxy)) {
+            proxy[k] = Math.round(v / matches.length)
          }
+
+         if (championIds) champion.avg = proxy
       }
 
       summonerDocument.parse.status = config.STATUS_COMPLETE
