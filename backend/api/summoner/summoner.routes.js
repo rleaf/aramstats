@@ -33,21 +33,9 @@ class SummonerRoutes {
             res.status(e.status_code).send(e.message)
             return
          }
-         // else {
-         //    summonerDoc = await summonerModel.findOne({ '_id': summoner.puuid })
-
-         //    if (!summonerDoc) {
-         //       res.status(e.status_code).send(e.message)
-         //       return
-         //    }
-
-         //    summonerResponse = (await util.aggregateSummoner(summoner.puuid))[0]
-         //    res.send(summonerResponse)
-         //    return
-         // } 
       }
-      // return
-      check = await this.queue.check(summoner.puuid, summoner.region)
+
+      check = await this.queue.check(summoner.puuid, summoner.region) /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
       if (typeof check[0] === 'number') {
          console.log(`${summoner.gameName} is already in the Queue.`)
          res.status(200).send({ status: config.STATUS_IN_QUEUE, position: check[0], length: check[1] })
@@ -74,11 +62,11 @@ class SummonerRoutes {
        * "Temporary" queue management that works via baton passing.
        * Longterm, probably more ideal to create a separate node script that runs via cronjobs to ping the queue for a given region every ~minute. Can build this in python too.
       */
-      const queuePosition = await this.queue.regionCount(summoner.region)
+      const queuePosition = await this.queue.regionCount(summoner.region) /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
       await util.skeletonizeSummoner(summoner, queuePosition)
       await this.queue.add(summoner.puuid, summoner.region)
       
-      if (this.queue.inactiveRegions.has(summoner.region)) { // if baton is not held
+      if (this.queue.inactiveRegions.has(summoner.region)) { // if baton is not held /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
          this.queue.inactiveRegions.delete(summoner.region) // take baton
 
          let qSummoner = await this.queue.get(summoner.region)
@@ -91,7 +79,7 @@ class SummonerRoutes {
             if (qSummoner) summonerDoc = await summonerModel.findOne({ '_id': qSummoner.qPuuid })
          }
 
-         this.queue.inactiveRegions.add(summoner.region) // put baton back
+         this.queue.inactiveRegions.add(summoner.region) // put baton back /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
       }
 
       console.log('fin')
