@@ -120,6 +120,9 @@
   /* Danger */
   --danger: rgb(150, 33, 33);
 
+  /* Update notification */
+  --update: #00d620;
+
   /* alphas */
   --alpha-00: var(--white-alpha-0);
   --alpha-01: var(--white-alpha-1);
@@ -187,6 +190,8 @@
   --color-font: #111111;
   --color-font-focus: var(--light-09);
   --color-font-faded: var(--light-02);
+
+  --update: #0a921e;
 
   --logo-filter: invert(30%) drop-shadow(3px 5px 2px rgba(255, 255, 255, 0.5));
 

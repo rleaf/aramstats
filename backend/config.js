@@ -5,6 +5,7 @@ class Config {
 
    SUMMONER_PREFIX = `${this.prefix}/summoners/:region/:gameName/:tagLine`
    UPDATE_SUMMONER_PREFIX = `${this.prefix}/update/:region/:gameName/:tagLine`
+   DELETE_SUMMONER_PREFIX = `${this.prefix}/delete/:region/:gameName/:tagLine`
 
    MATCH_PREFIX = `${this.prefix}/matchInfo/:region/:matchId`
    MATCH_HISTORY_PREFIX = `${this.prefix}/matchHistory/:region/:gameName/:tagLine`

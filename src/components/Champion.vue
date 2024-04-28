@@ -22,7 +22,6 @@ export default {
       },
 
       onBeforeEnter(el) {
-         // el.style.overflow = `hidden`
          el.style.opacity = `0`
          el.style.maxHeight = `0`
          el.style.overflow = `hidden`

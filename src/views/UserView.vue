@@ -14,7 +14,6 @@ import axios from 'axios'
          return {
             regionOptions: ['na', 'euw', 'eune', 'kr', 'lan', 'las', 'oce', 'tr', 'ru', 'jp', 'br', 'vn', 'tw', 'th', 'sg', 'ph'],
             response: null,
-            responseStatus: null,
             error: null,
             patch: null,
             poll: null,
@@ -26,16 +25,15 @@ import axios from 'axios'
          this.lookup()
          // Consider long polling https://javascript.info/long-polling
          // setTimeout(() => {
-         //    if (!this.responseStatus) {
          //       this.unique++
          //       this.lookup()
          //    }
          // }, 5000)
 
-         // this.poll = setInterval(() => {
-         //    this.unique++
-         //    this.lookup()
-         // }, 30000)
+         this.poll = setInterval(() => {
+            this.unique++
+            this.lookup()
+         }, 20000)
       },
       
       mounted() {
@@ -54,68 +52,53 @@ import axios from 'axios'
             }
          },
 
-         lookup() {
+         async lookup() {
             const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.gameName}/${this.$route.params.tagLine}`
             if (!this.regionOptions.includes(this.$route.params.region)) {
-               this.responseStatus = 2
                this.error = 404
                return
             }
 
-            axios.get(url, {
-               params: {
-                  rand: this.unique
-               }
-            })
-            .then((res) => {
-               this.response = res.data
-               
-               if (this.response.active) {
-                  this.responseStatus = 0
-               } else {
-                  this.responseStatus = 1
-                  clearInterval(this.poll)
-               }
-            })
-            .catch((e) => {
-               clearInterval(this.poll)
-               this.error = e.response.status
-               this.responseStatus = 2
-            })
-         },
-
-         async matchHistory() {
-            const url = `/api/history/${this.$route.params.region}/${this.$route.params.username}`
-            
             try {
-               const res = await axios.get(url)
-               this.history = res.data
+               this.response = (await axios.get(url, {
+                  parms: {
+                     rand: this.unique
+                  }
+               })).data
             } catch (e) {
-               console.log('e', e)
+                this.error = e.response.status
+                clearInterval(this.poll)
             }
-         }
+            
+            if (this.response.parse.status === 'Complete') clearInterval(this.poll)
+         },
+      },
+
+      computed: {
+        getStatus() {
+            if (this.response) return this.response.status
+        }
       }
    }
 </script>
 
 <template>
-   <div>
-      <UserLoading 
-         v-if="!responseStatus"
-         :status="this.response"
-         :responseStatus="this.responseStatus"/>
-      <UserReady
-         v-if="responseStatus === 1"
-         :_data="this.response"
-         :patch="this.patch"/>
-      <UserError
-         v-if="responseStatus === 2"
-         :user="{
-            name: this.$route.params.gameName,
-            tagLine: this.$route.params.tagLine,
-            region: this.$route.params.region
-         }"
-         :error="error"/>
+    <div>
+        <UserLoading 
+            v-if="!this.response || this.response.parse.status !== 'Complete'"
+            :response="this.response"/>
+        <UserReady
+            v-else-if="this.response.parse.status === 'Complete'"
+            :_data="this.response"
+            :patch="this.patch"/>
+        <UserError
+            v-else
+            :user="{
+                name: this.$route.params.gameName,
+                tagLine: this.$route.params.tagLine,
+                region: this.$route.params.region
+            }"
+            :error="this.error"/>
    </div>
 </template>
 

@@ -3,6 +3,7 @@ const Queue = require('../../Queue')
 const util = require('./summoner')
 const twisted = require('../../twisted_calls')
 const summonerModel = require('../../models/summoner_model')
+const summonerMatchesModel = require('../../models/summonerMatches_model')
 
 class SummonerRoutes {
    initRoutes(app, db) {
@@ -11,9 +12,11 @@ class SummonerRoutes {
       app
          .get(config.SUMMONER_PREFIX, this.getSummoner.bind(this))
          .get(config.UPDATE_SUMMONER_PREFIX, this.updateSummoner)
+         .delete(config.DELETE_SUMMONER_PREFIX, this.deleteSummoner)
    }
    
    async getSummoner(req, res) {
+      // res.status(404).send()
       let summoner
       let summonerResponse
       let summonerDoc
@@ -22,6 +25,7 @@ class SummonerRoutes {
       try {
          console.log('looking for ' + req.params.gameName + '#' + req.params.tagLine + ' (' + req.params.region + ')')
          summoner = await util.findSummoner(req.params.gameName, req.params.tagLine, req.params.region)
+         
       } catch (e) {
          console.log(e, 'huh')
          if (e.status_code < 500) {
@@ -42,11 +46,11 @@ class SummonerRoutes {
          //    return
          // } 
       }
-
-      check = await this.queue.check(summoner.puuid)
-      if (typeof check === 'number') {
+      // return
+      check = await this.queue.check(summoner.puuid, summoner.region)
+      if (typeof check[0] === 'number') {
          console.log(`${summoner.gameName} is already in the Queue.`)
-         res.status(200).send(`${config.STATUS_IN_QUEUE} ${check}` )
+         res.status(200).send({ status: config.STATUS_IN_QUEUE, position: check[0], length: check[1] })
          return
       }
 
@@ -54,12 +58,13 @@ class SummonerRoutes {
 
       if (summonerDoc) {
          if (summonerDoc.parse.status && summonerDoc.parse.status !== config.STATUS_COMPLETE) {
-            res.send({ parse: summonerDoc.parse, queue: summonerDoc.queue })
+            // res.status(200).send({ parse: summonerDoc.parse, queue: summonerDoc.queue })
+            res.status(200).send(summonerDoc.parse)
             return
          }
 
          summonerResponse = (await util.aggregateSummoner(summoner.puuid))[0]
-         res.send(summonerResponse)
+         res.status(200).send(summonerResponse)
          return
       }
 
@@ -93,7 +98,7 @@ class SummonerRoutes {
    }
 
    async updateSummoner(req, res) {
-      console.log('Updating ' + req.params.gameName + '#' + req.params.tagLine + ' (' + req.params.region + ')')
+      console.log('Updating: ' + req.params.gameName + '#' + req.params.tagLine + ' (' + req.params.region + ')')
       let summoner
       let summonerResponse
       let summonerDocument
@@ -133,7 +138,7 @@ class SummonerRoutes {
       ])
 
       if (!matchlist.length) {
-         res.status(404).send('No new matches found.')
+         res.status(204).send()
          return
       }
 
@@ -150,6 +155,35 @@ class SummonerRoutes {
 
       summonerResponse = (await util.aggregateSummoner(summoner.puuid))[0]
       res.status(200).send(summonerResponse)
+   }
+
+   async deleteSummoner(req, res) {
+      console.log(`Deleting: ${req.params.gameName}#${req.params.tagLine} (${req.params.region})`)
+      let summoner
+      let bin = []
+
+      try {
+         summoner = await util.findSummoner(req.params.gameName, req.params.tagLine, req.params.region)
+      } catch (e) {
+         if (e.status_code < 500) {
+            throw e
+         }
+      }
+
+      const dbSummoner = await summonerModel.findOne({ _id: summoner.puuid })
+
+      for (const data of dbSummoner.championData) {
+         for (const match of data.matches) {
+            bin.push({
+               deleteOne: { filter: { _id: match } }
+            })
+         }
+      }
+
+      
+      await summonerMatchesModel.bulkWrite(bin)
+      await summonerModel.deleteOne({ _id: summoner.puuid })
+      res.status(200).send('deleted')
    }
 }
 

@@ -57,6 +57,7 @@
          },
          summonerSearch() {
             if (!this.input) return
+            console.log('turkey')
 
             const table = {
                'na': 'NA1',

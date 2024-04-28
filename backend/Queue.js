@@ -120,15 +120,22 @@ class Queue {
    /**
     * Check to see if summoner exists in the queue
     * @param puuid Summoner PUUID
+    * @param region Summoner PUUID
    */
-   async check(puuid) {
+   async check(puuid, region) {
       let position 
+      let length
 
       await this.collection.findOne({ qPuuid: puuid })
          .then(res => position = res.position)
          .catch(e => (e instanceof mongodb.MongoServerError) ? e : null)
 
-      return position
+      
+      await this.count(region)
+         .then(res => length = res)
+         .catch(e => (e instanceof mongodb.MongoServerError) ? e : null)
+
+      return [position, length]
    }
 
    /**
@@ -143,9 +150,9 @@ class Queue {
    /**
     * Counts the number of summoners in the queue
    */
-   async count() {
+   async count(region) {
       try {
-         return await this.collection.countDocuments()
+         return await this.collection.countDocuments({ region: region })
       } catch (e) {
          if (e instanceof mongodb.MongoServerError) throw e
       }

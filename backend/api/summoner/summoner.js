@@ -221,12 +221,8 @@ class Summoner {
          try {
             match = await twisted.getMatchInfo(matchId, summonerDocument.region)
          } catch (e) {
+            console.log(e, 'trouble getting match bozo')
             if (e.status === 404) continue
-            // if (e.status > 500) Riot API error
-            // if (e.status === 429) {
-            //    i--
-            //    continue
-            // }
          }
 
          // ARAM Remake window is 3 min. Make it +30s in case someone someone takes a long time to vote.
@@ -650,12 +646,13 @@ class Summoner {
                level: { $first: "$level" },
                gameName: { $first: "$gameName" },
                tagLine: { $first: "$tagLine" },
-               // name: { $first: "$name" },
                region: { $first: "$region" },
                profileIcon: { $first: "$profileIcon" },
-               // pull: { $first: "$pull" },
                challenges: { $first: "$challenges" },
-               championData: { $push: "$championData" }
+               championData: { $push: "$championData" },
+               updated: { $first: "$updated" },
+               fountainSitter: { $first: "$fountainSitter" },
+               parse: { $first: "$parse" },
             }
          },
          {

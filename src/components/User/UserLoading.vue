@@ -1,85 +1,41 @@
 <script>
-import axios from 'axios'
 
 export default {
    data() {
       return {
-         hover: null,
-         
-      }
-   },
 
-   mounted() {
-      // if (this.response) this.status = this.response.pull
-
-      // setTimeout(() => {
-      //    console.log('yee')
-      //    this.lookup()
-      // }, 5000);
-      
-      // this.check = setInterval(() => {
-      //    console.log('yoo')
-      //    this.lookup()
-      // }, 90000)
-   },
-
-   beforeUnmount() {
-      // clearInterval(this.check)
-   },
-
-   methods: {
-      async lookup() {
-         const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
-
-         try {
-            const res = await axios.get(url)
-            this.status = res.data.pull
-            this.userReadyRender = true
-         } catch (e) {
-            console.log(e, 'e')
-            this.errorStatusParent = e.response.status
-            this.userErrorRender = true
-         }
-
-      },
-
-      async deleteSummoner() {
-         const url = `/api/summoners/delete/${this.$route.params.region}/${this.$route.params.username}`
-         const text = `
-         Remove summoner from database?
-         `
-
-         if (confirm(text)) {
-            try {
-               await axios.delete(url)
-            } catch (e) {
-               console.log('delete error', e)
-            }
-            this.$router.push({ name: `home` })
-         }
-      }
-   },
-
-   computed: {
-      queue() {
-         if (this.status) {
-            return `${this.status.current} / ${this.status.queue}`
-         } else {
-            return `0 / TBD`
-         }
       }
    },
 
    props: {
-      status: null,
-      responseStatus: null
+      response: null,
    }
 }
 </script>
 
 <template>
    <div class="loading-main">
-      <div class="active" v-if="responseStatus === 0">
+      <div class="null" v-if="!this.response">
+         <div>
+            <h2>
+               Searching for summoner...
+            </h2>
+         </div>
+      </div>
+      <div class="null" v-else-if="this.response.status === 'In queue...'">
+         <div>
+            <h2>
+               Summoner is in queue.
+            </h2>
+            <p>
+               Position in queue: {{ this.response.position }}
+            </p>
+            <p>
+               Length of queue: {{ this.response.length }}
+            </p>
+         </div>
+      </div>
+      <div class="active" v-else-if="this.response.status == 'Parsing summoner...'">
          <div>
             <h2>
                Parsing summoner...
@@ -89,19 +45,12 @@ export default {
             </p>
             <div class="queue">
                <p>
-                  {{ queue }} matches completed
+                  {{ this.response.current }} / {{ this.response.total }} matches completed
                </p>
                <p class="sub">
-                  I update every 30 seconds (or refresh browser).
+                  I update every 20 seconds (or refresh browser).
                </p>
             </div>
-         </div>
-      </div>
-      <div class="null" v-else>
-         <div>
-            <h2>
-               Searching for summoner...
-            </h2>
          </div>
       </div>
    </div>

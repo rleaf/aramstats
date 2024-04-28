@@ -34,12 +34,14 @@ export default {
          descending: false,                  // Determine if sort is in descending
          moduleStats: false,                 // Determine if module stats window is active
          statsSelection: 'Champion Stats',   // Stats window to be rendered on lhs.
+         update: false,                      // Bool to help UX for update button
          updateKey: 0,                       // For re-rendering post summoner update
       }
    },
 
    mounted() {
       console.log(this.data, 'potatos')
+      document.title = `${this.data.gameName} | ARAM Stats`
       window.addEventListener('keypress', this.championSearchFocus)
    },
 
@@ -80,24 +82,45 @@ export default {
 
       async updateProfile() {
          const url = `/api/update/${this.$route.params.region}/${this.$route.params.gameName}/${this.$route.params.tagLine}`
-
+         let res
+         
+         this.update = true
+         this.$refs.updateButton.innerHTML = 'Updating...'
+         
          try {
-            this.$refs.updateButton.innerHTML = 'Updating...'
-            this.$refs.updateButton.disabled = true
-            this.$refs.updateButton.classList.add('disabled')
-            this.data = (await axios.get(url)).data
+            res = await axios.get(url)
          } catch (e) {
             console.log(e, 'updateProfile error')
-         } finally {
-            this.$refs.updateButton.innerHTML = 'Update'
-            this.$refs.updateButton.disabled = false
-            this.$refs.updateButton.classList.remove('disabled')
+         }
+         
+         this.update = false
+         this.$refs.updateButton.innerHTML = 'Update'
+         
+         
+         if (res.status === 200) {
+            this.data = res.data
+            this.superStore.setNotification('Summoner updated')
             this.updateKey++
+         }
+         
+         if (res.status === 204) {
+            this.superStore.setNotification('Summoner already up to date')
          }
       },
 
       async deleteProfile() {
+         if (!confirm('Delete summoner?')) return
 
+         const url = `/api/delete/${this.$route.params.region}/${this.$route.params.gameName}/${this.$route.params.tagLine}`
+
+         try {
+            await axios.delete(url)   
+         } catch (e) {
+            
+         }
+
+         this.$router.push({ name: 'home' })
+         this.superStore.setNotification(`${this.data.gameName}#${this.data.tagLine} deleted`, 5000)
       }
    },
    
@@ -430,7 +453,9 @@ export default {
          ]
       },
 
-      
+      updatedDate() {
+         return new Date(this.data.updated).toLocaleDateString()
+      },
    },
 
    props: {
@@ -444,7 +469,8 @@ export default {
 <template>
    <div class="summoner-ready-main" :key="this.updateKey">
       <div class="gradient-bg" />
-      <div class="header">
+      <div ref="header" class="header">
+         <img v-if="this.update" class="bongo" src="@/assets/images/bongo-cat.gif" alt="">
          <div class="header-lhs">
             <div class="header-summoner-icon">
                <img :src="profileIcon" alt="">
@@ -455,8 +481,11 @@ export default {
                   <div class="tagLine">#{{ this.data.tagLine }}</div>
                </div>
                <div class="buttons">
-                  <button ref="updateButton" @click="this.updateProfile()">Update</button>
+                  <button :class="{ 'active-update': this.update }" ref="updateButton" :disabled="this.update" @click="this.updateProfile()">Update</button>
                   <button @click="this.deleteProfile()">Delete</button>
+               </div>
+               <div class="last-updated">
+                  Last updated: {{ this.updatedDate }}
                </div>
             </div>
          </div>
@@ -651,6 +680,32 @@ export default {
    padding-left: 1.5rem;
 }
 
+.last-updated {
+   font-size: 0.75rem;
+   color: var(--color-font-faded);
+   padding: 0.35rem 0rem;
+}
+
+.bongo {
+   position: absolute;
+   left: calc(50% - 100px);
+   width: 300px;
+   transform: rotate(-14deg) translate(-130px, 125px);
+}
+
+
+
+.update-message {
+   position: absolute;
+   left: 50%;
+   top: 17vh;
+   transform: translateX(-50%);
+   font-size: 0.9rem;
+   background: var(--update);
+   border-radius: 3px;
+   padding: 0.6rem 1.5rem;
+}
+
 .buttons {
    display: flex;
    gap: 8px;
@@ -661,7 +716,6 @@ export default {
    padding: 0.5rem 1rem;
    cursor: pointer;
    border-radius: 3px;
-   /* height: 30px; */
    border: 1px solid var(--cell-border);
    background: var(--off-blue);
    color: var(--color-font);
@@ -669,9 +723,13 @@ export default {
    transition: 150ms ease-in-out;
 }
 
-.buttons button:hover {
+button.active-update {
+   opacity: 0.7;
+   cursor: default;
+}
+
+.buttons button:hover:not(.active-update) {
    border: 1px solid var(--light-08);
-   /* background: var(--ice-blue); */
    color: var(--color-font-focus);
 }
 
