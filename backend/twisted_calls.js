@@ -55,20 +55,17 @@ async function retryWrapper(fn, args) {
       try {
          return (await fn(...args)).response
       } catch (e) {
-         if (e.status !== 404) {
-            // Games that naturally are 404, so they are expected.
+         if (e instanceof Error && e.status !== 404) { // Do not retry on 404
             retry()
          } else {
             throw e
          }
-         // if (e instanceof Error && e.status_code < 500) retry()
       }
    }, { retries: 1, factor: 1, minTimeout: 1000 })
       .catch(e => {
          if (e instanceof Error) throw e
          console.log('hello add error handling to my summoner document here')
       })
-
 }
 
 async function getAccount(gameName, tagLine) {
@@ -93,7 +90,7 @@ async function getSummonerMatches(puuid, region, start, count) {
 }
 
 /* 
-* Total match history for ARAM (450). matchList[0] is most recent match.
+* Total match history for ARAM (450). matchList[0] is most recent match. 
 */
 async function getAllSummonerMatches(puuid, region, lastMatchId) {
    let matchList = []
@@ -116,7 +113,7 @@ async function getAllSummonerMatches(puuid, region, lastMatchId) {
       
       if (pull.length === 0) stop = false
    }
-   
+   console.log(matchList.flat().length, 'initial match length')
    return matchList.flat()
 }
 

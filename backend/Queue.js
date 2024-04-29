@@ -110,7 +110,8 @@ class Queue {
    */
    async add(puuid, region) {
       try {
-         const idx = (await this.metaCollection.findOneAndUpdate({ _id: 'queue' }, { $inc: { [region]: 1 } }, { projection: { _id: 0, [region]: 1 } })).value[region]
+         // const idx = (await this.metaCollection.findOneAndUpdate({ _id: 'queue' }, { $inc: { [region]: 1 } }, { projection: { _id: 0, [region]: 1 } })).value[region]
+         const idx = (await this.count(region))
          await this.collection.insertOne({ qPuuid: puuid, region: region, position: idx + 1 })
       } catch (e) {
          if (e instanceof mongodb.MongoServerError) throw e

@@ -8,37 +8,34 @@ const summonerMatchesModel = require('../../models/summonerMatches_model')
 class SummonerRoutes {
    initRoutes(app, db) {
       this.queue = new Queue(db)
-      
+
       app
          .get(config.SUMMONER_PREFIX, this.getSummoner.bind(this))
          .get(config.UPDATE_SUMMONER_PREFIX, this.updateSummoner)
-         .delete(config.DELETE_SUMMONER_PREFIX, this.deleteSummoner)
+         // .delete(config.DELETE_SUMMONER_PREFIX, this.deleteSummoner)
    }
    
    async getSummoner(req, res) {
-      // res.status(404).send()
       let summoner
       let summonerResponse
       let summonerDoc
       let check
 
       try {
-         console.log('looking for ' + req.params.gameName + '#' + req.params.tagLine + ' (' + req.params.region + ')')
+         console.log(`Searching: ${req.params.gameName}#${req.params.tagLine} (${req.params.region})`)
          summoner = await util.findSummoner(req.params.gameName, req.params.tagLine, req.params.region)
-         
       } catch (e) {
-         console.log(e, 'huh')
-         if (e.status_code < 500) {
-            console.log(`${req.params.gameName}#${req.params.tagLine} (${req.params.region}) DNE`)
-            res.status(e.status_code).send(e.message)
-            return
-         }
+         console.log(`${req.params.gameName}#${req.params.tagLine} (${req.params.region}) DNE`)
+         res.status(e.status_code).send(e.message)
+         return
       }
 
-      check = await this.queue.check(summoner.puuid, summoner.region) /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+      check = await this.queue.check(summoner.puuid, summoner.region)
       if (typeof check[0] === 'number') {
-         console.log(`${summoner.gameName} is already in the Queue.`)
-         res.status(200).send({ status: config.STATUS_IN_QUEUE, position: check[0], length: check[1] })
+         console.log(`${summoner.gameName} in Queue.`)
+         await this.workQueue(summoner)
+         const parse = { parse: { status: config.STATUS_IN_QUEUE, position: check[0], length: check[1] } }
+         res.status(200).send(parse)
          return
       }
 
@@ -46,8 +43,7 @@ class SummonerRoutes {
 
       if (summonerDoc) {
          if (summonerDoc.parse.status && summonerDoc.parse.status !== config.STATUS_COMPLETE) {
-            // res.status(200).send({ parse: summonerDoc.parse, queue: summonerDoc.queue })
-            res.status(200).send(summonerDoc.parse)
+            res.status(200).send({ parse: summonerDoc.parse})
             return
          }
 
@@ -58,31 +54,40 @@ class SummonerRoutes {
 
       // Summoner exists & DNE in Aramstats DB. Need to parse.
 
-      /**
-       * "Temporary" queue management that works via baton passing.
-       * Longterm, probably more ideal to create a separate node script that runs via cronjobs to ping the queue for a given region every ~minute. Can build this in python too.
-      */
-      const queuePosition = await this.queue.regionCount(summoner.region) /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+      const queuePosition = await this.queue.count(summoner.region)
       await util.skeletonizeSummoner(summoner, queuePosition)
-      await this.queue.add(summoner.puuid, summoner.region)
-      
-      if (this.queue.inactiveRegions.has(summoner.region)) { // if baton is not held /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+      console.log(`+ ${summoner.gameName}#${summoner.tagLine} (${summoner.region}) to Queue.`)
+      await this.queue.add(summoner.puuid, summoner.region)      
+      await this.workQueue(summoner)
+   }
+
+   async workQueue(summoner) {
+      /**
+       * Queue management that works via baton passing.
+       * Longterm, maybe more reliable to create a separate script that runs via cronjobs to ping the queue for a given region every ~minute. Can build this in python too.
+      */
+      if (this.queue.inactiveRegions.has(summoner.region)) { // if baton is not held
+         let qSummoner = await this.queue.get(summoner.region)
+         let document
+
          this.queue.inactiveRegions.delete(summoner.region) // take baton
 
-         let qSummoner = await this.queue.get(summoner.region)
-         
          while (qSummoner) {
-            summonerDoc = await summonerModel.findOne({ '_id': qSummoner.qPuuid })
-            await this.queue.update(summoner.region)
-            await util.initialParse(summonerDoc)
-            qSummoner = await this.queue.get(summoner.region)
-            if (qSummoner) summonerDoc = await summonerModel.findOne({ '_id': qSummoner.qPuuid })
+            try {
+               document = await summonerModel.findOne({ '_id': qSummoner.qPuuid })
+               await this.queue.update(summoner.region)
+               // console.log(`On: ${summoner.gameName}.`)
+               await util.initialParse(document)
+               qSummoner = await this.queue.get(summoner.region)
+               if (qSummoner) document = await summonerModel.findOne({ '_id': qSummoner.qPuuid })
+            } catch (e) {
+               console.log(e, 'rip bozo')   
+               this.queue.inactiveRegions.add(summoner.region)
+            }
          }
 
-         this.queue.inactiveRegions.add(summoner.region) // put baton back /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+         this.queue.inactiveRegions.add(summoner.region) // put baton back
       }
-
-      console.log('fin')
    }
 
    async updateSummoner(req, res) {
@@ -102,16 +107,6 @@ class SummonerRoutes {
                return
             } else {
                throw e
-               // summonerDocument = await summonerModel.findOne({ '_id': puuid })
-
-               // if (!summonerDocument) {
-               //    res.status(e.status_code).send(e.message)
-               //    return
-               // }
-
-               // summonerResponse = (await util.aggregateSummoner(summoner.puuid))[0]
-               // res.send(summonerResponse)
-               // return
             }
          } else {
             throw e

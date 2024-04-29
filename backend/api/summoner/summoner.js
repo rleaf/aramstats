@@ -45,7 +45,6 @@ class Summoner {
          twisted.getAllSummonerMatches(summonerDoc._id, summonerDoc.region),
          this.challengeScribe(summonerDoc._id, summonerDoc.region)
       ])
-      
       summonerDoc.challenges = challenges
       await this.parseMatchlist(summonerDoc, matchlist)
       await this.computeChampionAverages(summonerDoc)
@@ -214,20 +213,19 @@ class Summoner {
          let playerIndex
          let playerTeam
          let player
-         let proxy
          let championEmbed
          let participantPuuids = []
 
          try {
             match = await twisted.getMatchInfo(matchId, summonerDocument.region)
          } catch (e) {
-            console.log(e, 'trouble getting match bozo')
             if (e.status === 404) continue
          }
 
          // ARAM Remake window is 3 min. Make it +30s in case someone someone takes a long time to vote.
          if (match.info.gameDuration < 210) continue
-         console.log(matchId)
+
+         if (i % 25 === 0) console.log(`${summonerDocument.gameName}#${summonerDocument.tagLine} (${summonerDocument.region}) - (${i}/${matchlist.length})`)
 
          // https://leagueoflegends.fandom.com/wiki/Surrendering (ctrl+f "early") Don't use gameEndedInEarlySurrender. It is neq to a remake.
          player = match.info.participants.find(p => p.puuid === summonerDocument._id)
@@ -274,118 +272,6 @@ class Summoner {
             ],
             tId: player.teamId,
          })
-
-         // const model = {
-         //    wins: 0,
-         //    games: 0,
-         //    tg: 0,
-         //    tl: 0,
-         //    fbk: 0,
-         //    bw: 0,
-         //    rw: 0,
-         //    rsg: 0,
-         //    mk: {
-         //       t: 0,
-         //       q: 0,
-         //       p: 0,
-         //    },
-         //    sc: {
-         //       q: 0,
-         //       w: 0,
-         //       e: 0,
-         //       r: 0,
-         //    },
-         //    ss: {},
-         //    p: {
-         //       all: 0,
-         //       assist: 0,
-         //       basic: 0,
-         //       comm: 0,
-         //       danger: 0,
-         //       enMiss: 0,
-         //       enVis: 0,
-         //       back: 0,
-         //       hold: 0,
-         //       vis: 0,
-         //       omw: 0,
-         //       push: 0,
-         //       visClr: 0,
-         //    },
-         //    tf: {
-         //       exp: 0,
-         //       cap: 0,
-         //       use: 0,
-         //       death: 0,
-         //       part: 0,
-         //       freq: 0,
-         //    },
-         //    matches: [],
-         // }
-
-         // proxy = summonerDocument.championData[player.championId] || model
-
-         // proxy.wins += (player.win) ? 1 : 0
-         // proxy.games += 1
-         // proxy.tg += match.info.participants.find(p => p.teamId !== player.teamId).turretsLost
-         // proxy.tl += player.turretsLost
-         // proxy.fbk += player.firstBloodKill
-         // // color-side wins
-         // proxy.bw += (player.teamId === 100 && player.win) ? 1 : 0
-         // proxy.rw += (player.teamId === 200 && player.win) ? 1 : 0
-         // // color-side games
-         // proxy.rsg += (player.teamId === 200) ? 1 : 0
-         // // multikills
-         // proxy.mk.t += player.tripleKills
-         // proxy.mk.q += player.quadraKills
-         // proxy.mk.p += player.pentaKills
-         // // champion spells
-         // proxy.sc.q += player.spell1Casts
-         // proxy.sc.w += player.spell2Casts
-         // proxy.sc.e += player.spell3Casts
-         // proxy.sc.r += player.spell4Casts
-         // // summoner spells
-         // proxy.ss[player.summoner1Id] ??= { games: 0, casts: 0 }
-         // proxy.ss[player.summoner2Id] ??= { games: 0, casts: 0 }
-
-         // proxy.ss[player.summoner1Id].games += 1 || 0
-         // proxy.ss[player.summoner1Id].casts += player.summoner1Casts
-         // proxy.ss[player.summoner2Id].games += 1
-         // proxy.ss[player.summoner2Id].casts += player.summoner2Casts
-         // // (proxy.ss[player.summoner1Id] ??= {}).games += 1;
-         // // (proxy.ss[player.summoner1Id] ??= {}).casts += player.summoner1Casts;
-         // // (proxy.ss[player.summoner2Id] ??= {}).games += 1;
-         // // (proxy.ss[player.summoner2Id] ??= {}).casts += player.summoner2Casts;
-         // // pings
-         // proxy.p.all += player.allInPings
-         // proxy.p.assist += player.assistMePings
-         // proxy.p.basic += player.basicPings
-         // proxy.p.comm += player.commandPings
-         // proxy.p.danger += player.dangerPings
-         // proxy.p.enMiss += player.enemyMissingPings
-         // proxy.p.enVis += player.enemyVisionPings
-         // proxy.p.back += player.getBackPings
-         // proxy.p.hold += player.holdPings
-         // proxy.p.vis += player.needVisionPings
-         // proxy.p.omw += player.onMyWayPings
-         // proxy.p.push += player.pushPings
-         // proxy.p.visClr += player.visionClearedPings
-         // proxy.matches.unshift(matchDocument._id)
-
-         // if (timelineData) {
-         //    // Average it out on the front end (datum / games)
-         //    proxy.tf.exp += timelineData.exp
-         //    proxy.tf.cap += timelineData.cap
-         //    proxy.tf.use += timelineData.use
-         //    proxy.tf.death += timelineData.death
-         //    proxy.tf.part += timelineData.part
-         //    proxy.tf.freq += timelineData.freq
-         //    summonerDocument.fs += timelineData.fs
-         // }
-
-         // if (!summonerDocument.championData.get(player.championId)) {
-         //    summonerDocument.championData.set() = proxy
-         // }
-         // console.log(summonerDocument.championData[player.championId], ';toad')
 
          championEmbed = summonerDocument.championData.find(c => c.championId === player.championId)
          if (!championEmbed) {

@@ -70,7 +70,11 @@ import axios from 'axios'
                 clearInterval(this.poll)
             }
             
-            if (this.response.parse.status === 'Complete') clearInterval(this.poll)
+            console.log(this.response, 'toads')
+            console.log(this.response.parse.status, 'toads2')
+            if (this.response.parse.status === 'Complete') console.log('yeeeee')
+            
+            if (this.response.status === 'Complete') clearInterval(this.poll)
          },
       },
 

@@ -20,9 +20,10 @@ export default {
             <h2>
                Searching for summoner...
             </h2>
+            {{ this.response }}
          </div>
       </div>
-      <div class="null" v-else-if="this.response.status === 'In queue...'">
+      <div class="null" v-else-if="this.response.parse.status === 'In queue...'">
          <div>
             <h2>
                Summoner is in queue.
@@ -35,7 +36,7 @@ export default {
             </p>
          </div>
       </div>
-      <div class="active" v-else-if="this.response.status == 'Parsing summoner...'">
+      <div class="active" v-else-if="this.response.parse.status == 'Parsing summoner...'">
          <div>
             <h2>
                Parsing summoner...
@@ -45,7 +46,7 @@ export default {
             </p>
             <div class="queue">
                <p>
-                  {{ this.response.current }} / {{ this.response.total }} matches completed
+                  {{ this.response.parse.current }} / {{ this.response.parse.total }} matches completed
                </p>
                <p class="sub">
                   I update every 20 seconds (or refresh browser).
