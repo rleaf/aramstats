@@ -17,32 +17,31 @@ export default {
    <div class="loading-main">
       <div class="null" v-if="!this.response">
          <div>
-            <h2>
+            <p>
                Searching for summoner...
-            </h2>
+            </p>
             {{ this.response }}
          </div>
       </div>
       <div class="null" v-else-if="this.response.parse.status === 'In queue...'">
          <div>
-            <h2>
-               Summoner is in queue.
-            </h2>
             <p>
-               Position in queue: {{ this.response.position }}
+               Summoner is in queue. <br><router-link :to="{ name: 'user', params: { region: 'na', gameName: 'Night Owl', tagLine: 'NA1' } }" target="_blank">Here</router-link>
+               is what you can expect to see.
             </p>
             <p>
-               Length of queue: {{ this.response.length }}
+               Position: {{ this.response.parse.position }}
             </p>
          </div>
       </div>
       <div class="active" v-else-if="this.response.parse.status == 'Parsing summoner...'">
          <div>
-            <h2>
-               Parsing summoner...
-            </h2>
             <p>
-               This will take a bit when parsing a new summoner (~5-20 min depending on load).
+               Parsing summoner...
+            </p>
+            <p>
+               This will take a bit when parsing a new summoner (~5-20 min depending on loada and games played). <router-link :to="{ name: 'user', params: { region: 'na', gameName: 'Night Owl', tagLine: 'NA1' } }" target="_blank">Here</router-link>
+               is what you can expect to see.
             </p>
             <div class="queue">
                <p>
@@ -67,6 +66,7 @@ export default {
 }
 
 h2 {
+   /* font-family: var(--header-font); */
    font-weight: normal;
    font-size: 1rem;
    color: var(--color-font);
@@ -75,7 +75,7 @@ h2 {
 p {
    color: var(--color-font);
    width: 700px;
-   font-size: 0.95rem;
+   font-size: 0.9rem;
 }
 
 .queue p {
@@ -90,13 +90,7 @@ p.sub {
 }
 
 a {
-   transition: 0.1s;
-   font-size: 1rem;
    color: var(--color-font);
-   border: 1px solid var(--color-font);
-   border-radius: 5px;
-   cursor: pointer;
-   padding: 4px 9px;
 }
 
 a.purge:hover {

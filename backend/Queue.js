@@ -42,7 +42,7 @@ class Queue {
       }
       
       this.collection = await this.db.collection(this.name)
-      await this.establishMeta()
+      // await this.establishMeta()
    }
    
    async establishMeta() {
@@ -79,15 +79,10 @@ class Queue {
     * @param region Summoner Region
    */
    async get(region) {
-      let nextInQueue
       try {
-         nextInQueue = (await this.collection.findOneAndDelete({ region: region }, { sort: { _id: 1 }, projection: { _id: 0, qPuuid: 1 } })).value
+         return (await this.collection.findOneAndDelete({ region: region }, { sort: { _id: 1 }, projection: { _id: 0, qPuuid: 1 } })).value
       } catch (e) {
          if (e instanceof mongodb.MongoServerError) throw e
-      }
-      if (nextInQueue) {
-         await this.metaCollection.updateOne({ _id: 'queue' }, { $inc: { [region]: -1 } })
-         return nextInQueue
       }
    }
    
@@ -145,7 +140,7 @@ class Queue {
     * @param region Summoner Region
    */
    async remove(puuid) {
-      this.collection.deleteOne({ puuid: puuid })
+      await this.collection.deleteOne({ puuid: puuid })
    }
    
    /**

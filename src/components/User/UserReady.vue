@@ -482,7 +482,7 @@ export default {
                </div>
                <div class="buttons">
                   <button :class="{ 'active-update': this.update }" ref="updateButton" :disabled="this.update" @click="this.updateProfile()">Update</button>
-                  <button @click="this.deleteProfile()">Delete</button>
+                  <!-- <button @click="this.deleteProfile()">Delete</button> -->
                </div>
                <div class="last-updated">
                   Last updated: {{ this.updatedDate }}

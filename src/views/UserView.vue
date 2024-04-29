@@ -14,26 +14,15 @@ import axios from 'axios'
          return {
             regionOptions: ['na', 'euw', 'eune', 'kr', 'lan', 'las', 'oce', 'tr', 'ru', 'jp', 'br', 'vn', 'tw', 'th', 'sg', 'ph'],
             response: null,
-            error: null,
-            patch: null,
             poll: null,
+            patch: null,
             unique: 0,
+            status: null,
          }
       },
 
       created() {
-         this.lookup()
-         // Consider long polling https://javascript.info/long-polling
-         // setTimeout(() => {
-         //       this.unique++
-         //       this.lookup()
-         //    }
-         // }, 5000)
-
-         this.poll = setInterval(() => {
-            this.unique++
-            this.lookup()
-         }, 20000)
+         this.checkSummoner()
       },
       
       mounted() {
@@ -41,71 +30,112 @@ import axios from 'axios'
       },
 
       methods: {
+         async checkSummoner() {
+            const url = `/api/summoners/check/${this.$route.params.region}/${this.$route.params.gameName}/${this.$route.params.tagLine}`
+
+            try {
+               const res = await axios.get(url)
+               this.status = res.status
+               this.response = res.data
+            } catch (e) {
+               this.response = e.response.data
+               this.status = e.response.status
+            }
+
+            if (this.status === 200) {
+               this.poll = setInterval(() => {
+                  this.unique++
+                  this.lookup()
+               }, 20000)
+
+               this.lookup()
+            }
+         },
+
          async getCurrentPatch() {
             const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
 
             try {
-               // this.currentPatch = (await axios.get(url)).data[0].split('.').slice(0, 2).join('.')
                this.patch = (await axios.get(url)).data[0]
             } catch (e) {
                console.log(e, 'getCurrentPatch')
             }
          },
 
+         async initParse() {
+            this.response = null
+            this.status = null
+            this.poll = setInterval(() => {
+               this.unique++
+               this.lookup()
+            }, 20000)
+
+            this.lookup()
+         },
+
          async lookup() {
             const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.gameName}/${this.$route.params.tagLine}`
             if (!this.regionOptions.includes(this.$route.params.region)) {
-               this.error = 404
+               this.status = 404
                return
             }
 
             try {
                this.response = (await axios.get(url, {
-                  parms: {
+                  params: {
                      rand: this.unique
                   }
                })).data
             } catch (e) {
-                this.error = e.response.status
-                clearInterval(this.poll)
+               this.status = e.response.status
+               clearInterval(this.poll)
             }
-            
-            console.log(this.response, 'toads')
-            console.log(this.response.parse.status, 'toads2')
-            if (this.response.parse.status === 'Complete') console.log('yeeeee')
-            
-            if (this.response.status === 'Complete') clearInterval(this.poll)
+
+            if (this.response.parse.status === 'Complete') clearInterval(this.poll)
          },
       },
 
-      computed: {
-        getStatus() {
-            if (this.response) return this.response.status
-        }
-      }
    }
 </script>
 
 <template>
-    <div>
-        <UserLoading 
-            v-if="!this.response || this.response.parse.status !== 'Complete'"
-            :response="this.response"/>
-        <UserReady
-            v-else-if="this.response.parse.status === 'Complete'"
-            :_data="this.response"
-            :patch="this.patch"/>
-        <UserError
-            v-else
-            :user="{
-                name: this.$route.params.gameName,
-                tagLine: this.$route.params.tagLine,
-                region: this.$route.params.region
-            }"
-            :error="this.error"/>
-   </div>
+   <UserError v-if="this.status === 404"
+      :user="{
+            name: this.$route.params.gameName,
+            tagLine: this.$route.params.tagLine,
+            region: this.$route.params.region
+      }"
+      :response="this.response"
+      @initParse="this.initParse">
+   </UserError>
+   <UserLoading 
+      v-else-if="!this.response || this.response.parse.status !== 'Complete'"
+      :response="this.response"/>
+   <UserReady
+      v-else-if="this.response.parse.status === 'Complete'"
+      :_data="this.response"
+      :patch="this.patch"/>
 </template>
 
 <style scoped>
+.new-user {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   color: var(--color-font);
+   margin-top: 20vh;
+}
+
+.new-user p {
+   width: 500px;
+   font-size: 0.9rem;
+   text-align: center;
+}
+
+.new-user a {
+   color: var(--color-font-focus);
+   text-decoration: underline;
+   transition: 150ms ease-in-out;
+}
 
 </style>
