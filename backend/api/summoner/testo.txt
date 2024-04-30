@@ -1,0 +1,15 @@
+PARSE SUMMONER ORDER
+   1. User types in Summoner, presses enter
+   2. User is prompted if they're sure they want to lookup their summoner (gatekeeps missclicks/accidents, etc...). User hits yes.
+   3. Api routes to appropiate summoner endpoint:
+      1. Lookup summoner to see if they exist (no point in wasting compute on DNE summoners). If DNE, return error / break
+      2. Search for summoner (via puuid) in DB. If summ exists, aggregate & return summ
+      3. If summ DNE in database, but exists, add puuid to Queue.
+
+   4. If summoner puuid is in Queue, return summoner position in Queue and Queue length.
+
+
+QUEUE FUNCTIONALITY
+   1. On each summoner lookup, also fire Queue.
+   2. Queue will maintain state where if it's true when fired from step 1, nothing will happen, and if it's false, it will begin firing/working on the puuids in the Queue.
+   3. Once the Queue length is zero, the state will be set to false, indicating the Queue is inactive.

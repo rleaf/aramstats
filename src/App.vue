@@ -4,6 +4,7 @@ import SmallScreen from './components/SmallScreen.vue';
 import champions from './constants/champions';
 import { superStore } from './stores/superStore'
 import Header from './components/Header.vue'
+import Notification from './components/Notification.vue'
 </script>
 
 <script>
@@ -30,6 +31,8 @@ export default {
 <template>
     <SmallScreen />
     <Header />
+    <Notification />
+    <!-- <Header /> -->
     <Nav />
 </template>
 

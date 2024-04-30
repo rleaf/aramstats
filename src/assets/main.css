@@ -110,8 +110,18 @@
   
   /* Blues */
   --cold-blue: hsl(232, 21%, 14%);
-  --cold-blue-focus: hsl(232, 21%, 18%);
+  /* --cold-blue-focus: hsl(232, 21%, 18%); */
+  --cold-blue-focus: #181c25;
+  --cold-blue-focus-rgb: 36, 39, 56;
   --ice-blue: #7a90ca;
+  --off-blue: #141820;
+  --menu-blue: #1a1e27;
+
+  /* Danger */
+  --danger: rgb(150, 33, 33);
+
+  /* Update notification */
+  --update: #00d620;
 
   /* alphas */
   --alpha-00: var(--white-alpha-0);
@@ -153,7 +163,10 @@
 
   --win: rgba(21, 106, 128, 0.2);
   --loss: rgba(150, 33, 33, 0.2);
-  
+
+  --red-side: #AD5757;
+  --blue-side: #4B6CDF;
+
   --parse100: #fabb1c;
   --parse85: #C76BFF;
   --parse75: #38CA46;
@@ -178,6 +191,8 @@
   --color-font-focus: var(--light-09);
   --color-font-faded: var(--light-02);
 
+  --update: #0a921e;
+
   --logo-filter: invert(30%) drop-shadow(3px 5px 2px rgba(255, 255, 255, 0.5));
 
   --win: rgba(58, 184, 216, 0.45);
@@ -194,8 +209,10 @@
   /* Blues */
   --cold-blue: hsl(0, 0%, 87%);
   --cold-blue-rgb: 209, 211, 225;
+  --cold-blue-focus: rgb(204, 204, 204);
   --cold-blue-focus: hsl(0, 0%, 80%);
   --ice-blue: #7a90ca;
+  --off-blue: hsl(0, 0%, 80%);
 
   --alpha-00: var(--black-alpha-6);
   --alpha-01: var(--black-alpha-1);

@@ -1,107 +1,65 @@
 <script>
-import axios from 'axios'
 
 export default {
    data() {
       return {
-         hover: null,
-         
-      }
-   },
 
-   mounted() {
-      // if (this.response) this.status = this.response.pull
-
-      // setTimeout(() => {
-      //    console.log('yee')
-      //    this.lookup()
-      // }, 5000);
-      
-      // this.check = setInterval(() => {
-      //    console.log('yoo')
-      //    this.lookup()
-      // }, 90000)
-   },
-
-   beforeUnmount() {
-      // clearInterval(this.check)
-   },
-
-   methods: {
-      async lookup() {
-         const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.username}`
-
-         try {
-            const res = await axios.get(url)
-            this.status = res.data.pull
-            this.userReadyRender = true
-         } catch (e) {
-            console.log(e, 'e')
-            this.errorStatusParent = e.response.status
-            this.userErrorRender = true
-         }
-
-      },
-
-      async deleteSummoner() {
-         const url = `/api/summoners/delete/${this.$route.params.region}/${this.$route.params.username}`
-         const text = `
-         Remove summoner from database?
-         `
-
-         if (confirm(text)) {
-            try {
-               await axios.delete(url)
-            } catch (e) {
-               console.log('delete error', e)
-            }
-            this.$router.push({ name: `home` })
-         }
-      }
-   },
-
-   computed: {
-      queue() {
-         if (this.status) {
-            return `${this.status.current} / ${this.status.queue}`
-         } else {
-            return `0 / TBD`
-         }
       }
    },
 
    props: {
-      status: null,
-      responseStatus: null
+      response: null,
    }
 }
 </script>
 
 <template>
    <div class="loading-main">
-      <div class="active" v-if="responseStatus === 0">
+      <!-- <div class="null" v-if="!this.response">
          <div>
-            <h2>
-               Parsing summoner...
-            </h2>
             <p>
-               This will take a bit when parsing a new summoner (~5-20 min depending on load).
+               Searching for summoner...
+            </p>
+            {{ this.response }}
+         </div>
+      </div> -->
+      <div class="null" v-if="this.response.parse.status === 'In queue...'">
+         <div>
+            <p>
+               Summoner is in queue. <router-link :to="{ name: 'user', params: { region: 'na', gameName: 'Night Owl', tagLine: 'NA1' } }" target="_blank">Here</router-link>
+               is what you can expect to see.
+            </p>
+            <p v-if="this.response.parse.position === 1">
+               You are next in queue.
+            </p>
+            <p v-else-if="this.response.parse.position - 1 === 1">
+               There is 1 summoner ahead of you.
+            </p>
+            <p v-else>
+               There are {{ this.response.parse.position - 1 }} summoners ahead of you.
+            </p>
+            <p class="sub">
+               I update every 20 seconds (or refresh browser).
+            </p>
+         </div>
+      </div>
+      <div class="active" v-else-if="this.response.parse.status == 'Parsing summoner...'">
+         <div>
+            <p>
+               Parsing summoner...
+            </p>
+            <p>
+               This will take a bit when parsing a new summoner (~5-20 min depending on loada and games played). <router-link :to="{ name: 'user', params: { region: 'na', gameName: 'Night Owl', tagLine: 'NA1' } }" target="_blank">Here</router-link>
+               is what you can expect to see.
             </p>
             <div class="queue">
                <p>
-                  {{ queue }} matches completed
+                  {{ this.response.parse.current }} / {{ this.response.parse.total }} matches completed
                </p>
                <p class="sub">
-                  I update every 30 seconds (or refresh browser).
+                  I update every 20 seconds (or refresh browser).
                </p>
             </div>
-         </div>
-      </div>
-      <div class="null" v-else>
-         <div>
-            <h2>
-               Searching for summoner...
-            </h2>
          </div>
       </div>
    </div>
@@ -117,6 +75,7 @@ export default {
 }
 
 h2 {
+   /* font-family: var(--header-font); */
    font-weight: normal;
    font-size: 1rem;
    color: var(--color-font);
@@ -125,7 +84,7 @@ h2 {
 p {
    color: var(--color-font);
    width: 700px;
-   font-size: 0.95rem;
+   font-size: 0.9rem;
 }
 
 .queue p {
@@ -140,13 +99,7 @@ p.sub {
 }
 
 a {
-   transition: 0.1s;
-   font-size: 1rem;
    color: var(--color-font);
-   border: 1px solid var(--color-font);
-   border-radius: 5px;
-   cursor: pointer;
-   padding: 4px 9px;
 }
 
 a.purge:hover {

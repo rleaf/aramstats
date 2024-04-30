@@ -421,8 +421,6 @@ async function matchParser(riotId, region, matchlist, summonerDocument, updateAr
       await match.save()
       const championEmbed = summonerDocument.championData.find(e => e.name === player.championName)
       if (championEmbed) {
-         // Idealy use unshift > push becauase iterating from oldest -> newest and want newest at [0].
-         // However doesn't matter because $lookup reoders in aggregation.
          championEmbed.matches.unshift(match._id)
       } else {
          summonerDocument.championData.push(

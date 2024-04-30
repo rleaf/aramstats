@@ -10,21 +10,32 @@ export default {
 
    props: {
       user: {},
-      error: null
+      response: null,
+      status: null
    }
 }
 </script>
 
 <template>
    <div class="dne-main">
-      <div v-if="this.error === 404">
+      <div class="new-user" v-if="this.response === 'Summoner is not parsed.'">
+         <p>
+            Hello, it seems this summoner has never been parsed.
+         </p>
+         <p>
+            This process can take some time, upwards of 20 minutes, because all viable games in the match history are examined.
+            <router-link :to="{ name: 'user', params: { region: 'na', gameName: 'Night Owl', tagLine: 'NA1' } }" target="_blank">Here</router-link> is what you can expect to see when the account finishes.
+         </p>
+         <div @click="$emit('initParse')" class="button">Parse Summoner</div>
+      </div>
+      <div v-if="this.response === 'Summoner does not exist.'">
          <h2>
             <i>{{ decodeURI(this.user.name) }}#{{ decodeURI(this.user.tagLine) }} ({{ this.user.region }})</i> does not exist.
          </h2>
          <br>
          <img src="https://i.redd.it/6p956lq5yiq81.jpg" alt="">
       </div>
-      <div v-if="this.error === 403">
+      <div v-if="this.response === 'Forbidden'">
          <h2>
             API key expired :(
          </h2>
@@ -32,20 +43,17 @@ export default {
             @owl#4626 in aram academy discord and I'll refresh.
          </p>
       </div>
-      <div v-if="this.error === 504">
+      <div v-if="this.status === 504">
          <h2>
             Riot API servers are probably down.
          </h2>
-         <!-- <p>
-            Check server status <a href="https://developer.riotgames.com/api-status/" target="_blank">here</a>
-         </p> -->
       </div>
-      <div v-if="this.error === 500">
+      <div v-if="this.status === 500">
          <h2>
             Aramstats database is down.
          </h2>
          <p>
-            Ping me on Discord (<code>@ryli.</code>)  so I can look into it. This is probably not intentional.
+            Ping me on Discord (<code>@ryli.</code>) so I can look into it. This is probably not intentional.
          </p>
          <img src="https://i.redd.it/k8obvr07gfb91.png" alt="">
       </div>
@@ -53,6 +61,25 @@ export default {
 </template>
 
 <style scoped>
+
+.button {
+   width: 200px;
+   margin: 0 auto;
+   margin-top: 50px;
+   cursor: pointer;
+   border-radius: 3px;
+   border: 1px solid var(--cell-border);
+   background: var(--off-blue);
+   font-size: 0.9rem;
+   padding: 0.35rem 0.75rem;
+   color: var(--color-font);
+   font-weight: 600;
+   transition: 150ms ease-in-out;
+}
+
+.button:hover {
+   background: var(--cold-blue-focus);
+}
 
 code {
    background: var(--dark500);
@@ -80,6 +107,7 @@ h2 {
 p {
    color: var(--color-font);
    width: 500px;
+   font-size: 0.9rem;
    line-height: 1.5;
 }
 

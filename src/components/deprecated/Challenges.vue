@@ -33,76 +33,123 @@ export default {
    },
 
    methods: {
-      getImage(id, tier) {
+      img(id, tier) {
          return new URL(`../assets/challenge_icons/${id}-${tier}.webp`, import.meta.url).href
       },
+
+      challengeName(id) {
+         return this.book[id][0]
+      }
+   },
+
+   computed: {
+      challenges() {
+         return this.data.sort((a, b) => {
+            const x = this.challengeName(a.challengeId)
+            const y = this.challengeName(b.challengeId)
+
+            return x.localeCompare(y)
+         })
+      }
    },
 
    props: {
       data: null,
    }
+
 }
 </script>
 
 <template>
-   <div class="challenge-main" v-for="c, i in this.data" :key="i" :class="{ 'o': i % 2 === 0 }">
-      <img :src="this.getImage(c.challengeId, c.level)" alt="">
-      <div>
-         <div class="challenge-header">
-            <div>{{ this.book[c.challengeId][0] }}</div>
-            <div class="date">
-               {{ new Date(c.achievedTime).toLocaleString().split(/[ ,]+/)[0] }}
-               <!-- <i>Top {{ Math.round((c.percentile * 1000)) / 10 }}%</i> -->
+   <div class="challenge-main">
+      <div class="challenge-wrapper">
+
+         <div class="challenge" v-for="el in challenges" :key="el.challengeId" v-if="this.data">
+            <div class="img-wrapper">
+               <img :src="img(el.challengeId, el.level)" />
+            </div>
+            <div class="title">
+               <p class="challenge-title">
+                  {{ this.challengeName(el.challengeId) }}
+               </p>
+               <p class="percentile">
+                  Top: {{ Math.round((el.percentile * 10000) ) / 100 }}%
+               </p>
+            </div>
+            <div class="description">
+               {{ this.book[el.challengeId][1] }}
             </div>
          </div>
-         <div class="body">
-            {{ this.book[c.challengeId][1] }} <br>
-            <!-- <i>Top {{ Math.round((c.percentile * 1000)) / 10 }}%</i> -->
-            
-            <i>You are in the top {{ Math.round((c.percentile * 1000)) / 10 }}%</i>
-         </div>
+      </div>
+      <div class="challenge-message" v-if="!this.data">
+         Update summoner.
       </div>
    </div>
 </template>
 
 <style scoped>
-.challenge-main {
-   display: flex;
-   gap: 10px;
-   align-items: center;
-   border-radius: 3px;
-   padding: 0.7rem 0.25rem;
+.challenge-title {
    font-size: 0.8rem;
 }
 
-.o {
-   background: var(--alpha-01);
+.challenge img {
+   width: 45px;
 }
 
-.challenge-main img {
-   width: 34px;
+.img-wrapper {
+   height: 50px;
 }
 
-.challenge-main > div {
-   width: 100%;
-}
-.challenge-header {
+.challenge {
    display: flex;
-   width: 100%;
-   justify-content: space-between;
-   margin-bottom: 5px;
+   align-items: center;
+   width: 370px;
+   gap: 10px;
+   color: var(--color-font);
 }
 
-.date {
-   /* font-size: 0.75rem; */
-   /* color: var(--color-font-faded); */
+.title {
+   width: 100px;
 }
 
-.body {
-   display: block;
-   margin-top: 0px;
-   /* font-style: italic; */
-   font-size: 0.75rem;
+.challenge p {
+   margin: 0;
+}
+
+p.percentile {
    color: var(--color-font-faded);
+   font-size: 0.75rem;
 }
-</style> 
+
+.description {
+   color: var(--color-font-faded);
+   font-size: 0.8rem;
+   width: 50%;
+   font-style: italic;
+}
+
+.challenge-wrapper {
+   display: flex;
+   width: 50%;
+   flex-direction: column;
+   row-gap: 10px;
+   padding: 30px;
+}
+
+.challenge-main {
+   border-radius: 15px;
+   margin: 20px 0;
+   background: var(--cell-panel);
+}
+
+.challenge-scroll {
+   overflow: hidden;
+}
+
+.challenge-message {
+   position: relative;
+   left: 50%;
+   transform: translateX(-50%);
+   color: var(--color-font);
+}
+</style>

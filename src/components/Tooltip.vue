@@ -10,7 +10,7 @@ export default {
 
    props: {
       tip: null,
-      align: null
+      align: null,
    }
 }
 </script>
@@ -31,6 +31,7 @@ export default {
 <style scoped>
 .tooltip img {
    cursor: pointer;
+   z-index: 1;
    -webkit-touch-callout: none; /* iOS Safari */
    -webkit-user-select: none; /* Safari */
    -khtml-user-select: none; /* Konqueror HTML */
@@ -41,7 +42,6 @@ export default {
 
 .tooltip {
    position: relative;
-   z-index: 2;
    display: inline-block;
    height: 16px;
 }
@@ -53,12 +53,12 @@ export default {
 .tip {
    visibility: hidden;
    position: absolute;
-   z-index: 1;
+   z-index: 10;
    color: var(--color-font-faded);
    font-size: 0.8rem;
    line-height: 1.35;
    font-style: normal;
-   background: var(--cold-blue);
+   background: var(--off-blue);
    border: 1px solid var(--cell-border);
    border-radius: 8px;
    padding: 0.2rem 1.5rem;
@@ -86,6 +86,6 @@ export default {
 }
 
 .tip ul li:not(:last-child) { 
-   margin-bottom: 0.5rem;  
+   margin-bottom: 0.7rem;  
 }
 </style>

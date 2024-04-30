@@ -14,28 +14,15 @@ import axios from 'axios'
          return {
             regionOptions: ['na', 'euw', 'eune', 'kr', 'lan', 'las', 'oce', 'tr', 'ru', 'jp', 'br', 'vn', 'tw', 'th', 'sg', 'ph'],
             response: null,
-            responseStatus: null,
-            error: null,
-            currentPatch: null,
             poll: null,
+            patch: null,
             unique: 0,
+            status: null,
          }
       },
 
       created() {
-         this.lookup()
-         // Consider long polling https://javascript.info/long-polling
-         // setTimeout(() => {
-         //    if (!this.responseStatus) {
-         //       this.unique++
-         //       this.lookup()
-         //    }
-         // }, 5000)
-
-         this.poll = setInterval(() => {
-            this.unique++
-            this.lookup()
-         }, 30000)
+         this.checkSummoner()
       },
       
       mounted() {
@@ -43,82 +30,114 @@ import axios from 'axios'
       },
 
       methods: {
+         async checkSummoner() {
+            const url = `/api/summoners/check/${this.$route.params.region}/${this.$route.params.gameName}/${this.$route.params.tagLine}`
+
+            try {
+               const res = await axios.get(url)
+               this.status = res.status
+               this.response = res.data
+            } catch (e) {
+               this.response = e.response.data
+               this.status = e.response.status
+               throw e
+            }
+
+            console.log(this.response, 'response')
+            console.log(this.status, 'status')
+            if (this.status === 200) {
+               console.log('toads')
+               this.poll = setInterval(() => {
+                  this.unique++
+                  this.lookup()
+               }, 20000)
+
+               this.lookup()
+            }
+         },
+
          async getCurrentPatch() {
             const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
 
             try {
-               // this.currentPatch = (await axios.get(url)).data[0].split('.').slice(0, 2).join('.')
-               this.currentPatch = (await axios.get(url)).data[0]
+               this.patch = (await axios.get(url)).data[0]
             } catch (e) {
                console.log(e, 'getCurrentPatch')
             }
          },
 
-         lookup() {
+         async initParse() {
+            this.response = null
+            this.status = null
+            this.poll = setInterval(() => {
+               this.unique++
+               this.lookup()
+            }, 20000)
+
+            this.lookup()
+         },
+
+         async lookup() {
             const url = `/api/summoners/${this.$route.params.region}/${this.$route.params.gameName}/${this.$route.params.tagLine}`
             if (!this.regionOptions.includes(this.$route.params.region)) {
-               this.responseStatus = 2
-               this.error = 404
+               this.status = 404
                return
             }
 
-            axios.get(url, {
-               params: {
-                  rand: this.unique
-               }
-            })
-            .then((res) => {
-               this.response = res.data
-               
-               if (this.response.active) {
-                  this.responseStatus = 0
-               } else {
-                  this.responseStatus = 1
-                  clearInterval(this.poll)
-               }
-            })
-            .catch((e) => {
-               clearInterval(this.poll)
-               this.error = e.response.status
-               this.responseStatus = 2
-            })
-         },
-
-         async matchHistory() {
-            const url = `/api/history/${this.$route.params.region}/${this.$route.params.username}`
-            
             try {
+               console.log('waffles')
                const res = await axios.get(url)
-               this.history = res.data
+               this.status = res.status
+               this.response = res.data
             } catch (e) {
-               console.log('e', e)
+               this.response = e.response.data
+               this.status = e.response.status
+               clearInterval(this.poll)
             }
-         }
-      }
+            
+            if (this.status === 200 && this.response.parse.status === 'Complete') {
+               console.log('pancakes')
+               clearInterval(this.poll)
+            }
+         },
+      },
+
    }
 </script>
 
 <template>
-   <div>
-      <UserLoading 
-         v-if="!responseStatus"
-         :status="this.response"
-         :responseStatus="this.responseStatus"/>
-      <UserReady
-         v-if="responseStatus === 1"
-         :response="this.response"
-         :currentPatch="this.currentPatch"/>
-      <UserError
-         v-if="responseStatus === 2"
-         :user="{
+   <p class="searching" v-if="!this.status">
+      Searching for summoner...
+   </p>
+   <UserLoading 
+      v-else-if="this.status === 200 && (this.response && this.response.parse.status !== 'Complete')"
+      :response="this.response"/>
+   <UserReady
+      v-else-if="this.status === 200 && (this.response && this.response.parse.status === 'Complete')"
+      :_data="this.response"
+      :patch="this.patch"/>
+   <UserError v-else
+      :user="{
             name: this.$route.params.gameName,
             tagLine: this.$route.params.tagLine,
             region: this.$route.params.region
-         }"
-         :error="error"/>
-   </div>
+      }"
+      :response="this.response"
+      :status="this.status"
+      @initParse="this.initParse"/>
 </template>
 
 <style scoped>
+.searching {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
 
+p.searching {
+   color: var(--color-font);
+   margin-top: 20vh;
+   font-size: 0.9rem;
+   text-align: center;
+}
 </style>

@@ -1,6 +1,6 @@
 <script>
 // import { championStore } from '@/stores/fchampionStore'
-import Tooltip from './Tooltip.vue'
+import Tooltip from '@/components/Tooltip.vue'
 
 export default {
    components: {

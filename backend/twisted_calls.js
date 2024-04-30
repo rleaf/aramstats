@@ -1,5 +1,6 @@
 const twisted = require('twisted')
 const { RegionGroups } = require('twisted/dist/constants')
+const promiseRetry = require('promise-retry')
 const lolApi = new twisted.LolApi()
 const riotApi = new twisted.RiotApi()
 
@@ -43,48 +44,77 @@ const REGION_GROUPS = {
    ph: RegionGroups.SEA,
 }
 
+
 /*
 * Summoner info w/ account-v1
 * Tethered to AMERICAS region rn because closest to backend server. Can move if need to balance rate limits
 */
+   
+async function retryWrapper(fn, args) {
+   return await promiseRetry(async retry => {
+      try {
+         return (await fn(...args)).response
+      } catch (e) {
+         if (e instanceof Error && e.status !== 404) { // Do not retry on 404
+            if (e.status === 403) throw e
+            retry()
+         } else {
+            throw e
+         }
+      }
+   }, { retries: 1, factor: 1, minTimeout: 1000 })
+      .catch(e => {
+         if (e instanceof Error) throw e
+         console.log('hello add error handling to my summoner document here')
+      })
+}
+
 async function getAccount(gameName, tagLine) {
-   return (await riotApi.Account.getByRiotId(gameName, tagLine, RegionGroups.AMERICAS)).response
+   // console.log('getAccount')
+   return await retryWrapper(riotApi.Account.getByRiotId.bind(riotApi.Account), [gameName, tagLine, RegionGroups.AMERICAS])
 }
 
 /* 
 * Summoner info.
 */
 async function getSummoner(puuid, region) {
-   return (await lolApi.Summoner.getByPUUID(puuid, REGION_CONSTANTS[region])).response
+   // console.log('getSummoner')
+   return await retryWrapper(lolApi.Summoner.getByPUUID.bind(lolApi.Summoner), [puuid, REGION_CONSTANTS[region]])
 }
-// async function getSummoner(summoner, region) {
-//    return (await lolApi.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
-// }
-
 
 /* 
 * Variable match history for ARAM (450). Used for utility.
 */
 async function getSummonerMatches(puuid, region, start, count) {
-   // const summonerGet = (await lolApi.Summoner.getByName(summoner, REGION_CONSTANTS[region])).response
-   return (await lolApi.MatchV5.list(puuid, REGION_GROUPS[region], { queue: 450, start: start, count: count })).response
+   // console.log('getSummonerMatches')
+   return await retryWrapper(lolApi.MatchV5.list.bind(lolApi.MatchV5), [puuid, REGION_GROUPS[region], { queue: 450, start: start, count: count }])
 }
 
 /* 
-* Total match history for ARAM (450). matchList[0] is most recent match.
+* Total match history for ARAM (450). matchList[0] is most recent match. 
 */
-async function getAllSummonerMatches(puuid, region) {
+async function getAllSummonerMatches(puuid, region, lastMatchId) {
    let matchList = []
    let stop = true
 
-   for (let i = 0; stop; i=i+100) {
-      const pull = await lolApi.MatchV5.list(puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })
-      matchList.push(pull.response)
-
-      if (pull.response.length === 0) {
+   for (let i = 0; stop; i+=100) {
+      let pull = await retryWrapper(lolApi.MatchV5.list.bind(lolApi.MatchV5), [puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 }])
+      if (lastMatchId && pull.includes(lastMatchId)) {
+         pull = pull.slice(0, pull.indexOf(lastMatchId))
          stop = false
       }
+
+      matchList.push(pull)
+      
+      try {
+         await getMatchInfo(pull[pull.length - 1], region)
+      } catch (e) {
+         if (e.status === 404) return matchList.flat()
+      }
+      
+      if (pull.length === 0) stop = false
    }
+   console.log(matchList.flat().length, 'initial match length')
    return matchList.flat()
 }
 
@@ -99,7 +129,7 @@ async function getSummonerMatchesOnPatch(puuid, region, patch) {
    let stop = true
 
    for (let i = 0; stop; i+=100) {
-      const pull = (await lolApi.MatchV5.list(puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 })).response
+      const pull = await retryWrapper(lolApi.MatchV5.list.bind(lolApi.MatchV5), [puuid, REGION_GROUPS[region], { queue: 450, start: i, count: 100 }])
       matchlist.push(pull)
 
       const lastMatch = await getMatchInfo(pull[pull.length - 1], region)
@@ -116,18 +146,24 @@ async function getSummonerMatchesOnPatch(puuid, region, patch) {
 * Match info.
 */
 async function getMatchInfo(matchId, region) {
-   try {
-      return (await lolApi.MatchV5.get(matchId, REGION_GROUPS[region])).response
-   } catch (e) {
-      throw e.body.status
-   }
+   // console.log('getMatchInfo', matchId, region)
+   return await retryWrapper(lolApi.MatchV5.get.bind(lolApi.MatchV5), [matchId, REGION_GROUPS[region]])
+}
+
+/* 
+* Match timeline info.
+*/
+async function getMatchTimeline(matchId, region) {
+   // console.log('getMatchTimeline')
+   return await retryWrapper(lolApi.MatchV5.timeline.bind(lolApi.MatchV5), [matchId, REGION_GROUPS[region]])
 }
 
 /* 
 * Player Challenges.
 */
 async function playerChallenges(puuid, region) {
-   return (await lolApi.Challenges.PlayerChallenges(puuid, REGION_CONSTANTS[region])).response
+   // console.log('Challenges')
+   return await retryWrapper(lolApi.Challenges.PlayerChallenges.bind(lolApi.Challenges), [puuid, REGION_CONSTANTS[region]])
 }
 
 
@@ -138,5 +174,6 @@ module.exports = {
    getAllSummonerMatches,
    getSummonerMatchesOnPatch,
    getMatchInfo,
+   getMatchTimeline,
    playerChallenges
 }
