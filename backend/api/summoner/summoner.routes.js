@@ -48,6 +48,7 @@ class SummonerRoutes {
             return
          }
 
+         // Obsolete, but just in case. Logic is in this.checkSummoner already and returns summoner aggregation if complete
          summonerResponse = (await util.aggregateSummoner(summoner.puuid))[0]
          res.status(200).send(summonerResponse)
          return
@@ -58,9 +59,16 @@ class SummonerRoutes {
       const queuePosition = await this.queue.count(summoner.region)
       await util.skeletonizeSummoner(summoner, queuePosition)
       console.log(`+ ${summoner.gameName}#${summoner.tagLine} (${summoner.region}) to Queue.`)
-      await this.queue.add(summoner.puuid, summoner.region)      
+      await this.queue.add(summoner.puuid, summoner.region)
+      check = await this.queue.check(summoner.puuid, summoner.region)
+
+      if (check[0] === 1 && this.queue.inactiveRegions.has(summoner.region)) {
+         res.status(200).send({ parse: { status: config.STATUS_PARSING, current: 'TBD', total: 'TBD' } })
+      } else {
+         res.status(200).send({ parse: { status: config.STATUS_IN_QUEUE, position: check[0], length: check[1] } })
+      }
+      
       await this.workQueue(summoner)
-      res.status(200).send()
    }
 
    async workQueue(summoner) {
@@ -157,8 +165,9 @@ class SummonerRoutes {
       }
 
       const response = await summonerModel.findOne({ '_id': summoner.puuid })
-      if (response) {
-         res.status(200).send()
+      if (response && response.parse.status === config.STATUS_COMPLETE) {
+         const response = (await util.aggregateSummoner(summoner.puuid))[0]
+         res.status(200).send(response)
       } else {
          res.status(404).send(config.SUMMONER_UNPARSED)
       }

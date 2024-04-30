@@ -23,7 +23,7 @@ export default {
             Hello, it seems this summoner has never been parsed.
          </p>
          <p>
-            This process can take some time, upwards of 20 minutes, and examines all viable games in the match history.
+            This process can take some time, upwards of 20 minutes, because all viable games in the match history are examined.
             <router-link :to="{ name: 'user', params: { region: 'na', gameName: 'Night Owl', tagLine: 'NA1' } }" target="_blank">Here</router-link> is what you can expect to see when the account finishes.
          </p>
          <div @click="$emit('initParse')" class="button">Parse Summoner</div>

@@ -15,22 +15,31 @@ export default {
 
 <template>
    <div class="loading-main">
-      <div class="null" v-if="!this.response">
+      <!-- <div class="null" v-if="!this.response">
          <div>
             <p>
                Searching for summoner...
             </p>
             {{ this.response }}
          </div>
-      </div>
-      <div class="null" v-else-if="this.response.parse.status === 'In queue...'">
+      </div> -->
+      <div class="null" v-if="this.response.parse.status === 'In queue...'">
          <div>
             <p>
-               Summoner is in queue. <br><router-link :to="{ name: 'user', params: { region: 'na', gameName: 'Night Owl', tagLine: 'NA1' } }" target="_blank">Here</router-link>
+               Summoner is in queue. <router-link :to="{ name: 'user', params: { region: 'na', gameName: 'Night Owl', tagLine: 'NA1' } }" target="_blank">Here</router-link>
                is what you can expect to see.
             </p>
-            <p>
-               Position: {{ this.response.parse.position }}
+            <p v-if="this.response.parse.position === 1">
+               You are next in queue.
+            </p>
+            <p v-else-if="this.response.parse.position - 1 === 1">
+               There is 1 summoner ahead of you.
+            </p>
+            <p v-else>
+               There are {{ this.response.parse.position - 1 }} summoners ahead of you.
+            </p>
+            <p class="sub">
+               I update every 20 seconds (or refresh browser).
             </p>
          </div>
       </div>

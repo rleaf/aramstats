@@ -40,11 +40,13 @@ import axios from 'axios'
             } catch (e) {
                this.response = e.response.data
                this.status = e.response.status
+               throw e
             }
 
             console.log(this.response, 'response')
             console.log(this.status, 'status')
             if (this.status === 200) {
+               console.log('toads')
                this.poll = setInterval(() => {
                   this.unique++
                   this.lookup()
@@ -83,18 +85,20 @@ import axios from 'axios'
             }
 
             try {
-               this.response = (await axios.get(url, {
-                  params: {
-                     rand: this.unique
-                  }
-               })).data
+               console.log('waffles')
+               const res = await axios.get(url)
+               this.status = res.status
+               this.response = res.data
             } catch (e) {
+               this.response = e.response.data
                this.status = e.response.status
                clearInterval(this.poll)
             }
-
             
-            if (this.response.parse.status === 'Complete') clearInterval(this.poll)
+            if (this.status === 200 && this.response.parse.status === 'Complete') {
+               console.log('pancakes')
+               clearInterval(this.poll)
+            }
          },
       },
 
@@ -102,15 +106,14 @@ import axios from 'axios'
 </script>
 
 <template>
-   
-   <!-- <UserLoading 
-      v-else-if="!this.response || this.response.parse.status !== 'Complete'"
-      :response="this.response"/> -->
+   <p class="searching" v-if="!this.status">
+      Searching for summoner...
+   </p>
    <UserLoading 
-      v-if="this.status === 200 && (!this.response || this.response.parse.status !== 'Complete')"
+      v-else-if="this.status === 200 && (this.response && this.response.parse.status !== 'Complete')"
       :response="this.response"/>
    <UserReady
-      v-else-if="this.status === 200 && this.response.parse.status === 'Complete'"
+      v-else-if="this.status === 200 && (this.response && this.response.parse.status === 'Complete')"
       :_data="this.response"
       :patch="this.patch"/>
    <UserError v-else
@@ -120,30 +123,21 @@ import axios from 'axios'
             region: this.$route.params.region
       }"
       :response="this.response"
-      :error="this.status"
-      @initParse="this.initParse">
-   </UserError>
+      :status="this.status"
+      @initParse="this.initParse"/>
 </template>
 
 <style scoped>
-.new-user {
+.searching {
    display: flex;
    flex-direction: column;
    align-items: center;
-   color: var(--color-font);
-   margin-top: 20vh;
 }
 
-.new-user p {
-   width: 500px;
+p.searching {
+   color: var(--color-font);
+   margin-top: 20vh;
    font-size: 0.9rem;
    text-align: center;
 }
-
-.new-user a {
-   color: var(--color-font-focus);
-   text-decoration: underline;
-   transition: 150ms ease-in-out;
-}
-
 </style>
