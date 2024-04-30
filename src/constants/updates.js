@@ -11,10 +11,39 @@
 */
 
 const updates = [
+   // {
+   //    title: "Implementing new Summoner UI in the following week",
+   //    version: "3.5.0",
+   //    date: "4/30/24",
+   //    body: [
+   //       `This is primarily for testing to weed out any bugs. You will have to reparse your summoner. I'm gonna be keeping an eye out, but if you encounter any weirdness feel free to hmu.`,
+   //       `This update breaks down into two significant updates: a new Summoner page UI and a backend redesign.`,
+   //       `This new Summoner Page UI, while I hope more enjoyable to interact with, is also functionally much more capable. Rendered stats are computed from selected champions provided in the table. Instead of being limited to viewing things like damage, shielding, and healing on one particular champion, you can now see stats for any set of champions.`,
+   //       `The backend redesign seeks to resolve a couple of issues. The largest issue is with frozen summoners. Occasionally, because of hardware constraints, bad code, or a combination of the both, a summoner will be "frozen" or "stuck" stating they're currently being parsed when searched. I've added more logic and error handling to hopefully prevent these issues. This update is geared heavily towards the UI redesign so although I've reduced the chances of a summoner being frozen, I've not yet implemented logic to "unfreeze" them. Will implement soon.`,
+   //    ],
+   //    links: [
+         
+   //    ],
+   //    img: [], // Expected webp format
+   //    imgCaption: ""
+   // },
+   {
+      title: "Implementing new Summoner UI in the following week",
+      version: "",
+      date: "4/30/24",
+      body: [
+         `This is primarily for testing to weed out any bugs. You will have to reparse your summoner. I'm gonna be keeping an eye out, but if you encounter any weirdness feel free to hmu.`,
+      ],
+      links: [
+         
+      ],
+      img: [], // Expected webp format
+      imgCaption: ""
+   },
    {
       title: "Looking for feedback the new summoner page UI (click me)",
       version: "",
-      date: "4/23/24 - today",
+      date: "4/23/24 - 4/29/24",
       body: [
          `I've a working prototype for the new Summoner page UI - check it out in the link below. It's still incomplete, however you'll have a general idea of how things are going to be laid out. My Discord is in the 'About' section. Thanks.`,
       ],

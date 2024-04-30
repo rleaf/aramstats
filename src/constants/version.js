@@ -6,11 +6,47 @@
       add: [],
       remove: [],
       fix: [],
-      adjust: []
+      adjust: [],
+      known: [],
    }, 
    */
   
   const version = [
+   // {
+   //    version: "3.5.0",
+   //    date: "4/30/24",
+   //    notes: "Big summoner UI redesign & backend changes. SP = Summoner Page, BE = Backend.",
+   //    add: [
+   //       `SP: Champion class bar chart -> radar chart`,
+   //       `SP: Activity Chart (hoverable)`,
+   //       `SP: Information tooltips (hoverable)`,
+   //       `SP: Team side winrates & playrates (Account stats)`,
+   //       `SP: Structure statistics`,
+   //       `SP: Teamfight statistics`,
+   //       `SP: Spellcast statistics`,
+   //       `SP: Ping statistics`,
+   //       `BE: Queue per region for parsing summoners`,
+   //       `Corresponding frontend logic to notify user things like Queue position`,
+   //       `Confirmation that a user wants to parse a profile when initially searching`,
+   //       `** BE: More robust logic to handle frozen summoners on random crashes (check corresponding 3.5 update)`,
+   //       `BE: Retry attempts when fetching from Riot on non-404s`,
+   //    ],
+   //    remove: [
+   //       `SP: Match level detail resolution`,
+   //       `SP: Match level multikills`,
+   //       `SP: Champion stat graphs`,
+   //    ],
+   //    fix: [],
+   //    adjust: [
+   //       `Overhaul Summoner page UI`,
+   //       `Summoner backend endpoint`
+   //    ],
+   //    known: [
+   //       `SP: Add more general-level stats such as shielding to the side bar`,
+   //       `SP: I forgot to do runes...`,
+   //       `** BE: Frozen summoners (check corresponding 3.5 update)`,
+   //    ]
+   // },  
    {
       version: "3.4.1",
       date: "2/12/24",

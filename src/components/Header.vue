@@ -22,7 +22,7 @@ export default {
       align-items: center;
       height: 35px;
       background: var(--alpha-06);
-      /* background: rgba(36, 82, 32, 0.5); */
+      background: rgba(36, 82, 32, 0.5);
       color: var(--color-font);
       font-size: 0.85rem;
    }

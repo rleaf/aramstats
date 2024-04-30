@@ -83,6 +83,12 @@ export default {
                      <li v-for="a in v.adjust">{{ a }}</li>
                   </ul>
                </div>
+               <div v-if="v.known && v.known.length">
+                  <h4>Known Issues</h4>
+                  <ul>
+                     <li v-for="a in v.known">{{ a }}</li>
+                  </ul>
+               </div>
             </div>
          </div>
       </div>
