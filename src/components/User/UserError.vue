@@ -10,7 +10,8 @@ export default {
 
    props: {
       user: {},
-      response: null
+      response: null,
+      status: null
    }
 }
 </script>
@@ -34,7 +35,7 @@ export default {
          <br>
          <img src="https://i.redd.it/6p956lq5yiq81.jpg" alt="">
       </div>
-      <div v-if="this.response === 403">
+      <div v-if="this.response === 'Forbidden'">
          <h2>
             API key expired :(
          </h2>
@@ -42,20 +43,17 @@ export default {
             @owl#4626 in aram academy discord and I'll refresh.
          </p>
       </div>
-      <div v-if="this.response === 504">
+      <div v-if="this.status === 504">
          <h2>
             Riot API servers are probably down.
          </h2>
-         <!-- <p>
-            Check server status <a href="https://developer.riotgames.com/api-status/" target="_blank">here</a>
-         </p> -->
       </div>
-      <div v-if="this.response === 500">
+      <div v-if="this.status === 500">
          <h2>
             Aramstats database is down.
          </h2>
          <p>
-            Ping me on Discord (<code>@ryli.</code>)  so I can look into it. This is probably not intentional.
+            Ping me on Discord (<code>@ryli.</code>) so I can look into it. This is probably not intentional.
          </p>
          <img src="https://i.redd.it/k8obvr07gfb91.png" alt="">
       </div>

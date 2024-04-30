@@ -56,6 +56,7 @@ async function retryWrapper(fn, args) {
          return (await fn(...args)).response
       } catch (e) {
          if (e instanceof Error && e.status !== 404) { // Do not retry on 404
+            if (e.status === 403) throw e
             retry()
          } else {
             throw e

@@ -42,6 +42,8 @@ import axios from 'axios'
                this.status = e.response.status
             }
 
+            console.log(this.response, 'response')
+            console.log(this.status, 'status')
             if (this.status === 200) {
                this.poll = setInterval(() => {
                   this.unique++
@@ -91,6 +93,7 @@ import axios from 'axios'
                clearInterval(this.poll)
             }
 
+            
             if (this.response.parse.status === 'Complete') clearInterval(this.poll)
          },
       },
@@ -99,22 +102,27 @@ import axios from 'axios'
 </script>
 
 <template>
-   <UserError v-if="this.status === 404"
+   
+   <!-- <UserLoading 
+      v-else-if="!this.response || this.response.parse.status !== 'Complete'"
+      :response="this.response"/> -->
+   <UserLoading 
+      v-if="this.status === 200 && (!this.response || this.response.parse.status !== 'Complete')"
+      :response="this.response"/>
+   <UserReady
+      v-else-if="this.status === 200 && this.response.parse.status === 'Complete'"
+      :_data="this.response"
+      :patch="this.patch"/>
+   <UserError v-else
       :user="{
             name: this.$route.params.gameName,
             tagLine: this.$route.params.tagLine,
             region: this.$route.params.region
       }"
       :response="this.response"
+      :error="this.status"
       @initParse="this.initParse">
    </UserError>
-   <UserLoading 
-      v-else-if="!this.response || this.response.parse.status !== 'Complete'"
-      :response="this.response"/>
-   <UserReady
-      v-else-if="this.response.parse.status === 'Complete'"
-      :_data="this.response"
-      :patch="this.patch"/>
 </template>
 
 <style scoped>

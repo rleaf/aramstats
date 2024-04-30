@@ -27,8 +27,7 @@ class SummonerRoutes {
          console.log(`Searching: ${req.params.gameName}#${req.params.tagLine} (${req.params.region})`)
          summoner = await util.findSummoner(req.params.gameName, req.params.tagLine, req.params.region)
       } catch (e) {
-         console.log(`${req.params.gameName}#${req.params.tagLine} (${req.params.region}) DNE`)
-         res.status(404).send(e.message)
+         res.status(e.status).send(e.body.status.message)
          return
       }
 
@@ -153,7 +152,7 @@ class SummonerRoutes {
       try {
          summoner = await util.findSummoner(req.params.gameName, req.params.tagLine, req.params.region)
       } catch (e) {
-         res.status(404).send(config.SUMMONER_DNE)
+         res.status(e.status).send(e.body.status.message)
          return
       }
 

@@ -22,6 +22,7 @@ class Config {
 
    SUMMONER_DNE = 'Summoner does not exist.'
    SUMMONER_UNPARSED = 'Summoner is not parsed.'
+   API_KEY = 'Api key expired.'
 }
 
 module.exports = new Config()
