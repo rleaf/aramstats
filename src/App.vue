@@ -31,8 +31,7 @@ export default {
 <template>
     <SmallScreen />
     <Header />
-    <Notification />
-    <!-- <Header /> -->
+    <!-- <Notification /> -->
     <Nav />
 </template>
 

@@ -16,25 +16,27 @@ const summonerMatchesSchema = new mongoose.Schema({
    kp: Number,          // killParticipation
    ds: Number,          // damageShare
    i: [Number],         // items
+   ic: { type: Array, default: [0, 0, 0, 0, 0, 0] },  // legendary item completions
    s1: Number,          // summoner1
    s2: Number,          // summoner2
-   tsd: Number,          // damage taken
+   tsd: Number,         // damage taken
    pr: Number,          // primary rune
    sr: Number,          // secondary rune
    t: {                 // TOTAL
       dtc: Number,      // damage dealt to champions
       dt: Number,       // damage taken
       sm: Number,       // self mitigated
+      as: Number,        // damage shielded on teammates (allyShield)
       h: Number,        // heal
       ah: Number,       // allyHeal
       g: Number         // gold
    },
-   mk: [0, 0, 0],          // multikills [triple, quad, penta]
-   te: [String],           // team encounters
-   ee: [String],           // enemy encounters
-   tc: [Number],           // team composition
-   ec: [Number],           // enemy composition
-   tId: Number,            // teamId
+   mk: [0, 0, 0],       // multikills [triple, quad, penta]
+   te: [String],        // team encounters
+   ee: [String],        // enemy encounters
+   tc: [Number],        // team composition
+   ec: [Number],        // enemy composition
+   tId: Number,         // teamId
 })
 
 module.exports = mongoose.model('test_summoner_matches', summonerMatchesSchema)

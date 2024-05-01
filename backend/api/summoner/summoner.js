@@ -4,9 +4,10 @@ const summonerMatchesModel = require('../../models/summonerMatches_model')
 const summonerModel = require('../../models/summoner_model')
 const puuidModel = require('../../models/puuid_model')
 const challengeIds = require('../../constants/challengesIds');
+const axios = require('axios')
 
 class Summoner {
-
+   
    async findSummoner(gameName, tagLine, region) {
       /*
          Wrapper function for getAccount and GetSummoner
@@ -54,12 +55,13 @@ class Summoner {
 
    }
 
-   parseTimeline(timeline, playerIndex, playerTeam) {
+   parseTimeline(timeline, playerIndex, playerTeam, items) {
       const CONTIGUITY = 5000
       const AVG_TEAMFIGHT_DISTANCE = 1300
       const BUILDING_KILL_WINDOW = 30000
       const FOUNTAIN_SITTING = 30000
       let timelineData = {
+         ic: [0, 0, 0, 0, 0, 0],
          exp: 0,   // expectation
          cap: 0,   // capitalization
          use: 0,   // usefullness
@@ -81,9 +83,22 @@ class Summoner {
 
          // ITER EVENTS
          for (let j = 0; j < e.length; j++) {
-            if (timelineData.fs && playerIndex === e[j].participantId && e[j].timestamp < FOUNTAIN_SITTING && e[j].type === 'ITEM_PURCHASED') {
-               timelineData.fs = 0
+            if (e[j].type === 'ITEM_PURCHASED' && playerIndex === e[j].participantId) {
+               if (timelineData.fs && e[j].timestamp < FOUNTAIN_SITTING) {
+                  timelineData.fs = 0
+               }
+
+               if (this.isLegendary(e[j].itemId, items)) {
+                  for (let i = 0; i < 6; i++) {
+                     if (timelineData.ic[i] > 0) continue
+                     timelineData.ic[i] = Math.round(e[j].timestamp / 600) / 100
+                     break
+                  }
+               }
             }
+            // if (timelineData.fs && playerIndex === e[j].participantId && e[j].timestamp < FOUNTAIN_SITTING && e[j].type === 'ITEM_PURCHASED') {
+            //    timelineData.fs = 0
+            // }
 
             if (e[j].timestamp - capFlag <= BUILDING_KILL_WINDOW && e[j].type === 'BUILDING_KILL' && e[j].teamId !== playerTeam) {
                timelineData.cap++
@@ -204,9 +219,11 @@ class Summoner {
       summonerDocument.parse.status = config.STATUS_PARSING
       summonerDocument.lastMatchId = matchlist[0]
       await summonerDocument.save() // for sanity?
-
+      let items
+      
       for (let i = 0; i < matchlist.length; i++) {
-         let matchId = matchlist[matchlist.length - i - 1]
+         // let matchId = matchlist[matchlist.length - i - 1]
+         let matchId = matchlist[i]
          let match
          let timeline
          let timelineData
@@ -215,13 +232,20 @@ class Summoner {
          let player
          let championEmbed
          let participantPuuids = []
-
+         
          try {
             match = await twisted.getMatchInfo(matchId, summonerDocument.region)
          } catch (e) {
             if (e.status === 404) continue
          }
 
+         if (i === 0) {
+            try {
+               let patch = match.info.gameVersion.split('.').slice(0, 2).join('.') + '.1'
+               items = (await axios.get(`https://ddragon.leagueoflegends.com/cdn/${patch}/data/en_US/item.json`)).data.data
+            } catch (e) { }
+         }
+         
          // ARAM Remake window is 3 min. Make it +30s in case someone someone takes a long time to vote.
          if (match.info.gameDuration < 210) continue
 
@@ -237,7 +261,7 @@ class Summoner {
             timeline = await twisted.getMatchTimeline(matchId, summonerDocument.region)
          } catch (e) { }
 
-         if (timeline) timelineData = this.parseTimeline(timeline, playerIndex, playerTeam)
+         if (timeline) timelineData = this.parseTimeline(timeline, playerIndex, playerTeam, items)
          
          const matchDocument = new summonerMatchesModel({
             m: summonerDocument._id,
@@ -252,7 +276,7 @@ class Summoner {
             a: player.assists,
             kp: this.getKillParticipation(player, match.info.participants),
             ds: this.getDamageShare(player, match.info.participants),
-            i: this.getItems(player),
+            i: this.getMatchItems(player),
             s1: player.summoner1Id,
             s2: player.summoner2Id,
             pr: player.perks.styles[0].selections[0].perk,
@@ -262,6 +286,7 @@ class Summoner {
                dt: player.totalDamageTaken,
                sm: player.damageSelfMitigated,
                h: player.totalHeal,
+               as: player.totalDamageShieldedOnTeammates,
                ah: player.totalHealsOnTeammates,
                g: player.goldEarned
             },
@@ -283,6 +308,7 @@ class Summoner {
          championEmbed.games += 1
          championEmbed.tg += match.info.participants.find(p => p.teamId !== player.teamId).turretsLost
          championEmbed.tl += player.turretsLost
+         championEmbed.ddtt += player.damageDealtToTurrets
          championEmbed.fbk += player.firstBloodKill
          // color-side wins
          championEmbed.bw += (player.teamId === 100 && player.win) ? 1 : 0
@@ -317,10 +343,14 @@ class Summoner {
          championEmbed.p.omw += player.onMyWayPings
          championEmbed.p.push += player.pushPings
          championEmbed.p.visClr += player.visionClearedPings
-         championEmbed.matches.unshift(matchDocument._id)
-
+         // championEmbed.matches.unshift(matchDocument._id)
+         championEmbed.matches.push(matchDocument._id)
+         
          if (timelineData) {
             // Average it out on the front end (datum / games)
+            for (let i = 0; i < 6; i++) {
+               matchDocument.ic[i] = Math.round((matchDocument.ic[i] + timelineData.ic[i]) * 100) / 100 
+            }
             championEmbed.tf.exp += timelineData.exp
             championEmbed.tf.cap += timelineData.cap
             championEmbed.tf.use += timelineData.use
@@ -391,6 +421,7 @@ class Summoner {
                "gpm": 0,
                "hpm": 0,
                "ah": 0,
+               "as": 0,
                "kp": 0,
                "k": 0,
                "smpm": 0,
@@ -417,6 +448,7 @@ class Summoner {
             proxy.gpm += Math.round(match.t.g / match.gd)
             proxy.hpm += Math.round(match.t.h / match.gd)
             proxy.ah += match.t.ah
+            proxy.as += match.t.as
             proxy.kp += match.kp * 100
             proxy.k += match.k
             proxy.smpm += Math.round(match.t.sm / match.gd)
@@ -438,7 +470,25 @@ class Summoner {
       await summonerDocument.save()
    }
 
-   getItems(player) {
+   isLegendary(id, items) {
+      /*
+         Legendary classification
+            - Item can't build into anything except an Ornn item (items >= 7000 or has requiredAlly: "ornn" in it) 
+            - Item cost >= 2000
+      */
+      // if (items[id].into.length !== 0 || items[id].into.length !== 1) return false
+
+      // if (items[id].gold.total >= 2000 && (!items[id].into || (items[id].into && items[items[id].into]) )) {
+      // console.log(items[3031])
+      if (items[id].gold.total >= 2000 && (!items[id].into || (items[id].into && items[id].into >= 7000) )) {
+         return true
+      }
+
+      return false
+   }
+   
+
+   getMatchItems(player) {
       let items = []
 
       for (let i = 0; i < 6; i++) {

@@ -11,22 +11,21 @@
 */
 
 const updates = [
-   // {
-   //    title: "Implementing new Summoner UI in the following week",
-   //    version: "3.5.0",
-   //    date: "4/30/24",
-   //    body: [
-   //       `This is primarily for testing to weed out any bugs. You will have to reparse your summoner. I'm gonna be keeping an eye out, but if you encounter any weirdness feel free to hmu.`,
-   //       `This update breaks down into two significant updates: a new Summoner page UI and a backend redesign.`,
-   //       `This new Summoner Page UI, while I hope more enjoyable to interact with, is also functionally much more capable. Rendered stats are computed from selected champions provided in the table. Instead of being limited to viewing things like damage, shielding, and healing on one particular champion, you can now see stats for any set of champions.`,
-   //       `The backend redesign seeks to resolve a couple of issues. The largest issue is with frozen summoners. Occasionally, because of hardware constraints, bad code, or a combination of the both, a summoner will be "frozen" or "stuck" stating they're currently being parsed when searched. I've added more logic and error handling to hopefully prevent these issues. This update is geared heavily towards the UI redesign so although I've reduced the chances of a summoner being frozen, I've not yet implemented logic to "unfreeze" them. Will implement soon.`,
-   //    ],
-   //    links: [
+   {
+      title: "🎉 New Summoner UI is out 🎉",
+      version: "3.5.0",
+      date: "4/30/24",
+      body: [
+         `As mentioned in the prior update, I will be keeping an eye out for bugs as this is primarily for testing. This update breaks down into two significant updates: a new Summoner page UI and a backend redesign.`,
+         `This new Summoner Page UI, while I hope more enjoyable to interact with, is also functionally much more capable. Rendered stats are computed from selected champions provided in the table. Instead of being limited to viewing things like damage, shielding, and healing on one particular champion, you can now see aggregated stats for any set of champions. I'd like to clarify that at the point of posting this, the UI is almost about 98% complete. There are still some bells and whistles to add.`,
+         `The backend redesign seeks to resolve a couple of issues. The largest issue is with frozen summoners. Occasionally, because of hardware constraints, bad code, or a combination of the both, a summoner will be "frozen" or "stuck" stating they're currently being parsed when searched. I've added more logic and error handling to hopefully prevent these issues. This update is geared heavily towards the UI redesign so although I've reduced the chances of a summoner being frozen, I've not yet implemented logic to "unfreeze" them. Will implement soon. I've also implemented a queue system for the initial parsing of summoners to help combat these issues.`,
+      ],
+      links: [
          
-   //    ],
-   //    img: [], // Expected webp format
-   //    imgCaption: ""
-   // },
+      ],
+      img: [], // Expected webp format
+      imgCaption: ""
+   },
    {
       title: "Implementing new Summoner UI in the following week",
       version: "",

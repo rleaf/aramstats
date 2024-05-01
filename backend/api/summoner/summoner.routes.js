@@ -6,7 +6,7 @@ const summonerModel = require('../../models/summoner_model')
 const summonerMatchesModel = require('../../models/summonerMatches_model')
 
 class SummonerRoutes {
-   initRoutes(app, db) {
+   async initRoutes(app, db) {
       this.queue = new Queue(db)
 
       app
@@ -15,6 +15,7 @@ class SummonerRoutes {
          .get(config.CHECK_SUMMONER, this.checkSummoner)
          .get(config.JANE_DOE, this.getRandom)
          // .delete(config.DELETE_SUMMONER_PREFIX, this.deleteSummoner)
+         
    }
    
    async getSummoner(req, res) {

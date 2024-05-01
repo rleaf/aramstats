@@ -225,6 +225,7 @@ export default {
             'damageTaken' : 0,
             'damageMitigated' : 0,
             'healed' : 0,
+            'allyShielded' : 0,
             'allyHealed' : 0,
             'gold' : 0,
             'killParticipation' : 0,
@@ -234,6 +235,7 @@ export default {
             'pentas' : 0,
             // Structures
             'towersDestroyed': 0,
+            'damageDealtToTowers': 0,
             'towersLost': 0,
             // Teamfights
             'expectation': 0,
@@ -262,13 +264,12 @@ export default {
             'push': 0,
             'visClear': 0,
             // Items
-            // 'slot1': 0,
-            // 'slot2': 0,
-            // 'slot3': 0,
-            // 'slot4': 0,
-            // 'slot5': 0,
-            // 'slot6': 0,
-
+            'slotUnus': 0,
+            'slotDuo': 0,
+            'slotTres': 0,
+            'slotQuattuor': 0,
+            'slotQuinque': 0,
+            'slotSex': 0,
          }
 
          let championAveragedStats = [
@@ -278,7 +279,9 @@ export default {
             'damageMitigated',
             'healed',
             'allyHealed',
+            'allyShielded',
             'gold',
+            'damageDealtToTowers',
          ]
          
          let matchAveragedStats = [
@@ -286,19 +289,34 @@ export default {
             'gameLength',
          ]
 
+         let itemSlots = [
+            'slotUnus',
+            'slotDuo',
+            'slotTres',
+            'slotQuattuor',
+            'slotQuinque',
+            'slotSex',
+         ]
+
          const formatTime = (o) => {
-            // Prettify time ie: 5.2m --> 5m 12s
+            // Prettify time ie: 5.2 --> 5m 12s
+            // if (!o) return '-'
+            // return s[0] + ':' + Math.floor(Number(`.${s[1]}`) * 60)
+
             if (Number.isInteger(o)) {
                return `${o}m`
             } else {
+               if (!o) return '0m 0s'
                const s = o.toString().split('.')
                return s[0] + 'm ' + Math.floor(Number(`.${s[1]}`) * 60) + 's'
             }
          }
 
+         let itemArrayHelper = [0, 0, 0, 0, 0, 0]
+
          for (const c of this.summonerStore.championPool) {
             const o = this.convertChampionData[c]
-
+            console.log(o, 'o')
             c_kda[0]+= o.avg.k
             c_kda[1]+= o.avg.d
             c_kda[2]+= o.avg.a
@@ -307,6 +325,7 @@ export default {
             stats.damageTaken += o.avg.tdt
             stats.damageMitigated += o.avg.tsm
             stats.healed += o.avg.th
+            stats.allyShielded += o.avg.as
             stats.allyHealed += o.avg.ah
             stats.gold += o.avg.ge
             stats.triples += o.mk.t
@@ -314,6 +333,7 @@ export default {
             stats.pentas += o.mk.p
             stats.towersLost += o.tl
             stats.towersDestroyed += o.tg
+            stats.damageDealtToTowers += o.ddtt
             stats.expectation += o.tf.exp
             stats.capitalization += o.tf.cap
             stats.usefulness += o.tf.use
@@ -343,8 +363,19 @@ export default {
             for (const m of o.matches) {
                stats.gameLength += m.gd
                stats.deathTime += m.tsd
+
+               for (let i = 0; i < 6; i++) {
+                  if (m.ic[i] > 0) itemArrayHelper[i]++
+               }
+
+               itemSlots.forEach((o, i) => stats[o] += m.ic[i])
             }
          }
+
+         itemSlots.forEach((o, i) => {
+            stats[o] = Math.round(stats[o] / itemArrayHelper[i] * 100) / 100
+            stats[o] = formatTime(stats[o])
+         })
 
          /**
           * CHAMPION AVERAGE STATS
@@ -355,6 +386,8 @@ export default {
 
          championAveragedStats.forEach(o => stats[o] = Math.round(stats[o] / this.summonerStore.championPool.size))
          stats.kda = `${c_kda[0]}/${c_kda[1]}/${c_kda[2]}`
+
+         
 
          /**
           * MATCH AVERAGE STATS
@@ -396,7 +429,19 @@ export default {
             ['Damage Mitigated', this.aggregatedStats['damageMitigated']],
             ['Healing', this.aggregatedStats['healed']],
             ['Ally Healing', this.aggregatedStats['allyHealed']],
+            ['Ally Shielding', this.aggregatedStats['allyShielded']],
             ['Gold', this.aggregatedStats['gold']],
+         ]
+      },
+
+      getItemSlots() {
+         return [
+            ['Slot 1', this.aggregatedStats['slotUnus']],
+            ['Slot 2', this.aggregatedStats['slotDuo']],
+            ['Slot 3', this.aggregatedStats['slotTres']],
+            ['Slot 4', this.aggregatedStats['slotQuattuor']],
+            ['Slot 5', this.aggregatedStats['slotQuinque']],
+            ['Slot 6', this.aggregatedStats['slotSex']],
          ]
       },
 
@@ -412,6 +457,7 @@ export default {
          return [
             ['Towers Destroyed', this.aggregatedStats['towersDestroyed']],
             ['Towers Lost', this.aggregatedStats['towersLost']],
+            ['Tower Damage Dealt', this.aggregatedStats['damageDealtToTowers']],
          ]
       },
 
@@ -558,6 +604,11 @@ export default {
                      :header="'General'"
                      :stats="getGeneralStats"
                      :tooltip="'general'"/>
+   
+                  <StatDropdown
+                     :header="'Item Completion'"
+                     :stats="getItemSlots"
+                     :tooltip="'itemSlots'"/>
    
                   <StatDropdown
                      :header="'Multikills'"
@@ -733,10 +784,10 @@ button.active-update {
    color: var(--color-font-focus);
 }
 
-.buttons button:last-child:hover {
+/* .buttons button:last-child:hover {
    background: var(--danger);
    color: var(--color-font-focus);
-}
+} */
 
 .buttons div:hover {
    background: var(--cold-blue-focus);

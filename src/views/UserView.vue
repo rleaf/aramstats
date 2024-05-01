@@ -43,10 +43,7 @@ import axios from 'axios'
                throw e
             }
 
-            console.log(this.response, 'response')
-            console.log(this.status, 'status')
             if (this.status === 200) {
-               console.log('toads')
                this.poll = setInterval(() => {
                   this.unique++
                   this.lookup()
@@ -85,7 +82,6 @@ import axios from 'axios'
             }
 
             try {
-               console.log('waffles')
                const res = await axios.get(url)
                this.status = res.status
                this.response = res.data
@@ -95,10 +91,7 @@ import axios from 'axios'
                clearInterval(this.poll)
             }
             
-            if (this.status === 200 && this.response.parse.status === 'Complete') {
-               console.log('pancakes')
-               clearInterval(this.poll)
-            }
+            if (this.status === 200 && this.response.parse.status === 'Complete') clearInterval(this.poll)
          },
       },
 

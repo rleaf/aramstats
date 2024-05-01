@@ -66,7 +66,11 @@ export default {
       `<b>Damage Mitigated</b>: The average damage mitigated.`,
       `<b>Healing</b>: The average healing.`,
       `<b>Ally Healing</b>: The average ally healing.`,
+      `<b>Ally Shielding</b>: The average ally shielding.`,
       `<b>Gold</b>: The average gold.`,
+   ],
+   'itemSlots': [
+      `Average legendary item completion time. Does not include boots.Formated MM:SS.`,
    ],
    'multikills': [
       `Summed multikills for the selected champions.`,
