@@ -41,6 +41,14 @@ export default {
             x[1] = Math.floor((+`.${x[1]}` * 60))
             return `${x[0]}m ${x[1]}s`
          }
+      },
+
+      getPrimaryRune() {
+         return new URL(`../assets/runes/${this.data.pr}.png`, import.meta.url).href
+      },
+
+      getSecondaryRune() {
+         return new URL(`../assets/runes/${this.data.sr}.png`, import.meta.url).href
       }
 
    },
@@ -64,6 +72,10 @@ export default {
             <div class="delta">
                {{ this.gameDuration }}
             </div>
+         </div>
+         <div class="runes">
+            <img :src="getPrimaryRune" alt="">
+            <img :src="getSecondaryRune" alt="">
          </div>
          <div class="items">
             <div v-for="item in this.data.i"> 
@@ -153,9 +165,27 @@ export default {
    }
 
    .time {
-      padding: 0 10px;
-      width: 68px;
+      /* padding: 0 10px; */
+      padding-left: 10px;
+      /* width: 68px; */
       font-size: 0.7rem;
+   }
+
+   .runes {
+      padding: 0 5px;
+      display: flex;
+      align-items: flex-end;
+   }
+
+   .runes img:first-child {
+      width: 23px;
+      filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.8));
+   }
+
+   .runes img:last-child {
+      margin-left: -10px;
+      filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 1)) saturate(1.5);
+      width: 13px;
    }
 
    .time .delta {
@@ -166,7 +196,7 @@ export default {
       display: flex;
       height: 22px;
       min-width: 144px;
-      padding-right: 24px;
+      padding-right: 15px;
    }
 
    .items div {

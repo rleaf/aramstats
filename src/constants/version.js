@@ -25,6 +25,9 @@
          `SP: Item statistics`,
          `SP: Structure statistics`,
          `SP: Teamfight statistics`,
+         `SP: Summoner spell statistics`,
+         `SP: Keystone statistics`,
+         `SP: Secondary tree statistics`,
          `SP: Spellcast statistics`,
          `SP: Ping statistics`,
          `BE: Queue per region for parsing summoners`,
@@ -35,7 +38,7 @@
       ],
       remove: [
          `SP: Match level detail resolution`,
-         `SP: Match level multikills`,
+         // `SP: Match level multikills`,
          `SP: Champion stat graphs`,
       ],
       fix: [],

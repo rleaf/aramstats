@@ -5,6 +5,8 @@ import Tooltip from '@/components/Tooltip.vue'
 import Champion from '../Champion.vue'
 import Heatmap from '../Heatmap.vue'
 import StatDropdown from '../StatDropdown.vue'
+import ImageStatDropdown from '../ImageStatDropdown.vue'
+// import RuneStatDropdown from '../RuneStatDropdown.vue'
 import Challenges from '../Challenges.vue'
 import Encounters from '../Encounters.vue'
 import _names from '@/constants/champions.js'
@@ -16,6 +18,8 @@ export default {
       RadarChart,
       Tooltip,
       StatDropdown,
+      ImageStatDropdown,
+      // RuneStatDropdown,
       Champion,
       Heatmap,
       Challenges,
@@ -202,15 +206,27 @@ export default {
             }
          }
 
-         return [
-            `${(a_w / a_g * 100).toFixed(2)}%`,
-            `${Math.round(a_tp / 1440 * 100 ) / 100} days`,
-            `${a_g}`,
-            `${a_g - rsg}`, 
-            `${rsg}`,
-            `${(bw / a_w * 100).toFixed(2)}%`,
-            `${(rw / a_w * 100).toFixed(2)}%`,
-         ]
+         // return [
+         //    `${(a_w / a_g * 100).toFixed(2)}%`,
+         //    `${Math.round(a_tp / 1440 * 100 ) / 100} days`,
+         //    `${a_g}`,
+         //    `${a_g - rsg}`, 
+         //    `${rsg}`,
+         //    `${(bw / a_w * 100).toFixed(2)}%`,
+         //    `${(rw / a_w * 100).toFixed(2)}%`,
+         //    `${this.data.fountainSitter}`
+         // ]
+
+         return {
+            'winrate': `${(a_w / a_g * 100).toFixed(2)}%`,
+            'time': `${Math.round(a_tp / 1440 * 100 ) / 100} days`,
+            'games': `${a_g}`,
+            'bsg': `${a_g - rsg}`,
+            'rsg': `${rsg}`,
+            'bw': `${(bw / a_w * 100).toFixed(2)}%`,
+            'rw': `${(rw / a_w * 100).toFixed(2)}%`,
+            'fs': `${this.data.fountainSitter}`
+         }
       },
 
       aggregatedStats() {
@@ -219,6 +235,7 @@ export default {
             // Generals
             'kda': '',
             'matches': 0,
+            'fbk': 0,
             'gameLength' : 0,
             'deathTime' : 0,
             'damage' : 0,
@@ -249,6 +266,19 @@ export default {
             'w': 0,
             'e': 0,
             'r': 0,
+            // Summoner Spells
+            '1': [0, 0],
+            '3': [0, 0],
+            '4': [0, 0],
+            '6': [0, 0],
+            '7': [0, 0],
+            '13': [0, 0],
+            '14': [0, 0],
+            '21': [0, 0],
+            '32': [0, 0],
+            // Runes
+            'primaryRunes': {},
+            'secondaryRunes': {},
             // Pings
             'allIn': 0,
             'missing': 0,
@@ -298,28 +328,41 @@ export default {
             'slotSex',
          ]
 
-         const formatTime = (o) => {
-            // Prettify time ie: 5.2 --> 5m 12s
-            // if (!o) return '-'
-            // return s[0] + ':' + Math.floor(Number(`.${s[1]}`) * 60)
+         let summonerSpells = [
+            '1',
+            '3',
+            '4',
+            '6',
+            '7',
+            '13',
+            '14',
+            '21',
+            '32',
+         ]
 
-            if (Number.isInteger(o)) {
-               return `${o}m`
-            } else {
-               if (!o) return '0m 0s'
-               const s = o.toString().split('.')
-               return s[0] + 'm ' + Math.floor(Number(`.${s[1]}`) * 60) + 's'
-            }
+         const formatTime = (o) => {
+            // Prettify time to MM:SS. 5.2 --> 05:12
+            const af = n => (n.length === 1) ? '0' + n : n
+
+            if (!o) return '-'
+            const i = o.toString().split('.')
+            let one = af(i[0])
+            let two = Math.floor(Number(`.${i[1]}`) * 60).toString()
+            two = af(two)
+
+            return `${one}:${two}`
          }
 
          let itemArrayHelper = [0, 0, 0, 0, 0, 0]
 
          for (const c of this.summonerStore.championPool) {
             const o = this.convertChampionData[c]
-            console.log(o, 'o')
+
             c_kda[0]+= o.avg.k
             c_kda[1]+= o.avg.d
             c_kda[2]+= o.avg.a
+            stats.fbk += o.fbk
+
             stats.killParticipation += o.avg.kp
             stats.damage += o.avg.tdd
             stats.damageTaken += o.avg.tdt
@@ -340,6 +383,12 @@ export default {
             stats.participation += o.tf.part
             stats.frequency += o.tf.freq
             stats.death += o.tf.death
+
+            for (const ss of summonerSpells) {
+               stats[ss][0] += o.ss[ss].games
+               stats[ss][1] += o.ss[ss].casts
+            }
+
             stats.q += o.sc.q
             stats.w += o.sc.w
             stats.e += o.sc.e
@@ -363,6 +412,30 @@ export default {
             for (const m of o.matches) {
                stats.gameLength += m.gd
                stats.deathTime += m.tsd
+
+               if (stats.primaryRunes[m.pr]) {
+                  stats.primaryRunes[m.pr][0]++
+                  stats.primaryRunes[m.pr][1] += (m.w) ? 1 : 0
+               } else {
+                  stats.primaryRunes[m.pr] = [1, (m.w) ? 1 : 0]
+               }
+
+               if (stats.secondaryRunes[m.sr]) {
+                  stats.secondaryRunes[m.sr][0]++
+                  stats.secondaryRunes[m.sr][1] += (m.w) ? 1 : 0
+               } else {
+                  stats.secondaryRunes[m.sr] = [1, (m.w) ? 1 : 0]
+               }
+
+               // if (stats.secondaryRunes[m.sr]) {
+               //    stats.secondaryRunes[m.sr].games++
+               //    stats.secondaryRunes[m.sr].wins += (m.w) ? 1 : 0
+               // } else {
+               //    stats.secondaryRunes[m.sr] = {
+               //       games: 1,
+               //       wins: (m.w) ? 1 : 0 
+               //    }
+               // }
 
                for (let i = 0; i < 6; i++) {
                   if (m.ic[i] > 0) itemArrayHelper[i]++
@@ -409,11 +482,12 @@ export default {
 
       getAccountStats() {
          return [
-            ['Winrate', this.computeAccountStats[0]],
-            ['Time Played', this.computeAccountStats[1]],
-            ['Games', this.computeAccountStats[2]],
-            ['Red Side Winrate', this.computeAccountStats[6]],
-            ['Blue Side Winrate', this.computeAccountStats[5]],
+            ['Winrate', this.computeAccountStats['winrate']],
+            ['Time Played', this.computeAccountStats['time']],
+            ['Games', this.computeAccountStats['games']],
+            ['Red Side Winrate', this.computeAccountStats['rw']],
+            ['Blue Side Winrate', this.computeAccountStats['bw']],
+            ['Fountain Sitting', this.computeAccountStats['fs']],
          ]
       },
 
@@ -421,6 +495,7 @@ export default {
          return [
             ['KDA', this.aggregatedStats['kda']],
             ['Matches', this.aggregatedStats['matches']],
+            ['First Blood', this.aggregatedStats['fbk']],
             ['Kill Participation', this.aggregatedStats['killParticipation'] + '%'],
             ['Game Length', this.aggregatedStats['gameLength']],
             ['Death Time', this.aggregatedStats['deathTime']], 
@@ -472,6 +547,20 @@ export default {
          ]
       },
 
+      getSummonerSpells() {
+        return [
+            ['1', this.aggregatedStats['1']],
+            ['3', this.aggregatedStats['3']],
+            ['4', this.aggregatedStats['4']],
+            ['6', this.aggregatedStats['6']],
+            ['7', this.aggregatedStats['7']],
+            ['13', this.aggregatedStats['13']],
+            ['14', this.aggregatedStats['14']],
+            ['21', this.aggregatedStats['21']],
+            ['32', this.aggregatedStats['32']],
+         ] 
+      },
+
       getSpellCasts() {
          return [
             ['Q', this.aggregatedStats['q']],
@@ -479,6 +568,15 @@ export default {
             ['E', this.aggregatedStats['e']],
             ['R', this.aggregatedStats['r']],
          ]
+      },
+      
+      getKeystoneRunes() {
+         return Object.entries(this.aggregatedStats.primaryRunes)
+      },
+      
+
+      getSecondaryTree() {
+         return Object.entries(this.aggregatedStats.secondaryRunes)
       },
 
       getPings() {
@@ -557,22 +655,22 @@ export default {
                <div class="side-stats">
                   <h3>Playrate</h3>
                   <div class="visual">
-                     <span :style="{'width': (this.computeAccountStats[4] / this.computeAccountStats[2] * 100 - 0.5) + '%'}"></span>
-                     <span :style="{'width': (this.computeAccountStats[3] / this.computeAccountStats[2] * 100 - 0.5) + '%'}"></span>
+                     <span :style="{'width': (this.computeAccountStats['rsg'] / this.computeAccountStats['games'] * 100 - 0.5) + '%'}"></span>
+                     <span :style="{'width': (this.computeAccountStats['bsg'] / this.computeAccountStats['games'] * 100 - 0.5) + '%'}"></span>
                   </div>
                   <div class="details">
                      <div>
                         <svg width="10" height="10">
                            <circle fill="var(--red-side)" cx="5" cy="5" r="5" />
                         </svg>
-                        {{ Math.round(this.computeAccountStats[4] / this.computeAccountStats[2] * 100) }}%
+                        {{ Math.round(this.computeAccountStats['rsg'] / this.computeAccountStats['games'] * 100) }}%
                         <span class="game-count">{{ this.computeAccountStats[4] }}</span>
                      </div>
                      <div>
                         <svg width="10" height="10">
                            <circle fill="var(--blue-side)" cx="5" cy="5" r="5" />
                         </svg>
-                        {{ Math.round(this.computeAccountStats[3] / this.computeAccountStats[2] * 100) }}%
+                        {{ Math.round(this.computeAccountStats['bsg'] / this.computeAccountStats['games'] * 100) }}%
                         <span class="game-count">{{ this.computeAccountStats[3] }}</span>
                      </div>
                   </div>
@@ -625,6 +723,21 @@ export default {
                      :stats="getTeamfights"
                      :tooltip="'teamfights'"/>
    
+                  <ImageStatDropdown
+                     :header="'Summoner Spells'"
+                     :stats="getSummonerSpells"
+                     :tooltip="'summonerSpells'"/>
+
+                  <ImageStatDropdown
+                     :header="'Keystone Runes'"
+                     :stats="getKeystoneRunes"
+                     :tooltip="'keystoneRunes'"/>
+
+                  <ImageStatDropdown
+                     :header="'Secondary Trees'"
+                     :stats="getSecondaryTree"
+                     :tooltip="'secondaryTree'"/>
+
                   <StatDropdown
                      :header="'Spellcasts'"
                      :stats="getSpellCasts"

@@ -63,7 +63,7 @@ export default {
       </div>
 
       <div v-else v-for="(s, j) in this.stats" :class="{ 'o': j % 2 === 0 }" :key="j">
-         {{ s[0] }}
+         <span>{{ s[0] || '-' }}</span>
          <span v-if="this.persist">{{ s[1] }}</span>
          <span v-else-if="this.store.championPool.size > 0">{{ s[1] }}</span>
          <span v-else style="color: var(--color-font-faded);">-</span>
@@ -81,6 +81,11 @@ export default {
    padding: 0.2rem 0.4rem;
    border-radius: 3px;
    transition: all 200ms ease-in-out;
+}
+
+.spell-images {
+   border-radius: 3px;
+   width: 20px;
 }
 
 .header-title:hover {

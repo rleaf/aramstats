@@ -58,6 +58,7 @@ export default {
       `General stats for the selected champions.`,
       `<b>KDA</b>: The average KDA.`,
       `<b>Matches</b>: Total matches.`,
+      `<b>First Blood</b>: How many times you've gotten first blood.`,
       `<b>Kill Participation</b>: The average KP.`,
       `<b>Game Length</b>: The average game length.`,
       `<b>Death Time</b>: The average death time.`,
@@ -95,6 +96,15 @@ export default {
    ],
    'spellcasts': [
       `Total spellcasts for the selected champions.`,
+   ],
+   'summonerSpells': [
+      `Summed occurences you've taken and casted a summoner spell.`,
+   ],
+   'keystoneRunes': [
+      `Total keystone wins & games for the selected champions`,
+   ],
+   'secondaryTree': [
+      `Total secondary tree wins & games for the selected champions`,
    ],
    'pings': [
       `Total pings for the selected champions.`,
