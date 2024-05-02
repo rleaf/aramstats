@@ -207,6 +207,12 @@ export default {
       color: var(--color-font);
       font-size: 0.75rem;
       transition: background 150ms ease-in-out;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
    }
 
    

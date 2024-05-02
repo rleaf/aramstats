@@ -88,7 +88,7 @@ class Summoner {
                   timelineData.fs = 0
                }
 
-               if (this.isLegendary(e[j].itemId, items)) {
+               if (items && this.isLegendary(e[j].itemId, items)) {
                   for (let i = 0; i < 6; i++) {
                      if (timelineData.ic[i] > 0) continue
                      timelineData.ic[i] = Math.round(e[j].timestamp / 600) / 100
@@ -219,6 +219,7 @@ class Summoner {
       summonerDocument.parse.status = config.STATUS_PARSING
       summonerDocument.lastMatchId = matchlist[0]
       await summonerDocument.save() // for sanity?
+      let patch
       let items
       
       for (let i = 0; i < matchlist.length; i++) {
@@ -226,7 +227,7 @@ class Summoner {
          let matchId = matchlist[i]
          let match
          let timeline
-         let timelineData
+         let timelineData 
          let playerIndex
          let playerTeam
          let player
@@ -240,12 +241,17 @@ class Summoner {
          }
 
          if (i === 0) {
+            patch = match.info.gameVersion.split('.').slice(0, 2).join('.')
             try {
-               let patch = match.info.gameVersion.split('.').slice(0, 2).join('.') + '.1'
-               items = (await axios.get(`https://ddragon.leagueoflegends.com/cdn/${patch}/data/en_US/item.json`)).data.data
+               items = (await axios.get(`https://ddragon.leagueoflegends.com/cdn/${patch}.1/data/en_US/item.json`)).data.data
+            } catch (e) { }
+         } else if (patch !== match.info.gameVersion.split('.').slice(0, 2).join('.')) {
+            patch = match.info.gameVersion.split('.').slice(0, 2).join('.')
+            try {
+               items = (await axios.get(`https://ddragon.leagueoflegends.com/cdn/${patch}.1/data/en_US/item.json`)).data.data
             } catch (e) { }
          }
-         
+
          // ARAM Remake window is 3 min. Make it +30s in case someone someone takes a long time to vote.
          if (match.info.gameDuration < 210) continue
 
@@ -480,6 +486,7 @@ class Summoner {
 
       // if (items[id].gold.total >= 2000 && (!items[id].into || (items[id].into && items[items[id].into]) )) {
       // console.log(items[3031])
+      
       if (items[id].gold.total >= 2000 && (!items[id].into || (items[id].into && items[id].into >= 7000) )) {
          return true
       }

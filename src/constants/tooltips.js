@@ -71,7 +71,7 @@ export default {
       `<b>Gold</b>: The average gold.`,
    ],
    'itemSlots': [
-      `Average legendary item completion time. Does not include boots.Formated MM:SS.`,
+      `Average legendary item completion time. Does not include boots. Formated MM:SS.`,
    ],
    'multikills': [
       `Summed multikills for the selected champions.`,

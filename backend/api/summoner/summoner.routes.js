@@ -28,7 +28,8 @@ class SummonerRoutes {
          console.log(`Searching: ${req.params.gameName}#${req.params.tagLine} (${req.params.region})`)
          summoner = await util.findSummoner(req.params.gameName, req.params.tagLine, req.params.region)
       } catch (e) {
-         res.status(e.status).send(e.body.status.message)
+         const msg = (e.status === 404) ? config.SUMMONER_DNE : e.body.status.message
+         res.status(e.status).send(msg)
          return
       }
 
@@ -40,7 +41,6 @@ class SummonerRoutes {
          res.status(200).send(parse)
          return
       }
-
       summonerDoc = await summonerModel.findOne({ '_id': summoner.puuid })
 
       if (summonerDoc) {
@@ -56,7 +56,6 @@ class SummonerRoutes {
       }
 
       // Summoner exists & DNE in Aramstats DB. Need to parse.
-
       const queuePosition = await this.queue.count(summoner.region)
       await util.skeletonizeSummoner(summoner, queuePosition)
       console.log(`+ ${summoner.gameName}#${summoner.tagLine} (${summoner.region}) to Queue.`)
@@ -68,7 +67,6 @@ class SummonerRoutes {
       } else {
          res.status(200).send({ parse: { status: config.STATUS_IN_QUEUE, position: check[0], length: check[1] } })
       }
-      
       await this.workQueue(summoner)
    }
 
@@ -85,13 +83,15 @@ class SummonerRoutes {
 
          while (qSummoner) {
             try {
+               console.log('7')
                document = await summonerModel.findOne({ '_id': qSummoner.qPuuid })
                await this.queue.update(summoner.region)
                await util.initialParse(document)
                qSummoner = await this.queue.get(summoner.region)
                if (qSummoner) document = await summonerModel.findOne({ '_id': qSummoner.qPuuid })
             } catch (e) {
-               console.log(e, 'rip bozo')   
+               console.log(e, 'rip bozo')
+               qSummoner = null
                this.queue.inactiveRegions.add(summoner.region)
             }
          }
@@ -110,17 +110,9 @@ class SummonerRoutes {
       try {
          summoner = await util.findSummoner(req.params.gameName, req.params.tagLine, req.params.region)
       } catch (e) {
-         if (e instanceof Error) {
-            if (e.status_code < 500) {
-               console.log(`${req.params.gameName}#${req.params.tagLine} (${req.params.region}) DNE`)
-               res.status(e.status_code).send(e.message)
-               return
-            } else {
-               throw e
-            }
-         } else {
-            throw e
-         }
+         const msg = (e.status === 404) ? config.SUMMONER_DNE : e.body.status.message
+         res.status(e.status).send(msg)
+         return
       }
 
       summonerDocument = await summonerModel.findOne({ _id: summoner.puuid })
@@ -161,14 +153,20 @@ class SummonerRoutes {
       try {
          summoner = await util.findSummoner(req.params.gameName, req.params.tagLine, req.params.region)
       } catch (e) {
-         res.status(e.status).send(e.body.status.message)
+         const msg = (e.status === 404) ? config.SUMMONER_DNE : e.body.status.message
+         res.status(e.status).send(msg)
          return
       }
 
-      const response = await summonerModel.findOne({ '_id': summoner.puuid })
-      if (response && response.parse.status === config.STATUS_COMPLETE) {
-         const response = (await util.aggregateSummoner(summoner.puuid))[0]
-         res.status(200).send(response)
+      const dbSumm = await summonerModel.findOne({ '_id': summoner.puuid })
+      if (dbSumm) {
+         if (dbSumm.parse.status === config.STATUS_COMPLETE) {
+            const response = (await util.aggregateSummoner(summoner.puuid))[0]
+            res.status(200).send(response)
+         } else {
+            res.status(200).send({ parse: dbSumm.parse })
+         }
+
       } else {
          res.status(404).send(config.SUMMONER_UNPARSED)
       }

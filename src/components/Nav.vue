@@ -91,8 +91,8 @@
             this.$router.push({
                name: `user`, params: {
                   region: this.region,
-                  gameName: encodeURI(_gameName),
-                  tagLine: encodeURI(_tagLine)
+                  gameName: _gameName,
+                  tagLine: _tagLine
                }
             })
             this.input = ''
@@ -157,7 +157,7 @@
          <router-link class="nav-route" to="/about">About</router-link>
       </div>
    </nav>
-   <router-view />
+   <router-view :key="$route.fullPath"/>
 </template>
 
 <style scoped>

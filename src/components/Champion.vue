@@ -53,7 +53,8 @@ export default {
       },
 
       reverseMatches() {
-         return this.data.matches.reverse()
+         // return this.data.matches.reverse()
+         return this.data.matches
       }
    },
 

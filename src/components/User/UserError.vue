@@ -2,9 +2,7 @@
 export default {
    data() {
       return {
-         errorMessage: {
-            404: ''
-         }
+         
       }
    },
 

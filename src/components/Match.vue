@@ -167,18 +167,21 @@ export default {
    .time {
       /* padding: 0 10px; */
       padding-left: 10px;
-      /* width: 68px; */
+      width: 55px;
       font-size: 0.7rem;
    }
 
    .runes {
-      padding: 0 5px;
+      /* padding: 0 5px; */
+      width: 32px;
       display: flex;
+      justify-content: center;
+      align-items: center;
       align-items: flex-end;
    }
 
    .runes img:first-child {
-      width: 23px;
+      width: 21px;
       filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.8));
    }
 

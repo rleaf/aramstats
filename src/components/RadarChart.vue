@@ -31,25 +31,32 @@ export default {
                switch (v) {
                   case 'Enchanter':
                   case 'Catcher':
-                     this.tally['Controller']++ 
+                     this.tally['Controller']++
+                     break
                   case 'Juggernaut':
                   case 'Diver':
                      this.tally['Fighter']++ 
+                     break
                   case 'Mage':
                   case 'Burst':
                   case 'Battlemage':
                   case 'Artillery':
                      this.tally['Mage']++ 
+                     break
                   case 'Marksman':
                      this.tally['Marksman']++ 
+                     break
                   case 'Assassin':
                   case 'Skirmisher':
                      this.tally['Slayer']++ 
+                     break
                   case 'Vanguard':
                   case 'Warden':
                      this.tally['Tank']++ 
+                     break
                   case 'Specialist':
                      this.tally['Specialist']++ 
+                     break
                }
             }
          }

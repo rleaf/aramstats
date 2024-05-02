@@ -22,7 +22,7 @@
          `SP: Information tooltips (hoverable)`,
          `SP: Team side winrates & playrates (Account stats)`,
          `SP: More general statistics`,
-         `SP: Item statistics`,
+         `SP: Item completion statistics`,
          `SP: Structure statistics`,
          `SP: Teamfight statistics`,
          `SP: Summoner spell statistics`,

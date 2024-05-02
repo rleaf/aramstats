@@ -311,12 +311,12 @@ export default {
             'allyHealed',
             'allyShielded',
             'gold',
-            'damageDealtToTowers',
          ]
          
          let matchAveragedStats = [
             'deathTime',
             'gameLength',
+            'damageDealtToTowers',
          ]
 
          let itemSlots = [
@@ -532,7 +532,7 @@ export default {
          return [
             ['Towers Destroyed', this.aggregatedStats['towersDestroyed']],
             ['Towers Lost', this.aggregatedStats['towersLost']],
-            ['Tower Damage Dealt', this.aggregatedStats['damageDealtToTowers']],
+            ['Tower Damage Dealt', Math.round(this.aggregatedStats['damageDealtToTowers'])],
          ]
       },
 
@@ -854,10 +854,8 @@ export default {
    position: absolute;
    left: calc(50% - 100px);
    width: 300px;
-   transform: rotate(-14deg) translate(-130px, 125px);
+   transform: rotate(-13deg) translate(-130px, 127px);
 }
-
-
 
 .update-message {
    position: absolute;
@@ -885,6 +883,12 @@ export default {
    color: var(--color-font);
    font-size: 0.8rem;
    transition: 150ms ease-in-out;
+   -webkit-touch-callout: none;
+   -webkit-user-select: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
 }
 
 button.active-update {
@@ -1337,6 +1341,12 @@ circle.toggle-all {
 .toggle {
    display: flex;
    align-items: center;
+   -webkit-touch-callout: none;
+   -webkit-user-select: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
 }
 
 .toggle span {

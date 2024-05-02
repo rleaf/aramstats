@@ -17,6 +17,7 @@ import axios from 'axios'
             poll: null,
             patch: null,
             unique: 0,
+            key: 0,
             status: null,
          }
       },
@@ -29,6 +30,7 @@ import axios from 'axios'
          this.getCurrentPatch()
       },
 
+
       methods: {
          async checkSummoner() {
             const url = `/api/summoners/check/${this.$route.params.region}/${this.$route.params.gameName}/${this.$route.params.tagLine}`
@@ -40,17 +42,10 @@ import axios from 'axios'
             } catch (e) {
                this.response = e.response.data
                this.status = e.response.status
-               throw e
             }
 
-            if (this.status === 200) {
-               this.poll = setInterval(() => {
-                  this.unique++
-                  this.lookup()
-               }, 20000)
-
-               this.lookup()
-            }
+            // console.log(this.status, 'status')
+            // console.log(this.response, 'response')
          },
 
          async getCurrentPatch() {
@@ -82,12 +77,18 @@ import axios from 'axios'
             }
 
             try {
-               const res = await axios.get(url)
+               const res = await axios.get(url, {
+                  params: { rand: this.unique },
+                  signal: AbortSignal.timeout(10000),
+               })
                this.status = res.status
                this.response = res.data
             } catch (e) {
-               this.response = e.response.data
-               this.status = e.response.status
+               if (e.response) {
+                  this.response = e.response.data
+                  this.status = e.response.status
+               }
+
                clearInterval(this.poll)
             }
             
@@ -98,7 +99,7 @@ import axios from 'axios'
    }
 </script>
 
-<template>
+<template :key="this.key">
    <p class="searching" v-if="!this.status">
       Searching for summoner...
    </p>

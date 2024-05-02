@@ -13,20 +13,10 @@ export default {
       }
    },
    
-   methods: {
-      // toggle() {
-      //    this.state = !this.state
-
-      //    if (this.state) {
-      //       this.$refs.matchContainer.style.display = 'block'
-      //       this.$refs.matchContainer.style.opacity = `1`
-      //       setTimeout(() => this.$refs.matchContainer.style['max-height'] = `${this.data.matches.length * 39}px`, 500)
-      //    } else {
-      //       this.$refs.matchContainer.style['max-height'] = `0px`
-      //       this.$refs.matchContainer.style.opacity = `0`
-      //       setTimeout(() => this.$refs.matchContainer.style.display = 'none', 500)
-      //    }
-      // },
+   computed: {
+      maxHeight() {
+         return (this.encounters) ? `max-height: ${this.stats.length * 35}px` : `max-height: ${this.stats.length * 25}px`
+      }
    },
 
    props: {
@@ -48,7 +38,7 @@ export default {
       </div>
       <Tooltip v-if="!this.persist" :align="'left'" :tip="this.tooltip" />
    </div>
-   <div class="stat-body" :class="{ 'truncated': this.state, 'bordered': !this.persist }" :style="`max-height: ${this.stats.length * 25}px`">
+   <div class="stat-body" :class="{ 'truncated': this.state, 'bordered': !this.persist }" :style="this.maxHeight">
       
       <div v-if="this.encounters" class="encounters" v-for="(s, i) in this.stats" :class="{ 'o': i % 2 === 0 }" :key="i">
          <span>
