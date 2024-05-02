@@ -29,9 +29,9 @@ export default {
    },
 
    computed: {
-      cleanedGameVersion() {
-         return this.data.gv.split('.').slice(0, 2).join('.') + '.1'
-      },
+      // cleanedGameVersion() {
+      //    return this.data.gv.split('.').slice(0, 2).join('.') + '.1'
+      // },
 
       gameDuration() {
          if (Number.isInteger(this.data.gd)) {
@@ -54,7 +54,8 @@ export default {
    },
 
    props: {
-      data: null
+      data: null,
+      patch: null,
    }
 }
 </script>
@@ -79,7 +80,7 @@ export default {
          </div>
          <div class="items">
             <div v-for="item in this.data.i"> 
-               <img :src="`https://ddragon.leagueoflegends.com/cdn/${cleanedGameVersion}/img/item/${item}.png`" alt="">
+               <img :src="`https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/item/${item}.png`" alt="">
             </div>
          </div>
          <div class="match-rhs">

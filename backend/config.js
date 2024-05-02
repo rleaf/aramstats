@@ -6,8 +6,8 @@ class Config {
    SUMMONER_PREFIX = `${this.prefix}/summoners/:region/:gameName/:tagLine`
    UPDATE_SUMMONER_PREFIX = `${this.prefix}/update/:region/:gameName/:tagLine`
    DELETE_SUMMONER_PREFIX = `${this.prefix}/delete/:region/:gameName/:tagLine`
-   JANE_DOE = `${this.prefix}/summoners/random`
-   CHECK_SUMMONER = `${this.prefix}/summoners/check/:region/:gameName/:tagLine`
+   JANE_DOE_PREFIX = `${this.prefix}/summoners/random`
+   CHECK_SUMMONER_PREFIX = `${this.prefix}/summoners/check/:region/:gameName/:tagLine`
 
    MATCH_PREFIX = `${this.prefix}/matchInfo/:region/:matchId`
    MATCH_HISTORY_PREFIX = `${this.prefix}/matchHistory/:region/:gameName/:tagLine`
@@ -22,6 +22,7 @@ class Config {
 
    SUMMONER_DNE = 'Summoner does not exist.'
    SUMMONER_UNPARSED = 'Summoner is not parsed.'
+   SUMMONER_DELETED = 'Summoner deleted.'
    API_KEY = 'Api key expired.'
 }
 

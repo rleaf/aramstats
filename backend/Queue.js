@@ -38,7 +38,7 @@ class Queue {
             }
          }
          await this.db.createCollection(this.name, { validator: { $jsonSchema } })
-         await this.db.collection(this.name).createIndex('qPuuid')
+         await this.db.collection(this.name).createIndex('qPuuid', { unique: true })
       }
       
       this.collection = await this.db.collection(this.name)
@@ -116,22 +116,14 @@ class Queue {
    /**
     * Check to see if summoner exists in the queue
     * @param puuid Summoner PUUID
-    * @param region Summoner PUUID
    */
-   async check(puuid, region) {
+   async check(puuid) {
       let position 
-      let length
 
       await this.collection.findOne({ qPuuid: puuid })
-         .then(res => position = res.position)
-         .catch(e => (e instanceof mongodb.MongoServerError) ? e : null)
+         .then(res => position = (res) ? res.position : null)
 
-      
-      await this.count(region)
-         .then(res => length = res)
-         .catch(e => (e instanceof mongodb.MongoServerError) ? e : null)
-
-      return [position, length]
+      return position
    }
 
    /**

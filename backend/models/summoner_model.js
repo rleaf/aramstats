@@ -27,7 +27,7 @@ const summonerSchema = new mongoose.Schema({
    parse: {
       current: { type: Number, default: 0 },
       total: { type: Number, default: 0 },
-      status: String,
+      status: { type: String, default: ''},
    },
    // queue: {
    //    current: { type: Number, default: 0 },

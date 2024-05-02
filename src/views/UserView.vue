@@ -2,7 +2,7 @@
 import UserLoading from '../components/User/UserLoading.vue'
 import UserError from '../components/User/UserError.vue'
 import UserReady from '../components/User/UserReady.vue'
-import axios from 'axios'
+import axios, { CanceledError } from 'axios'
 
    export default {
       components: {
@@ -33,19 +33,35 @@ import axios from 'axios'
 
       methods: {
          async checkSummoner() {
+            try {
+               decodeURI(this.$route.params.gameName)
+            } catch (e) {
+               this.response = 'Summoner does not exist.'
+               this.status = 404
+               return
+            }
+
             const url = `/api/summoners/check/${this.$route.params.region}/${this.$route.params.gameName}/${this.$route.params.tagLine}`
 
             try {
-               const res = await axios.get(url)
+               const res = await axios.get(url, {
+                  signal: AbortSignal.timeout(10000),
+               })
                this.status = res.status
                this.response = res.data
             } catch (e) {
-               this.response = e.response.data
-               this.status = e.response.status
+               if (!(e instanceof CanceledError)) {
+                  this.response = e.response.data
+                  this.status = e.response.status
+               }
             }
 
-            // console.log(this.status, 'status')
-            // console.log(this.response, 'response')
+            if (this.status === 200 && (this.response && this.response.parse.status !== 'Complete')) {
+               this.poll = setInterval(() => {
+                  this.unique++
+                  this.lookup()
+               }, 30000)
+            }
          },
 
          async getCurrentPatch() {
@@ -64,7 +80,7 @@ import axios from 'axios'
             this.poll = setInterval(() => {
                this.unique++
                this.lookup()
-            }, 20000)
+            }, 30000)
 
             this.lookup()
          },
@@ -84,7 +100,7 @@ import axios from 'axios'
                this.status = res.status
                this.response = res.data
             } catch (e) {
-               if (e.response) {
+               if (!(e instanceof CanceledError)) {
                   this.response = e.response.data
                   this.status = e.response.status
                }

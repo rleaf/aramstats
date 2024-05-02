@@ -44,7 +44,7 @@ export default {
    },
 
    mounted() {
-      console.log(this.data, 'potatos')
+      // console.log(this.data, 'potatos')
       document.title = `${this.data.gameName} | ARAM Stats`
       window.addEventListener('keypress', this.championSearchFocus)
    },

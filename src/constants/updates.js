@@ -16,9 +16,9 @@ const updates = [
       version: "3.5.0",
       date: "4/30/24",
       body: [
-         `As mentioned in the prior update, I will be keeping an eye out for bugs as this is primarily for testing. This update breaks down into two significant updates: a new Summoner page UI and a backend redesign.`,
-         `This new Summoner Page UI, while I hope more enjoyable to interact with, is also functionally much more capable. Rendered stats are computed from selected champions provided in the table. Instead of being limited to viewing things like damage, shielding, and healing on one particular champion, you can now see aggregated stats for any set of champions. I'd like to clarify that at the point of posting this, the UI is almost about 98% complete. There are still some bells and whistles to add.`,
-         `The backend redesign seeks to resolve a couple of issues. The largest issue is with frozen summoners. Occasionally, because of hardware constraints, bad code, or a combination of the both, a summoner will be "frozen" or "stuck" stating they're currently being parsed when searched. I've added more logic and error handling to hopefully prevent these issues. This update is geared heavily towards the UI redesign so although I've reduced the chances of a summoner being frozen, I've not yet implemented logic to "unfreeze" them. Will implement soon. I've also implemented a queue system for the initial parsing of summoners to help combat these issues.`,
+         `As mentioned in the previous update, I will be keeping an eye out for bugs - this is primarily for testing. This update breaks down into two significant updates: a new Summoner page UI and a backend redesign.`,
+         `This new Summoner Page UI, while I hope more enjoyable to interact with, is functionally much more capable. Rendered stats are computed from selected champions provided in the table. Instead of being limited to viewing things like damage, shielding, and healing on one particular champion, you can now see aggregated stats for any set of champions. Along with the increased customizability, there're also loads more stats to view. Be sure to hover the tooltips for more info of the corresponding stat.`,
+         `The backend redesign seeks to resolve a couple of issues with the largest being "frozen summoners". Occasionally, because of hardware constraints, bad code, or a combination of the both, a summoner will be "frozen" or "stuck" stating they're currently being parsed when that account's actually in limbo. I've added more logic and error handling to hopefully prevent these issues. This update is geared heavily towards the summoner UI redesign so although I've reduced the chances of a summoner being frozen, I've not yet implemented logic to "intelligibly unfreeze" them. Currently, if a summoner is detected to be frozen, you will be will have to re-parse them entirely.`,
       ],
       links: [
          
@@ -55,11 +55,13 @@ const updates = [
    {
       title: "Redesigning Summoner pages",
       version: "",
-      date: "2/19/24 - today",
+      date: "2/19/24 - 5/2/24",
       body: [
-         `I am currently in the long process of redesigning, both front and backend, the entire Summoner page (what you see when you look up your profile). The goals of this redesign are to: 1) match the UI/aesthetic seen on the champion stat pages and 2) show a lot more information that is idiosyncratic to you, the player. There's a link below to some wip concepts I'm intending to implement. This redesign means I will be wiping the summoner database again (I'll post another update warning when I'm going to do it). If you've any neat ideas/things you'd like to see, hmu.`,
+         `I am currently in the long process of redesigning, both front and backend, the entire Summoner page (what you see when you look up your profile). The goals of this redesign are to: 1) match the UI/aesthetic seen on the champion stat pages and 2) show a lot more information that is idiosyncratic to you, the player. There's a link below to some wip concepts I'm intending to implement. This redesign means I will be wiping the summoner database again (I'll post another update warning when I'm going to do it).`,
          `3/13: Finished designing UI.`,
          `4/14: Finished backend.`,
+         `4/30: Finished frontend pretty much.`,
+         `5/2: Public testing.`,
       ],
       links: [
          [`FigJam Ideas`, `https://www.figma.com/file/iOKkrg5bBTd5IFp3ghjSS0/Aramstats?type=whiteboard&node-id=2%3A345&t=gvPh7LevVFuodZJx-1`]

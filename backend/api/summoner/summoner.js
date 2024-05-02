@@ -29,7 +29,7 @@ class Summoner {
       return challenges
    }
 
-   async skeletonizeSummoner(summoner, queuePosition) {
+   async skeletonizeSummoner(summoner) {
       await summonerModel.create({
          _id: summoner.puuid,
          gameName: summoner.gameName,
@@ -37,7 +37,7 @@ class Summoner {
          region: summoner.region,
          level: summoner.summonerLevel,
          profileIcon: summoner.profileIconId,
-         queue: { current: queuePosition }
+         parse: { status: config.STATUS_IN_QUEUE },
       })
    }
 
@@ -51,8 +51,20 @@ class Summoner {
       await this.computeChampionAverages(summonerDoc)
    }
 
-   async deleteSummoner(puuid) {
+   async deleteSummoner(summoner) {
+      let bin = []
 
+      for (const data of summoner.championData) {
+         for (const match of data.matches) {
+            bin.push({
+               deleteOne: { filter: { _id: match } }
+            })
+         }
+      }
+
+
+      await summonerMatchesModel.bulkWrite(bin)
+      await summonerModel.deleteOne({ _id: summoner._id })
    }
 
    parseTimeline(timeline, playerIndex, playerTeam, items) {
@@ -404,7 +416,7 @@ class Summoner {
 
       summonerDocument.parse.current = 0
       summonerDocument.parse.total = 0
-      summonerDocument.parse.status = config.STATUS_CHAMPION_AVERAGES // computing averages always follows
+      // summonerDocument.parse.status = config.STATUS_CHAMPION_AVERAGES // computing averages always follows
 
       await summonerDocument.save()
       if (championIds) return championIds

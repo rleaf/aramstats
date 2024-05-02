@@ -148,7 +148,7 @@ export default {
       @after-enter="this.onAfterEnter"
       @before-leave="this.onBeforeLeave">
       <div class="match-container" v-if="this.matchToggle">
-         <Match v-for="(m, i) in this.reverseMatches" :key="i" :data="m" />
+         <Match v-for="(m, i) in this.reverseMatches" :patch="this.patch" :data="m"  :key="i"/>
       </div>
    </Transition>
 </template>

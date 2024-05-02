@@ -38,13 +38,14 @@
       ],
       remove: [
          `SP: Match level detail resolution`,
-         // `SP: Match level multikills`,
+         `SP: Match level multikills`,
          `SP: Champion stat graphs`,
       ],
       fix: [],
       adjust: [
          `Overhaul Summoner page UI`,
-         `Summoner backend endpoint`
+         `Summoner backend endpoint`,
+         `UX on initial parse`,
       ],
       known: [
          `SP: Add more general-level stats such as shielding to the side bar`,

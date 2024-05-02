@@ -25,7 +25,6 @@
     "mongodb": "^4.12.1",
     "mongoose": "^7.5.1",
     "pinia": "^2.1.6",
-    "promise-queue": "^2.2.5",
     "promise-retry": "^2.0.1",
     "three": "^0.157.0",
     "twisted": "^1.56.2",

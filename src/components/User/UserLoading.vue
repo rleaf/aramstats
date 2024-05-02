@@ -15,96 +15,58 @@ export default {
 
 <template>
    <div class="loading-main">
-      <!-- <div class="null" v-if="!this.response">
-         <div>
-            <p>
-               Searching for summoner...
-            </p>
-            {{ this.response }}
-         </div>
-      </div> -->
-      <div class="null" v-if="this.response.parse.status === 'In queue...'">
-         <div>
-            <p>
-               Summoner is in queue. <router-link :to="{ name: 'user', params: { region: 'na', gameName: 'Night Owl', tagLine: 'NA1' } }" target="_blank">Here</router-link>
-               is what you can expect to see.
-            </p>
-            <p v-if="this.response.parse.position === 1">
-               You are next in queue.
-            </p>
-            <p v-else-if="this.response.parse.position - 1 === 1">
-               There is 1 summoner ahead of you.
-            </p>
-            <p v-else>
-               There are {{ this.response.parse.position - 1 }} summoners ahead of you.
-            </p>
-            <p class="sub">
-               I update every 20 seconds (or refresh browser).
-            </p>
-         </div>
+      <div v-if="this.response.parse.status === 'In queue...'">
+         <p>Summoner is in queue.</p>
+         <p v-if="this.response.parse.position === 1">You are next.</p>
+         <p v-else-if="this.response.parse.position - 1 === 1">There is 1 summoner ahead of you.</p>
+         <p v-else>There are {{ this.response.parse.position - 1 }} summoners ahead of you.</p>
       </div>
-      <div class="active" v-else-if="this.response.parse.status == 'Parsing summoner...'">
-         <div>
-            <p>
-               Parsing summoner...
-            </p>
-            <p>
-               This will take a bit when parsing a new summoner (~5-20 min depending on loada and games played). <router-link :to="{ name: 'user', params: { region: 'na', gameName: 'Night Owl', tagLine: 'NA1' } }" target="_blank">Here</router-link>
-               is what you can expect to see.
-            </p>
-            <div class="queue">
-               <p>
-                  {{ this.response.parse.current }} / {{ this.response.parse.total }} matches completed
-               </p>
-               <p class="sub">
-                  I update every 20 seconds (or refresh browser).
-               </p>
-            </div>
-         </div>
+      <div v-else-if="this.response.parse.status == 'Parsing summoner...'">
+         <p>Parsing summoner...</p>
+         <p class="queue">{{ this.response.parse.current }} / {{ this.response.parse.total }} matches completed</p>
       </div>
+      <p class="sub">
+         I update every 30 seconds. A single summoner can take, ballpark, upwards of 20 min to complete. Feel free to close this window & check back later.
+         <router-link :to="{ name: 'user', params: { region: 'na', gameName: 'Night Owl', tagLine: 'NA1' } }" target="_blank">Here</router-link>
+         is what you can expect to see.
+      </p>
    </div>
 </template>
 
 <style scoped>
 .loading-main {
    display: flex;
+   flex-direction: column;
    width: 100%;
-   justify-content: center;
-   margin-top: 20vh;
+   align-items: center;
+   margin-top: 15vh;
    text-align: center;
-}
-
-h2 {
-   /* font-family: var(--header-font); */
-   font-weight: normal;
-   font-size: 1rem;
-   color: var(--color-font);
 }
 
 p {
    color: var(--color-font);
-   width: 700px;
+   width: 500px;
    font-size: 0.9rem;
 }
 
-.queue p {
+p.queue {
    font-weight: 500;
 }
 
 p.sub {
-   font-size: 0.9rem;
+   font-size: 0.8rem;
+   line-height: 1.5;
    font-weight: normal;
-   font-style: italic;
    color: var(--color-font-faded);
 }
 
 a {
-   color: var(--color-font);
+   color: var(--color-font-faded);
+   transition: color 200ms ease-in-out;
 }
 
-a.purge:hover {
-   color: #ec3838;
-   border-color: #ec3838;
+a:hover {
+   color: var(--color-font);
 }
 
 </style>
