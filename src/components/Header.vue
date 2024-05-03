@@ -13,6 +13,7 @@ export default {
    <div class="header-main">
       <RouterLink to="/updates">{{ this.msg }}</RouterLink>
    </div>
+   <div class="header-main red">Sorry to those who had finished parsing, but there was an issue with summoner spells on the backend. Will have to parse again.</div>
 </template>
 
 <style scoped>

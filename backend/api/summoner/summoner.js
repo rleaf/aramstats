@@ -343,9 +343,9 @@ class Summoner {
          championEmbed.sc.e += player.spell3Casts
          championEmbed.sc.r += player.spell4Casts
          // summoner spells
-         championEmbed.ss[player.summoner1Id].games += 1
+         championEmbed.ss[player.summoner1Id].games++
          championEmbed.ss[player.summoner1Id].casts += player.summoner1Casts
-         championEmbed.ss[player.summoner2Id].games += 1
+         championEmbed.ss[player.summoner2Id].games++
          championEmbed.ss[player.summoner2Id].casts += player.summoner2Casts
          // pings
          championEmbed.p.all += player.allInPings
@@ -416,9 +416,8 @@ class Summoner {
 
       summonerDocument.parse.current = 0
       summonerDocument.parse.total = 0
-      // summonerDocument.parse.status = config.STATUS_CHAMPION_AVERAGES // computing averages always follows
-
       await summonerDocument.save()
+
       if (championIds) return championIds
    }
 

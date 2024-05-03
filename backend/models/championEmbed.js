@@ -1,5 +1,9 @@
 const mongoose = require('mongoose')
-const spellSchema = require('./summonerSpell_model')
+
+const spells = {
+   games: { type: Number, default: 0 },
+   casts: { type: Number, default: 0 }
+}
 
 const championEmbedSchema = new mongoose.Schema({
    _id: false,
@@ -33,17 +37,17 @@ const championEmbedSchema = new mongoose.Schema({
       w: { type: Number, default: 0 },                // w 
       e: { type: Number, default: 0 },                // e
       r: { type: Number, default: 0 },                // r
-   },                           
+   },
    ss: {                                              // summoner spells [games, casts]
-      1: { type: spellSchema, default: {} },          // cleanse
-      3: { type: spellSchema, default: {} },          // exhaust
-      4: { type: spellSchema, default: {} },          // flash
-      6: { type: spellSchema, default: {} },          // ghost
-      7: { type: spellSchema, default: {} },          // heal
-      13: { type: spellSchema, default: {} },         // clarity
-      14: { type: spellSchema, default: {} },         // ignite
-      21: { type: spellSchema, default: {} },         // barrier
-      32: { type: spellSchema, default: {} },         // mark
+      1: spells,                                      // cleanse
+      3: spells,                                      // exhaust
+      4: spells,                                      // flash
+      6: spells,                                      // ghost
+      7: spells,                                      // heal
+      13: spells,                                     // clarity
+      14: spells,                                     // ignite
+      21: spells,                                     // barrier
+      32: spells,                                     // mark
    },
    avg: {
       ahpm: { type: Number, default: 0 },             // allyHeal per minute
