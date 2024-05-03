@@ -62,10 +62,9 @@ async function retryWrapper(fn, args) {
             throw e
          }
       }
-   }, { retries: 1, factor: 1, minTimeout: 1000 })
+   }, { retries: 1, factor: 1, minTimeout: 2000 })
       .catch(e => {
          if (e instanceof Error) throw e
-         // console.log('hello add error handling to my summoner document here')
       })
 }
 

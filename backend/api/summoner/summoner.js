@@ -252,6 +252,9 @@ class Summoner {
             if (e.status === 404) continue
          }
 
+         // ARAM Remake window is 3 min. Make it +30s in case someone someone takes a long time to vote.
+         if (match.info.gameDuration < 210) continue
+
          if (i === 0) {
             patch = match.info.gameVersion.split('.').slice(0, 2).join('.')
             try {
@@ -263,9 +266,6 @@ class Summoner {
                items = (await axios.get(`https://ddragon.leagueoflegends.com/cdn/${patch}.1/data/en_US/item.json`)).data.data
             } catch (e) { }
          }
-
-         // ARAM Remake window is 3 min. Make it +30s in case someone someone takes a long time to vote.
-         if (match.info.gameDuration < 210) continue
 
          if (i % 25 === 0) console.log(`${summonerDocument.gameName}#${summonerDocument.tagLine} (${summonerDocument.region}) - (${i}/${matchlist.length})`)
 

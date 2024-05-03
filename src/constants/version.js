@@ -13,6 +13,21 @@
   
   const version = [
    {
+      version: "3.5.1",
+      date: "5/3/24",
+      notes: "Some follow up fixes",
+      add: [
+         `Champion name to champion page document title`
+      ],
+      remove: [],
+      fix: [
+         `Backend incorrectly tracking summoner spell observations & casts`,
+         `Re-add inactive region to prevent deletion on concurrent polls`
+      ],
+      adjust: [],
+      known: [],
+   }, 
+   {
       version: "3.5.0",
       date: "4/30/24",
       notes: "Big summoner UI redesign & backend changes. SP = Summoner Page, BE = Backend.",

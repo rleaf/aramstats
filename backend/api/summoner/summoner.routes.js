@@ -56,7 +56,6 @@ class SummonerRoutes {
 
       // Summoner exists & DNE in Aramstats DB. Need to parse.
       try {
-         console.log(`+ ${summoner.gameName}#${summoner.tagLine} (${summoner.region}) to Queue.`)
          await this.queue.add(summoner.puuid, summoner.region)
          position = await this.queue.check(summoner.puuid, summoner.region)
          await util.skeletonizeSummoner(summoner)
@@ -83,9 +82,9 @@ class SummonerRoutes {
          let qSummoner = await this.queue.get(summoner.region)
          let document
 
-         this.queue.inactiveRegions.delete(summoner.region) 
-
          while (qSummoner) {
+            this.queue.inactiveRegions.delete(summoner.region)
+
             try {
                document = await summonerModel.findOne({ '_id': qSummoner.qPuuid })
                await this.queue.update(summoner.region)
@@ -93,11 +92,13 @@ class SummonerRoutes {
                qSummoner = await this.queue.get(summoner.region)
                if (qSummoner) document = await summonerModel.findOne({ '_id': qSummoner.qPuuid })
             } catch (e) {
-               console.log(e, 'rip bozo')
                qSummoner = await this.queue.get(summoner.region)
                this.queue.inactiveRegions.add(summoner.region)
+               console.log('rip bozo')
+               throw e
             }
          }
+         
          console.log(`(${summoner.region}) Queue complete.`)
          this.queue.inactiveRegions.add(summoner.region)
       }

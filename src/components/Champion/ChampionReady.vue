@@ -27,6 +27,7 @@ export default {
 
    created() {
       // console.log(this.champion)
+      document.title = `${this.name} | ARAM Stats`
       this.getChampData()
       this.getItemData()
    },
