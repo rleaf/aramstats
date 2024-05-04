@@ -41,9 +41,9 @@ export default {
    <div class="dne-main">
       <div v-if="this.response === 'Summoner is not parsed.' || this.response === 'Summoner deleted.'">
          <p v-if="this.response === 'Summoner is not parsed.'">Hello, it seems this summoner has never been parsed.</p>
-         <p v-else>Sorry, something went wrong on the backend that requires this summoner to be re-parsed.</p>
-         <p>
-            This process can take some time, upwards of 20 minutes, because all viable games in the match history are examined.
+         <p v-else>Sorry, something went wrong on the backend that requires this summoner to be re-parsed :(</p>
+         <p class="sub">
+            This process can take some time, upwards of 20 minutes, because all viable games and corresponding timelines in the match history are examined.
             <router-link :to="{ name: 'user', params: { region: 'na', gameName: 'Night Owl', tagLine: 'NA1' } }" target="_blank">Here</router-link> is what you can expect to see when the account finishes.
          </p>
          <div @click="$emit('initParse')" class="button">Parse Summoner</div>
@@ -121,7 +121,19 @@ p {
    line-height: 1.5;
 }
 
-p > a {
+p.sub {
+   font-size: 0.8rem;
+   line-height: 1.5;
+   font-weight: normal;
+   color: var(--color-font-faded);
+}
+
+a {
+   color: var(--color-font-faded);
+   transition: color 200ms ease-in-out;
+}
+
+a:hover {
    color: var(--color-font);
 }
 </style>

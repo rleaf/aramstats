@@ -253,6 +253,8 @@ class Summoner {
          }
 
          // ARAM Remake window is 3 min. Make it +30s in case someone someone takes a long time to vote.
+         if (!match.info) console.log(match, 'dead match')
+            
          if (match.info.gameDuration < 210) continue
 
          if (i === 0) {
@@ -266,8 +268,7 @@ class Summoner {
                items = (await axios.get(`https://ddragon.leagueoflegends.com/cdn/${patch}.1/data/en_US/item.json`)).data.data
             } catch (e) { }
          }
-
-         if (i % 25 === 0) console.log(`${summonerDocument.gameName}#${summonerDocument.tagLine} (${summonerDocument.region}) - (${i}/${matchlist.length})`)
+         if (i % 25 === 0) console.log(`${summonerDocument.gameName}#${summonerDocument.tagLine} (${summonerDocument.region}) [${i}/${matchlist.length}]`)
 
          // https://leagueoflegends.fandom.com/wiki/Surrendering (ctrl+f "early") Don't use gameEndedInEarlySurrender. It is neq to a remake.
          player = match.info.participants.find(p => p.puuid === summonerDocument._id)

@@ -920,8 +920,6 @@ button.active-update {
 .summoner-name .tagLine {
    display: inline-block;
    margin: 0;
-   /* padding-left: 0.7rem; */
-   /* font-family: var(--font-main); */
    font-size: 1.3rem;
    color: var(--color-font-faded);
 }

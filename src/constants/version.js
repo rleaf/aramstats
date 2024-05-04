@@ -14,18 +14,18 @@
   const version = [
    {
       version: "3.5.1",
-      date: "5/3/24",
-      notes: "Some follow up fixes",
+      date: "5/4/24",
+      notes: `Some follow up fixes. I'm seeing some users have to reparse because Riot sends back an empty object. While being prompted "an error occurred, you'll have to reparse" is working as intended, I've adjusted the retry logic to mitigate invalid responses.`,
       add: [
          `Champion name to champion page document title`
       ],
       remove: [],
       fix: [
          `Backend incorrectly tracking summoner spell observations & casts`,
-         `Re-add inactive region to prevent deletion on concurrent polls`
+         `Re-add inactive region to prevent deletion on concurrent polls`,
       ],
       adjust: [
-         `Increase number of retries & retry delay for Riot API promises.`,
+         `Increase number of retries, factor, and retry delay for Riot API promises.`,
          `Summoner page styles.`
       ],
       known: [],

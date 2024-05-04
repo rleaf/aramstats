@@ -22,7 +22,7 @@ class SummonerRoutes {
       let position
 
       try {
-         console.log(`Searching: ${req.params.gameName}#${req.params.tagLine} (${req.params.region})`)
+         console.log(`${req.params.gameName}#${req.params.tagLine} (${req.params.region}) [Searching]`)
          summoner = await util.findSummoner(req.params.gameName, req.params.tagLine, req.params.region)
       } catch (e) {
          const msg = (e.status === 404) ? config.SUMMONER_DNE : e.body.status.message
@@ -42,7 +42,7 @@ class SummonerRoutes {
                res.status(404).send(config.SUMMONER_DELETED)
                return
             } else {
-               console.log(`${summoner.gameName} already in Queue.`)
+               console.log(`${req.params.gameName}#${req.params.tagLine} (${req.params.region}) [In Queue]`)
                this.workQueue(summoner)
                position = await this.queue.check(summoner.puuid, summoner.region)
                response = (position) ? { parse: { status: config.STATUS_IN_QUEUE, position: position } } : { parse: dbSumm.parse }
@@ -57,13 +57,12 @@ class SummonerRoutes {
       // Summoner exists & DNE in Aramstats DB. Need to parse.
       try {
          await this.queue.add(summoner.puuid, summoner.region)
+         console.log(`${summoner.gameName}#${summoner.tagLine} (${summoner.region}) [+ to Queue].`)
          position = await this.queue.check(summoner.puuid, summoner.region)
          await util.skeletonizeSummoner(summoner)
       } catch (e) {
          return // occasional 11000 errors, which if they occur should be ignored.
       }
-
-      
 
       if (position === 1 && this.queue.inactiveRegions.has(summoner.region)) {
          res.status(200).send({ parse: { status: config.STATUS_PARSING, current: 'TBD', total: 'TBD' } })
@@ -94,7 +93,7 @@ class SummonerRoutes {
             } catch (e) {
                qSummoner = await this.queue.get(summoner.region)
                this.queue.inactiveRegions.add(summoner.region)
-               console.log('rip bozo')
+               console.log(e, 'rip bozo') // Also clog so I'm not scrolling for hours
                throw e
             }
          }

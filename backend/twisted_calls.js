@@ -44,12 +44,6 @@ const REGION_GROUPS = {
    ph: RegionGroups.SEA,
 }
 
-
-/*
-* Summoner info w/ account-v1
-* Tethered to AMERICAS region rn because closest to backend server. Can move if need to balance rate limits
-*/
-   
 async function retryWrapper(fn, args) {
    return await promiseRetry(async retry => {
       try {
@@ -68,8 +62,11 @@ async function retryWrapper(fn, args) {
       })
 }
 
+/*
+* Summoner info w/ account-v1
+* Tethered to AMERICAS region rn because closest to backend server. Can move if need to balance rate limits
+*/
 async function getAccount(gameName, tagLine) {
-   // console.log('getAccount')
    return await retryWrapper(riotApi.Account.getByRiotId.bind(riotApi.Account), [gameName, tagLine, RegionGroups.AMERICAS])
 }
 
@@ -77,7 +74,6 @@ async function getAccount(gameName, tagLine) {
 * Summoner info.
 */
 async function getSummoner(puuid, region) {
-   // console.log('getSummoner')
    return await retryWrapper(lolApi.Summoner.getByPUUID.bind(lolApi.Summoner), [puuid, REGION_CONSTANTS[region]])
 }
 
@@ -85,7 +81,6 @@ async function getSummoner(puuid, region) {
 * Variable match history for ARAM (450). Used for utility.
 */
 async function getSummonerMatches(puuid, region, start, count) {
-   // console.log('getSummonerMatches')
    return await retryWrapper(lolApi.MatchV5.list.bind(lolApi.MatchV5), [puuid, REGION_GROUPS[region], { queue: 450, start: start, count: count }])
 }
 
@@ -145,7 +140,6 @@ async function getSummonerMatchesOnPatch(puuid, region, patch) {
 * Match info.
 */
 async function getMatchInfo(matchId, region) {
-   // console.log('getMatchInfo', matchId, region)
    return await retryWrapper(lolApi.MatchV5.get.bind(lolApi.MatchV5), [matchId, REGION_GROUPS[region]])
 }
 
@@ -153,7 +147,6 @@ async function getMatchInfo(matchId, region) {
 * Match timeline info.
 */
 async function getMatchTimeline(matchId, region) {
-   // console.log('getMatchTimeline')
    return await retryWrapper(lolApi.MatchV5.timeline.bind(lolApi.MatchV5), [matchId, REGION_GROUPS[region]])
 }
 
@@ -161,7 +154,6 @@ async function getMatchTimeline(matchId, region) {
 * Player Challenges.
 */
 async function playerChallenges(puuid, region) {
-   // console.log('Challenges')
    return await retryWrapper(lolApi.Challenges.PlayerChallenges.bind(lolApi.Challenges), [puuid, REGION_CONSTANTS[region]])
 }
 
