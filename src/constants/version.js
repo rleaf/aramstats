@@ -24,7 +24,10 @@
          `Backend incorrectly tracking summoner spell observations & casts`,
          `Re-add inactive region to prevent deletion on concurrent polls`
       ],
-      adjust: [],
+      adjust: [
+         `Increase number of retries & retry delay for Riot API promises.`,
+         `Summoner page styles.`
+      ],
       known: [],
    }, 
    {

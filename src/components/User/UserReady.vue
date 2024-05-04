@@ -622,7 +622,7 @@ export default {
             <div class="header-lhs-one">
                <div class="summoner-name">
                   {{ this.data.gameName }}
-                  <div class="tagLine">#{{ this.data.tagLine }}</div>
+                  <div class="tagLine">{{ this.data.tagLine }}</div>
                </div>
                <div class="buttons">
                   <button :class="{ 'active-update': this.update }" ref="updateButton" :disabled="this.update" @click="this.updateProfile()">Update</button>
@@ -920,9 +920,9 @@ button.active-update {
 .summoner-name .tagLine {
    display: inline-block;
    margin: 0;
-   padding-left: 0.7rem;
-   font-family: var(--font-main);
-   font-size: 1rem;
+   /* padding-left: 0.7rem; */
+   /* font-family: var(--font-main); */
+   font-size: 1.3rem;
    color: var(--color-font-faded);
 }
 

@@ -62,7 +62,7 @@ async function retryWrapper(fn, args) {
             throw e
          }
       }
-   }, { retries: 1, factor: 1, minTimeout: 2000 })
+   }, { retries: 2, factor: 2, minTimeout: 2000 })
       .catch(e => {
          if (e instanceof Error) throw e
       })
