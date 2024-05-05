@@ -22,7 +22,6 @@ class SummonerRoutes {
       let position
 
       try {
-         console.log(`${req.params.gameName}#${req.params.tagLine} (${req.params.region}) [Searching]`)
          summoner = await util.findSummoner(req.params.gameName, req.params.tagLine, req.params.region)
       } catch (e) {
          const msg = (e.status === 404) ? config.SUMMONER_DNE : e.body.status.message
@@ -154,6 +153,7 @@ class SummonerRoutes {
    async checkSummoner(req, res) {
       let summoner
       try {
+         console.log(`${req.params.gameName}#${req.params.tagLine} (${req.params.region}) [Searching]`)
          summoner = await util.findSummoner(req.params.gameName, req.params.tagLine, req.params.region)
       } catch (e) {
          const msg = (e.status === 404) ? config.SUMMONER_DNE : e.body.status.message

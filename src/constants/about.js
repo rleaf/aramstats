@@ -6,7 +6,7 @@ export default [
    {
       title: `About`,
       body: [
-         `Hello, my name is Ryan and I work on Aramstats for fun. You can get in touch with me via Discord @ <code>ryli.</code>.`,
+         `Hello, my name is Ryan and I work on Aramstats for fun. You can get in touch with me via Discord @<code>ryli.</code> .`,
          `Aramstats provides insightful Howling Abyss summoner and champion statistics. Summoner information is calculated using all available games through the Riot API. Champion information is calculated from games on the most recent patch.`,
          `Currently the crawler, what's collecting and storing champion stats, is only firing on <code>NA</code>, <code>EUW</code>, <code>EUNE</code>, and <code>KR</code>.`,
       ]
@@ -24,4 +24,10 @@ export default [
          `Hmu - may be a bug.`
       ]
    },
+   // {
+   //    title: `Why did my profile encounter an error while parsing?`,
+   //    body: [
+   //       `There are multiple reasons this can happen. One is a hardware issue where the backend or database go down. The second is invalid responses from the Riot API.`,
+   //    ]
+   // },
 ]

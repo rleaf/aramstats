@@ -22,11 +22,11 @@ export default {
 <template>
    <div class="update-main">
       <div class="update-tabs">
-         <div class="updates" @click="this.tab = 0" :class="{ active: !this.tab }">Updates</div>
-         <div class="versions" @click="this.tab = 1" :class="{ active: this.tab }">Versioning</div>
+         <div @click="this.tab = 0" :class="{ active: !this.tab }">Updates</div>
+         <div @click="this.tab = 1" :class="{ active: this.tab }">Versioning</div>
       </div>
       <div class="updates" v-show="this.tab === 0">
-         <div class="update-block" v-for="u in updates">
+         <div class="block" v-for="u in updates">
             <div class="header">
                <div>
                   <h2>{{ u.title }}</h2>
@@ -34,26 +34,27 @@ export default {
                </div>
                <h3>{{ u.date }}</h3>
             </div>
-            <hr>
-            <p v-for="p in u.body">{{ p }}</p>
-            <div class="update-links" v-if="u.links && u.links.length">
-               <h4>Links</h4>
-               <ul>
-                  <li v-for="a in u.links"><a :href="a[1]" target="_blank">{{ a[0] }}</a></li>
-               </ul>
+            <div class="body">
+
+               <p v-for="p in u.body">{{ p }}</p>
+               <div class="update-links" v-if="u.links && u.links.length">
+                  <h4>Links</h4>
+                  <ul>
+                     <li v-for="a in u.links"><a :href="a[1]" target="_blank">{{ a[0] }}</a></li>
+                  </ul>
+               </div>
+               <img v-if="u.img" :src="getImage(u.img)" alt="">
+               <p class="sub" v-if="u.imgCaption">{{ u.imgCaption }}</p>
             </div>
-            <img v-if="u.img" :src="getImage(u.img)" alt="">
-            <p class="sub" v-if="u.imgCaption">{{ u.imgCaption }}</p>
          </div>
       </div>
       <div class="versioning" v-show="this.tab === 1">
-         <div class="version-block" v-for="v in version">
-            <div class="version-header">
+         <div class="block" v-for="v in version">
+            <div class="header">
                <h2>{{ v.version }}</h2>
                <h3>{{ v.date }}</h3>
             </div>
-            <hr>
-            <div class="version-body">
+            <div class="body">
                <div class="notes" v-if="v.notes && v.notes.length">
                   <p>
                      {{ v.notes }}
@@ -99,27 +100,34 @@ export default {
 
 .notes p {
    color: var(--color-font-faded);
-   font-size: 0.95rem;
-   font-style: italic;
+   font-size: 0.93rem;
+   line-height: 1.2;
+   /* font-style: italic; */
    padding-bottom: 1rem;
 }
 
-.version-body {
-   padding: 1rem;
+.body {
+   /* padding: 1rem; */
+   font-size: 0.95rem;
+   padding-bottom: 5rem;
 }
 
-.version-body ul {
+.body ul {
    color: var(--color-font);
-   font-size: 0.95rem;
-   margin-bottom: 2rem;
+   font-size: 0.9rem;
+   margin-top: 0.3rem;
+   margin-bottom: 1rem;
+   padding-left: 1.8rem;
+   /* list-style-type: space-counter; */
+   list-style-type: disc;
 }
 
 h4 {
    color: var(--color-font);
-   font-size: 1rem;
    font-weight: normal;
    margin: 0;
 }
+
 .version-header {
    display: flex;
    justify-content: space-between;
@@ -144,9 +152,9 @@ h4 {
 }
 
 .update-tabs > div {
-   padding: 0.4rem 0.7rem;
+   padding: 0.4rem 1rem;
    font-size: 0.95rem;
-   border-radius: 8px;
+   border-radius: 4px;
    border: 1px solid transparent;
    cursor: pointer;
    transition: 0.2s;
@@ -183,15 +191,15 @@ div.active {
    padding: 8vh 0;
 }
 
-.update-block {
+.body {
    width: 800px;
-   margin-bottom: 3vh;
-   text-align: center;
 }
 
-.update-block img {
+.block img {
    max-width: 80%;
-   clear: both;
+   display: block;
+   margin: 0 auto;
+   padding-top: 2rem;
    max-height: 400px;
 }
 
@@ -200,6 +208,9 @@ div.active {
    width: 100%;
    justify-content: space-between;
    align-items: flex-end;
+   padding-bottom: 0.3rem;
+   margin-bottom: 2rem;
+   border-bottom: 1px solid var(--cell-border);
 }
 
 .header > div {
@@ -215,7 +226,8 @@ a {
 h2 {
    font-weight: normal;
    line-height: 1;
-   font-size: 1.2rem;
+   font-size: 1.5rem;
+   font-family: var(--header-font);
    text-align: left;
    color: var(--color-font);
    margin-bottom: 0;
@@ -235,8 +247,7 @@ p {
    color: var(--color-font);
    line-height: 1.4;
    text-align: left;
-   font-size: 0.95rem;
-   margin-top: 0.5rem;
+   margin-top: 0rem;
 }
 
 p.sub {

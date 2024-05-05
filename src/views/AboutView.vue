@@ -46,13 +46,13 @@ export default {
 }
 
 .about-main h2 {
-  /* font-family: 'Thestral'; */
+  font-family: var(--header-font);
   font-weight: normal;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   text-align: left;
   color: var(--color-font);
   padding-bottom: 0.25rem;
-  border-bottom: 2px solid var(--cell-border);
+  border-bottom: 1px solid var(--cell-border);
 }
 
 .about-main ul {

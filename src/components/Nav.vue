@@ -334,7 +334,7 @@ a.nav-route {
    font-size: 0.95rem;
    text-decoration: none;
    color: var(--color-font);
-   border-radius: 8px;
+   border-radius: 4px;
    transition: 0.2s ease-in-out;
 }
 
