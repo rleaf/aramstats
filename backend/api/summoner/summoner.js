@@ -252,9 +252,9 @@ class Summoner {
             if (e.status === 404) continue
          }
 
+         if (!match) console.log(match, 'wut in tarnation')
+
          // ARAM Remake window is 3 min. Make it +30s in case someone someone takes a long time to vote.
-         if (!match.info) console.log(match, 'dead match')
-            
          if (match.info.gameDuration < 210) continue
 
          if (i === 0) {

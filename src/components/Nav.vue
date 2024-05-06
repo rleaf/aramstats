@@ -16,11 +16,11 @@
       },
 
       created() {
+      },
+      
+      mounted() {
          const localRegion = localStorage.getItem('region')
          if (localRegion) this.region = localRegion
-      },
-
-      mounted() {
          if (JSON.parse(localStorage.getItem('theme'))) this.theme()
       },
 
@@ -31,6 +31,7 @@
             localStorage.setItem('theme', JSON.stringify(this.day))
          },
          selectRegion(region) {
+            localStorage.setItem('region', region)
             this.region = region
             this.regionFocus = false
             this.$refs.input.focus()
@@ -53,7 +54,6 @@
          },
          showRegions() {
             this.regionFocus = true
-            // this.$refs.input.blur()
          },
          summonerSearch() {
             if (!this.input) return

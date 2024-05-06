@@ -970,8 +970,6 @@ button.active-update {
    cursor: pointer;
    border-radius: 3px;
    padding: 4px;
-   /* padding-top: 2px; */
-   /* margin: 0.25rem 0; */
    position: relative;
    width: 22px;
    height: 18px;
@@ -993,7 +991,7 @@ button.active-update {
    position: absolute;
    width: 22px;
    height: 1px;
-   background-color: var(--cell-border);
+   background-color: var(--color-font);
    transition: all 100ms ease-in-out;
 }
 

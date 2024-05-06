@@ -13,6 +13,21 @@
   
   const version = [
    {
+      version: "3.5.2",
+      date: "5/6/24",
+      notes: `Alongside monitoring for bugs for the new Summoner page endpoint, am going to be sprinkling in UI updates throughout the site.`,
+      add: [],
+      remove: [],
+      fix: [
+         `Nav search sets region in localstorage`,
+      ],
+      adjust: [
+         `Brighter burger menu colors on left hand side of Summoner page`,
+         `Homogenizing site UI: About page, Updates page, Navigation`
+      ],
+      known: [],
+   }, 
+   {
       version: "3.5.1",
       date: "5/4/24",
       notes: `Some follow up fixes. I'm seeing some users have to reparse because Riot sends back an empty object. While being prompted "an error occurred, you'll have to reparse" is working as intended, I've adjusted the retry logic to mitigate invalid responses.`,
