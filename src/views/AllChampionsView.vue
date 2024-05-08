@@ -194,7 +194,10 @@ export default {
          <div :class="{'o': i % 2 === 0}" class="champion" v-for="(champ, i) in getChampionsList" :key="i">
             <div class="name-image">
                <router-link :to="{ name: 'champions', params: {champion: this.champMap(champ._id)} }">
-                  <img class="champ-image" rel="preload" :src="this.champIcon(champ._id)" alt="">
+                  <div class="image-wrapper">
+
+                     <img rel="preload" :src="this.champIcon(champ._id)" alt="">
+                  </div>
                   <div>
                      <span>{{ this.getChampName(champ._id) }}</span>
                   </div>
@@ -247,17 +250,26 @@ export default {
       align-items: center;
       width: 100%;
       height: 45px;
-      border-radius: 4px;
+      border-radius: 3px;
       font-size: 0.9rem;
    }
 
-   img.champ-image {
-      height: 36px;
+   .image-wrapper {
+      height: 34px;
+      width: 34px;
       margin-right: 10px;
+      overflow: hidden;
+      border: 1px solid var(--cell-border);
+   }
+
+   .image-wrapper img {
+      width: 100%;
+      transform: scale(1.2);
    }
 
    .o {
       background: var(--cell-panel);
+      /* background: var(--alpha-01); */
    }
 
    .header h2 {

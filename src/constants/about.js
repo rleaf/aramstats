@@ -24,10 +24,4 @@ export default [
          `Hmu - may be a bug.`
       ]
    },
-   // {
-   //    title: `Why did my profile encounter an error while parsing?`,
-   //    body: [
-   //       `There are multiple reasons this can happen. One is a hardware issue where the backend or database go down. The second is invalid responses from the Riot API.`,
-   //    ]
-   // },
 ]

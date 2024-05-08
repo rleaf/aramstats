@@ -29,6 +29,7 @@ class SummonerRoutes {
          return
       }
 
+      // use findbyid instead
       const dbSumm = await summonerModel.findOne({ '_id': summoner.puuid })
 
       if (dbSumm) {
@@ -41,7 +42,7 @@ class SummonerRoutes {
                res.status(404).send(config.SUMMONER_DELETED)
                return
             } else {
-               console.log(`${req.params.gameName}#${req.params.tagLine} (${req.params.region}) [In Queue]`)
+               console.log(`${summoner.gameName}#${summoner.tagLine} (${req.params.region}) [In Queue]`)
                this.workQueue(summoner)
                position = await this.queue.check(summoner.puuid, summoner.region)
                response = (position) ? { parse: { status: config.STATUS_IN_QUEUE, position: position } } : { parse: dbSumm.parse }

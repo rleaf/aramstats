@@ -231,13 +231,12 @@ h2 {
    text-align: left;
    color: var(--color-font);
    margin-bottom: 0;
+   
 }
 
 h3 {
    font-weight: normal;
    font-size: 0.9rem;
-   line-height: 1;
-   text-align: left;
    color: var(--color-font-faded);
    margin-bottom: 0;
    font-style: italic;
