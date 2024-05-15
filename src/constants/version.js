@@ -13,6 +13,20 @@
   
   const version = [
    {
+      version: "3.5.3",
+      date: "5/15/24",
+      notes: `Updating runes. New runes that replace the old rune id will grandfather in the old rune stats. (Legend Tenacity -> Legend Haste) for now.`,
+      add: [
+         `New runes`
+      ],
+      remove: [
+         `Old Runes`
+      ],
+      fix: [],
+      adjust: [],
+      known: [],
+   }, 
+   {
       version: "3.5.2",
       date: "5/6/24",
       notes: `Homogenizing site UI.`,

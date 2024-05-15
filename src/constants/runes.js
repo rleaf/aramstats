@@ -2,18 +2,17 @@
    '8000': [
       [
          8005, // Press The Attack
-         8008, // Lethal Tempo
          8021, // Fleet Footwork
          8010, // Conqueror
       ],
       [
-         9101, // Overheal
+         9101, // Absorb Life
          9111, // Triumph
          8009, // Presence of Mind
       ],
       [
          9104, // Legend Alacrity
-         9105, // Legend Tenacity
+         9105, // Legend Haste
          9103, // Legend Bloodline
       ],
       [
@@ -25,7 +24,6 @@
    '8100': [ // Domination
       [
          8112, // Electrocute
-         8124, // Predator
          8128, // Dark Harvest
          9923, // Hail Of Blades
       ],
@@ -41,7 +39,6 @@
       ],
       [
          8135, // Treasure Hunter
-         8134, // Ingenious Hunter
          8105, // Relentless Hunter
          8106, // Ultimate Hunter
       ],
@@ -78,17 +75,17 @@
       [
          8306, // Hextech Flash
          8304, // Magical Footwear
-         8313, // Triple Tonic
+         8321, // Cash Back
       ],
       [
-         8321, // Futures Market
-         8316, // Minion Dematerializer
+         8313, // Triple Tonic
+         8352, // Timewarp Tonic
          8345, // Biscuit Delivery
       ],
       [
          8347, // Cosmic Insight
          8410, // Approach Velocity
-         8352, // Time Warp Tonic
+         8316, // Jack Of All Trades
       ],
    ],
    '8400': [

@@ -5,7 +5,7 @@ import os
 runeURLS = []
 directory = './images'
 def _getRuneLinks():
-   url = f'https://ddragon.leagueoflegends.com/cdn/13.21.1/data/en_US/runesReforged.json'
+   url = f'https://ddragon.leagueoflegends.com/cdn/14.10.1/data/en_US/runesReforged.json'
    r = requests.get(url, stream=True).json()
 
    for tree in r:
