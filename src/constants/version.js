@@ -13,6 +13,20 @@
   
   const version = [
    {
+      version: "3.5.4",
+      date: "5/28/24",
+      notes: `Add more regions to champion stat crawler.`,
+      add: [
+         `LAN`,
+         `LAS`,
+         `TW`,
+      ],
+      remove: [],
+      fix: [],
+      adjust: [],
+      known: [],
+   }, 
+   {
       version: "3.5.3",
       date: "5/15/24",
       notes: `Updating runes. New runes that replace the old rune id will grandfather in the old rune stats. (Legend Tenacity -> Legend Haste) for now.`,
