@@ -51,4 +51,11 @@ export default class Experience {
    setDebug() {
       this.debug = new Pane()
    }
+
+   remove() {
+      this.world.map.dispose()
+      while(this.scene.children.length > 0) {
+         this.scene.remove(this.scene.children[0])
+      }
+   }
 }

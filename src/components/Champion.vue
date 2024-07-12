@@ -52,9 +52,8 @@ export default {
          return this.data.matches.length * 39
       },
 
-      reverseMatches() {
-         // return this.data.matches.reverse()
-         return this.data.matches
+      sortedMatches() {
+         return this.data.matches.sort((a, b) => (b.gc) - (a.gc))
       }
    },
 
@@ -148,7 +147,7 @@ export default {
       @after-enter="this.onAfterEnter"
       @before-leave="this.onBeforeLeave">
       <div class="match-container" v-if="this.matchToggle">
-         <Match v-for="(m, i) in this.reverseMatches" :patch="this.patch" :data="m"  :key="i"/>
+         <Match v-for="(m, i) in this.sortedMatches" :patch="this.patch" :data="m"  :key="i"/>
       </div>
    </Transition>
 </template>

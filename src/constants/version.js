@@ -13,6 +13,20 @@
   
   const version = [
    {
+      version: "3.6.0",
+      date: "7/12/24",
+      notes: `Minor UX things & fixes.`,
+      add: [
+         `Option to disable landing experience (bottom left of landing) - can cause computers with older GPUs to lag. This setting is saved to local storage.`
+      ],
+      remove: [],
+      fix: [
+         `Summoner dropdown matches for champions now properly sorted by time.`
+      ],
+      adjust: [],
+      known: [],
+   }, 
+   {
       version: "3.5.4",
       date: "5/28/24",
       notes: `Add more regions to champion stat crawler.`,

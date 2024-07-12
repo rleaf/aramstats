@@ -13,7 +13,6 @@ export default {
    <!-- <div class="header-main">
       <RouterLink to="/updates">{{ this.msg }}</RouterLink>
    </div> -->
-   <div class="header-main">Hello, it is storming here (very windy) and the database may randomly crash due to power outages. This will result in Champion & Summoner info being unavailable.</div>
 </template>
 
 <style scoped>
