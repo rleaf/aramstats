@@ -12,7 +12,17 @@ export default {
          iconTable: names.imageName,
          humanTable: names.humanName,
          matchToggle: false,
-         championPool: summonerStore().championPool
+         championPool: summonerStore().championPool,
+         patchCount: 1,
+      }
+   },
+
+   mounted() {
+      for (let i = 0; i < this.sortedMatches.length; i++) {
+         if (!this.data.matches[i-1]) continue
+         if (this.sortedMatches[i].gv.split('.').slice(0, 2).join('.') !== this.sortedMatches[i-1].gv.split('.').slice(0, 2).join('.')) {
+            this.patchCount++
+         }
       }
    },
 
@@ -30,13 +40,26 @@ export default {
       onAfterEnter(el) {
          el.style.opacity = `1`
          el.style.transition = `all 200ms ease-in-out`
-         el.style.maxHeight = `${this.data.matches.length * 39}px`
+         el.style.maxHeight = `${this.data.matches.length * 39 + this.patchCount * 24}px`
       },
 
       onBeforeLeave(el) {
          el.style.opacity = `0`
          el.style.maxHeight = `0`
-      }    
+      },
+
+      patchDividers(c, p) {
+         if (!p) return true
+
+         const c1 = c.split('.').slice(0, 2).join('.')
+         const p1 = p.gv.split('.').slice(0, 2).join('.')
+         
+         if (c1 !== p1) {
+            return true
+         } else {
+            return false
+         }
+      }
    },
 
    computed: {
@@ -54,7 +77,8 @@ export default {
 
       sortedMatches() {
          return this.data.matches.sort((a, b) => (b.gc) - (a.gc))
-      }
+      },
+
    },
 
    props: {
@@ -140,19 +164,49 @@ export default {
             </div>
          </div>
       </div>
-
+      {{ this.patchCount }}
    </div>
    <Transition
       @before-enter="this.onBeforeEnter"
       @after-enter="this.onAfterEnter"
       @before-leave="this.onBeforeLeave">
       <div class="match-container" v-if="this.matchToggle">
-         <Match v-for="(m, i) in this.sortedMatches" :patch="this.patch" :data="m"  :key="i"/>
+         <div v-for="(m, i) in this.sortedMatches">
+            <div class="patch-divider" v-if="this.patchDividers(m.gv, this.sortedMatches[i - 1])">
+               <hr>
+               <span>
+                  {{ m.gv.split('.').slice(0, 2).join('.') }}
+               </span>
+            </div>
+            <Match :patch="this.patch" :data="m" :key="i"/>
+         </div>
       </div>
    </Transition>
 </template>
 
 <style scoped>
+
+   .patch-divider {
+      display: flex;
+      align-items: flex-end;
+      gap: 17px;
+      color: var(--color-font-faded);
+      font-size: 0.75rem;
+   }
+
+   .patch-divider > span {
+      width: 13px;
+      padding-bottom: 1px;
+   }
+   .patch-divider hr {
+      min-height: 21px;
+      width: 1px;
+      border: none;
+      background-color: var(--cell-border);
+      margin: 0;
+      margin-left: 12px;
+   }
+
    .active-champion {
       background-color: var(--cold-blue-focus);
    }

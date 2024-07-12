@@ -17,11 +17,12 @@
       date: "7/12/24",
       notes: `Minor UX things & fixes.`,
       add: [
-         `Option to disable landing experience (bottom left of landing) - can cause computers with older GPUs to lag. This setting is saved to local storage.`
+         `Option to disable landing experience - can cause computers with older GPUs to lag (there's a checkbox on bot left of landing). This setting is saved to local storage.`,
+         `Add patch demarcations for summoner matches. Now when you click on a champion dropdown for some summoner profile, it'll be clear which patch the match was from.`,
       ],
       remove: [],
       fix: [
-         `Summoner dropdown matches for champions now properly sorted by time.`
+         `Summoner match dropdown sorting. Updated matches were not sorted by newest -> oldest.`,
       ],
       adjust: [],
       known: [],

@@ -1,5 +1,5 @@
 <script>
-// import...
+import { summonerStore } from '../stores/summonerStore'
 
 export default {
    data() {
@@ -7,6 +7,7 @@ export default {
          datum: null,
          date: Number,       
          daysSince: Number,
+         patchHr: summonerStore().patchHr
       }
    },
 

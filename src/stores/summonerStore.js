@@ -21,7 +21,8 @@ export const summonerStore = defineStore('summoner', {
                q: 0,
                p: 0,
             },
-         }
+         },
+         patchHr: '', // Rolling string to check for new patches for patch markers in Match.vue
       }
    },
    

@@ -102,14 +102,12 @@ export default {
    color: var(--color-font-faded);
    font-size: 0.93rem;
    line-height: 1.2;
-   /* font-style: italic; */
-   padding-bottom: 1rem;
+   margin-bottom: 2rem;
 }
 
 .body {
-   /* padding: 1rem; */
    font-size: 0.95rem;
-   padding-bottom: 5rem;
+   padding-bottom: 6rem;
 }
 
 .body ul {
@@ -118,7 +116,6 @@ export default {
    margin-top: 0.3rem;
    margin-bottom: 1rem;
    padding-left: 1.8rem;
-   /* list-style-type: space-counter; */
    list-style-type: disc;
 }
 
@@ -209,7 +206,7 @@ div.active {
    justify-content: space-between;
    align-items: flex-end;
    padding-bottom: 0.3rem;
-   margin-bottom: 2rem;
+   margin-bottom: 1.25rem;
    border-bottom: 1px solid var(--cell-border);
 }
 
