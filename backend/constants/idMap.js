@@ -10,6 +10,7 @@ const map = {
    "aphelios": 523,
    "ashe": 22,
    "aurelionsol": 136,
+   "aurora": 893,
    "azir": 268,
    "bard": 432,
    "belveth": 200,

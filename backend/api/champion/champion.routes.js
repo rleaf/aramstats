@@ -11,7 +11,7 @@ class ChampionRoutes {
    }
 
    async getChampion(req, res) {
-      const coll = await util.loadChampionStatsCollection(this.db)
+      const coll = await util.loadChampionStatsCollection(this.db, req.query.patch)
       const pancakes = (await util.aggregateChampion(coll, idMap[req.params.champion.toLowerCase()]))[0]
       res.send(pancakes)
    }

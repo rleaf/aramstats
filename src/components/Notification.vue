@@ -33,7 +33,8 @@ export default {
       @before-enter="this.onBeforeEnter"
       @after-enter="this.onAfterEnter"
       @before-leave="this.onBeforeLeave">
-      <div v-if="this.superStore.notification" class="notification-main">
+      <!-- <div v-if="this.superStore.notification" class="notification-main"> -->
+      <div class="notification-main">
          {{ this.superStore.notification }}
       </div>
    </Transition>

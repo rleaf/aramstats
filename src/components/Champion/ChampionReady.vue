@@ -20,21 +20,30 @@ export default {
          abilities: [],
          name: champions.humanName[this.champion._id],
          backName: champions.imageName[this.champion._id],
+         patchAlert: false,
          itemData: null,
       }
 
    },
 
    created() {
-      // console.log(this.champion)
       document.title = `${this.name} | ARAM Stats`
       this.getChampData()
       this.getItemData()
+
+      if (this.champion.patch !== this.activePatch) {
+         this.patchAlert = true
+
+         setTimeout(() => {
+            this.patchAlert = false
+         }, 2000);
+      }
+
    },
 
    methods: {
       getChampData() {
-         const url = `https://ddragon.leagueoflegends.com/cdn/${this.patch}/data/en_US/champion/${this.backName}.json`
+         const url = `https://ddragon.leagueoflegends.com/cdn/${this.patches[0]}/data/en_US/champion/${this.backName}.json`
          axios.get(url).then(res => {
             const tomato = res.data.data[this.backName]
             this.title = tomato.title
@@ -47,15 +56,15 @@ export default {
       },
 
       getItemData() {
-         const url = `https://ddragon.leagueoflegends.com/cdn/${this.patch}/data/en_US/item.json`
+         const url = `https://ddragon.leagueoflegends.com/cdn/${this.patches[0]}/data/en_US/item.json`
          axios.get(url).then(res => {
             this.itemData = res.data.data
          })
       },
 
       getAbilityImages(name, idx) {
-         return (idx === 0) ? `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/passive/${name}` :
-            `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/spell/${name}`
+         return (idx === 0) ? `https://ddragon.leagueoflegends.com/cdn/${this.patches[0]}/img/passive/${name}` :
+            `https://ddragon.leagueoflegends.com/cdn/${this.patches[0]}/img/spell/${name}`
       },
 
       abilityLetter(idx) {
@@ -79,12 +88,20 @@ export default {
             top: top
             // behavior: 'smooth'
          })
+      },
+
+      cleanPatch(patch) {
+         return patch.split('.').slice(0, 2).join('.')
+      },
+
+      patchChange(patch) {
+         this.$router.push({ query: { patch: this.cleanPatch(patch) } })
       }
    },
 
    computed: {
       champIcon() {
-         return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/champion/${this.backName}.png`
+         return `https://ddragon.leagueoflegends.com/cdn/${this.patches[0]}/img/champion/${this.backName}.png`
       },
 
       background() {
@@ -95,64 +112,122 @@ export default {
 
       championWinrate() {
          return `${Math.round((this.champion.wins / this.champion.games) * 1000) / 10}%`
-      }
+      },
+
+      activePatch() {
+         const o = new URLSearchParams(window.location.search).get('patch')
+         return (o) ? o : this.cleanPatch(this.patches[0])
+      },
    },
    
    props: {
       champion: null,
-      patch: null
+      patches: null,
+      keyProp: null,
    }
 }
 </script>
 
 <template>
    <div class="champion-ready-main">
+      <Transition name="fade">
+         <div v-if="this.patchAlert" class="alert">
+            Patch data unavailable, defaulting to latest.
+         </div>
+      </Transition>
       <div class="gradient-bg" :style="{ background: background }"></div>
       <div class="header">
-         <div class="header-lhs">
-            <div class="header-lhs-image">
-               <img :src="champIcon" alt="">
-            </div>
-            <div class="header-lhs-one">
-               <div class="name">{{ this.name }}</div>
-               <div class="title">{{ this.title }}</div>
-               <div class="champion-abilities">
-                  <div v-for="(img, i) in this.abilities" :key="i">
-                     <img :src="getAbilityImages(img, i)" rel="preload">
-                     <div class="spell-letter">
-                        {{ abilityLetter(i) }}
+         <div class="header-titles">
+
+            <div class="header-lhs">
+               <div class="header-lhs-image">
+                  <img :src="champIcon" alt="">
+               </div>
+               <div class="header-lhs-one">
+                  <div class="name">{{ this.name }}</div>
+                  <div class="title">{{ this.title }}</div>
+                  <div class="champion-abilities">
+                     <div v-for="(img, i) in this.abilities" :key="i">
+                        <img :src="getAbilityImages(img, i)" rel="preload">
+                        <div class="spell-letter">
+                           {{ abilityLetter(i) }}
+                        </div>
                      </div>
                   </div>
                </div>
             </div>
+
+            <div class="header-rhs">
+               <div>
+                  <h2>Rank</h2>
+                  {{ this.champion.rank }}
+               </div>
+               <div>
+                  <h2>Pickrate</h2>
+                  {{ this.champion.pickRate }}%
+               </div>
+               <div>
+                  <h2>Winrate</h2>
+                  {{ championWinrate }}
+                  <h2>{{ this.champion.games }} games</h2>
+               </div>
+            </div>
+
          </div>
-         <div class="header-rhs">
+
+         <div class="settings">
             <div>
-               <h2>Rank</h2>
-               {{ this.champion.rank }}
+               <div class="setting-header">{{ this.champion.patch }}</div>
+               <div class="setting-content">
+                  <a @click="patchChange(p)" v-for="p in this.patches" :key="p">{{ this.cleanPatch(p) }}</a>
+               </div>
             </div>
             <div>
-               <h2>Pickrate</h2>
-               {{ this.champion.pickRate }}%
-            </div>
-            <div>
-               <h2>Winrate</h2>
-               {{ championWinrate }}
-               <h2>{{ this.champion.games }} games</h2>
+               <div class="setting-header">Global*</div>
+               <div class="setting-content">
+                  <div class="message">
+                     *Currently set to certain regions. Check <router-link class="about" :to="{ name: 'about' }">about</router-link>
+                  </div>
+               </div>
             </div>
          </div>
       </div>
 
       <div class="champion-body">
-         <Tldr  @scroll="scrollTo" :champion="this.champion" :patch="this.patch" />
-         <Items :champion="this.champion" :patch="this.patch" :itemData="this.itemData"/>
-         <Runes :champion="this.champion" :patch="this.patch" />
-         <StartingSpells :champion="this.champion" :patch="this.patch" :abilities="this.abilities"/>
+         <Tldr  @scroll="scrollTo" :champion="this.champion" :patch="this.patches[0]" />
+         <Items :champion="this.champion" :patch="this.patches[0]" :itemData="this.itemData"/>
+         <Runes :champion="this.champion" :patch="this.patches[0]" />
+         <StartingSpells :champion="this.champion" :patch="this.patches[0]" :abilities="this.abilities"/>
       </div>
    </div>
 </template>
 
 <style scoped>
+/* .fade-enter-active, */
+.fade-leave-active {
+   transition: opacity 1000ms ease-in-out;
+}
+
+.fade-leave-to {
+   opacity: 0;
+}
+
+.alert {
+   font-size: 0.9rem;
+   color: var(--color-font-focus);
+   position: absolute;
+   text-align: center;
+   left: 50%;
+   margin-top: 10vh;
+   transform: translateX(-50%);
+   padding: 0.6rem 0.8rem;
+   border: 1px solid var(--ice-blue);
+   background: var(--cell-panel);
+   border-radius: 3px;
+   z-index: 5;
+   width: 300px;
+}
+
 .gradient-bg {
    position: absolute;
    z-index: -5;
@@ -168,14 +243,17 @@ export default {
 }
 
 .header {
+   margin-bottom: 5vh;
+}
+
+.header-titles {
+   margin-top: 5vh;
+   padding-top: 5vh;
    display: flex;
    justify-content: space-between;
    align-items: center;
    width: 100%;
    color: var(--color-font);
-   margin-top: 5vh;
-   padding-top: 5vh;
-   padding-bottom: 100px;
    border-top: 1px solid var(--cell-border);
    background: radial-gradient(ellipse at top, var(--cell-panel), var(--cell-panel-rgb) 25%);
 }
@@ -198,8 +276,80 @@ export default {
    font-weight: bold;
 }
 
+.settings {
+   display: flex;
+   gap: 20px;
+   font-size: 0.9rem;
+   color: var(--color-font);
+   margin-top: 5vh;
+}
+
+.settings > div {
+   display: block;
+   width: auto;
+}
+
 .header-lhs {
    display: flex;
+   /* flex-direction: column; */
+}
+
+.settings .setting-content {
+   display: none;
+   position: absolute;
+   /* flex-wrap: wrap; */
+   flex-direction: column;
+   /* justify-content: space-between; */
+   background-color: var(--cell-panel);
+   border-radius: 3px;
+   /* padding-top: 10px; */
+   /* width: 130px; */
+   /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
+   z-index: 1;
+}
+
+.setting-content > a {
+   /* margin: 2px; */
+   display: inline-block;
+   cursor: pointer;
+   min-width: 45px;
+   padding: 0.4rem 0.8rem;
+}
+
+.setting-content > a:hover {
+   background: var(--alpha-01);
+   border-radius: 3px;
+   /* padding: 2px 5px; */
+}
+
+.setting-content .message {
+   padding: 0.4rem 0.8rem;
+   font-style: italic;
+}
+
+a.about {
+   color: var(--color-font);
+
+}
+
+.settings > div:hover .setting-content {
+   display: flex;
+}
+
+.settings > div .setting-header {
+   display: block; 
+   text-align: center;
+   background: var(--cell-panel);
+   border: none;
+   color: var(--color-font);
+   /* font-family: var(--header-font); */
+   font-weight: bold;
+   /* font-size: 0.8rem; */
+   cursor: pointer;
+   min-width: 45px;
+   border-radius: 3px;
+   padding: 0.4rem 0.8rem;
+   margin-bottom: 5px;
 }
 
 .header-lhs-one {
@@ -217,6 +367,8 @@ export default {
    display: inline-block;
    margin: 0;
    padding-left: 0.7rem;
+   font-size: 1.2rem;
+   font-family: var(--header-font);
    /* font-style: italic; */
    color: var(--color-font-faded);
 }

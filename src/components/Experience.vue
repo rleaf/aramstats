@@ -8,6 +8,12 @@ export default {
       }
    },
 
+   beforeMount() {
+      if (!localStorage.getItem('experience')) {
+         localStorage.setItem('experience', 1)
+      }
+   },
+
    mounted() {
       if (+localStorage.getItem('experience') === 1) {
          this.renderExperience()
@@ -17,12 +23,12 @@ export default {
    },
 
    unmounted() {
-      if (this.experience) this.experience.world.map.dispose()
+      if (this.experience) this.experience.remove()
    },
    
    methods: {
       toggleExperience() {
-         if (+localStorage.getItem('experience')) {
+         if (+localStorage.getItem('experience') === 1) {
             this.$refs.check.setAttribute('checked', '')
             localStorage.setItem('experience', 0)
             this.experience.remove()

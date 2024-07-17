@@ -13,6 +13,35 @@
   
   const version = [
    {
+      version: "3.7.0",
+      date: "7/17/24",
+      notes: `There's no guarantee for the lifetime of old patch data, but I will generally leave the previous 2-4 patches up for months.`,
+      add: [
+         `View champion data on older patches. If data DNE, default to current patch.`,
+         `See summoner parsing queue in document.title for the alt-tabbers.`
+      ],
+      remove: [],
+      fix: [],
+      adjust: [
+         `Styles`
+      ],
+      known: [],
+   }, 
+   {
+      version: "3.6.1",
+      date: "7/17/24",
+      notes: `Quick patch to add Aurora assets.`,
+      add: [
+         `Aurora`,
+      ],
+      remove: [],
+      fix: [
+         `Table data alignment in summoner lookups`
+      ],
+      adjust: [],
+      known: [],
+   }, 
+   {
       version: "3.6.0",
       date: "7/12/24",
       notes: `Minor UX things & fixes.`,

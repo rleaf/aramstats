@@ -266,7 +266,7 @@ export default {
                <div class="items-wrapper">
    
                   <div class="items-column" :class="{ 'column-bg': (i+1) % 2 === 0 }" v-for="i in 6" :key="i">
-                     <span style="color: var(--color-font-faded);">{{ i }}</span> <!-- KEEP? -->
+                     <span>{{ i }}</span> <!-- KEEP? -->
                      <div v-for="(i, k) in this.itemSort(this.organizedCore[this.coreFocus].items[i]).slice(0, 2)" :key="k">
                         <img :src="this.itemImage(i[0])" alt="">
                         <div class="winrate">{{ this.filteredWinrate(i[2] / i[1]) }}</div>
@@ -535,6 +535,10 @@ img.starting-image {
  img.starting-image:not(:nth-child(2)) {
    margin-left: 5px;
 }
+.items-column span {
+   font-weight: bold;
+   font-size: 1rem;
+}
 
 .items {
    color: var(--color-font);
@@ -548,6 +552,7 @@ img.starting-image {
    display: flex;
    gap: 10px;
 }
+
 
 .items-column {
    display: flex;

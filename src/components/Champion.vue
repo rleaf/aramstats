@@ -164,7 +164,6 @@ export default {
             </div>
          </div>
       </div>
-      {{ this.patchCount }}
    </div>
    <Transition
       @before-enter="this.onBeforeEnter"

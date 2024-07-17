@@ -15,7 +15,8 @@ export default {
       return {
          champion: null,
          loading: false,
-         patch: null,
+         patches: null,
+         patchData: null,
          renderKey: 0,
       }
    },
@@ -29,19 +30,24 @@ export default {
          const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
 
          try {
-            this.patch = (await axios.get(url)).data[0]
+            this.patches = (await axios.get(url)).data.slice(0, 10)
          } catch (e) {
             console.log(e, 'getCurrentPatch')
          }
-      }
+      },
    },
 
    computed: {
       // Needs to be a computed property for nav search reactivity
       lookup() {
+         this.patchData = new URLSearchParams(window.location.search).get('patch')
          this.loading = true // Loading flag
          const url = `/api/champion/${this.$route.params.champion}`
-         axios.get(url).then((res) => {
+         axios.get(url,
+            {
+               params: { patch: this.patchData },
+            }
+         ).then((res) => {
             this.renderKey++ // Re-render via keys
             this.loading = false 
             this.champion = res.data // Pass data
@@ -60,9 +66,9 @@ export default {
 <template>
    <Loading v-if="this.loading"/>
    <ChampionReady
-   v-if="lookup && this.patch && !this.loading"
+   v-if="lookup && this.patches && !this.loading"
    :champion="this.champion"
-   :patch="this.patch"
+   :patches="this.patches"
    :key="this.renderKey"/>
-   <ChampionError v-if="!this.champion || !this.patch"/>
+   <ChampionError v-if="!this.champion || !this.patches"/>
 </template>

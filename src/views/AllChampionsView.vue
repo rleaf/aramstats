@@ -193,7 +193,7 @@ export default {
          </div>
          <div :class="{'o': i % 2 === 0}" class="champion" v-for="(champ, i) in getChampionsList" :key="i">
             <div class="name-image">
-               <router-link :to="{ name: 'champions', params: {champion: this.champMap(champ._id)} }">
+               <router-link :to="{ name: 'champions', params: { champion: this.champMap(champ._id) } }">
                   <div class="image-wrapper">
 
                      <img rel="preload" :src="this.champIcon(champ._id)" alt="">

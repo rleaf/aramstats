@@ -9,6 +9,13 @@ export default {
 
    props: {
       response: null,
+   },
+
+   computed: {
+      queueInfo() {
+         document.title = `(${this.response.parse.current} / ${this.response.parse.total}) | ARAM Stats`
+         return `${this.response.parse.current} / ${this.response.parse.total} matches completed`
+      }
    }
 }
 </script>
@@ -21,9 +28,9 @@ export default {
          <p v-else-if="this.response.parse.position - 1 === 1">There is 1 summoner ahead of you.</p>
          <p v-else>There are {{ this.response.parse.position - 1 }} summoners ahead of you.</p>
       </div>
-      <div v-else-if="this.response.parse.status == 'Parsing summoner...'">
+      <div v-else-if="this.response.parse.status === 'Parsing summoner...'">
          <p>Parsing summoner...</p>
-         <p class="queue">{{ this.response.parse.current }} / {{ this.response.parse.total }} matches completed</p>
+         <p class="queue">{{ this.queueInfo }}</p>
       </div>
       <p class="sub">
          I update every 30 seconds. A single summoner can take, ballpark, upwards of 20 min to complete. Feel free to close this window & check back later.
