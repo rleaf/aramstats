@@ -1,10 +1,10 @@
 <script>
-import Tooltip from '@/components/Tooltip.vue'
+import UXTooltip from '@/components/UXTooltip.vue'
 import StartingSpellsModal from './modals/StartingSpellsModal.vue'
 
 export default {
    components: {
-      Tooltip,
+      UXTooltip,
       StartingSpellsModal,
    },
    data() {
@@ -55,7 +55,7 @@ export default {
          <div>
             <div class="sub-section-header">
                <div class="title">Starting Items</div>
-               <Tooltip :tip="'starting'" />
+               <UXTooltip :tip="'starting'" />
             </div>
             <div class="iter-wrapper">
                <div v-for="(i, i2) in this.champion.starting" :key="i2">
@@ -74,7 +74,7 @@ export default {
          <div>
             <div class="sub-section-header">
                <div class="title">Spells</div>
-               <Tooltip :tip="'spells'" />
+               <UXTooltip :tip="'spells'" />
             </div>
             <div class="iter-wrapper">
                <div v-for="(i, i2) in this.champion.spells" :key="i2">
@@ -91,7 +91,7 @@ export default {
          <div>
             <div class="sub-section-header">
                <div class="title">Skill Priority</div>
-               <Tooltip :align="'right'" :tip="'skillPriority'" />
+               <UXTooltip :align="'right'" :tip="'skillPriority'" />
             </div>
             <div class="iter-wrapper">
                <div v-for="(i, i2) in this.champion.skills" :key="i2">

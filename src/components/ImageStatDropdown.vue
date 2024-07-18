@@ -1,10 +1,10 @@
 <script>
-import Tooltip from './Tooltip.vue';
+import UXTooltip from './UXTooltip.vue';
 import { summonerStore } from '@/stores/summonerStore'
 
 export default {
    components: {
-      Tooltip
+      UXTooltip
    },
 
    data() {
@@ -60,7 +60,7 @@ export default {
          {{ this.header }}
          <img class="arrow"  src="@/assets/svg/arrow3.svg" :class="{ 'arrow-up': this.state }" alt="">
       </div>
-      <Tooltip :align="'left'" :tip="this.tooltip" />
+      <UXTooltip :align="'left'" :tip="this.tooltip" />
    </div>
    <div class="stat-body bordered"  :class="{ 'truncated': this.state }" :style="this.maxHeight">
       <div v-if="this.header !== 'Summoner Spells' && this.store.championPool.size === 0" class="helper">Click on some champions to see this stat</div>

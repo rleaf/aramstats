@@ -1,27 +1,31 @@
 <script>
 import axios from 'axios'
 import champions from '../../constants/champions'
-
+import { superStore } from '../../stores/superStore'
 import Tldr from './components/Tldr.vue'
 import Items from './components/Items.vue'
 import Runes from './components/Runes.vue'
 import StartingSpells from './components/StartingSpells.vue'
+import DataTooltip from '../DataTooltip.vue'
 
 export default {
    components: {
       Tldr,
       Items,
       Runes,
-      StartingSpells
+      StartingSpells,
+      DataTooltip
    },
    data() {
       return {
-         title: '',
+         championCDN: null,
          abilities: [],
          name: champions.humanName[this.champion._id],
          backName: champions.imageName[this.champion._id],
          patchAlert: false,
+         itemTooltip: false,
          itemData: null,
+         store: superStore(),
       }
 
    },
@@ -29,7 +33,6 @@ export default {
    created() {
       document.title = `${this.name} | ARAM Stats`
       this.getChampData()
-      this.getItemData()
 
       if (this.champion.patch !== this.activePatch) {
          this.patchAlert = true
@@ -43,28 +46,19 @@ export default {
 
    methods: {
       getChampData() {
-         const url = `https://ddragon.leagueoflegends.com/cdn/${this.patches[0]}/data/en_US/champion/${this.backName}.json`
+         const url = `https://ddragon.leagueoflegends.com/cdn/${this.store.patches[0]}/data/en_US/champion/${this.backName}.json`
          axios.get(url).then(res => {
-            const tomato = res.data.data[this.backName]
-            this.title = tomato.title
-
-            this.abilities.push(tomato.passive.image.full)
-            for (const spell of tomato.spells) {
+            this.championCDN = res.data.data[this.backName]
+            this.abilities.push(this.championCDN.passive.image.full)
+            for (const spell of this.championCDN.spells) {
                this.abilities.push(spell.image.full)
             }
          })
       },
 
-      getItemData() {
-         const url = `https://ddragon.leagueoflegends.com/cdn/${this.patches[0]}/data/en_US/item.json`
-         axios.get(url).then(res => {
-            this.itemData = res.data.data
-         })
-      },
-
       getAbilityImages(name, idx) {
-         return (idx === 0) ? `https://ddragon.leagueoflegends.com/cdn/${this.patches[0]}/img/passive/${name}` :
-            `https://ddragon.leagueoflegends.com/cdn/${this.patches[0]}/img/spell/${name}`
+         return (idx === 0) ? `https://ddragon.leagueoflegends.com/cdn/${this.store.patches[0]}/img/passive/${name}` :
+            `https://ddragon.leagueoflegends.com/cdn/${this.store.patches[0]}/img/spell/${name}`
       },
 
       abilityLetter(idx) {
@@ -101,7 +95,7 @@ export default {
 
    computed: {
       champIcon() {
-         return `https://ddragon.leagueoflegends.com/cdn/${this.patches[0]}/img/champion/${this.backName}.png`
+         return `https://ddragon.leagueoflegends.com/cdn/${this.store.patches[0]}/img/champion/${this.backName}.png`
       },
 
       background() {
@@ -116,19 +110,23 @@ export default {
 
       activePatch() {
          const o = new URLSearchParams(window.location.search).get('patch')
-         return (o) ? o : this.cleanPatch(this.patches[0])
+         return (o) ? o : this.cleanPatch(this.store.patches[0])
       },
+
+      title() {
+         return (this.championCDN) ? this.championCDN.title : ''
+      }
    },
    
    props: {
       champion: null,
-      patches: null,
       keyProp: null,
    }
 }
 </script>
 
 <template>
+   <DataTooltip v-if="this.store.itemTooltip" :champCDN="this.championCDN.spells" />
    <div class="champion-ready-main">
       <Transition name="fade">
          <div v-if="this.patchAlert" class="alert">
@@ -147,8 +145,11 @@ export default {
                   <div class="name">{{ this.name }}</div>
                   <div class="title">{{ this.title }}</div>
                   <div class="champion-abilities">
-                     <div v-for="(img, i) in this.abilities" :key="i">
-                        <img :src="getAbilityImages(img, i)" rel="preload">
+                     <div v-for="(id, i) in this.abilities" :key="i">
+                        <img :src="getAbilityImages(id, i)"
+                           @mouseenter="this.store.setTooltipData($event, id, 'spells')"
+                           @mouseleave="this.store.itemTooltip = false"
+                           rel="preload">
                         <div class="spell-letter">
                            {{ abilityLetter(i) }}
                         </div>
@@ -179,14 +180,14 @@ export default {
             <div>
                <div class="setting-header">{{ this.champion.patch }}</div>
                <div class="setting-content">
-                  <a @click="patchChange(p)" v-for="p in this.patches" :key="p">{{ this.cleanPatch(p) }}</a>
+                  <a @click="patchChange(p)" v-for="p in this.store.patches" :key="p">{{ this.cleanPatch(p) }}</a>
                </div>
             </div>
             <div>
                <div class="setting-header">Global*</div>
                <div class="setting-content">
                   <div class="message">
-                     *Currently set to certain regions. Check <router-link class="about" :to="{ name: 'about' }">about</router-link>
+                     *Currently, only global is available. Check <router-link class="about" :to="{ name: 'about' }">about</router-link>
                   </div>
                </div>
             </div>
@@ -194,16 +195,15 @@ export default {
       </div>
 
       <div class="champion-body">
-         <Tldr  @scroll="scrollTo" :champion="this.champion" :patch="this.patches[0]" />
-         <Items :champion="this.champion" :patch="this.patches[0]" :itemData="this.itemData"/>
-         <Runes :champion="this.champion" :patch="this.patches[0]" />
-         <StartingSpells :champion="this.champion" :patch="this.patches[0]" :abilities="this.abilities"/>
+         <Tldr  @scroll="scrollTo" :champion="this.champion" :patch="this.store.patches[0]" />
+         <Items :champion="this.champion" :patch="this.store.patches[0]" :itemData="this.itemData"/>
+         <Runes :champion="this.champion" :patch="this.store.patches[0]" />
+         <StartingSpells :champion="this.champion" :patch="this.store.patches[0]" :abilities="this.abilities"/>
       </div>
    </div>
 </template>
 
 <style scoped>
-/* .fade-enter-active, */
 .fade-leave-active {
    transition: opacity 1000ms ease-in-out;
 }
@@ -324,7 +324,8 @@ export default {
 
 .setting-content .message {
    padding: 0.4rem 0.8rem;
-   font-style: italic;
+   font-size: 0.8rem;
+   /* font-style: italic; */
 }
 
 a.about {

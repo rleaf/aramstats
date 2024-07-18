@@ -1,19 +1,21 @@
 <script>
 import TldrModal from './modals/TldrModal.vue'
-import Tooltip from '@/components/Tooltip.vue'
+import UXTooltip from '@/components/UXTooltip.vue'
 import { championStore } from '@/stores/championStore'
+import { superStore } from '@/stores/superStore'
 import _runes from '@/constants/runes'
 import _flex from '@/constants/flex'
 
 export default {
    components: {
       TldrModal,
-      Tooltip
+      UXTooltip,
    },
    data() {
       return {
          organizedCore: [],
          coreFocus: 0,
+         store: superStore(),
          config: championStore(),
          runes: _runes,
          flex: _flex,
@@ -234,14 +236,14 @@ export default {
 <template>
    <div class="tldr-main">
       <div class="section-header">
-         <h1>Tldr</h1>
+         <h1>Overview</h1>
          <TldrModal />
       </div>
       <div class="section">
          <div class="core-selection">
             <div class="combination-tooltip">
                <p>Select a <b>combination</b></p>
-               <Tooltip :tip="'core'"/>
+               <UXTooltip :tip="'core'"/>
             </div>
             <div class="combinations">
                <div class="core" :class="{'core-focus' : this.coreFocus === i}" @click="this.setCoreFocus(i)" v-for="(c, i) in this.organizedCore" :key="i">
@@ -261,14 +263,18 @@ export default {
                   <div class="sub-lhs">
                      <a @click="$emit('scroll', 'items')" class="title">Items</a>
                   </div>
-                  <Tooltip :tip="'items'" />
+                  <UXTooltip :tip="'items'" />
                </div>
                <div class="items-wrapper">
    
                   <div class="items-column" :class="{ 'column-bg': (i+1) % 2 === 0 }" v-for="i in 6" :key="i">
                      <span>{{ i }}</span> <!-- KEEP? -->
                      <div v-for="(i, k) in this.itemSort(this.organizedCore[this.coreFocus].items[i]).slice(0, 2)" :key="k">
-                        <img :src="this.itemImage(i[0])" alt="">
+                        <img
+                           @mouseenter="this.store.setTooltipData($event, i[0], 'items')"
+                           @mouseleave="this.store.itemTooltip = false"
+                           :src="this.itemImage(i[0])"
+                           alt="">
                         <div class="winrate">{{ this.filteredWinrate(i[2] / i[1]) }}</div>
                         <div class="total">{{ i[1] }}</div>
                      </div>
@@ -285,10 +291,13 @@ export default {
                            <h3>{{ this.filteredWinrate(startingItems[2] / startingItems[1]) }}</h3>
                            <h3>{{ startingItems[1] }}</h3>
                         </div>
-                        <Tooltip :tip="'starting'" />
+                        <UXTooltip :tip="'starting'" />
                      </div>
                   </div>
-                  <img v-if="(typeof startingItems[0] === 'string')" class="starting-image" :src="this.itemImage(img)" alt="" v-for="(img, i) in startingItems[0].split('_')" :key="i">
+                  <img 
+                     @mouseenter="this.store.setTooltipData($event, i, 'items')"
+                     @mouseleave="this.store.itemTooltip = false"
+                  v-if="(typeof startingItems[0] === 'string')" class="starting-image" :src="this.itemImage(i)" alt="" v-for="(i) in startingItems[0].split('_')" :key="i">
                   <p class="no-data" v-else> Not enough data :(</p>
                </div>
                <div class="spells">
@@ -299,7 +308,7 @@ export default {
                            <h3>{{ this.filteredWinrate(startingSpells[2] / startingSpells[1]) }}</h3>
                            <h3>{{ startingSpells[1] }}</h3>
                         </div>
-                        <Tooltip :tip="'spells'"/>
+                        <UXTooltip :tip="'spells'"/>
                      </div>
                   </div>
                   <img class="starting-image" :src="this.spellImage(img)" alt="" v-for="(img, i) in startingSpells[0].split('_')" :key="i">
@@ -323,7 +332,7 @@ export default {
                            <h3>{{ secondaryRunes[1] }}</h3>
                         </div>
                      </div>
-                     <Tooltip :align="'right'" :tip="'runes'" />
+                     <UXTooltip :align="'right'" :tip="'runes'" />
                   </div>
                </div>
                <div class="runes-wrapper">
@@ -354,7 +363,7 @@ export default {
                         <h3>{{ this.filteredWinrate(levels[2] / levels[1]) }}</h3>
                         <h3>{{ levels[1] }}</h3>
                      </div>
-                     <Tooltip :align="'right'" :tip="'levels'" />
+                     <UXTooltip :align="'right'" :tip="'levels'" />
                   </div>
                </div>
                <div class="level-wrapper">

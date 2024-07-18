@@ -13,6 +13,20 @@
   
   const version = [
    {
+      version: "3.7.1",
+      date: "7/17/24",
+      notes: `More, smaller, additions & syntax.`,
+      add: [
+         `Mouseover items`
+      ],
+      remove: [],
+      fix: [],
+      adjust: [
+         `Wording.`
+      ],
+      known: [],
+   }, 
+   {
       version: "3.7.0",
       date: "7/17/24",
       notes: `There's no guarantee for the lifetime of old patch data, but I will generally leave the previous 2-4 patches up for months.`,

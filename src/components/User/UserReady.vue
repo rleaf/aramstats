@@ -1,7 +1,7 @@
 <script>
 import axios from 'axios'
 import RadarChart from '../RadarChart.vue'
-import Tooltip from '@/components/Tooltip.vue'
+import UXTooltip from '@/components/UXTooltip.vue'
 import Champion from '../Champion.vue'
 import Heatmap from '../Heatmap.vue'
 import StatDropdown from '../StatDropdown.vue'
@@ -16,7 +16,7 @@ import { superStore } from '../../stores/superStore'
 export default {
    components: {
       RadarChart,
-      Tooltip,
+      UXTooltip,
       StatDropdown,
       ImageStatDropdown,
       // RuneStatDropdown,
@@ -644,7 +644,7 @@ export default {
             <div class="section">
                <div class="section-header">
                   <h2>Account</h2>
-                  <Tooltip :align="'left'" :tip="'account'" />
+                  <UXTooltip :align="'left'" :tip="'account'" />
                </div>
 
                <StatDropdown
@@ -773,7 +773,7 @@ export default {
                   <div class="toggle" style="margin-left: auto;">
                      <button @click="this.toggleAll()">Toggle All</button>
                   </div>
-                  <Tooltip :align="'right'" :tip="'championsTable'"/>
+                  <UXTooltip :align="'right'" :tip="'championsTable'"/>
                </div>
                <div class="table-headers">
                   <div class="lhs">

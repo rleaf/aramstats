@@ -1,10 +1,10 @@
 <script>
-import Tooltip from './Tooltip.vue';
+import UXTooltip from './UXTooltip.vue';
 import { summonerStore } from '@/stores/summonerStore'
 
 export default {
    components: {
-      Tooltip
+      UXTooltip
    },
    data() {
       return {
@@ -36,7 +36,7 @@ export default {
          {{ this.header }}
          <img class="arrow"  src="@/assets/svg/arrow3.svg" :class="{ 'arrow-up': this.state }" alt="">
       </div>
-      <Tooltip v-if="!this.persist" :align="'left'" :tip="this.tooltip" />
+      <UXTooltip v-if="!this.persist" :align="'left'" :tip="this.tooltip" />
    </div>
    <div class="stat-body" :class="{ 'truncated': this.state, 'bordered': !this.persist }" :style="this.maxHeight">
       

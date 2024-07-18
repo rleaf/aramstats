@@ -1,10 +1,10 @@
 <script>
 import * as echarts from 'echarts'
-import Tooltip from './Tooltip.vue'
+import UXTooltip from './UXTooltip.vue'
 
 export default {
    components: {
-      Tooltip
+      UXTooltip
    },
    data() {
       return {
@@ -154,7 +154,7 @@ export default {
       <div ref="chart" class="chart">
       </div>
       <div class="chart-util">
-         <Tooltip :align="'right'" :tip="'heatmap'" />
+         <UXTooltip :align="'right'" :tip="'heatmap'" />
          <div class="year-selection">
             <button
                v-for="year in years"

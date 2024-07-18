@@ -1,10 +1,10 @@
 <script>
 // import { championStore } from '@/stores/fchampionStore'
-import Tooltip from '@/components/Tooltip.vue'
+import UXTooltip from '@/components/UXTooltip.vue'
 
 export default {
    components: {
-      Tooltip
+      UXTooltip
    },
    data() {
       return {
@@ -107,7 +107,7 @@ export default {
                <div>
                   <div class="chart-header">
                      <h4>Popularity</h4>
-                     <Tooltip :align="'left'" :tip="'popularity'" />
+                     <UXTooltip :align="'left'" :tip="'popularity'" />
                   </div>
                   <svg>
                      <g v-for="(k, i) in 6" :key="i">
@@ -125,7 +125,7 @@ export default {
                <div>
                   <div class="chart-header">
                      <h4>Winrate</h4>
-                     <Tooltip :align="'left'" :tip="'winrate'" />
+                     <UXTooltip :align="'left'" :tip="'winrate'" />
                   </div>
                   <svg>
                      <g v-for="(_, i) in 6" :key="i">
