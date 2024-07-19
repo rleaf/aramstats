@@ -13,17 +13,16 @@
   
   const version = [
    {
-      version: "3.7.1",
-      date: "7/17/24",
-      notes: `More, smaller, additions & syntax.`,
+      version: "3.8.0",
+      date: "7/19/24",
+      notes: `Pull from more cdns to provide more data for champions & items`,
       add: [
-         `Mouseover items`
+         `Hoverable tooltips on items, spells, and ...`,
+         `gh cdn using Meraki data`
       ],
       remove: [],
       fix: [],
-      adjust: [
-         `Wording.`
-      ],
+      adjust: [],
       known: [],
    }, 
    {

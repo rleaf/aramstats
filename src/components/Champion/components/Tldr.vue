@@ -272,7 +272,7 @@ export default {
                      <div v-for="(i, k) in this.itemSort(this.organizedCore[this.coreFocus].items[i]).slice(0, 2)" :key="k">
                         <img
                            @mouseenter="this.store.setTooltipData($event, i[0], 'items')"
-                           @mouseleave="this.store.itemTooltip = false"
+                           @mouseleave="this.store.tooltip.active = false"
                            :src="this.itemImage(i[0])"
                            alt="">
                         <div class="winrate">{{ this.filteredWinrate(i[2] / i[1]) }}</div>
@@ -296,7 +296,7 @@ export default {
                   </div>
                   <img 
                      @mouseenter="this.store.setTooltipData($event, i, 'items')"
-                     @mouseleave="this.store.itemTooltip = false"
+                     @mouseleave="this.store.tooltip.active = false"
                   v-if="(typeof startingItems[0] === 'string')" class="starting-image" :src="this.itemImage(i)" alt="" v-for="(i) in startingItems[0].split('_')" :key="i">
                   <p class="no-data" v-else> Not enough data :(</p>
                </div>

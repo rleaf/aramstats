@@ -46,8 +46,10 @@ export default {
 
    methods: {
       getChampData() {
-         const url = `https://ddragon.leagueoflegends.com/cdn/${this.store.patches[0]}/data/en_US/champion/${this.backName}.json`
-         axios.get(url).then(res => {
+         // const url = `https://ddragon.leagueoflegends.com/cdn/${this.store.patches[0]}/data/en_US/champion/${this.backName}.json`
+         const url = `https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/champions/${this.backName}.json`
+         axios.get(url, { params: { 'Access-Control-Allow-Origin': 'http://localhost:5173' }}).then(res => {
+         // axios.get(url).then(res => {
             this.championCDN = res.data.data[this.backName]
             this.abilities.push(this.championCDN.passive.image.full)
             for (const spell of this.championCDN.spells) {
@@ -126,7 +128,7 @@ export default {
 </script>
 
 <template>
-   <DataTooltip v-if="this.store.itemTooltip" :champCDN="this.championCDN.spells" />
+   <DataTooltip v-if="this.store.tooltip.active" :champCDN="this.championCDN" />
    <div class="champion-ready-main">
       <Transition name="fade">
          <div v-if="this.patchAlert" class="alert">
@@ -145,11 +147,11 @@ export default {
                   <div class="name">{{ this.name }}</div>
                   <div class="title">{{ this.title }}</div>
                   <div class="champion-abilities">
-                     <div v-for="(id, i) in this.abilities" :key="i">
-                        <img :src="getAbilityImages(id, i)"
-                           @mouseenter="this.store.setTooltipData($event, id, 'spells')"
-                           @mouseleave="this.store.itemTooltip = false"
-                           rel="preload">
+                     <div v-for="(id, i) in this.abilities"
+                        @mouseenter="this.store.setTooltipData($event, id, 'spells', i)"
+                        @mouseleave="this.store.tooltip.active = false"
+                        :key="i">
+                        <img :src="getAbilityImages(id, i)" rel="preload">
                         <div class="spell-letter">
                            {{ abilityLetter(i) }}
                         </div>

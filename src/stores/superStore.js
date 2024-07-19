@@ -9,14 +9,18 @@ export const superStore = defineStore('super', {
          notification: '',       // Notifacation message
          patches: null,          // Array of 10 most recent patches
          items: null,            // Items on most recent patch
-         itemTooltip: false,     // Boolean for item hovering
-         itemTooltipX: 0,        // X position of item tooltip
-         itemTooltipY: 0,        // Y position of item tooltip
-         itemTooltipKey: null,   // Key value for tooltip for indexing
-         runes: null,            // Runes on most recent patch
-         spells: null,           // Spells on most recent patch
-         skills: null,           // Skills on most recent patch
-         tooltipMode: null,
+         tooltip: {
+            active: false,
+            mode: null,
+            x: 0,
+            y: 0,
+            key: null,
+            runes: null,            // Runes on most recent patch
+            spells: null,           // Spells on most recent patch
+            spell: null,
+            skills: null,           // Skills on most recent patch
+            skillIndex: null,       
+         },
       }
    },
    actions: {
@@ -25,12 +29,13 @@ export const superStore = defineStore('super', {
          setTimeout(() => this.notification = '', duration || 2000)
       },
       
-      setTooltipData(e, k, mode) {
-         this.itemTooltip = true
-         this.itemToolTipKey = k
-         this.tooltipMode = mode
-         this.itemTooltipX = e.target.offsetLeft + (e.target.offsetWidth / 2)
-         this.itemTooltipY = e.target.offsetTop - (e.target.offsetHeight)
+      setTooltipData(event, key, mode, skillIndex) {
+         this.tooltip.active = true
+         this.tooltip.mode = mode
+         this.tooltip.x = event.target.offsetLeft + (event.target.offsetWidth / 2)
+         this.tooltip.y = event.target.offsetTop - (event.target.offsetHeight)
+         this.tooltip.key = key
+         this.tooltip.skillIndex = skillIndex
       }
    }
 })
