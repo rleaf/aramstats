@@ -153,6 +153,30 @@
       "perLevel": 0.0,
       "percentPerLevel": 0.0
     },
+    "aramTenacity": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
+    "aramAbilityHaste": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
+    "aramAttackSpeed": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
+    "aramEnergyRegen": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
     "urfDamageTaken": {
       "flat": 0.7,
       "percent": 0.0,
@@ -1979,7 +2003,7 @@
           ]
         }
       ],
-      "lore": null,
+      "lore": "When the Primordians first attacked, humanity was unprepared—until Anima Squad formed to become its last defense. But they are safe no longer, for the Primordians evolved in turn. Their apex being is called Aatrox, whose understanding of humanity only furthers his hatred. His flesh has no limits, his sword no mercy. He is the harbinger of Anima's end.",
       "release": "0000-00-00",
       "set": [
         "Primordian"

@@ -271,7 +271,7 @@ export default {
                      <span>{{ i }}</span> <!-- KEEP? -->
                      <div v-for="(i, k) in this.itemSort(this.organizedCore[this.coreFocus].items[i]).slice(0, 2)" :key="k">
                         <img
-                           @mouseenter="this.store.setTooltipData($event, i[0], 'items')"
+                           @mouseenter="this.store.setTooltipData({ event: $event, key: i[0], mode: 'items' })"
                            @mouseleave="this.store.tooltip.active = false"
                            :src="this.itemImage(i[0])"
                            alt="">
@@ -294,10 +294,13 @@ export default {
                         <UXTooltip :tip="'starting'" />
                      </div>
                   </div>
-                  <img 
-                     @mouseenter="this.store.setTooltipData($event, i, 'items')"
+                  <img
+                     v-if="(typeof startingItems[0] === 'string')"
+                     v-for="i in startingItems[0].split('_')"
+                     :src="this.itemImage(i)"
+                     @mouseenter="this.store.setTooltipData({ event: $event, key: i, mode: 'items' })"
                      @mouseleave="this.store.tooltip.active = false"
-                  v-if="(typeof startingItems[0] === 'string')" class="starting-image" :src="this.itemImage(i)" alt="" v-for="(i) in startingItems[0].split('_')" :key="i">
+                     class="starting-image" alt="" :key="i">
                   <p class="no-data" v-else> Not enough data :(</p>
                </div>
                <div class="spells">
@@ -311,7 +314,12 @@ export default {
                         <UXTooltip :tip="'spells'"/>
                      </div>
                   </div>
-                  <img class="starting-image" :src="this.spellImage(img)" alt="" v-for="(img, i) in startingSpells[0].split('_')" :key="i">
+                  <img class="starting-image"
+                     v-for="(id, i) in startingSpells[0].split('_')"
+                     @mouseenter="this.store.setTooltipData({event: $event, key: id, mode: 'spells'})"
+                     @mouseleave="this.store.tooltip.active = false"
+                     :src="this.spellImage(id)" alt=""
+                     :key="i">
                </div>
             </div>
          </div>
@@ -338,18 +346,32 @@ export default {
                <div class="runes-wrapper">
                   <div class="tldr-primary">
                      <div class="rune-row" alt="" v-for="(row, i) in this.runes[primaryRunes[0]]" :key="i">
-                        <img :class="{'active-rune': rune == activePrimaryRunes[i] }" :src="this.runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
+                        <img :class="{'active-rune': rune == activePrimaryRunes[i] }"
+                           v-for="(rune, j) in row"
+                           :src="this.runeImage(rune)" alt=""
+                           @mouseenter="this.store.setTooltipData({event: $event, key: rune, mode: 'runes', runeTree: primaryRunes[0], runeRow: i})"
+                           @mouseleave="this.store.tooltip.active = false"
+                           :key="j">
                      </div>
                   </div>
                   <div>
                      <div class="tldr-secondary">
                         <div class="rune-row" v-for="(row, i) in this.runes[secondaryRunes[0]].slice(1)" :key="i">
-                           <img :class="{ 'active-rune': activeSecondaryRunes.includes(rune) }" :src="this.runeImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
+                           <img :class="{ 'active-rune': activeSecondaryRunes.includes(rune) }"
+                              v-for="(rune, j) in row"
+                              :src="this.runeImage(rune)" alt=""
+                              @mouseenter="this.store.setTooltipData({event: $event, key: rune, mode: 'runes', runeTree: secondaryRunes[0], runeRow: i+1})"
+                              @mouseleave="this.store.tooltip.active = false"
+                              :key="j">
                         </div>
                      </div>
                      <div class="tldr-flex">
                         <div class="rune-row" v-for="(row, i) in this.flex" :key="i">
-                           <img :class="{ 'active-rune': rune == activeFlexRunes[i] }" :src="this.flexRuneImage(rune)" alt="" v-for="(rune, j) in row" :key="j">
+                           <img :class="{ 'active-rune': rune == activeFlexRunes[i] }"
+                              v-for="(rune, j) in row"
+                              @mouseenter="this.store.setTooltipData({event: $event, key: rune, mode: 'runes', runeTree: this.flex, runeRow: i})"
+                              @mouseleave="this.store.tooltip.active = false"
+                              :src="this.flexRuneImage(rune)" alt="" :key="j">
                         </div>
                      </div>
                   </div>

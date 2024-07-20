@@ -31,8 +31,11 @@ export default {
    },
 
    created() {
+      setTimeout(() => {
+         console.log(this.store.championCDN)
+         
+      }, 400);
       document.title = `${this.name} | ARAM Stats`
-      this.getChampData()
 
       if (this.champion.patch !== this.activePatch) {
          this.patchAlert = true
@@ -41,28 +44,10 @@ export default {
             this.patchAlert = false
          }, 2000);
       }
-
    },
 
    methods: {
-      getChampData() {
-         // const url = `https://ddragon.leagueoflegends.com/cdn/${this.store.patches[0]}/data/en_US/champion/${this.backName}.json`
-         const url = `https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/champions/${this.backName}.json`
-         axios.get(url, { params: { 'Access-Control-Allow-Origin': 'http://localhost:5173' }}).then(res => {
-         // axios.get(url).then(res => {
-            this.championCDN = res.data.data[this.backName]
-            this.abilities.push(this.championCDN.passive.image.full)
-            for (const spell of this.championCDN.spells) {
-               this.abilities.push(spell.image.full)
-            }
-         })
-      },
-
-      getAbilityImages(name, idx) {
-         return (idx === 0) ? `https://ddragon.leagueoflegends.com/cdn/${this.store.patches[0]}/img/passive/${name}` :
-            `https://ddragon.leagueoflegends.com/cdn/${this.store.patches[0]}/img/spell/${name}`
-      },
-
+      // https://ddragon.leagueoflegends.com/cdn/14.14.1/img/spell/AsheSpiritOfTheHawk.png
       abilityLetter(idx) {
          switch (idx) {
             case 0:
@@ -116,7 +101,14 @@ export default {
       },
 
       title() {
-         return (this.championCDN) ? this.championCDN.title : ''
+         return (this.store.championCDN) ? this.store.championCDN.title : ''
+      },
+
+      aramModifiers() {
+         const vals = ['aramDamageDealt', 'aramDamageTaken', 'aramHealing', 'aramShielding']
+         let x = this.store.championCDN.stats
+
+         return x
       }
    },
    
@@ -128,7 +120,10 @@ export default {
 </script>
 
 <template>
-   <DataTooltip v-if="this.store.tooltip.active" :champCDN="this.championCDN" />
+   <Transition name="tooltip-fade">
+      <DataTooltip v-if="this.store.tooltip.active" />
+   </Transition>
+   
    <div class="champion-ready-main">
       <Transition name="fade">
          <div v-if="this.patchAlert" class="alert">
@@ -147,11 +142,11 @@ export default {
                   <div class="name">{{ this.name }}</div>
                   <div class="title">{{ this.title }}</div>
                   <div class="champion-abilities">
-                     <div v-for="(id, i) in this.abilities"
-                        @mouseenter="this.store.setTooltipData($event, id, 'spells', i)"
+                     <div v-for="(id, i) of 'PQWER'"
+                        @mouseenter="this.store.setTooltipData({event: $event, key: id, mode: 'skills', skillIndex: i})"
                         @mouseleave="this.store.tooltip.active = false"
                         :key="i">
-                        <img :src="getAbilityImages(id, i)" rel="preload">
+                        <img v-if="this.store.championCDN" :src="this.store.championCDN.abilities[id][0].icon" rel="preload">
                         <div class="spell-letter">
                            {{ abilityLetter(i) }}
                         </div>
@@ -160,7 +155,29 @@ export default {
                </div>
             </div>
 
-            <div class="header-rhs">
+            <div class="header-rhs2">
+               <div>
+                  <span>Rank</span>
+                  {{ this.champion.rank }}
+               </div>
+               <div>
+                  <span>Pickrate</span>
+                  {{ this.champion.pickRate }}%
+               </div>
+               <div>
+                  <span>Winrate</span>
+                  {{ this.championWinrate }}
+               </div>
+               <div>
+                  <span>Games</span>
+                  {{ this.champion.games }}
+               </div>
+               <div>
+                  <span>Modifiers</span>
+                  <!-- {{ this.store.championCDN.stats }} -->
+               </div>
+            </div>
+            <!-- <div class="header-rhs">
                <div>
                   <h2>Rank</h2>
                   {{ this.champion.rank }}
@@ -174,7 +191,7 @@ export default {
                   {{ championWinrate }}
                   <h2>{{ this.champion.games }} games</h2>
                </div>
-            </div>
+            </div> -->
 
          </div>
 
@@ -206,6 +223,16 @@ export default {
 </template>
 
 <style scoped>
+.tooltip-fade-enter-active,
+.tooltip-fade-leave-active {
+   transition: opacity 200ms ease-in-out;
+}
+
+.tooltip-fade-leave-to,
+.tooltip-fade-enter-from {
+   opacity: 0;
+}
+
 .fade-leave-active {
    transition: opacity 1000ms ease-in-out;
 }
@@ -258,6 +285,31 @@ export default {
    color: var(--color-font);
    border-top: 1px solid var(--cell-border);
    background: radial-gradient(ellipse at top, var(--cell-panel), var(--cell-panel-rgb) 25%);
+}
+
+.header-rhs2 {
+   display: grid;
+   width: 300px;
+   /* flex-wrap: wrap;
+   width: 300px; */
+   font-size: 0.95rem;
+   grid-template-columns: repeat(3, 1fr);
+   /* grid-template-rows: 3; */
+}
+
+.header-rhs2 div {
+   font-weight: bold;
+   /* border: 1px solid white; */
+   /* width: 75px; */
+   /* grid-column: 1;
+   grid-row: 1; */
+}
+
+.header-rhs2 div > span {
+   font-size: 0.9rem;
+   display: block;
+   color: var(--color-font-faded);
+   font-weight: normal;
 }
 
 .header-rhs {

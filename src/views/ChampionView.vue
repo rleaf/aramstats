@@ -18,27 +18,16 @@ export default {
          champion: null,
          cdnData: null,
          loading: false,
-         patches: superStore().patches,
+         store: superStore(),
          patchData: null,
          items: null,
          renderKey: 0,
       }
    },
 
-   mounted() {
-      // this.getChampionData()
-   },
-
-   methods: {
-      async getChampionData() {
-         const url = `https://ddragon.leagueoflegends.com/cdn/${this.patches[0]}/data/en_US/champion/${champions.imageName[this.champion._id]}.json`
-
-         try {
-            this.cdnData = (await axios.get(url)).data.data
-         } catch (e) {
-            if (e instanceof Error) console.log(e)
-         }
-      }
+   created() {
+      this.store.initRunes()
+      this.store.initSpells()
    },
 
    computed: {
@@ -54,7 +43,7 @@ export default {
          } catch (e) {
             if (e instanceof Error) console.log(e)
          } finally {
-            // this.getChampionData()
+            this.store.initChampion(champions.imageName[this.champion._id])
             this.loading = false
             return true          // Inject reactivity into DOM
          }
@@ -68,7 +57,7 @@ export default {
 <template>
    <Loading v-if="this.loading && !this.champion"/>
    <ChampionReady
-      v-else-if="lookup && this.patches && !this.loading && this.champion"
+      v-else-if="lookup && this.store.patches && !this.loading && this.champion"
       :champion="this.champion"
       :key="this.renderKey"/>
    <ChampionError v-else/>

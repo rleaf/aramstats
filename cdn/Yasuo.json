@@ -153,6 +153,30 @@
       "perLevel": 0.0,
       "percentPerLevel": 0.0
     },
+    "aramTenacity": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
+    "aramAbilityHaste": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
+    "aramAttackSpeed": {
+      "flat": 1.025,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
+    "aramEnergyRegen": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
     "urfDamageTaken": {
       "flat": 0.9,
       "percent": 0.0,
@@ -2710,7 +2734,7 @@
           ]
         }
       ],
-      "lore": null,
+      "lore": "The first captain of the Wolf Squad, Yasuo fought alongside Riven in the early days of the invasion. He disappeared only to reemerge years later a battle-hardened survivalist, still wearing his original suit. He's here to warn Anima Squad that the enemy has evolved—and if they want to survive, they'll need all hands (and paws) on deck.",
       "release": "0000-00-00",
       "set": [
         "Anima Squad"

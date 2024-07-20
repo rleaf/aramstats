@@ -153,6 +153,30 @@
       "perLevel": 0.0,
       "percentPerLevel": 0.0
     },
+    "aramTenacity": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
+    "aramAbilityHaste": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
+    "aramAttackSpeed": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
+    "aramEnergyRegen": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
     "urfDamageTaken": {
       "flat": 1.0,
       "percent": 0.0,
@@ -674,7 +698,7 @@
         "projectile": "SPECIAL",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Mimics the details of the mimicked active.\nZoe will cast Spell Thief in place of her own summoner spells if she has either of them as a collected Spell Shard, even if she tries to cast the summoner spell while it is on cooldown.\nMinions that can drop Spell Shards are marked with a tied cosmic balloon that floats above them.\nMinions do not drop a shard for  Teleport.\nZoe utilizes an attack-like animation whenever one of the bubbles hurls itself at an enemy, making it look as if she can attack while moving.\nZoe cannot steal consumables, trinkets, component items, or items that create deployable or persistent effects. Some actives are excluded.\n\n\nItem\n\nStealable\n\n\n Black Spear\n\n\n\n Farsight Alteration\n\n\n\n Hextech Rocketbelt\n\n\n\n Knight's Vow\n\n\n\n Locket of the Iron Solari\n\n\n\n Mercurial Scimitar\n\n\n\n Mikael's Blessing\n\n\n\n Oracle Lens\n\n\n\n Quicksilver Sash\n\n\n\n Randuin's Omen\n\n\n\n Redemption\n\n\n\n Scarecrow Effigy\n\n\n\n Shurelya's Battlesong\n\n\n\n Stridebreaker\n\n\n\n Warding Totem\n\n\n\n Watchful Wardstone\n\n\n\n Vigilant Wardstone\n\n\n\n Youmuu's Ghostblade\n\n\n\n Zeke's Convergence\n\n\n\n Zhonya's Hourglass\n\n\n\n\nKey\n\n\n\n\nCan be stolen.\n\n\n\n\nCannot be stolen.\n\n\n\n\nNot applicable to be stolen.\n\n\n\n\nUntested",
+        "notes": "Mimics the details of the mimicked active.\nZoe will cast Spell Thief in place of her own summoner spells if she has either of them as a collected Spell Shard, even if she tries to cast the summoner spell while it is on cooldown.\nMinions that can drop Spell Shards are marked with a tied cosmic balloon that floats above them.\nMinions do not drop a shard for  Teleport.\nZoe utilizes an attack-like animation whenever one of the bubbles hurls itself at an enemy, making it look as if she can attack while moving.\nZoe cannot steal consumables, trinkets, component items, or items that create deployable or persistent effects. Some actives are excluded.\n\n\nItem\n\nStealable\n\n\n Black Spear\n\n\n\n Farsight Alteration\n\n\n\n Hextech Rocketbelt\n\n\n\n Knight's Vow\n\n\n\n Locket of the Iron Solari\n\n\n\n Mercurial Scimitar\n\n\n\n Mikael's Blessing\n\n\n\n Oracle Lens\n\n\n\n Profane Hydra\n\n\n\n Quicksilver Sash\n\n\n\n Randuin's Omen\n\n\n\n Ravenous Hydra\n\n\n\n Redemption\n\n\n\n Scarecrow Effigy\n\n\n\n Seeker's Armguard\n\n\n\n Shurelya's Battlesong\n\n\n\n Stridebreaker\n\n\n\n Tiamat\n\n\n\n Titanic Hydra\n\n\n\n Warding Totem\n\n\n\n Watchful Wardstone\n\n\n\n Vigilant Wardstone\n\n\n\n Youmuu's Ghostblade\n\n\n\n Zeke's Convergence\n\n\n\n Zhonya's Hourglass\n\n\n\n\nKey\n\n\n\n\nCan be stolen.\n\n\n\n\nCannot be stolen.\n\n\n\n\nNot applicable to be stolen.\n\n\n\n\nUntested",
         "blurb": "Passive - Wheeeee: Whenever  Zoe casts Spell Thief or a summoner spell, she gains  bonus movement speed for a short time. She also conjures 3 orbiting bolts for a period that will each shoot to the nearest enemy, dealing magic damage.",
         "missileSpeed": null,
         "rechargeRate": null,

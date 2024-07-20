@@ -1,38 +1,43 @@
 <script setup>
 import { superStore } from '@/stores/superStore'
 import { computed, onMounted, ref } from 'vue'
-const store = superStore()
 
+const store = superStore()
 const tip = ref(null)
-const data = computed(() => store.items[store.tooltip.key])
-const spells = computed(() => {
-   return [
-      props.champCDN.passive,
-      props.champCDN.spells[0],
-      props.champCDN.spells[1],
-      props.champCDN.spells[2],
-      props.champCDN.spells[3]
-   ]
-})
 
 onMounted(() => {
    tip.value.style.left = store.tooltip.x + 'px'
    tip.value.style.top = store.tooltip.y + 'px'
 
-   const height = (store.tooltip.mode === 'items') ? `-${tip.value.offsetHeight - 30}px` :
-      `120px`
-   // if (store.tooltip.mode === 'items') {
-   //    tip.value.style.transform = `translate(-50%, -${tip.value.offsetHeight - 30}px)`
-   // } else {
-   //    tip.value.style.transform = `translate(-50%, -${tip.value.offsetHeight - 30}px)`
-   // }
+   const height = (store.tooltip.mode === 'skills') ? `120px` : `-${tip.value.offsetHeight - 30}px`
    tip.value.style.transform = `translate(-50%, ${height})`
-   console.log(props.champCDN)
 })
 
-const props = defineProps({
-   champCDN: null,
-})
+/* 
+   Computed
+*/
+
+const data = computed(() => store.items[store.tooltip.key])
+const skills = computed(() => 
+   [
+      store.championCDN.abilities['P'][0],
+      store.championCDN.abilities['Q'][0],
+      store.championCDN.abilities['E'][0],
+      store.championCDN.abilities['W'][0],
+      store.championCDN.abilities['R'][0],
+   ]
+)
+const skill = computed(() => skills.value[store.tooltip.skillIndex])
+const skillCooldown = computed(() => skill.value.cooldown['modifiers'][0]['values'].join('/'))
+const spell = computed(() => store.spells.find(r => r.id == store.tooltip.key))
+const rune = computed(() => store.runes.find(r => r.id == store.tooltip.key))
+
+/* 
+   Methods
+*/
+const reg = (str) => {
+   return str.replaceAll(/<font[^>]*>/g, "")
+}
 </script>
 
 <template>
@@ -41,17 +46,35 @@ const props = defineProps({
       <div v-if="store.tooltip.mode === 'items'">
          <div class="header">
             <h1>{{ data.name }}</h1>
-            <h2>({{ data.gold.total }})</h2>
+            <h2>{{ data.gold.total }}g</h2>
          </div>
          <div class="plain-text">{{ data.plaintext }}</div>
          <div class="description" v-html="data.description" />
       </div>
-      <div v-else-if="store.tooltip.mode === 'spells'" class="spells-tooltip-main">
+
+      <div v-else-if="store.tooltip.mode === 'skills'">
          <div class="header">
-            <h1>{{ spells[store.tooltip.skillIndex].name }}</h1>
+            <h1>{{ skill.name }}</h1>
+            <h2 v-if="skill.cooldown">{{ skillCooldown }}</h2>
          </div>
-         <div class="plain-text">{{ spells[store.tooltip.skillIndex].description }}</div>
-         <div v-html="spells[store.tooltip.skillIndex].tooltip" class="description" />
+          <div class="plain-text" v-for="(d, i) in skill.effects" :key="i">
+            {{ d.description }}
+          </div>
+      </div>
+
+      <div v-else-if="store.tooltip.mode === 'spells'">
+         <div class="header">
+            <h1>{{ spell.name }}</h1>
+            <h2>{{ spell.cooldown }}s</h2>
+         </div>
+         <div class="description">{{ spell.description }}</div>
+      </div>
+
+      <div v-else-if="store.tooltip.mode === 'runes'">
+         <div class="header">
+            <h1>{{ rune.name }}</h1>
+         </div>
+         <div v-html="reg(rune.longDesc)" class="description" />
       </div>
       
    </div>
@@ -74,13 +97,10 @@ const props = defineProps({
    display: flex;
    gap: 10px;
    align-items: baseline;
-   /* margin-top: 0.5rem; */
    margin-bottom: 0.8rem;
-   /* justify-content: space-between; */
 }
 
 h1 {
-   /* display: inline-block; */
    color: var(--color-font-focus);
    font-size: 0.9rem;
    font-weight: bold;
@@ -88,8 +108,6 @@ h1 {
 }
 
 h2 { 
-   /* display: inline-block; */
-   /* color: #ccad49; */
    font-size: 0.8rem;
    font-weight: normal;
    margin: 0;
@@ -97,12 +115,5 @@ h2 {
 
 .plain-text {
    padding-bottom: 0.5rem;
-   /* font-size: 0.75rem; */
-   /* color: var(--color-font-faded); */
 }
-
-
-/* mainText {
-   color: blue;
-} */
 </style>

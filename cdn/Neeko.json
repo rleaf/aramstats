@@ -153,6 +153,30 @@
       "perLevel": 0.0,
       "percentPerLevel": 0.0
     },
+    "aramTenacity": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
+    "aramAbilityHaste": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
+    "aramAttackSpeed": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
+    "aramEnergyRegen": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
     "urfDamageTaken": {
       "flat": 1.0,
       "percent": 0.0,
@@ -231,7 +255,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Neeko can store up the Sho'Ma of multiple units at a time.\nInherent Glamour's cooldown only prevents Neeko from activating disguises; she can still store and remove Sho'Ma while the passive is on cooldown.\nIf Neeko attempts to activate a disguise while near and for the trap, ward, or jungle plant she stored Sho'Ma for, she will leap to that unit's exact position over 1 second and then become disguised. If she does so for a monster and is near its respective jungle camp, she will leap to that monster's usual position in the camp.\nShe will fail to activate the disguise after the leap if she is affected by the same conditions that would break a disguise.\nNeeko will copy aesthetics as well as superficial mechanical statistics. She will fake a number of readings:\nHealth bar (original's current amount becomes her apparent maximum)\nSecondary resource - e.g. mana, energy or none at all (original's current amount becomes her apparent maximum)\nStats\nBuffs and debuffs with their respective icons and VFX/SFX (there are exceptions)\nNeeko sees the buffs that are actually applied to her, while enemies see the disguised champion's buffs.\nKill feed icon\nA number of attributes she actually adopts are:\nBase movement speed\nThe melee or ranged classification of the champion\nBase attack speed and attack ratio\nThe projectile or non-projectile quality of their attack\nAttack range (adopt the new form attack range)\nSize (including size modifiers and base champion size)\nDefault transformation toggle (non-innate)\nVoice lines\nCharacter interactions (jokes, taunts, dances, laughs, toggle effects), as well as their  Recall animation\nNeeko can copy  Samira's taunt animation but she will not actually throw the coin via the  Taunt ability.\nInherent Glamour's disguise is broken by the following spell casts:\nCasting  Blooming Burst or  Tangle-Barbs.\nCasting  Pop Blossom will not break the disguise immediately, but after a delay.\nUsing  Exhaust,  Ignite, or  Smite.\nActivating  Hextech Rocketbelt,  Stridebreaker), or  Redemption.\nThe scoreboard's question mark of Neeko (which indicates an enemy is not currently visible to your team) will disappear, if the  disguised Neeko is visible. Therefore, it can be used to determine, whether a unit is Neeko or not.",
+        "notes": "Neeko can store up the Sho'Ma of multiple units at a time.\nInherent Glamour's cooldown only prevents Neeko from activating disguises; she can still store and remove Sho'Ma while the passive is on cooldown.\nIf Neeko attempts to activate a disguise while near and for the trap, ward, or jungle plant she stored Sho'Ma for, she will leap to that unit's exact position over 1 second and then become disguised. If she does so for a monster and is near its respective jungle camp, she will leap to that monster's usual position in the camp.\nShe will fail to activate the disguise after the leap if she is affected by the same conditions that would break a disguise.\nNeeko will copy aesthetics as well as superficial mechanical statistics. She will fake a number of readings:\nHealth bar (original's current amount becomes her apparent maximum)\nSecondary resource - e.g. mana, energy or none at all (original's current amount becomes her apparent maximum)\nStats\nBuffs and debuffs with their respective icons and VFX/SFX (there are exceptions)\nNeeko sees the buffs that are actually applied to her, while enemies see the disguised champion's buffs.\nKill feed icon\nA number of attributes she actually adopts are:\nBase movement speed\nThe melee or ranged classification of the champion\nBase attack speed and attack ratio\nThe projectile or non-projectile quality of their attack\nAttack range (adopt the new form attack range)\nSize (including size modifiers and base champion size)\nDefault transformation toggle (non-innate)\nVoice lines\nCharacter interactions (jokes, taunts, dances, laughs, toggle effects), as well as their  Recall animation\nNeeko can copy  Samira's taunt animation but she will not actually throw the coin via the  Taunt ability.\nInherent Glamour's disguise is broken by the following spell casts:\nCasting  Blooming Burst or  Tangle-Barbs.\nCasting  Pop Blossom will not break the disguise immediately, but after a delay.\nUsing  Exhaust,  Ignite, or  Smite.\nActivating  Hextech Rocketbelt,  Stridebreaker, or  Redemption.\nThe scoreboard's question mark of Neeko (which indicates an enemy is not currently visible to your team) will disappear, if the  disguised Neeko is visible. Therefore, it can be used to determine, whether a unit is Neeko or not.",
         "blurb": "Innate:  Neeko has a collection of disguises to take on the appearance of allied champions. She can choose a new champion to switch her disguise or select herself to deactivate her disguise. Standing near a non-champion unit will collect its Sho'Ma, adding its disguise to the collection. She can collect only one Sho'Ma, but can discard or consume it.",
         "missileSpeed": null,
         "rechargeRate": null,

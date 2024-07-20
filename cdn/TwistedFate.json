@@ -153,6 +153,30 @@
       "perLevel": 0.0,
       "percentPerLevel": 0.0
     },
+    "aramTenacity": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
+    "aramAbilityHaste": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
+    "aramAttackSpeed": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
+    "aramEnergyRegen": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
     "urfDamageTaken": {
       "flat": 1.0,
       "percent": 0.0,
@@ -876,7 +900,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Both casts count as ability activations for the purposes of on-cast effects such as  Spellblade and triggering  Force Pulse's passive.\nTwisted Fate cannot recast Destiny while  grounded or  rooted.\nThe  nearsight from  Paranoia will overpower the  reveal from Destiny regardless of which one was cast first (enemy champions can still be revealed by Destiny after Paranoia ends if durations permit).\nUsing the recast will inform allies with a ping.\nBoth allies and enemies can see an indicator at the targeted location of where Twisted Fate will appear.\nThe following table refers for interactions while Twisted Fate is  channeling:\n\n\nType\n\nChannel\n\n\nAttacking\n\nDisabled\n\n\nAbilities\n\n Pick a Card is usable.  Wild Cards is disabled.\n\n\nMovement\n\nDisabled\n\n\nItems\n\nUsable\n\nAll the other item-actives are usable\n\n\nDisabled\n\n Hextech Rocketbelt  Stridebreaker\n\n\nInterrupted by\n\n Zhonya's Hourglass\n\n\nConsumables\n\nUsable\n\n\nSpells\n\nUsable\n\nN/A\n\n\nDisabled\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite  Flash  Teleport  Recall  Hexflash  Mark  Dash\n\n\nInterrupted by\n\nN/A\n\n\nInterrupted by\n\nDeath Grounding effects Immobilizing effects Cast-inhibiting effects\n\nTrying to cast a disabled active will buffer it to cast at the completion of the channel.",
+        "notes": "Both casts count as ability activations for the purposes of on-cast effects such as  Spellblade and triggering  Force Pulse's passive.\nTwisted Fate cannot recast Destiny while  grounded or  rooted.\nThe  nearsight from  Paranoia will overpower the  reveal from Destiny regardless of which one was cast first (enemy champions can still be revealed by Destiny after Paranoia ends if durations permit).\nUsing the recast will inform allies with a ping.\nBoth allies and enemies can see an indicator at the targeted location of where Twisted Fate will appear.\nThe following table refers for interactions while Twisted Fate is  channeling:\nItem actives with cast times as well as  Titanic Hydra are disabled during the channel.\nTrying to cast a disabled item active will buffer it to cast at the completion of the channel.\n\n\nType\n\nChannel\n\n\nAttacking\n\nDisabled\n\n\nAbilities\n\n Pick a Card is usable.  Wild Cards is disabled.\n\n\nMovement\n\nDisabled\n\n\nItems\n\nUsable\n\nAll the other item-actives are usable\n\n\nDisabled\n\nN/A\n\n\nInterrupted by\n\n Zhonya's Hourglass\n\n\nConsumables\n\nUsable\n\n\nSpells\n\nUsable\n\nN/A\n\n\nDisabled\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite  Flash  Teleport  Recall  Hexflash  Mark  Dash\n\n\nInterrupted by\n\nN/A\n\n\nInterrupted by\n\nDeath Grounding effects Immobilizing effects Cast-inhibiting effects",
         "blurb": "Active:  Twisted Fate marks all enemy champions,  revealing them for a few seconds. Destiny can be recast within the duration.",
         "missileSpeed": null,
         "rechargeRate": null,

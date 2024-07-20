@@ -18,7 +18,8 @@
       notes: `Pull from more cdns to provide more data for champions & items`,
       add: [
          `Hoverable tooltips on items, spells, and ...`,
-         `gh cdn using Meraki data`
+         `gh cdn using Meraki data`,
+         `ddragon -> cdragon (but still use some ddragon)`
       ],
       remove: [],
       fix: [],

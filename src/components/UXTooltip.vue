@@ -54,11 +54,11 @@ export default {
    visibility: hidden;
    position: absolute;
    z-index: 10;
-   color: var(--color-font-faded);
+   color: var(--color-font);
    font-size: 0.8rem;
    line-height: 1.35;
    font-style: normal;
-   background: var(--off-blue);
+   background: var(--cell-panel);
    border: 1px solid var(--cell-border);
    border-radius: 8px;
    padding: 0.2rem 1.5rem;

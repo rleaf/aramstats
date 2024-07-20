@@ -153,6 +153,30 @@
       "perLevel": 0.0,
       "percentPerLevel": 0.0
     },
+    "aramTenacity": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
+    "aramAbilityHaste": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
+    "aramAttackSpeed": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
+    "aramEnergyRegen": {
+      "flat": 1.0,
+      "percent": 0.0,
+      "perLevel": 0.0,
+      "percentPerLevel": 0.0
+    },
     "urfDamageTaken": {
       "flat": 0.9,
       "percent": 0.0,
@@ -1620,7 +1644,7 @@
           ]
         }
       ],
-      "lore": null,
+      "lore": "Every Anima Squad recruit knows Illaoi's booming laugh—and her notoriously tough training sessions—all too well. As someone always looking towards the future, it may seem strange that she is also Anima Squad's keeper of the Old Ways. But Illaoi knows that there was life before Final City, and she will ensure life continues long after the war is done.",
       "release": "0000-00-00",
       "set": [
         "Anima Squad"

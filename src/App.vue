@@ -20,46 +20,8 @@ for (const champion of champions.names) {
 }
 
 onMounted(async () => {
-  try {
-    const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
-    store.patches = (await axios.get(url)).data.slice(0, 10)
-    
-  } catch (e) {
-    if (e instanceof Error) console.log(e)
-  }
-
-  // Items
-  try {
-    const url = `https://ddragon.leagueoflegends.com/cdn/${store.patches[0]}/data/en_US/item.json`
-    store.items = (await axios.get(url)).data.data
-  } catch (e){
-    if (e instanceof Error) console.log(e)
-  }
-
-  // Spells
-  try {
-    const url = `https://ddragon.leagueoflegends.com/cdn/${store.patches[0]}/data/en_US/item.json`
-    store.spells = (await axios.get(url)).data.data
-  } catch (e){
-    if (e instanceof Error) console.log(e)
-  }
-
-  // // Skills
-  // try {
-  //   const url = `https://ddragon.leagueoflegends.com/cdn/${store.patches[0]}/data/en_US/item.json`
-  //   store.skills = (await axios.get(url)).data.data
-  // } catch (e){
-  //   if (e instanceof Error) console.log(e)
-  // }
-
-  // Runes
-  try {
-    const url = `https://ddragon.leagueoflegends.com/cdn/${store.patches[0]}/data/en_US/runesReforged.json`
-    store.runes = (await axios.get(url)).data.data
-  } catch (e){
-    if (e instanceof Error) console.log(e)
-  }
-
+  await store.initPatches()
+  await store.initItems()
 })
 </script>
 

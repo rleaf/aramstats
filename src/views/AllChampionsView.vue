@@ -2,6 +2,7 @@
 import Loading from '../components/Loading.vue'
 import axios from 'axios'
 import champions from '../constants/champions'
+import { superStore } from '@/stores/superStore'
 
 export default {
    components: {
@@ -9,8 +10,8 @@ export default {
    },
    data() {
       return {
+         store: superStore(),
          champions: null,
-         patch: null,
          total: null,
          region: 'Global',
          sort: 'rank',
@@ -24,22 +25,12 @@ export default {
    },
 
    created() {
-      this.getCurrentPatch()
-      this.lookup()
+      this.lookup() 
    },
    
    methods: {
-      async getCurrentPatch() {
-         const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
-
-         try {
-            this.patch = (await axios.get(url)).data[0]
-         } catch (e) {
-            console.log(e, 'getCurrentPatch')
-         }
-      },
       champIcon(id) {
-         if (this.patch) return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/champion/${champions.imageName[id]}.png`
+         return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/champion/${champions.imageName[id]}.png`
       },
       lookup() {
          const url = `/api/championsList`
@@ -119,6 +110,9 @@ export default {
    },
 
    computed: {
+      patch() {
+         if (this.store.patches) return this.store.patches[0]
+      },
       getChampionsList() {
          if (this.champions) {
             // const table = {
