@@ -14,12 +14,11 @@
   const version = [
    {
       version: "3.8.0",
-      date: "7/19/24",
-      notes: `Pull from more cdns to provide more data for champions & items`,
+      date: "7/21/24",
+        notes: `More information on champion pages. Users can now hover champion skills, items, spells, and runes in the "Overview" section. You'll also find the ARAM specific stat modifiers on the right hand side near the top of the page. I'm looking into ways to implement skill modifications as well.`,
       add: [
-         `Hoverable tooltips on items, spells, and ...`,
-         `gh cdn using Meraki data`,
-         `ddragon -> cdragon (but still use some ddragon)`
+         `Hoverable tooltips for items, summoner spells, champion skills, and runes.`,
+         `Using cdragon cdn & setup gh cdn using Meraki data.`,
       ],
       remove: [],
       fix: [],

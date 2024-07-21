@@ -101,7 +101,7 @@ export default {
 .notes p {
    color: var(--color-font-faded);
    font-size: 0.93rem;
-   line-height: 1.2;
+   line-height: 1.3;
    margin-bottom: 2rem;
 }
 

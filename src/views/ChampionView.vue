@@ -26,6 +26,8 @@ export default {
    },
 
    created() {
+      const champ = champions.imageName[champions.urlToId[this.$route.params.champion.toLowerCase()]]
+      if (champ) this.store.initChampion(champ)
       this.store.initRunes()
       this.store.initSpells()
    },
@@ -38,12 +40,12 @@ export default {
 
          try {
             const url = `/api/champion/${this.$route.params.champion}`
-            this.champion = (await axios.get(url, {params: { patch: this.patchData } })).data
+            this.champion = (await axios.get(url, {params: { patch: this.patchData }})).data
             this.renderKey++     // Re-render via keys
          } catch (e) {
             if (e instanceof Error) console.log(e)
          } finally {
-            this.store.initChampion(champions.imageName[this.champion._id])
+            // this.store.initChampion(champions.imageName[this.champion._id])
             this.loading = false
             return true          // Inject reactivity into DOM
          }

@@ -28,7 +28,11 @@ const skills = computed(() =>
    ]
 )
 const skill = computed(() => skills.value[store.tooltip.skillIndex])
-const skillCooldown = computed(() => skill.value.cooldown['modifiers'][0]['values'].join('/'))
+const skillCooldown = computed(() => {
+   const o = skill.value.cooldown['modifiers'][0]['values']
+   if (o.length > 5) return `${o[0]} - ${o[o.length - 1]}s`
+   return o.join('/') + 's'
+})
 const spell = computed(() => store.spells.find(r => r.id == store.tooltip.key))
 const rune = computed(() => store.runes.find(r => r.id == store.tooltip.key))
 

@@ -31,10 +31,10 @@ export default {
    },
 
    created() {
-      setTimeout(() => {
-         console.log(this.store.championCDN)
+      // setTimeout(() => {
+      //    console.log(this.store.championCDN)
          
-      }, 400);
+      // }, 400);
       document.title = `${this.name} | ARAM Stats`
 
       if (this.champion.patch !== this.activePatch) {
@@ -105,10 +105,33 @@ export default {
       },
 
       aramModifiers() {
-         const vals = ['aramDamageDealt', 'aramDamageTaken', 'aramHealing', 'aramShielding']
-         let x = this.store.championCDN.stats
+         if (!this.store.championCDN) return
 
-         return x
+         const statMods = {
+            'Ability Haste': this.store.championCDN.stats['aramAbilityHaste'],
+            'Attack Speed': this.store.championCDN.stats['aramAttackSpeed'],
+            'Damage Dealt': this.store.championCDN.stats['aramDamageDealt'],
+            'Damage Taken': this.store.championCDN.stats['aramDamageTaken'],
+            'Energy Regen': this.store.championCDN.stats['aramEnergyRegen'],
+            'Healing': this.store.championCDN.stats['aramHealing'],
+            'Shielding': this.store.championCDN.stats['aramShielding'],
+            'Tenacity': this.store.championCDN.stats['aramTenacity']
+         }
+
+         for (const x of Object.entries(statMods)) {
+            if (!x[1] || x[1].flat === 1) {
+               delete statMods[x[0]]
+               continue
+            }
+            if (x[1].flat % 1 != 0) {
+               const v = Math.round((x[1].flat - 1) * 1000) / 10
+               statMods[x[0]] = (x[1].flat - 1 > 0) ? `+${v}%` : `${v}%`
+            } else {
+               statMods[x[0]] = `${x[1].flat}`
+            }
+         }
+
+         return statMods
       }
    },
    
@@ -155,43 +178,33 @@ export default {
                </div>
             </div>
 
-            <div class="header-rhs2">
-               <div>
-                  <span>Rank</span>
-                  {{ this.champion.rank }}
+            <div class="header-rhs">
+               <div class="main-stats">
+                  <div>
+                     <span>Rank</span>
+                     {{ this.champion.rank }}
+                  </div>
+                  <div>
+                     <span>Pickrate</span>
+                     {{ this.champion.pickRate }}%
+                  </div>
+                  <div>
+                     <span>Winrate</span>
+                     {{ this.championWinrate }}
+                  </div>
+                  <div>
+                     <span>Games</span>
+                     {{ this.champion.games }}
+                  </div>
                </div>
-               <div>
-                  <span>Pickrate</span>
-                  {{ this.champion.pickRate }}%
-               </div>
-               <div>
-                  <span>Winrate</span>
-                  {{ this.championWinrate }}
-               </div>
-               <div>
-                  <span>Games</span>
-                  {{ this.champion.games }}
-               </div>
-               <div>
-                  <span>Modifiers</span>
-                  <!-- {{ this.store.championCDN.stats }} -->
+
+               <div class="aram-mods" v-if="this.aramModifiers">
+                  <div v-for="(s, i) in Object.entries(this.aramModifiers)" :key="i">
+                     <span>{{ s[0] }}</span>
+                     {{ s[1] }}
+                  </div>
                </div>
             </div>
-            <!-- <div class="header-rhs">
-               <div>
-                  <h2>Rank</h2>
-                  {{ this.champion.rank }}
-               </div>
-               <div>
-                  <h2>Pickrate</h2>
-                  {{ this.champion.pickRate }}%
-               </div>
-               <div>
-                  <h2>Winrate</h2>
-                  {{ championWinrate }}
-                  <h2>{{ this.champion.games }} games</h2>
-               </div>
-            </div> -->
 
          </div>
 
@@ -287,17 +300,20 @@ export default {
    background: radial-gradient(ellipse at top, var(--cell-panel), var(--cell-panel-rgb) 25%);
 }
 
-.header-rhs2 {
-   display: grid;
-   width: 300px;
-   /* flex-wrap: wrap;
-   width: 300px; */
-   font-size: 0.95rem;
-   grid-template-columns: repeat(3, 1fr);
-   /* grid-template-rows: 3; */
+.header-rhs {
+   /* width: 300px; */
+
 }
 
-.header-rhs2 div {
+.main-stats {
+   display: flex;
+   margin-bottom: 20px;
+   gap: 40px;
+   font-size: 1.1rem;
+   /* grid-template-columns: repeat(3, 100px); */
+}
+
+.main-stats div {
    font-weight: bold;
    /* border: 1px solid white; */
    /* width: 75px; */
@@ -305,14 +321,24 @@ export default {
    grid-row: 1; */
 }
 
-.header-rhs2 div > span {
+.header-rhs span {
    font-size: 0.9rem;
    display: block;
    color: var(--color-font-faded);
    font-weight: normal;
 }
 
-.header-rhs {
+.aram-mods {
+   display: flex;
+   gap: 10px;
+}
+
+.aram-mods div {
+   font-size: 0.95rem;
+   font-weight: bold;
+}
+
+/* .header-rhs {
    display: flex;
    gap: 80px;
 }
@@ -328,7 +354,7 @@ export default {
    color: var(--color-font);
    font-size: 1.5rem;
    font-weight: bold;
-}
+} */
 
 .settings {
    display: flex;

@@ -60,7 +60,7 @@ export const superStore = defineStore('super', {
       // Data generated using Meraki: https://github.com/meraki-analytics/lolstaticdata
       async initChampion(champ) {
          try {
-            const url = `https://cdn.jsdelivr.net/gh/rleaf/aramstats@master/cdn/${champ}.json`
+            const url = `https://cdn.jsdelivr.net/gh/rleaf/aramstats@latest/cdn/${champ}.json`
             this.championCDN = (await axios.get(url)).data
          } catch (e) {
             if (e instanceof Error) console.log(e)
