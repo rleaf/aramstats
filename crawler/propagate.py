@@ -49,18 +49,18 @@ class Propagate():
          skill_level_bin = []
          item_bin = []
          match_timeline = util.get_match_timeline(match_id, self.region)
-         
-         for frame in match_timeline["info"]["frames"]:
-            for event in frame["events"]:
-               if event["type"] == "SKILL_LEVEL_UP" and event["levelUpType"] == "NORMAL":
-                  skill_level_bin.append(event)
-               if event["type"] == "ITEM_PURCHASED" or event["type"] == "ITEM_SOLD" or event["type"] == "ITEM_UNDO":
-                  item_bin.append(event)
 
-         timeline_bin = [skill_level_bin, item_bin]
+         if match_timeline != 404:
+            for frame in match_timeline["info"]["frames"]:
+               for event in frame["events"]:
+                  if event["type"] == "SKILL_LEVEL_UP" and event["levelUpType"] == "NORMAL":
+                     skill_level_bin.append(event)
+                  if event["type"] == "ITEM_PURCHASED" or event["type"] == "ITEM_SOLD" or event["type"] == "ITEM_UNDO":
+                     item_bin.append(event)
+
+         timeline_bin = [skill_level_bin, item_bin] if match_timeline else []
 
          match_batch.append({
-            # '_id': match['metadata']['matchId'],
             'matchId': match['metadata']['matchId'],
             'region': match_region,
             'metadata': match['metadata'],

@@ -43,6 +43,7 @@ class ChampionParser():
 
       trail_id = None
       for i, batch in enumerate(self.get_batches()):
+         # print(self.match_collection)
          trail_id = batch[-1]['_id']
          if (i % 5 == 0 and i > 0): # Update every 50 matches
             meta_collection.update_one({ "_id": "crawler" }, { "$set": {"trail": ObjectId(trail_id)} })
@@ -153,8 +154,8 @@ def forward(match, items):
    bin = []
 
    for participant in match["info"]["participants"]:
-      item_timeline = list(filter(lambda x: participant["participantId"] == x["participantId"], match["timeline"][1]))
-      abilities_timeline = list(filter(lambda x: participant["participantId"] == x["participantId"], match["timeline"][0]))
+
+      update = { "$inc": {} }
 
       # <int> Win
       win = 1 if participant["win"] else 0
@@ -171,167 +172,169 @@ def forward(match, items):
 
       if len(filtered_items) == 0: continue # Terminate iter if champ has 0 filtered items (undesired data)
 
-      item_order = []
-      for i in item_timeline:
-         if i["type"] != "ITEM_PURCHASED" or i["itemId"] not in filtered_items or i["itemId"] in item_order: continue
-         item_order.append(i["itemId"])
-
-      # Core item **combination**. Sorted to consolidate permutations. 
-      boots = ["1001", "3005", "3047", "3117", "3006", "3009", "3020", "3111", "3158", "2422"]
-      core = [str(item_order[i]) for i in range(3) if len(item_order) > 2]
-      core = list(map(lambda x: "10010" if x in boots else x, core))
-      core = '_'.join(sorted(core))
-
-      # <str> Skill path string ID used as field in database.
-      skill_path = ''.join(str(x["skillSlot"]) for x in abilities_timeline)
-      if len(skill_path) == 0: continue # Terminate iter if champ has 0 skills leveled. ex: participant5 for EUN1_3504521192 (undesired data)
-      basic_skills = skill_path.replace('4', '')
-
       # <spells> Summoner spells
       summoner_spells = [str(participant["summoner1Id"]), str(participant["summoner2Id"])]
       summoner_spells.sort()
       summoner_spells = '_'.join(summoner_spells)
-      # <str> Level order of spells.
-      level_order = ''
-      
-      ql, wl, el = 0, 0, 0
-      for v in basic_skills:
-         if v == '1': ql +=1
-         if v == '2': wl +=1
-         if v == '3': el +=1
-
-      skills = {
-         '1': ql,
-         '2': wl,
-         '3': el
-      }
-
-      table = {
-         '1': 'q',
-         '2': 'w',
-         '3': 'e'
-      }
-
-      count = [ [] for _ in range(max(ql, wl, el) + 1) ]
-      for s in skills: count[-skills[s]-1].append(s)
-
-      """ 
-      Cause I'm gonna forget in 5 minutes.
-      1. iterate through count list which stores values by frequency in spell string where most occuring (5 levels) is the leading list and the least occuring (0 levels) is the trailing list.
-      2.0 If multiple spells detected in trailing list, where multiple spells are not leveled at all, then add to level_order string arbitrarily & CONTINUE.
-      2.1 If there are multiple spells with same frequency (level 18 champ has all 3 spells leveled 5 times), then iter through that and find the spell that has the earliest last occurence and append, by earliest last occurence first, to the level_order string.
-      3. If there is only one spell in a count sub-list, add to string. 
-      """
-      for i, arr in enumerate(count):
-         if len(arr) > 1:
-            if i == max(ql, wl, el):
-               for v in arr: level_order += table[v] 
-               continue
-            o = {v: len(basic_skills) - 1 - basic_skills[::-1].index(v) for v in arr}
-            s = sorted(o, key=lambda x: o[x])
-            for u in s: level_order += table[u]
-         elif len(arr) == 1:
-            level_order += table[arr[0]]
 
       primary_runes = [str(y["perk"]) for y in participant["perks"]["styles"][0]["selections"]]
       primary_tree = participant["perks"]["styles"][0]["style"]
 
       secondary_runes = [str(y["perk"]) for y in participant["perks"]["styles"][1]["selections"]]
       secondary_tree = participant["perks"]["styles"][1]["style"]
-
       tertiary_offense = participant["perks"]["statPerks"]["offense"]
       tertiary_flex = participant["perks"]["statPerks"]["flex"]
       tertiary_defense = participant["perks"]["statPerks"]["defense"]
 
-      starting_build = []
-      for x in item_timeline:
-         if x["timestamp"] < 60000:
-            if x["type"] == "ITEM_PURCHASED":
-               starting_build.append(x["itemId"])
-            if x["type"] == "ITEM_UNDO":
-               if x["beforeId"] in starting_build: starting_build.remove(x["beforeId"])
-         else:
-            break
+      if match["timeline"]: 
+         item_timeline = list(filter(lambda x: participant["participantId"] == x["participantId"], match["timeline"][1]))
+         abilities_timeline = list(filter(lambda x: participant["participantId"] == x["participantId"], match["timeline"][0]))
 
-      starting_build.sort()
-      starting_build = '_'.join(str(x) for x in starting_build)
-      if starting_build == '': starting_build = '0000'
+         item_order = []
+         for i in item_timeline:
+            if i["type"] != "ITEM_PURCHASED" or i["itemId"] not in filtered_items or i["itemId"] in item_order: continue
+            item_order.append(i["itemId"])
 
-      update = {
-         "$inc": {
-            "games": 1,
-            "wins": win,
-            "rank": 0,
-            "pickRate": 0.0,
-            # Skills
-            f"skills.{level_order}.games": 1,
-            f"skills.{level_order}.wins": win,
-            # Runes
-            f"runes.primary.{primary_runes[0]}.games": 1,
-            f"runes.primary.{primary_runes[0]}.wins": win,
-            f"runes.primary.{primary_runes[1]}.games": 1,
-            f"runes.primary.{primary_runes[1]}.wins": win,
-            f"runes.primary.{primary_runes[2]}.games": 1,
-            f"runes.primary.{primary_runes[2]}.wins": win,
-            f"runes.primary.{primary_runes[3]}.games": 1,
-            f"runes.primary.{primary_runes[3]}.wins": win,
-            f"runes.secondary.{secondary_runes[0]}.games": 1,
-            f"runes.secondary.{secondary_runes[0]}.wins": win,
-            f"runes.secondary.{secondary_runes[1]}.games": 1,
-            f"runes.secondary.{secondary_runes[1]}.wins": win,
-            f"runes.tertiary.offense.{tertiary_offense}.games": 1,
-            f"runes.tertiary.offense.{tertiary_offense}.wins": win,
-            f"runes.tertiary.defense.{tertiary_defense}.games": 1,
-            f"runes.tertiary.defense.{tertiary_defense}.wins": win,
-            f"runes.tertiary.flex.{tertiary_flex}.games": 1,
-            f"runes.tertiary.flex.{tertiary_flex}.wins": win,
-            # Starting Items
-            f"starting.{starting_build}.games": 1,
-            f"starting.{starting_build}.wins": win,
-            # Summoner Spells
-            f"spells.{summoner_spells}.games": 1,
-            f"spells.{summoner_spells}.wins": win,
+         # Core item **combination**. Sorted to consolidate permutations. 
+         boots = ["1001", "3005", "3047", "3117", "3006", "3009", "3020", "3111", "3158", "2422"]
+         core = [str(item_order[i]) for i in range(3) if len(item_order) > 2]
+         core = list(map(lambda x: "10010" if x in boots else x, core))
+         core = '_'.join(sorted(core))
+
+         # Starting Build
+         starting_build = []
+         for x in item_timeline:
+            if x["timestamp"] < 60000:
+               if x["type"] == "ITEM_PURCHASED":
+                  starting_build.append(x["itemId"])
+               if x["type"] == "ITEM_UNDO":
+                  if x["beforeId"] in starting_build: starting_build.remove(x["beforeId"])
+            else:
+               break
+
+         starting_build.sort()
+         starting_build = '_'.join(str(x) for x in starting_build)
+         if starting_build == '': starting_build = '0000'
+
+
+         # <str> Skill path string ID used as field in database.
+         skill_path = ''.join(str(x["skillSlot"]) for x in abilities_timeline)
+         if len(skill_path) == 0: continue # Terminate iter if champ has 0 skills leveled. ex: participant5 for EUN1_3504521192 (undesired data)
+         basic_skills = skill_path.replace('4', '')
+         
+         # <str> Level order of spells.
+         level_order = ''
+         ql, wl, el = 0, 0, 0
+
+         for v in basic_skills:
+            if v == '1': ql +=1
+            if v == '2': wl +=1
+            if v == '3': el +=1
+
+         skills = {
+            '1': ql,
+            '2': wl,
+            '3': el
          }
-      }
 
-      if core:
-         update["$inc"][f"core.{core}.games"] = 1
-         update["$inc"][f"core.{core}.wins"] = win
-         update["$inc"][f"core.{core}.starting.{starting_build}.games"] = 1
-         update["$inc"][f"core.{core}.starting.{starting_build}.wins"] = win
-         update["$inc"][f"core.{core}.spells.{summoner_spells}.games"] = 1
-         update["$inc"][f"core.{core}.spells.{summoner_spells}.wins"] = win
-         # Raw data
-         update["$inc"][f"raw.core.{core}.levels.{skill_path}.games"] = 1
-         update["$inc"][f"raw.core.{core}.levels.{skill_path}.wins"] = win
-         # Rune tree
-         update["$inc"][f"core.{core}.runes.tree.primary.{primary_tree}.games"] = 1
-         update["$inc"][f"core.{core}.runes.tree.primary.{primary_tree}.wins"] = win
-         update["$inc"][f"core.{core}.runes.tree.secondary.{secondary_tree}.games"] = 1
-         update["$inc"][f"core.{core}.runes.tree.secondary.{secondary_tree}.wins"] = win
-         # Runes
-         update["$inc"][f"core.{core}.runes.primary.{primary_runes[0]}.games"] = 1
-         update["$inc"][f"core.{core}.runes.primary.{primary_runes[0]}.wins"] = win
-         update["$inc"][f"core.{core}.runes.primary.{primary_runes[1]}.games"] = 1
-         update["$inc"][f"core.{core}.runes.primary.{primary_runes[1]}.wins"] = win
-         update["$inc"][f"core.{core}.runes.primary.{primary_runes[2]}.games"] = 1
-         update["$inc"][f"core.{core}.runes.primary.{primary_runes[2]}.wins"] = win
-         update["$inc"][f"core.{core}.runes.primary.{primary_runes[3]}.games"] = 1
-         update["$inc"][f"core.{core}.runes.primary.{primary_runes[3]}.wins"] = win
-         update["$inc"][f"core.{core}.runes.secondary.{secondary_runes[0]}.games"] = 1
-         update["$inc"][f"core.{core}.runes.secondary.{secondary_runes[0]}.wins"] = win
-         update["$inc"][f"core.{core}.runes.secondary.{secondary_runes[1]}.games"] = 1
-         update["$inc"][f"core.{core}.runes.secondary.{secondary_runes[1]}.wins"] = win
-         update["$inc"][f"core.{core}.runes.tertiary.offense.{tertiary_offense}.games"] = 1
-         update["$inc"][f"core.{core}.runes.tertiary.offense.{tertiary_offense}.wins"] = win
-         update["$inc"][f"core.{core}.runes.tertiary.defense.{tertiary_defense}.games"] = 1
-         update["$inc"][f"core.{core}.runes.tertiary.defense.{tertiary_defense}.wins"] = win
-         update["$inc"][f"core.{core}.runes.tertiary.flex.{tertiary_flex}.games"] = 1
-         update["$inc"][f"core.{core}.runes.tertiary.flex.{tertiary_flex}.wins"] = win
+         table = {
+            '1': 'q',
+            '2': 'w',
+            '3': 'e'
+         }
 
-         for i, item in enumerate(item_order):
-            update["$inc"][f"core.{core}.items.{i+1}.{item}.games"] = 1
-            update["$inc"][f"core.{core}.items.{i+1}.{item}.wins"] = win
+         count = [ [] for _ in range(max(ql, wl, el) + 1) ]
+         for s in skills: count[-skills[s]-1].append(s)
+
+         """ 
+         Cause I'm gonna forget in 5 minutes.
+         1. iterate through count list which stores values by frequency in spell string where most occuring (5 levels) is the leading list and the least occuring (0 levels) is the trailing list.
+         2.0 If multiple spells detected in trailing list, where multiple spells are not leveled at all, then add to level_order string arbitrarily & CONTINUE.
+         2.1 If there are multiple spells with same frequency (level 18 champ has all 3 spells leveled 5 times), then iter through that and find the spell that has the earliest last occurence and append, by earliest last occurence first, to the level_order string.
+         3. If there is only one spell in a count sub-list, add to string. 
+         """
+         for i, arr in enumerate(count):
+            if len(arr) > 1:
+               if i == max(ql, wl, el):
+                  for v in arr: level_order += table[v] 
+                  continue
+               o = {v: len(basic_skills) - 1 - basic_skills[::-1].index(v) for v in arr}
+               s = sorted(o, key=lambda x: o[x])
+               for u in s: level_order += table[u]
+            elif len(arr) == 1:
+               level_order += table[arr[0]]
+
+         update["$inc"][f"skills.{level_order}.games"] = 1
+         update["$inc"][f"skills.{level_order}.wins"] = win
+         update["$inc"][f"starting.{starting_build}.games"] = 1
+         update["$inc"][f"starting.{starting_build}.wins"] = win
+
+         if core:
+            update["$inc"][f"core.{core}.games"] = 1
+            update["$inc"][f"core.{core}.wins"] = win
+            update["$inc"][f"core.{core}.starting.{starting_build}.games"] = 1
+            update["$inc"][f"core.{core}.starting.{starting_build}.wins"] = win
+            update["$inc"][f"core.{core}.spells.{summoner_spells}.games"] = 1
+            update["$inc"][f"core.{core}.spells.{summoner_spells}.wins"] = win
+            # Raw data
+            update["$inc"][f"raw.core.{core}.levels.{skill_path}.games"] = 1
+            update["$inc"][f"raw.core.{core}.levels.{skill_path}.wins"] = win
+            # Rune tree
+            update["$inc"][f"core.{core}.runes.tree.primary.{primary_tree}.games"] = 1
+            update["$inc"][f"core.{core}.runes.tree.primary.{primary_tree}.wins"] = win
+            update["$inc"][f"core.{core}.runes.tree.secondary.{secondary_tree}.games"] = 1
+            update["$inc"][f"core.{core}.runes.tree.secondary.{secondary_tree}.wins"] = win
+            # Runes
+            update["$inc"][f"core.{core}.runes.primary.{primary_runes[0]}.games"] = 1
+            update["$inc"][f"core.{core}.runes.primary.{primary_runes[0]}.wins"] = win
+            update["$inc"][f"core.{core}.runes.primary.{primary_runes[1]}.games"] = 1
+            update["$inc"][f"core.{core}.runes.primary.{primary_runes[1]}.wins"] = win
+            update["$inc"][f"core.{core}.runes.primary.{primary_runes[2]}.games"] = 1
+            update["$inc"][f"core.{core}.runes.primary.{primary_runes[2]}.wins"] = win
+            update["$inc"][f"core.{core}.runes.primary.{primary_runes[3]}.games"] = 1
+            update["$inc"][f"core.{core}.runes.primary.{primary_runes[3]}.wins"] = win
+            update["$inc"][f"core.{core}.runes.secondary.{secondary_runes[0]}.games"] = 1
+            update["$inc"][f"core.{core}.runes.secondary.{secondary_runes[0]}.wins"] = win
+            update["$inc"][f"core.{core}.runes.secondary.{secondary_runes[1]}.games"] = 1
+            update["$inc"][f"core.{core}.runes.secondary.{secondary_runes[1]}.wins"] = win
+            update["$inc"][f"core.{core}.runes.tertiary.offense.{tertiary_offense}.games"] = 1
+            update["$inc"][f"core.{core}.runes.tertiary.offense.{tertiary_offense}.wins"] = win
+            update["$inc"][f"core.{core}.runes.tertiary.defense.{tertiary_defense}.games"] = 1
+            update["$inc"][f"core.{core}.runes.tertiary.defense.{tertiary_defense}.wins"] = win
+            update["$inc"][f"core.{core}.runes.tertiary.flex.{tertiary_flex}.games"] = 1
+            update["$inc"][f"core.{core}.runes.tertiary.flex.{tertiary_flex}.wins"] = win
+
+            for i, item in enumerate(item_order):
+               update["$inc"][f"core.{core}.items.{i+1}.{item}.games"] = 1
+               update["$inc"][f"core.{core}.items.{i+1}.{item}.wins"] = win
+
+      # General
+      update["$inc"][f"games"] = 1
+      update["$inc"][f"wins"] = win
+      update["$inc"][f"rank"] = 0
+      update["$inc"][f"pickRate"] = 0.0
+      # Runes
+      update["$inc"][f"runes.primary.{primary_runes[0]}.games"] = 1
+      update["$inc"][f"runes.primary.{primary_runes[0]}.wins"] = win
+      update["$inc"][f"runes.primary.{primary_runes[1]}.games"] = 1
+      update["$inc"][f"runes.primary.{primary_runes[1]}.wins"] = win
+      update["$inc"][f"runes.primary.{primary_runes[2]}.games"] = 1
+      update["$inc"][f"runes.primary.{primary_runes[2]}.wins"] = win
+      update["$inc"][f"runes.primary.{primary_runes[3]}.games"] = 1
+      update["$inc"][f"runes.primary.{primary_runes[3]}.wins"] = win
+      update["$inc"][f"runes.secondary.{secondary_runes[0]}.games"] = 1
+      update["$inc"][f"runes.secondary.{secondary_runes[0]}.wins"] = win
+      update["$inc"][f"runes.secondary.{secondary_runes[1]}.games"] = 1
+      update["$inc"][f"runes.secondary.{secondary_runes[1]}.wins"] = win
+      update["$inc"][f"runes.tertiary.offense.{tertiary_offense}.games"] = 1
+      update["$inc"][f"runes.tertiary.offense.{tertiary_offense}.wins"] = win
+      update["$inc"][f"runes.tertiary.defense.{tertiary_defense}.games"] = 1
+      update["$inc"][f"runes.tertiary.defense.{tertiary_defense}.wins"] = win
+      update["$inc"][f"runes.tertiary.flex.{tertiary_flex}.games"] = 1
+      update["$inc"][f"runes.tertiary.flex.{tertiary_flex}.wins"] = win
+      # Summoner Spells
+      update["$inc"][f"spells.{summoner_spells}.games"] = 1
+      update["$inc"][f"spells.{summoner_spells}.wins"] = win
 
       # Items
       for i, item in enumerate(item_order):

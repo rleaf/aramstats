@@ -13,6 +13,18 @@
   
   const version = [
    {
+      version: "3.8.1",
+      date: "7/28/24",
+        notes: `#crawlerthings`,
+      add: [],
+      remove: [],
+      fix: [
+         `Handle 404 timeline data`
+      ],
+      adjust: [],
+      known: [],
+   }, 
+   {
       version: "3.8.0",
       date: "7/21/24",
         notes: `More information on champion pages. Users can now hover champion skills, items, spells, and runes in the "Overview" section. You'll also find the ARAM specific stat modifiers on the right hand side near the top of the page. I'm looking into ways to implement skill modifications as well.`,

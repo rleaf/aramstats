@@ -1,6 +1,7 @@
 <script>
 import UXTooltip from '@/components/UXTooltip.vue'
 import StartingSpellsModal from './modals/StartingSpellsModal.vue'
+import { superStore } from '@/stores/superStore'
 
 export default {
    components: {
@@ -9,8 +10,13 @@ export default {
    },
    data() {
       return {
-
+         store: superStore()
       }
+   },
+
+   mounted() {
+
+      console.log(this.store)
    },
 
    methods: {
