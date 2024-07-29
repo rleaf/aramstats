@@ -14,11 +14,6 @@ export default {
       }
    },
 
-   mounted() {
-
-      console.log(this.store)
-   },
-
    methods: {
       itemImage(id) {
          return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/item/${id}.png`
@@ -28,14 +23,8 @@ export default {
          return new URL(`../../../assets/spells/${id}.webp`, import.meta.url).href
       },
       
-      getAbilityImages(name) {
-         const map = {
-            'q': this.abilities[1],
-            'w': this.abilities[2],
-            'e': this.abilities[3],
-         }
-
-         return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/spell/${map[name]}`
+      getAbilityImages(ability) {
+         return this.store.championCDN.abilities[ability.toUpperCase()][0].icon
       },
 
       winrate(total, win) {

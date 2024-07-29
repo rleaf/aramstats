@@ -31,10 +31,6 @@ export default {
    },
 
    created() {
-      // setTimeout(() => {
-      //    console.log(this.store.championCDN)
-         
-      // }, 400);
       document.title = `${this.name} | ARAM Stats`
 
       if (this.champion.patch !== this.activePatch) {
