@@ -1,5 +1,4 @@
 <script>
-import { summonerStore } from '../stores/summonerStore'
 
 export default {
    data() {
@@ -7,7 +6,6 @@ export default {
          datum: null,
          date: Number,       
          daysSince: Number,
-         patchHr: summonerStore().patchHr
       }
    },
 
@@ -30,10 +28,6 @@ export default {
    },
 
    computed: {
-      // cleanedGameVersion() {
-      //    return this.data.gv.split('.').slice(0, 2).join('.') + '.1'
-      // },
-
       gameDuration() {
          if (Number.isInteger(this.data.gd)) {
             return `${this.data.gd}m`
@@ -57,13 +51,19 @@ export default {
    props: {
       data: null,
       patch: null,
+      newPatch: false,
    }
 }
 </script>
 
 <template>
    <div class="match-main">
-      <span>
+      <span v-if="this.newPatch">
+         <p class="patch-change">
+            {{ this.data.gv.split('.').slice(0, 2).join('.') }}
+         </p>
+      </span>
+      <span v-else>
          <hr>
       </span>
       <div class="match-details" :class="(this.data.w ? 'win' : 'loss')">
@@ -135,7 +135,20 @@ export default {
 <style scoped>
    .match-main {
       display: flex;
+      align-items: center;
       gap: 16px;
+   }
+
+   .match-main > span {
+      width: 13px;
+   }
+
+   .patch-change {
+      transform: rotate(-40deg);
+      transform-origin: 100% 50%;
+      font-size: 0.7rem;
+      color: var(--color-font-faded);
+      margin: 0;
    }
 
    hr {

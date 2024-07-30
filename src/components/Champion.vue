@@ -27,6 +27,16 @@ export default {
    },
 
    methods: {
+      newPatch(newPatch, oldPatch) {
+         if (!oldPatch) return true
+
+         const clean = j => {
+            return j.split('.').slice(0, 2).join('.')
+         }
+
+         return (clean(newPatch) !== clean(oldPatch.gv)) ? true : false
+      },
+
       toggleChampion(id) {
          (this.championPool.has(id)) ? this.championPool.delete(id) : this.championPool.add(id)
       },
@@ -171,13 +181,7 @@ export default {
       @before-leave="this.onBeforeLeave">
       <div class="match-container" v-if="this.matchToggle">
          <div v-for="(m, i) in this.sortedMatches">
-            <div class="patch-divider" v-if="this.patchDividers(m.gv, this.sortedMatches[i - 1])">
-               <hr>
-               <span>
-                  {{ m.gv.split('.').slice(0, 2).join('.') }}
-               </span>
-            </div>
-            <Match :patch="this.patch" :data="m" :key="i"/>
+            <Match :patch="this.patch" :data="m" :newPatch="this.newPatch(m.gv, this.sortedMatches[i-1])" :key="i"/>
          </div>
       </div>
    </Transition>

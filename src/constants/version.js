@@ -14,15 +14,17 @@
   const version = [
    {
       version: "3.8.1",
-      date: "7/28/24",
+      date: "7/30/24",
       notes: ``,
       add: [],
       remove: [],
       fix: [
-         `Crawler handling timeline 404s`,
-         `Champion skill images on skill prio.`
+         `Crawler error handling on timeline 404s`,
+         `Champion skill images on skill prio on Champion pages.`
       ],
-      adjust: [],
+      adjust: [
+         `UI for patch deltas on champion dropdowns on Summoner pages. This is tentative.`
+      ],
       known: [],
    }, 
    {
