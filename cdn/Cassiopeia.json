@@ -4,7 +4,7 @@
   "name": "Cassiopeia",
   "title": "the Serpent's Embrace",
   "fullName": "Cassiopeia Du Couteau",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Cassiopeia.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Cassiopeia.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -22,9 +22,9 @@
       "percentPerLevel": 0.0
     },
     "mana": {
-      "flat": 350,
+      "flat": 400,
       "percent": 0.0,
-      "perLevel": 60,
+      "perLevel": 40,
       "percentPerLevel": 0.0
     },
     "manaRegen": {
@@ -285,11 +285,11 @@
                   },
                   {
                     "values": [
-                      90,
-                      90,
-                      90,
-                      90,
-                      90
+                      70,
+                      70,
+                      70,
+                      70,
+                      70
                     ],
                     "units": [
                       "% AP",
@@ -322,11 +322,11 @@
                   },
                   {
                     "values": [
-                      12.86,
-                      12.86,
-                      12.86,
-                      12.86,
-                      12.86
+                      10,
+                      10,
+                      10,
+                      10,
+                      10
                     ],
                     "units": [
                       "% AP",
@@ -372,10 +372,10 @@
             {
               "values": [
                 50,
+                55,
                 60,
-                70,
-                80,
-                90
+                65,
+                70
               ],
               "units": [
                 "",
@@ -552,10 +552,10 @@
             {
               "values": [
                 70,
+                75,
                 80,
-                90,
-                100,
-                110
+                85,
+                90
               ],
               "units": [
                 "",
@@ -646,11 +646,11 @@
                   },
                   {
                     "values": [
-                      60,
-                      60,
-                      60,
-                      60,
-                      60
+                      55,
+                      55,
+                      55,
+                      55,
+                      55
                     ],
                     "units": [
                       "% AP",
@@ -725,11 +725,11 @@
                   },
                   {
                     "values": [
-                      70,
-                      70,
-                      70,
-                      70,
-                      70
+                      65,
+                      65,
+                      65,
+                      65,
+                      65
                     ],
                     "units": [
                       "% AP",
@@ -790,11 +790,11 @@
           "modifiers": [
             {
               "values": [
-                50,
-                48,
-                46,
-                44,
-                42
+                40,
+                40,
+                40,
+                40,
+                40
               ],
               "units": [
                 "",
@@ -953,7 +953,7 @@
   },
   "releaseDate": "2010-12-14",
   "releasePatch": "v1.0.0.107",
-  "patchLastChanged": "14.10",
+  "patchLastChanged": "14.15",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

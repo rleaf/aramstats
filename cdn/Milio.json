@@ -4,7 +4,7 @@
   "name": "Milio",
   "title": "The Gentle Flame",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Milio.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Milio.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -160,7 +160,7 @@
       "percentPerLevel": 0.0
     },
     "aramAbilityHaste": {
-      "flat": 1.0,
+      "flat": -10,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0
@@ -858,7 +858,7 @@
   },
   "releaseDate": "2023-03-23",
   "releasePatch": "13.6",
-  "patchLastChanged": "14.9",
+  "patchLastChanged": "14.14",
   "price": {
     "blueEssence": 6300,
     "rp": 975,

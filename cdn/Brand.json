@@ -4,7 +4,7 @@
   "name": "Brand",
   "title": "the Burning Vengeance",
   "fullName": "Kegan Rodhe",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Brand.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Brand.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -823,7 +823,7 @@
   },
   "releaseDate": "2011-04-12",
   "releasePatch": "1.0.0.115",
-  "patchLastChanged": "14.13",
+  "patchLastChanged": "14.14",
   "price": {
     "blueEssence": 450,
     "rp": 260,

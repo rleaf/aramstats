@@ -4,7 +4,7 @@
   "name": "Nidalee",
   "title": "the Bestial Huntress",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Nidalee.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Nidalee.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -1204,7 +1204,7 @@
   },
   "releaseDate": "2009-12-17",
   "releasePatch": "1.0.0.63",
-  "patchLastChanged": "14.10",
+  "patchLastChanged": "14.14",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

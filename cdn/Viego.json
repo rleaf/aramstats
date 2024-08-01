@@ -4,7 +4,7 @@
   "name": "Viego",
   "title": "The Ruined King",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Viego.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Viego.png",
   "resource": "NONE",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -672,11 +672,11 @@
             ]
           },
           {
-            "description": "Declaring a basic attack or casting an ability will break the camouflage and remove the bonus movement speed, preventing Viego from gaining them again for 1 second, reduced to 0.6 seconds if he recasted Spectral Maw and increased to 2 seconds if he attacked a monster. This duration refreshes on subsequent attacks and ability casts.",
+            "description": "Declaring a basic attack or casting an ability will break the camouflage and remove the bonus movement speed, preventing Viego from gaining them again for 1 second, increased to 2 seconds if he attacked a large monster. This duration refreshes on subsequent attacks and ability casts.",
             "leveling": []
           },
           {
-            "description": "Harrowed Path can be cast during any of Viego's abilities. He cannot gain the camouflage nor bonus movement speed from Harrowed Path for 0.75 seconds after starting the channel of Spectral Maw, recasting ends this duration prematurely.",
+            "description": "Harrowed Path can be cast during any of Viego's abilities. Viego cannot gain the camouflage nor bonus movement speed from Harrowed Path for 1 second if he casted it during Spectral Maw's channel or started the channel while the mist was active.",
             "leveling": []
           }
         ],
@@ -711,7 +711,7 @@
         "projectile": "FALSE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "The bonus movement speed and camouflage are granted by the same buff.\nViego will enter camouflage even while  Recalling.\nViego can cast Harrowed Path during the cast time of any ability or spell.\nRanking up Harrowed Path while the effect is already active will still immediately improve the bonuses it grants.\nHarrowed Path can interact with player-generated terrain.\nViego can benefit from an enemy's Harrowed Path.\n PENDING FOR TEST:: Enemy's Harrowed Path grant Viego his ability's bonus or the enemy's.",
+        "notes": "Spectral Maw's recast does not incur the 1 second cooldown for regaining the stealth and instead prevents the stealth from being gained until the dash ends, resetting the cooldown if it is active.\nThe cooldown is not reset if it was incurred by basic attacking a large monster, but is however reset from it being incurred by  Spectral Maw's channel.\nThe bonus movement speed and camouflage are granted by the same buff.\nViego will enter camouflage even while  Recalling.\nViego can cast Harrowed Path during the cast time of any ability or spell.\nRanking up Harrowed Path while the effect is already active will still immediately improve the bonuses it grants.\nHarrowed Path can interact with player-generated terrain.\nUsing a basic attack breaks the stealth at the start of the attack windup.\nThe stealth regain timer is refreshed from basic attacks at the start of their attack windup.\nViego can benefit from an enemy's Harrowed Path.\n PENDING FOR TEST:: Enemy's Harrowed Path grant Viego his ability's bonus or the enemy's.",
         "blurb": "Active:  Viego sends a spectre in the target direction that creates a trail of mist in its wake for a period. If it hits terrain, the mist is spread further around either side.",
         "missileSpeed": null,
         "rechargeRate": null,

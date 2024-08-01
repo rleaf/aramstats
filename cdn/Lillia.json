@@ -4,7 +4,7 @@
   "name": "Lillia",
   "title": "the Bashful Bloom",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Lillia.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Lillia.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -974,7 +974,7 @@
   },
   "releaseDate": "2020-07-22",
   "releasePatch": "10.15",
-  "patchLastChanged": "14.5",
+  "patchLastChanged": "14.14",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

@@ -4,7 +4,7 @@
   "name": "Renekton",
   "title": "the Butcher of the Sands",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Renekton.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Renekton.png",
   "resource": "FURY",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -731,7 +731,7 @@
             ]
           },
           {
-            "description": "Ruthless Predator resets Renekton's basic attack timer. After Ruthless Predator's standard and empowered attack cast time, Renekton cannot move nor cast Cull the Meek, Slice, nor Dice for 0.528 seconds.",
+            "description": "Ruthless Predator resets Renekton's basic attack timer. After Ruthless Predator's standard and empowered attack cast time, Renekton cannot move nor cast Cull the Meek, Slice, nor Dice for 0.528 seconds. Casting Dominus ends this lockout prematurely.",
             "leveling": []
           }
         ],

@@ -4,7 +4,7 @@
   "name": "Yone",
   "title": "the Unforgotten",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Yone.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Yone.png",
   "resource": "FLOW",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -276,10 +276,10 @@
                   {
                     "values": [
                       20,
-                      40,
-                      60,
-                      80,
-                      100
+                      45,
+                      70,
+                      95,
+                      120
                     ],
                     "units": [
                       "",
@@ -749,8 +749,8 @@
             {
               "values": [
                 120,
-                90,
-                60
+                100,
+                80
               ],
               "units": [
                 "",

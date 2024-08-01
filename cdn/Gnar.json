@@ -4,7 +4,7 @@
   "name": "Gnar",
   "title": "the Missing Link",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Gnar.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Gnar.png",
   "resource": "RAGE",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -1069,7 +1069,7 @@
             ]
           },
           {
-            "description": "Enemies that collide with terrain take 50% increased damage instantly and are stunned instead of slowed.",
+            "description": "Enemies that collide with terrain take 50% increased damage immediately and are stunned instantly instead of slowed after a delay.",
             "leveling": [
               {
                 "attribute": "Increased Damage",

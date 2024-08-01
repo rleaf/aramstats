@@ -4,7 +4,7 @@
   "name": "Aatrox",
   "title": "the Darkin Blade",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Aatrox.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Aatrox.png",
   "resource": "BLOOD_WELL",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -986,7 +986,7 @@
   },
   "releaseDate": "2013-06-13",
   "releasePatch": "3.8",
-  "patchLastChanged": "14.12",
+  "patchLastChanged": "14.14",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

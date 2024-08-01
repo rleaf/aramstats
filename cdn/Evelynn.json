@@ -4,7 +4,7 @@
   "name": "Evelynn",
   "title": "Agony's Embrace",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Evelynn.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Evelynn.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -244,7 +244,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Demon Shade is also placed on a 1.5 second cooldown upon respawning.\nDemon Shade's cooldown incurs upon starting the attack windup of the basic attack and upon the cast time of the ability.\nDemon Shade activates even if Evelynn is  Recalling.\nWhenever Demon Shade activates, a puff of purple smoke will briefly appear around her.",
+        "notes": "Demon Shade is also placed on a 1.5 second cooldown upon respawning.\nDemon Shade's cooldown incurs upon starting the attack windup of the basic attack and upon the cast time of the ability.\nDemon Shade activates even if Evelynn is  Recalling.\nWhenever Demon Shade activates, a puff of purple smoke will briefly appear around her.\nUsing a basic attack breaks the stealth at the start of the attack windup.",
         "blurb": "Innate: While out of combat,  Evelynn gains Demon Shade.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -472,11 +472,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      130,
-                      180,
-                      230,
-                      280,
-                      330
+                      145,
+                      195,
+                      245,
+                      295,
+                      345
                     ],
                     "units": [
                       "",

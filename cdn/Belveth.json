@@ -4,7 +4,7 @@
   "name": "Bel'Veth",
   "title": "the Empress of the Void",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Belveth.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Belveth.png",
   "resource": "NONE",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -233,7 +233,7 @@
             "leveling": []
           },
           {
-            "description": "Innate: Whenever Bel'Veth scores a takedown against a champion, monster, or minion within 3 seconds of damaging them, she generates a permanent stack of Lavender. Minions and monsters that are large generate 1 stack, champions and epic monsters generate 2 stacks.\nLavender: For each stack, Bel'Veth gains 0.28% − 1% (based on level) bonus attack speed.",
+            "description": "Innate: Whenever Bel'Veth scores a takedown against a champion, monster, or large minion within 3 seconds of damaging them, she generates a permanent stack of Lavender. Large minions and monsters generate 1 stack, champions and epic monsters generate 2 stacks.\nLavender: For each stack, Bel'Veth gains 0.28% − 1% (based on level) bonus attack speed.",
             "leveling": []
           }
         ],
@@ -1122,7 +1122,7 @@
   },
   "releaseDate": "2022-06-09",
   "releasePatch": "12.11",
-  "patchLastChanged": "14.9",
+  "patchLastChanged": "14.14",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

@@ -4,7 +4,7 @@
   "name": "Aurora",
   "title": "the Witch Between Worlds",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Aurora.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Aurora.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -234,7 +234,7 @@
             "leveling": []
           },
           {
-            "description": "Realm Hopper: Aurora gains 5% − 10% (based on level) (+ 3% per 100 AP) (+ 5% − 20% (based on active Spirits)) bonus movement speed.",
+            "description": "Realm Hopper: Aurora gains 5% − 8.6% (based on level) (+ 3% per 100 AP) bonus movement speed. Additionally, she gains 2% (+ 1.5% per 100 AP) bonus movement speed for each active Spirit, up to a maximum of 8% (+ 6% per 100 AP) at 4 Spirits.",
             "leveling": []
           }
         ],
@@ -249,7 +249,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": null,
+        "notes": "The spirits grant vision of a small area around themselves.",
         "blurb": "Innate:  Aurora's basic attacks and damaging abilities will apply a stack of Spirit Abjuration, stacking up to 3 times.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -313,7 +313,7 @@
             ]
           },
           {
-            "description": "Twofold Hex can be recast after 0.5 seconds while at least one target is marked.",
+            "description": "Twofold Hex can be recast after 0.1 seconds while at least one target is marked.",
             "leveling": []
           },
           {
@@ -596,11 +596,11 @@
           "modifiers": [
             {
               "values": [
+                22,
+                21,
                 20,
                 19,
-                18,
-                17,
-                16
+                18
               ],
               "units": [
                 "",
@@ -622,7 +622,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Aurora will not gain the stealth if her dash is interrupted.\nAurora is locked out of using all abilities, summoner spells, and item actives during the dash.\nShe cannot buffer these spells to cast after the lockout. This is in place to prevent her from breaking the stealth from certain spell casts.\nThis is the case even for spells that do not break stealth when cast.",
+        "notes": "Aurora will not gain the stealth if her dash is interrupted.\nShe will however gain the stealth despite the dash being interrupted from colliding with  Between Worlds' border.\nHer dash is interrupted in this case from being overridden by the rift dash.\nAurora is locked out of using all abilities, summoner spells, and item actives during the dash.\nShe cannot buffer these spells to cast after the lockout. This is in place to prevent her from breaking the stealth from certain spell casts.\nThis is the case even for spells that do not break stealth when cast.\nUsing a basic attack breaks the stealth at the end of the attack windup.",
         "blurb": null,
         "missileSpeed": null,
         "rechargeRate": null,
@@ -644,7 +644,7 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Aurora/ability-icon/e",
         "effects": [
           {
-            "description": "Active: Aurora blasts energy in a line in the target direction and recoils 250 units in the opposite direction. The blast deals magic damage to enemies hit and slows them by 80% for 1 second decaying after 0.15 seconds.",
+            "description": "Active: Aurora blasts energy in a line in the target direction and recoils 250 units in the opposite direction. The blast deals magic damage to enemies hit and slows them by 80% for 1 second decaying after the first 0.15 seconds.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
@@ -684,6 +684,10 @@
                 ]
               }
             ]
+          },
+          {
+            "description": "Between Worlds can be cast during the dash.",
+            "leveling": []
           }
         ],
         "cost": {
@@ -736,7 +740,7 @@
         "projectile": "FALSE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "While  grounded or  rooted, The Weirding can be cast but Aurora will not  dash.\nSimilarly, if Aurora is affected by ground or root during the cast time, she will not dash afterwards.\nThis only applies to ground and root.  Immobilizing effects will not prevent the dash afterwards.(bug)\nThis ability will cast from wherever the caster is at the end of the cast time.",
+        "notes": "Aurora is locked out of using all abilities, summoner spells, and item actives during the dash, except for  Between Worlds.\nWhile  grounded or  rooted, The Weirding can be cast but Aurora will not  dash.\nSimilarly, if Aurora is affected by ground or root during the cast time, she will not dash afterwards.\nThis only applies to ground and root.  Immobilizing effects will not prevent the dash afterwards.(bug)\nThis ability will cast from wherever the caster is at the end of the cast time.",
         "blurb": null,
         "missileSpeed": null,
         "rechargeRate": null,
@@ -744,7 +748,7 @@
         "tetherRadius": null,
         "onTargetCdStatic": null,
         "innerRadius": null,
-        "speed": null,
+        "speed": "150 + 200% movement speed",
         "width": "175",
         "angle": null,
         "castTime": "0.35",
@@ -758,16 +762,16 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Aurora/ability-icon/r",
         "effects": [
           {
-            "description": "Active: Aurora leaps in the target direction with displacement immunity while unleashing a pulse of energy at a set location in front of her, both over 0.5 seconds. She then gains Realm Hopper for 4 seconds and the pulse expands in a radius from the location over the next 0.75 seconds, dealing magic damage to enemies hit and slowing them by 30% for 2 seconds. Once the pulse has fully expanded, it manifests a circular rift to the Spirit Realm for a duration.",
+            "description": "Active: Aurora leaps in the target direction with displacement immunity over 0.5 seconds. She then gains Realm Hopper for 4 seconds and unleashes a pulse of energy at a location directly 425 units in front of her, expanding in a radius over 0.75 seconds to deal magic damage to enemies hit and slow them by 30% for 2 seconds. Once the pulse has fully expanded, it manifests a circular rift to the Spirit Realm for a duration.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
                 "modifiers": [
                   {
                     "values": [
-                      250,
-                      375,
-                      500
+                      200,
+                      325,
+                      450
                     ],
                     "units": [
                       "",
@@ -777,9 +781,9 @@
                   },
                   {
                     "values": [
-                      65,
-                      65,
-                      65
+                      60,
+                      60,
+                      60
                     ],
                     "units": [
                       "% AP",
@@ -794,9 +798,9 @@
                 "modifiers": [
                   {
                     "values": [
-                      3,
-                      3.5,
-                      4
+                      2.25,
+                      2.75,
+                      3.25
                     ],
                     "units": [
                       " seconds",
@@ -813,11 +817,11 @@
             "leveling": []
           },
           {
-            "description": "Aurora and enemies within the rift are trapped inside. If Aurora collides with the border, she dashes to the diametrically opposite side of the rift over 0.4 seconds, becoming untargetable and unable to act during the travel. If an enemy collides with the border, they are knocked back 75 units away from it and are slowed by 75% for 1.5 seconds.",
+            "description": "Aurora and enemies within the rift are trapped inside. If Aurora collides with the border, she dashes to the diametrically opposite side of the rift over 0.4 seconds, becoming untargetable and unable to act during the travel. If an enemy collides with the border, they are knocked back 75 units away from it and are slowed by 75% for 2 seconds.",
             "leveling": []
           },
           {
-            "description": "Between Worlds can be recast after 1 second of unleashing the pulse.",
+            "description": "Between Worlds can be recast after 1 second of unleashing the pulse while the rift is active.",
             "leveling": []
           },
           {
@@ -867,7 +871,7 @@
         "projectile": "FALSE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Collision with the border is essentially moving within range of it while being targetable, including via normal movement, dash, or displacement.\nAurora and enemies can collide with the border any number of times, as much as the duration permits.\nSince the borders apply a  displacement upon collision, enemies that  dash or are displaced through the borders will be automatically interrupted.\nEnemies that can resist the displacement from colliding with the border will be able to leave the rift's zone.\nThis includes enemies that are  displacement immune or  immune to all crowd control, or have a  spell shield.\nIf Aurora or enemies are  attached to a unit, they can be moved outside of the rift by the unit they are attached to, even after colliding with the border.\nThe displacement upon collision with the border will not have any effect on targets that are being attached to another unit.\n Untargetable units cannot collide with the border, including Aurora herself.\n Blinks with a destination outside of the rift will not collide with the border and thus will ignore the range check.\nThe rift will close immediately if Aurora is not within the area when the pulse fully expands.\nIf Aurora  dies or enters  resurrection, or otherwise manages to escape the rift after it has formed, the rift is closed immediately.\nBetween Worlds'   untargetability from the rift dash does not  destroy in-flight  projectiles.\nBetween Worlds'  first cast is disabled while  grounded or  rooted.\nAurora can still dash from colliding with the border even if she is  immobilized or  grounded.\n Spell shield can block both the initial pulse and the knock back and slow from colliding with the border.\nA pair of portals signifying Aurora's nearest possible entry and its corresponding exit is visible to her at all times.\nThe following table refers for interactions while Aurora is dashing:\nThis lockout applies to both the initial dash and the dashes in the rift.\nThe lockout during the initial cast's dash persists for another 0.5 seconds after the dash ends.\nThe lockout during the rift dash persists for another 0.15 seconds after the dash ends.\n\n\nAttacking\n\nDisabled\n\n\nAbilities\n\nDisabled\n\n\nMovement\n\nDisabled\n\n\nItems\n\nUsable\n\nN/A\n\n\nDisabled\n\nAll items are disabled\n\n\nInterrupted by\n\nN/A\n\n\nConsumables\n\nDisabled\n\n\nSpells\n\nUsable\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite\n\n\nDisabled\n\n Flash  Teleport  Recall  Hexflash\n\n\nInterrupted by\n\nN/A\n\n\nInterrupted by\n\nDeath",
+        "notes": "Collision with the border is essentially moving within range of it while being targetable, including via normal movement, dash, or displacement.\nAurora and enemies can collide with the border any number of times, as much as the duration permits.\nSince the borders apply a  displacement upon collision, enemies that  dash or are displaced through the borders will be automatically interrupted.\nEnemies that can resist the displacement from colliding with the border will be able to leave the rift's zone.\nThis includes enemies that are  displacement immune or  immune to all crowd control, or have a  spell shield.\nIf Aurora or enemies are  attached to a unit, they can be moved outside of the rift by the unit they are attached to, even after colliding with the border.\nThe displacement upon collision with the border will not have any effect on targets that are being attached to another unit.\n Untargetable units cannot collide with the border, including Aurora herself.\n Blinks with a destination outside of the rift will not collide with the border and thus will ignore the range check.\nThe in-game tooltip claims that the rift lasts for 3 / 3.25 / 3.5 / 3.75 / 4 seconds which is incorrect.(bug)\nThis duration seems to count the time it takes for the pulse to fully expand. However, the rift and its borders will only form after the fact, so the actual duration of the rift is the values in the tooltip minus 0.75 seconds each rank.\nThe rift will close immediately if Aurora is not within the area when the pulse fully expands.\nIf Aurora  dies or enters  resurrection, or otherwise manages to escape the rift after it has formed, the rift is closed immediately.\nBetween Worlds'   untargetability from the rift dash does not  destroy in-flight  projectiles.\nBetween Worlds'  first cast is disabled while  grounded or  rooted.\nAurora can still dash from colliding with the border even if she is  immobilized or  grounded.\n Spell shield can block both the initial pulse and the knock back and slow from colliding with the border.\nA pair of portals signifying Aurora's nearest possible entry and its corresponding exit is visible to her at all times.\nThe following table refers for interactions while Aurora is dashing:\nThis lockout applies to both the initial dash and the dashes in the rift.\nThe lockout during the initial cast's dash persists for another 0.5 seconds after the dash ends.\nThe lockout during the rift dash persists for another 0.15 seconds after the dash ends.\n\n\nAttacking\n\nDisabled\n\n\nAbilities\n\nDisabled\n\n\nMovement\n\nDisabled\n\n\nItems\n\nUsable\n\nN/A\n\n\nDisabled\n\nAll items are disabled\n\n\nInterrupted by\n\nN/A\n\n\nConsumables\n\nDisabled\n\n\nSpells\n\nUsable\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite\n\n\nDisabled\n\n Flash  Teleport  Recall  Hexflash\n\n\nInterrupted by\n\nN/A\n\n\nInterrupted by\n\nDeath",
         "blurb": null,
         "missileSpeed": null,
         "rechargeRate": null,

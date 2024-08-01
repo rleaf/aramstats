@@ -4,7 +4,7 @@
   "name": "Skarner",
   "title": "the Primordial Sovereign",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Skarner.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Skarner.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -430,11 +430,11 @@
           "modifiers": [
             {
               "values": [
-                50,
-                50,
-                50,
-                50,
-                50
+                45,
+                45,
+                45,
+                45,
+                45
               ],
               "units": [
                 "",

@@ -4,7 +4,7 @@
   "name": "Kog'Maw",
   "title": "the Mouth of the Abyss",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/KogMaw.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/KogMaw.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -858,7 +858,7 @@
   },
   "releaseDate": "2010-06-24",
   "releasePatch": "1.0.0.94",
-  "patchLastChanged": "14.7",
+  "patchLastChanged": "14.14",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

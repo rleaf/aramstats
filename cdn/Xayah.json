@@ -4,7 +4,7 @@
   "name": "Xayah",
   "title": "the Rebel",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Xayah.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Xayah.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -867,7 +867,7 @@
   },
   "releaseDate": "2017-04-19",
   "releasePatch": "7.8",
-  "patchLastChanged": "14.13",
+  "patchLastChanged": "14.14",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

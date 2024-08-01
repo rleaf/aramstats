@@ -4,7 +4,7 @@
   "name": "Smolder",
   "title": "the Fiery Fledgling",
   "fullName": "Ignacarious Gigantareno Rex Le Spes Offerentis",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Smolder.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Smolder.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -1420,7 +1420,7 @@
   },
   "releaseDate": "2024-01-31",
   "releasePatch": "14.2",
-  "patchLastChanged": "14.12",
+  "patchLastChanged": "14.14",
   "price": {
     "blueEssence": 6300,
     "rp": 975,

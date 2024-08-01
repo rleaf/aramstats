@@ -4,7 +4,7 @@
   "name": "Zed",
   "title": "the Master of Shadows",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Zed.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Zed.png",
   "resource": "ENERGY",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -278,10 +278,10 @@
                   {
                     "values": [
                       80,
-                      115,
-                      150,
-                      185,
-                      220
+                      120,
+                      160,
+                      200,
+                      240
                     ],
                     "units": [
                       "",
@@ -293,11 +293,11 @@
                   },
                   {
                     "values": [
-                      110,
-                      110,
-                      110,
-                      110,
-                      110
+                      100,
+                      100,
+                      100,
+                      100,
+                      100
                     ],
                     "units": [
                       "% bonus AD",
@@ -315,10 +315,10 @@
                   {
                     "values": [
                       48,
-                      69,
-                      90,
-                      111,
-                      132
+                      72,
+                      96,
+                      120,
+                      144
                     ],
                     "units": [
                       "",
@@ -330,11 +330,11 @@
                   },
                   {
                     "values": [
-                      66,
-                      66,
-                      66,
-                      66,
-                      66
+                      60,
+                      60,
+                      60,
+                      60,
+                      60
                     ],
                     "units": [
                       "% bonus AD",
@@ -752,8 +752,8 @@
             {
               "values": [
                 120,
-                100,
-                80
+                110,
+                100
               ],
               "units": [
                 "",
@@ -792,7 +792,7 @@
   },
   "releaseDate": "2012-11-13",
   "releasePatch": "1.0.0.151",
-  "patchLastChanged": "13.20",
+  "patchLastChanged": "14.14",
   "price": {
     "blueEssence": 1350,
     "rp": 585,

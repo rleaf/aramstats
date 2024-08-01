@@ -4,7 +4,7 @@
   "name": "Sion",
   "title": "The Undead Juggernaut",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Sion.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Sion.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -148,13 +148,13 @@
       "percentPerLevel": 0.0
     },
     "aramShielding": {
-      "flat": 0.8,
+      "flat": 1.0,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0
     },
     "aramTenacity": {
-      "flat": 0.8,
+      "flat": 1.0,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0
@@ -1148,7 +1148,7 @@
   },
   "releaseDate": "2009-02-21",
   "releasePatch": "Alpha Week 2",
-  "patchLastChanged": "14.10",
+  "patchLastChanged": "14.14",
   "price": {
     "blueEssence": 1350,
     "rp": 585,

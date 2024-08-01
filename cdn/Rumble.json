@@ -4,7 +4,7 @@
   "name": "Rumble",
   "title": "the Mechanized Menace",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Rumble.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Rumble.png",
   "resource": "HEAT",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -1514,7 +1514,7 @@
   },
   "releaseDate": "2011-04-26",
   "releasePatch": "1.0.0.116",
-  "patchLastChanged": "14.2",
+  "patchLastChanged": "14.14",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

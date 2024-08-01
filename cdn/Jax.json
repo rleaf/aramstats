@@ -4,7 +4,7 @@
   "name": "Jax",
   "title": "Grandmaster at Arms",
   "fullName": "Saijax Cail-Rynx Kohari Icath’un",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Jax.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Jax.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -944,7 +944,7 @@
   },
   "releaseDate": "2009-02-21",
   "releasePatch": "Alpha Week 2",
-  "patchLastChanged": "14.10",
+  "patchLastChanged": "14.14",
   "price": {
     "blueEssence": 1350,
     "rp": 585,

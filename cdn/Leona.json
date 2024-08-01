@@ -4,7 +4,7 @@
   "name": "Leona",
   "title": "the Radiant Dawn",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Leona.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Leona.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -226,7 +226,7 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Leona/ability-icon/p",
         "effects": [
           {
-            "description": "Innate: Leona's abilities mark enemies hit for 1.5 seconds, refreshing on subsequent hits. Allied champions' damaging attacks and abilities against a marked target will consume the mark to deal 32 − 168 (based on level) bonus magic damage.",
+            "description": "Innate: Leona's abilities mark enemies hit for 1.5 seconds, refreshing on subsequent hits. Allied champions' damaging attacks and abilities against a marked target will consume the mark to deal 32 − 151 (based on level) bonus magic damage.",
             "leveling": []
           }
         ],
@@ -489,10 +489,10 @@
                   {
                     "values": [
                       55,
-                      90,
-                      125,
-                      160,
-                      195
+                      85,
+                      115,
+                      145,
+                      175
                     ],
                     "units": [
                       "",
@@ -2383,7 +2383,7 @@
       "lootEligible": true,
       "cost": "Special",
       "sale": 0,
-      "distribution": "150 Mythic Essence",
+      "distribution": "2000 Anima Squad Tokens",
       "rarity": "Mythic",
       "chromas": [],
       "lore": "Sporting the latest in fashionable activewear for any on-the-go warrior, Leona defends her title of “Pride of the Runway” as easily as she rocks a bold lip color. Saving the world is important, but doing it with style? That's what Anima Squad is all about.",

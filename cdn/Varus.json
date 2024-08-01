@@ -4,7 +4,7 @@
   "name": "Varus",
   "title": "the Arrow of Retribution",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Varus.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Varus.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -226,15 +226,15 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Varus/ability-icon/p",
         "effects": [
           {
-            "description": "Innate: When Varus kills an enemy, he gains 10% bonus attack speed as well as bonus attack damage and ability power equal to 10% bonus attack speed for 5 / 7 / 9 / 11 (based on level) seconds.",
+            "description": "Innate: When Varus kills an enemy, he gains 10 / 15 / 20% (based on level) bonus attack speed as well as bonus attack damage and ability power equal to 10% bonus attack speed for 5 / 7 / 9 / 11 (based on level) seconds.",
             "leveling": []
           },
           {
-            "description": "This is increased to 40% bonus attack speed and bonus attack damage and ability power equal to 15% bonus attack speed upon scoring a champion takedown.",
+            "description": "This is increased to 50% bonus attack speed and bonus attack damage and ability power equal to 25% bonus attack speed upon scoring a champion takedown.",
             "leveling": []
           },
           {
-            "description": "While Living Vengeance's bonus is active, Varus' attack speed cap is increased to 2.7632.",
+            "description": "While Living Vengeance's bonus is active, Varus' attack speed cap is increased to 3.",
             "leveling": []
           }
         ],
@@ -511,11 +511,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      7,
-                      14,
-                      21,
-                      28,
-                      35
+                      5,
+                      10,
+                      15,
+                      20,
+                      25
                     ],
                     "units": [
                       "",
@@ -951,7 +951,7 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Varus/ability-icon/r",
         "effects": [
           {
-            "description": "Active: Varus unleashes a tendril of corruption in the target direction that infects the first enemy champion hit, dealing magic damage and rooting them for 2 seconds, during which they are revealed. Over the first 1.5 seconds, they are also inflicted with maximum stacks of Blight.",
+            "description": "Active: Varus unleashes a tendril of corruption in the target direction that infects the first enemy champion hit, dealing magic damage and rooting them for 2 seconds, during which they are revealed. Over the first 1.5 seconds of the root, they are also inflicted with maximum stacks of Blight.",
             "leveling": [
               {
                 "attribute": "Magic Damage",

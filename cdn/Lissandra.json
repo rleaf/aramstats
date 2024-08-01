@@ -4,7 +4,7 @@
   "name": "Lissandra",
   "title": "the Ice Witch",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Lissandra.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Lissandra.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -895,7 +895,7 @@
   },
   "releaseDate": "2013-04-30",
   "releasePatch": "3.6",
-  "patchLastChanged": "14.13",
+  "patchLastChanged": "14.14",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

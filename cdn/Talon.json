@@ -4,7 +4,7 @@
   "name": "Talon",
   "title": "the Blade's Shadow",
   "fullName": "Talon Du Couteau",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Talon.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Talon.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -265,7 +265,7 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Talon/ability-icon/q",
         "effects": [
           {
-            "description": "Active: Talon dashes toward the target enemy, dealing physical damage upon arrival. If Noxian Diplomacy is cast within close range, Talon instead stabs the target to critically strike for (150% + 40%) damage, and gains 75 bonus attack range on his next basic attack within 1 second.",
+            "description": "Active: Talon dashes toward the target enemy, stabbing the target upon arrival to deal physical damage. If cast within close range, Talon dashes to the target over the cast time instead and Noxian Diplomacy critically strikes for (150% + 40%) damage, as well as grants him 75 bonus attack range on his next basic attack within 1 second.",
             "leveling": [
               {
                 "attribute": "Physical Damage",
@@ -402,7 +402,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Talon will track the target if they change locations, landing at an offset of 100 units before reaching them.\nHe will dash to the target's previous location while still dealing damage if the target is too far away or moves beyond 800 units.\nTalon will be ordered to basic attack the target at the end of the dash.\nWhile  grounded or  rooted, Noxian Diplomacy can only be cast within stab range.\nNoxian Diplomacy will also grant the heal if the target dies upon Talon's completion of the dash.\nIf the target becomes  untargetable,  dies, or is too far away or no longer in  sight during the cast time, this ability will cancel but does not go on  cooldown nor pay its cost (if applicable).\nThis only applies to the stab version.",
+        "notes": "Talon will track the target if they change locations with the ranged version of Noxian Diplomacy, landing at an offset of 100 units before reaching them.\nHe will dash to the target's previous location while still dealing damage if the target is too far away or moves beyond 800 units.\nWhen cast in close range, Noxian Diplomacy deals its damage at the completion of the cast time, rather than at the dash's completion.\nThe damage will be dealt even if Talon's dash is interrupted, so long as the cast time is completed.\nTalon will be ordered to basic attack the target at the end of the dash.\nWhile  grounded or  rooted, Noxian Diplomacy can only be cast within close range.\nTalon will still dash to the target in both cases.\nNoxian Diplomacy will also grant the heal if the target dies upon Talon's completion of the dash.\nIf the target becomes  untargetable,  dies, or is too far away or no longer in  sight during the cast time, this ability will cancel but does not go on  cooldown nor pay its cost (if applicable).\nThis only applies to the stab version.",
         "blurb": "Active:  Talon  leaps to the target enemy, dealing physical damage. If the target is within melee range, Talon instead  critically strikes the target, dealing bonus physical damage.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -838,7 +838,7 @@
         "projectile": "TRUE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Shadow Assault casts a total of 12 blades evenly distributed in all directions. 4 of them travel down the cardinal directions (Relative to the map, not relative to Talon), while all blades have an angle of 30° to one another.\n Spell shield will block a single pass.\nShadow Assault does not cancel Talon's basic attacks.\nShadow Assault has a minimum lifetime of 0.8 seconds before convergence.\nThe blades each will fail to converge on their target (Talon or the attacked target) if the target is more than 20000 units from them.(bug)\nThis distance is barely achievable between fountains on Summoner's Rift.",
+        "notes": "Shadow Assault casts a total of 12 blades evenly distributed in all directions. 4 of them travel down the cardinal directions (Relative to the map, not relative to Talon), while all blades have an angle of 30° to one another.\n Spell shield will block a single pass.\nShadow Assault does not cancel Talon's basic attacks.\nShadow Assault has a minimum lifetime of 0.8 seconds before convergence.\nThe blades each will fail to converge on their target (Talon or the attacked target) if the target is more than 20000 units from them.(bug)\nThis distance is barely achievable between fountains on Summoner's Rift.\nUsing a basic attack breaks the stealth at the end of the attack windup.",
         "blurb": "Active:  Talon disperses a ring of blades around him that deals physical damage to enemies it passes through and lingers for a short time, during which he gains  invisibility and  bonus move speed.",
         "missileSpeed": null,
         "rechargeRate": null,

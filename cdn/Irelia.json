@@ -4,7 +4,7 @@
   "name": "Irelia",
   "title": "the Blade Dancer",
   "fullName": "Xan Irelia",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Irelia.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Irelia.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -861,7 +861,7 @@
   },
   "releaseDate": "2010-11-16",
   "releasePatch": "1.0.0.105",
-  "patchLastChanged": "14.11",
+  "patchLastChanged": "14.14",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

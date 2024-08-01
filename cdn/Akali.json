@@ -4,7 +4,7 @@
   "name": "Akali",
   "title": "the Rogue Assassin",
   "fullName": "Akali Jhomen Tethi",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Akali.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Akali.png",
   "resource": "ENERGY",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -465,10 +465,10 @@
             {
               "values": [
                 20,
-                20,
-                20,
-                20,
-                20
+                19,
+                18,
+                17,
+                16
               ],
               "units": [
                 "",
@@ -490,7 +490,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Akali will also not gain the  invisibility if she is  Recalling.\nIt is possible for Akali to detonate the smoke bomb on the far side of terrain from her current location.\nThe effects are applied before the cast time, and Akali can move during the cast time.",
+        "notes": "Akali will also not gain the  invisibility if she is  Recalling.\nIt is possible for Akali to detonate the smoke bomb on the far side of terrain from her current location.\nThe effects are applied before the cast time, and Akali can move during the cast time.\nUsing a basic attack breaks the stealth at the start of the attack windup.",
         "blurb": "Active:  Akali restores  energy and gains a brief burst of  move speed. She also drops a smoke shroud that makes her  invisible, attacking or using abilities will briefly reveal her.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -739,7 +739,7 @@
         "projectile": "TRUE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Akali will track the target if they change locations.\nShe will not stop tracking the target until she reaches them, as there is no maximum tracking distance.\nBoth casts count as ability activations for the purposes of on-cast effects such as  Spellblade and triggering  Force Pulse's passive.\nShuriken Flip does not interrupt Akali's previous move or attack orders.\nThe recast does.\nShuriken Flip cannot be recast if the target is not  visible or is  untargetable.\nAkali will be ordered to basic attack the target after the recast's dash ends.\nAkali will dash backwards up-to 400 units in a straight line. This dash can cross terrain if the end point is beyond it. If she would end the dash inside terrain, she will instead look for a location  in either direction left or right that is outside of terrain and dash there. If there is no such location, she will dash only up to the wall at her normal speed, ending the dash early.\nThis ability will cast from wherever the caster is at the end of the cast time.\nThe shuriken missile will fire from wherever Akali is at the end of the cast time (usually mid-dash), but always towards and reaching the location that was 825 units in front of her at the start of cast. The only exception is if she moves via  Flash, in which case the range of the missile is decreased relative to the distance she blinked.\nKilling an enemy with the shuriken will still mark the last area of the  shroud hit.\nAttempting to cast  Five Point Strike during either dash will buffer it to cast as soon as the dash ends.\n\n\nAttacking\n\nDisabled\n\n\nAbilities\n\n Twilight Shroud is usable.  Shuriken Flip is disabled for 10 seconds and then interrupts. Both dashes of  Perfect Execution interrupt.\n\n\nMovement\n\nDisabled\n\n\nItems\n\nUsable\n\nAll the other item-actives are usable\n\n\nDisabled\n\nN/A\n\n\nInterrupted by\n\n Hextech Rocketbelt  Stridebreaker\n\n\nConsumables\n\nUsable\n\n\nSpells\n\nUsable\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite  Teleport  Recall\n\n\nDisabled\n\n Hexflash\n\n\nInterrupted by\n\n Flash\n\n\nInterrupted by\n\nDeath Cast-inhibiting effects",
+        "notes": "Akali will track the target if they change locations.\nShe will not stop tracking the target until she reaches them, as there is no maximum tracking distance.\nBoth casts count as ability activations for the purposes of on-cast effects such as  Spellblade and triggering  Force Pulse's passive.\nShuriken Flip does not interrupt Akali's previous move or attack orders.\nThe recast does.\nShuriken Flip cannot be recast if the target is not  visible or is  untargetable.\nAkali will be ordered to basic attack the target after the recast's dash ends.\nAkali will dash backwards up-to 400 units in a straight line. This dash can cross terrain if the end point is beyond it. If she would end the dash inside terrain, she will instead look for a location  in either direction left or right that is outside of terrain and dash there. If there is no such location, she will dash only up to the wall at her normal speed, ending the dash early.\nThis ability will cast from wherever the caster is at the end of the cast time.\nThe shuriken missile will fire from wherever Akali is at the end of the cast time (usually mid-dash), but always towards and reaching the location that was 825 units in front of her at the start of cast. The only exception is if she moves via  Flash, in which case the range of the missile is decreased relative to the distance she blinked.\nKilling an enemy with the shuriken will still mark the last area of the  shroud hit.\nAttempting to cast  Five Point Strike during either dash will buffer it to cast as soon as the dash ends.\n\n\nAttacking\n\nDisabled\n\n\nAbilities\n\n Twilight Shroud is usable.  Shuriken Flip is disabled for 10 seconds and then interrupts. Both dashes of  Perfect Execution interrupt.\n\n\nMovement\n\nDisabled\n\n\nItems\n\nUsable\n\nAll the other item-actives are usable\n\n\nDisabled\n\nN/A\n\n\nInterrupted by\n\n Hextech Rocketbelt\n\n\nConsumables\n\nUsable\n\n\nSpells\n\nUsable\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite  Teleport  Recall\n\n\nDisabled\n\n Hexflash\n\n\nInterrupted by\n\n Flash\n\n\nInterrupted by\n\nDeath Cast-inhibiting effects",
         "blurb": "Active:  Akali  dashes backward and throws a shuriken forward that deals magic damage and marks the first enemy or  smoke cloud hit for a short time.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -768,9 +768,9 @@
                 "modifiers": [
                   {
                     "values": [
-                      80,
+                      110,
                       220,
-                      360
+                      330
                     ],
                     "units": [
                       "",
@@ -818,9 +818,9 @@
                 "modifiers": [
                   {
                     "values": [
-                      60,
-                      130,
-                      200
+                      70,
+                      140,
+                      210
                     ],
                     "units": [
                       "",
@@ -847,9 +847,9 @@
                 "modifiers": [
                   {
                     "values": [
-                      180,
-                      390,
-                      600
+                      210,
+                      420,
+                      630
                     ],
                     "units": [
                       "",
@@ -879,8 +879,8 @@
           "modifiers": [
             {
               "values": [
-                100,
-                80,
+                120,
+                90,
                 60
               ],
               "units": [

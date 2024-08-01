@@ -4,7 +4,7 @@
   "name": "Sylas",
   "title": "the Unshackled",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Sylas.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Sylas.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -347,11 +347,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      70,
-                      125,
-                      180,
-                      235,
-                      290
+                      60,
+                      115,
+                      170,
+                      225,
+                      280
                     ],
                     "units": [
                       "",
@@ -363,11 +363,11 @@
                   },
                   {
                     "values": [
-                      90,
-                      90,
-                      90,
-                      90,
-                      90
+                      80,
+                      80,
+                      80,
+                      80,
+                      80
                     ],
                     "units": [
                       "% AP",
@@ -384,11 +384,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      110,
-                      185,
-                      260,
-                      335,
-                      410
+                      100,
+                      175,
+                      250,
+                      325,
+                      400
                     ],
                     "units": [
                       "",
@@ -400,11 +400,11 @@
                   },
                   {
                     "values": [
-                      130,
-                      130,
-                      130,
-                      130,
-                      130
+                      120,
+                      120,
+                      120,
+                      120,
+                      120
                     ],
                     "units": [
                       "% AP",
@@ -421,11 +421,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      28,
-                      50,
-                      72,
-                      94,
-                      116
+                      24,
+                      46,
+                      68,
+                      90,
+                      112
                     ],
                     "units": [
                       "",
@@ -437,11 +437,11 @@
                   },
                   {
                     "values": [
-                      36,
-                      36,
-                      36,
-                      36,
-                      36
+                      32,
+                      32,
+                      32,
+                      32,
+                      32
                     ],
                     "units": [
                       "% AP",
@@ -458,11 +458,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      68,
-                      110,
-                      152,
-                      194,
-                      236
+                      64,
+                      106,
+                      148,
+                      190,
+                      232
                     ],
                     "units": [
                       "",
@@ -474,11 +474,11 @@
                   },
                   {
                     "values": [
-                      76,
-                      76,
-                      76,
-                      76,
-                      76
+                      72,
+                      72,
+                      72,
+                      72,
+                      72
                     ],
                     "units": [
                       "% AP",
@@ -521,11 +521,11 @@
           "modifiers": [
             {
               "values": [
-                11,
                 10,
                 9,
                 8,
-                7
+                7,
+                6
               ],
               "units": [
                 "",
@@ -592,11 +592,11 @@
                   },
                   {
                     "values": [
-                      80,
-                      80,
-                      80,
-                      80,
-                      80
+                      70,
+                      70,
+                      70,
+                      70,
+                      70
                     ],
                     "units": [
                       "% AP",
@@ -625,20 +625,20 @@
                       100
                     ],
                     "units": [
-                      "",
-                      "",
-                      "",
-                      "",
-                      ""
+                      "  (+ 5% of his bonus health",
+                      "  (+ 5% of his bonus health",
+                      "  (+ 5% of his bonus health",
+                      "  (+ 5% of his bonus health",
+                      "  (+ 5% of his bonus health"
                     ]
                   },
                   {
                     "values": [
-                      35,
-                      35,
-                      35,
-                      35,
-                      35
+                      20,
+                      20,
+                      20,
+                      20,
+                      20
                     ],
                     "units": [
                       "% AP",
@@ -662,20 +662,20 @@
                       200
                     ],
                     "units": [
-                      "",
-                      "",
-                      "",
-                      "",
-                      ""
+                      "  (+ 10% of his bonus health",
+                      "  (+ 10% of his bonus health",
+                      "  (+ 10% of his bonus health",
+                      "  (+ 10% of his bonus health",
+                      "  (+ 10% of his bonus health"
                     ]
                   },
                   {
                     "values": [
-                      70,
-                      70,
-                      70,
-                      70,
-                      70
+                      40,
+                      40,
+                      40,
+                      40,
+                      40
                     ],
                     "units": [
                       "% AP",
@@ -863,11 +863,11 @@
                   },
                   {
                     "values": [
-                      100,
-                      100,
-                      100,
-                      100,
-                      100
+                      80,
+                      80,
+                      80,
+                      80,
+                      80
                     ],
                     "units": [
                       "% AP",

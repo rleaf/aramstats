@@ -4,7 +4,7 @@
   "name": "Jayce",
   "title": "the Defender of Tomorrow",
   "fullName": "Jayce Giopara",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Jayce.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Jayce.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -404,7 +404,7 @@
         "angle": null,
         "castTime": "none",
         "effectRadius": "300",
-        "targetRange": "900"
+        "targetRange": "600"
       },
       {
         "name": "Shock Blast",
@@ -1248,7 +1248,7 @@
   },
   "releaseDate": "2012-07-07",
   "releasePatch": "1.0.0.142",
-  "patchLastChanged": "14.9",
+  "patchLastChanged": "14.14",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

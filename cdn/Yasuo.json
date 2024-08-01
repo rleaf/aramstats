@@ -4,7 +4,7 @@
   "name": "Yasuo",
   "title": "the Unforgiven",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Yasuo.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Yasuo.png",
   "resource": "FLOW",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -466,11 +466,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      60,
                       70,
-                      80,
-                      90,
-                      100
+                      85,
+                      100,
+                      115,
+                      130
                     ],
                     "units": [
                       "",
@@ -517,8 +517,168 @@
             ]
           },
           {
-            "description": "Ride the Wind: Sweeping Blade's damage is increased by 15% − 25% (based on level) per stack, up to 60% − 100% (based on level) at maximum stacks.",
-            "leveling": []
+            "description": "Ride the Wind: Sweeping Blade's damage is increased by 25% per stack, up to 100% at maximum stacks.",
+            "leveling": [
+              {
+                "attribute": "Bonus Damage per Stack",
+                "modifiers": [
+                  {
+                    "values": [
+                      17.5,
+                      21.25,
+                      25,
+                      28.75,
+                      32.5
+                    ],
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ]
+                  },
+                  {
+                    "values": [
+                      5,
+                      5,
+                      5,
+                      5,
+                      5
+                    ],
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ]
+                  },
+                  {
+                    "values": [
+                      15,
+                      15,
+                      15,
+                      15,
+                      15
+                    ],
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Bonus Damage",
+                "modifiers": [
+                  {
+                    "values": [
+                      70,
+                      85,
+                      100,
+                      115,
+                      130
+                    ],
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ]
+                  },
+                  {
+                    "values": [
+                      20,
+                      20,
+                      20,
+                      20,
+                      20
+                    ],
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ]
+                  },
+                  {
+                    "values": [
+                      60,
+                      60,
+                      60,
+                      60,
+                      60
+                    ],
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Total Increased Damage",
+                "modifiers": [
+                  {
+                    "values": [
+                      140,
+                      170,
+                      200,
+                      230,
+                      260
+                    ],
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ]
+                  },
+                  {
+                    "values": [
+                      40,
+                      40,
+                      40,
+                      40,
+                      40
+                    ],
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ]
+                  },
+                  {
+                    "values": [
+                      120,
+                      120,
+                      120,
+                      120,
+                      120
+                    ],
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           {
             "description": "Sweeping Blade can be cast on the same target only once every few seconds.",

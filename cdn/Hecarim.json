@@ -4,7 +4,7 @@
   "name": "Hecarim",
   "title": "the Shadow of War",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Hecarim.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Hecarim.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -882,7 +882,7 @@
   },
   "releaseDate": "2012-04-18",
   "releasePatch": "1.0.0.138",
-  "patchLastChanged": "14.1",
+  "patchLastChanged": "14.14",
   "price": {
     "blueEssence": 4800,
     "rp": 880,
