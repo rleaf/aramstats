@@ -4,7 +4,7 @@
   "name": "Mordekaiser",
   "title": "the Iron Revenant",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Mordekaiser.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Mordekaiser.png",
   "resource": "SHIELD",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -695,7 +695,7 @@
   },
   "releaseDate": "2010-02-24",
   "releasePatch": "1.0.0.75",
-  "patchLastChanged": "14.14",
+  "patchLastChanged": "14.15",
   "price": {
     "blueEssence": 1350,
     "rp": 585,

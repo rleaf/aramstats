@@ -4,13 +4,13 @@
   "name": "Sylas",
   "title": "the Unshackled",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Sylas.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Sylas.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
   "stats": {
     "health": {
-      "flat": 575,
+      "flat": 600,
       "percent": 0.0,
       "perLevel": 129,
       "percentPerLevel": 0.0
@@ -34,7 +34,7 @@
       "percentPerLevel": 0.0
     },
     "armor": {
-      "flat": 27,
+      "flat": 29,
       "percent": 0.0,
       "perLevel": 5.2,
       "percentPerLevel": 0.0
@@ -232,7 +232,7 @@
             "leveling": []
           },
           {
-            "description": "Unshackled: Sylas' next basic attack gains 125% bonus attack speed and is empowered to consume a stack to whirl his chains around him, which has an uncancellable windup and deals 130% AD (+ 25% AP) magic damage to the primary target and 40% AD (+ 20% AP) magic damage to nearby enemies.",
+            "description": "Unshackled: Sylas' next basic attack gains 125% bonus attack speed and is empowered to consume a stack to whirl his chains around him, which has an uncancellable windup and deals 130% AD (+ 30% AP) magic damage to the primary target and 40% AD (+ 20% AP) magic damage to nearby enemies.",
             "leveling": []
           },
           {
@@ -576,11 +576,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      65,
-                      100,
-                      135,
-                      170,
-                      205
+                      75,
+                      110,
+                      145,
+                      180,
+                      215
                     ],
                     "units": [
                       "",
@@ -625,11 +625,11 @@
                       100
                     ],
                     "units": [
-                      "  (+ 5% of his bonus health",
-                      "  (+ 5% of his bonus health",
-                      "  (+ 5% of his bonus health",
-                      "  (+ 5% of his bonus health",
-                      "  (+ 5% of his bonus health"
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
                     ]
                   },
                   {
@@ -647,6 +647,22 @@
                       "% AP",
                       "% AP"
                     ]
+                  },
+                  {
+                    "values": [
+                      5,
+                      5,
+                      5,
+                      5,
+                      5
+                    ],
+                    "units": [
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health"
+                    ]
                   }
                 ]
               },
@@ -662,11 +678,11 @@
                       200
                     ],
                     "units": [
-                      "  (+ 10% of his bonus health",
-                      "  (+ 10% of his bonus health",
-                      "  (+ 10% of his bonus health",
-                      "  (+ 10% of his bonus health",
-                      "  (+ 10% of his bonus health"
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
                     ]
                   },
                   {
@@ -683,6 +699,22 @@
                       "% AP",
                       "% AP",
                       "% AP"
+                    ]
+                  },
+                  {
+                    "values": [
+                      10,
+                      10,
+                      10,
+                      10,
+                      10
+                    ],
+                    "units": [
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health",
+                      "% of his bonus health"
                     ]
                   }
                 ]
@@ -973,7 +1005,7 @@
         "projectile": "TRUE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Petricite Burst's stack from casting Hijack is given after Sylas receives the Hijacked ability.\nHijack's per target cooldown is indicated by a ring under recently targetted enemy champions, and is only visible to Sylas and each individual enemy.\nIf Sylas casts Hijack on a  clone, no ultimate is stolen and the ability will be placed on full cooldown.\nThe same does not occur for champions within a  zombie state.\n Clones do not copy Hijack's target cooldown indicator, potentially revealing them to Sylas.\n Neeko's  Inherent Glamour does not hide her personal cooldown indicator, nor does she copy her allies'.\nIf the target becomes  untargetable,  dies, or is too far away or no longer in  sight during the cast time, this ability will cancel but does not go on  cooldown nor pay its cost (if applicable).\nIf the same happens when casting an on-target stolen ability, the ability will instead cancel and go on cooldown.\nIf Hijack is intercepted by  Braum's  Unbreakable, Sylas will gain a copy of  Glacial Fissure instead and an on-target cooldown will be applied to him.\nIf  Braum has an on-target cooldown on him (by being previously Hijacked) upon interception, no ultimate will be stolen.\nSince the copied ability scales based on Hijack's rank, abilities can be copied regardless of their rank.\nHijack will copy all components of the ability: their passives and actives as well as recast effects. Hijack will not trigger the effects of other abilities unless absolutely necessary.\nShape-shifting ultimates will transform Sylas into the target's alternate form, replacing his basic abilities and base stats. Namely:  Cougar Form,  Spider Form,  Cannon Form and  Dragon Form.\nDragon's Descent transforms Sylas'  mana, into Shyvana's  fury, being able to replenishing it by basic attacking. At the end of the effect, Sylas gains his previous mana.\nDragon's Descent does not refresh ability cooldowns upon transforming.\nSpider Form freezes Sylas' original cooldowns on their current values, causing them to not come off cooldown during Spider Form. (bug)\nUpon transforming back from  Cannon Form, Sylas' next basic attack deals  Transform Mercury Hammer's bonus magic damage and uses his critical strike animation.\nTransforming into  Cannon Form with more than 2 stacks of Unshackled and then casting  Hypercharge will limit its effect until the currently held Unshackled stacks are spent. (bug)\nTransforming into Cougar Form with more than 2 stacks of Unshackled and then casting  Takedown will disable Takedown's effect until the buff timer runs out. (bug)\nPermanent transformations last for ~5 minutes or until toggled off.\nThe alternate abilities of transforming champions will cost mana and scale with the ranks as appropriate for the ability (e.g. ranks in R for Nidalee and ranks in Q/W/E for Jayce/Elise).\nUpon transforming, a  Petricite Burst stack will be deducted.\n Petricite Burst stacks will still be gained from abilities cast in alternate forms, but the stacks are gained independently from the normal ones.\nIf Sylas has both normal and transformed stacks, Petricite Burst will prioritize consuming Sylas stacks before the transformed ones.\nUltimates comply with  One for All rules if an ally is playing the hijacked champion. For example, an allied  Darius'  Hemorrhage stacks will increase the damage of the hijacked  Noxian Guillotine; or an allied  Syndra's  Dark Sphere will add extra damage to hijacked  Unleashed Power as well as producing 3 spheres that she can use.\nUltimate Interactions\n Ahri's  Spirit Rush - Does not gain  Essence Theft's takedown effect thus cannot grant additional recasts.\n Akshan's  Comeuppance - Sylas can cast  Abscond, but doing so ends the channel prematurely. If Comeuppance is cast after  Abduct but before the chains hit a target, Sylas isn't pulled to the target and the channel continues as usual.\n Amumu's  Curse of the Sad Mummy - Does not apply  Cursed Touch.\n Aphelios'  Moonlight Vigil - Based on the  main weapon at the moment of steal.\n Crescendum empowers his basic attacks temporarily.\n Calibrum does not apply marks.\n Severum grants a shield if healed while at full health.\n Ashe's  Enchanted Crystal Arrow - Does not apply  Frost Shot to secondary targets.\n Brand's  Pyroclasm - Does not apply stacks of  Blaze.\n Cho'Gath's  Feast - Gains permanent Feast stacks on-kill.\n Corki's  Missile Barrage - Gains max charges.\n Darius'  Noxian Guillotine - Does not apply a stack of  Hemorrhage. Upon gaining a reset from a Rank 3 Noxian Guillotine, Sylas can hold onto the ability for up to 300 seconds.\n Fiora's  Grand Challenge - Gains movement speed in the effect and deals bonus  Vitals true damage and can trigger the area healing.\n Galio's  Hero's Entrance - Gives Sylas and allies  Shield of Durand's magic  shield, based on  Kingslayer rank.\n Gangplank's  Cannon Barrage - Does not steal cannon upgrades.\n Gnar's  GNAR! - Gains a usable ultimate regardless of cast on  Mini Gnar or  Mega Gnar.\n Gwen's  Needlework - Does not apply  Thousand Cuts.\n Heimerdinger's  UPGRADE!!! - Sylas's basic abilities are replaced with Heimerdinger's empowered abilities. The upgrade buff lasts until the ultimate can be stolen again.\n Illaoi's  Leap of Faith - Does not reduce  cooldown of  Kingslayer.\n Irelia's  Vanguard's Edge - Applies marks of  Bladesurge.\n Jax's  Grandmaster-At-Arms - Applies magic damage on-hit while holding onto Grandmaster's Might, this effect is lost upon activation.\n Kassadin's  Riftwalk - Only provides one use.\n Kai'Sa's  Killer Instinct - Sylas' basic attacks,  Abduct and nearby allies'  immobilizations apply stacks of  Plasma, up to 4. Sylas is unable to apply the 5th stack necessary to expunge the stacks.\n Kalista's  Fate's Call - Only castable with a  link (purchasable in the Shop for  0 gold).\n Karma's  Mantra - Sylas' basic abilities are replaced with Karma's empowered abilities, according to Sylas' own ability ranks (including Hijack for Mantra bonuses).\n Katarina's  Death Lotus - Can be cast without a target.\n Kayn's  Umbral Trespass - Based on current form ( Shadow Assassin /  Rhaast).\n Kha'Zix's  Void Assault - Can steal the ability's  evolution bonus effects.\n Kennen's  Slicing Maelstrom - Applies  Mark of the Storm.\n Kled's  Chaaaaaaaarge!!! - Does not need  mount to cast.\n Kog'Maw's  Living Artillery - Only provides one use.\n LeBlanc's  Mimic - Uses the empowered version of  LeBlanc's last cast basic ability.  Mimic Sigil of Malice does not apply its mark. If she has not cast any abilities,  Mimic Sigil of Malice is copied.\n Leona's  Solar Flare - Does not apply  Sunlight.\n Lillia's  Lilting Lullaby - Sylas' abilities apply  Dream-Laden Bough's debuff, which does not deal its damage over time.\n Lucian's  The Culling - Can cast  Abscond and  Abduct freely during the channel.\n Lux's  Final Spark - Does not apply  Illumination.\n Master Yi's  Highlander -  Takedowns reduce basic ability cooldowns while holding onto Highlander, this effect is lost upon activation.\n Mordekaiser's  Realm of Death - Can join the dimension of outgoing realms if cast in the proper range (does not extend their duration).\n Nasus'  Fury of the Sands - Does not reduce  cooldown of  Chain Lash.\n Neeko's  Inherent Glamour - Always steals  Pop Blossom, regardless of the champion Neeko is disguised as.\n Olaf's  Ragnarok - Does not grant AD based on Sylas' AP, despite the tooltip indicating so.\n Orianna's  Command: Shockwave - Cast on self without a  Ball.\n Pantheon's  Grand Starfall - The spear deals damage based on  Chain Lash rank and scales with 46% AP.\n Quinn's  Behind Enemy Lines - Does not cast  Skystrike upon attacking an enemy champion. It can be casted manually however.\n Rengar's  Thrill of the Hunt - Sylas will gain  Unseen Predator on his next attack.\n Renekton's  Dominus - Grants Sylas 20 mana on cast and then 5 mana per second (up to 75 total mana over the duration).\n Rek'Sai's  Void Rush - Sylas' attacks against enemy champions will apply a  mark which can be used to cast the ability.\n Riven's  Blade of the Exile - Grants AD based on Sylas' AP on cast and grants him 75 bonus attack range for his auto attacks aswell for  Chain Lash and  Kingslayer.\n Samira's  Inferno Trigger - Can use without a  Grade.\n Seraphine's  Encore - Allies do not gain  Notes.\n Shaco's  Hallucinate - Creates a Sylas Clone that also copies Sylas' stolen ultimate indicator. The clone behaves like a Shaco clone, being able to  Backstab, apply  Two-Shiv Poison's slow scaling with  Abscond rank, and summoning  mini-boxes that deal damage based on  Hijack rank.\n Shyvana's  Dragon's Descent - Has a 200 second base cooldown.\n Skarner's  Impale - Can freely cast abilities during the suppression, but cannot basic attack or  Flash.\n Sylas'  Hijack - Steals the ability that the enemy Sylas has stolen. Cannot be targeted if no ability has been stolen.\n Syndra's  Unleashed Power - Throws a minimum of 3  spheres, which are left on the ground afterwards and vanish after 6 seconds.\n Talon's  Shadow Assault - Does not apply  Blade's End.\n Tahm Kench's  Devour - Sylas' basic attacks apply  An Acquired Taste, allowing him to cast Devour on enemies.\n Teemo's  Noxious Trap - Gains max charges.\n Tristana's  Buster Shot - Always has 525 cast range as Sylas does not benefit from  Draw a Bead's per-level cast range increase.\n Twitch's  Spray and Pray - Gains 300 attack range and his attacks produce missiles that travel 850 range. These attacks are classified as  melee.\n Udyr - Steals  Wingborne Storm, and can recast to  Awaken it. Effects are based on Hijack's rank.\n Urgot's  Fear Beyond Death - Can cast  Kingslayer during the recast.\n Varus'  Chain of Corruption - Applies stacks of  Blight to targets hit that can be detonated by Sylas' other abilities, dealing damage based on  Kingslayer rank.\n Vayne's  Final Hour - Gains the AD and MS bonuses. Additionally, Sylas gains  invisibility when he casts  Chain Lash.\n Vel'Koz's  Life Form Disintegration Ray - Does not apply  Organic Deconstruction.\n Viego's  Sovereign's Domination - Always steals  Heartbreaker, regardless of the champion Viego is possessing.\n Viktor's  Chaos Storm - Can steal the ability's  evolution bonus effects.\n Xayah's  Featherstorm -  Feathers do not interact with an ally or enemy  Xayah.\n Yasuo's  Last Breath -  Critical strikes ignore 50% of the target's  bonus armor after activation.\n Yuumi's  Final Chapter - Can freely cast abilities during the channel.\n Zac's  Let's Bounce! - Cannot declare attacks nor use any abilities nor while bouncing. Sylas does not create  chunks.\n Zeri's  Lightning Crash - Can gain Overcharge's effects and refresh it on basic attacks (even without being charged) and abilities.\n Zed's  Death Mark -  Shadow does not mimic abilities but can be reactivated to  swap places.",
+        "notes": "Petricite Burst's stack from casting Hijack is given after Sylas receives the Hijacked ability.\nHijack's per target cooldown is indicated by a ring under recently targetted enemy champions, and is only visible to Sylas and each individual enemy.\nIf Sylas casts Hijack on a  clone, no ultimate is stolen and the ability will be placed on full cooldown.\nThe same does not occur for champions within a  zombie state.\n Clones do not copy Hijack's target cooldown indicator, potentially revealing them to Sylas.\n Neeko's  Inherent Glamour does not hide her personal cooldown indicator, nor does she copy her allies'.\nIf the target becomes  untargetable,  dies, or is too far away or no longer in  sight during the cast time, this ability will cancel but does not go on  cooldown nor pay its cost (if applicable).\nIf the same happens when casting an on-target stolen ability, the ability will instead cancel and go on cooldown.\nIf Hijack is intercepted by  Braum's  Unbreakable, Sylas will gain a copy of  Glacial Fissure instead and an on-target cooldown will be applied to him.\nIf  Braum has an on-target cooldown on him (by being previously Hijacked) upon interception, no ultimate will be stolen.\nSince the copied ability scales based on Hijack's rank, abilities can be copied regardless of their rank.\nHijack will copy all components of the ability: their passives and actives as well as recast effects. Hijack will not trigger the effects of other abilities unless absolutely necessary.\nShape-shifting ultimates will transform Sylas into the target's alternate form, replacing his basic abilities and base stats. Namely:  Cougar Form,  Spider Form,  Cannon Form and  Dragon Form.\nDragon's Descent transforms Sylas'  mana, into Shyvana's  fury, being able to replenishing it by basic attacking. At the end of the effect, Sylas gains his previous mana.\nDragon's Descent does not refresh ability cooldowns upon transforming.\nSpider Form freezes Sylas' original cooldowns on their current values, causing them to not come off cooldown during Spider Form. (bug)\nUpon transforming back from  Cannon Form, Sylas' next basic attack deals  Transform Mercury Hammer's bonus magic damage and uses his critical strike animation.\nTransforming into  Cannon Form with more than 2 stacks of Unshackled and then casting  Hypercharge will limit its effect until the currently held Unshackled stacks are spent. (bug)\nTransforming into Cougar Form with more than 2 stacks of Unshackled and then casting  Takedown will disable Takedown's effect until the buff timer runs out. (bug)\nPermanent transformations last for ~5 minutes or until toggled off.\nThe alternate abilities of transforming champions will cost mana and scale with the ranks as appropriate for the ability (e.g. ranks in R for Nidalee and ranks in Q/W/E for Jayce/Elise).\nUpon transforming, a  Petricite Burst stack will be deducted.\n Petricite Burst stacks will still be gained from abilities cast in alternate forms, but the stacks are gained independently from the normal ones.\nIf Sylas has both normal and transformed stacks, Petricite Burst will prioritize consuming Sylas stacks before the transformed ones.\nUltimates comply with  One for All rules if an ally is playing the hijacked champion. For example, an allied  Darius'  Hemorrhage stacks will increase the damage of the hijacked  Noxian Guillotine; or an allied  Syndra's  Dark Sphere will add extra damage to hijacked  Unleashed Power as well as producing 3 spheres that she can use.\nUltimate Interactions\n Ahri's  Spirit Rush - Does not gain  Essence Theft's takedown effect thus cannot grant additional recasts.\n Akshan's  Comeuppance - Sylas can cast  Abscond, but doing so ends the channel prematurely. If Comeuppance is cast after  Abduct but before the chains hit a target, Sylas isn't pulled to the target and the channel continues as usual.\n Amumu's  Curse of the Sad Mummy - Does not apply  Cursed Touch.\n Aphelios'  Moonlight Vigil - Based on the  main weapon at the moment of steal.\n Crescendum empowers his basic attacks temporarily.\n Calibrum does not apply marks.\n Severum grants a shield if healed while at full health.\n Ashe's  Enchanted Crystal Arrow - Does not apply  Frost Shot to secondary targets.\n Brand's  Pyroclasm - Does not apply stacks of  Blaze.\n Cho'Gath's  Feast - Gains permanent Feast stacks on-kill.\n Corki's  Missile Barrage - Gains max charges.\n Darius'  Noxian Guillotine - Does not apply a stack of  Hemorrhage. Upon gaining a reset from a Rank 3 Noxian Guillotine, Sylas can hold onto the ability for up to 300 seconds.\n Fiora's  Grand Challenge - Gains movement speed in the effect and deals bonus  Vitals true damage and can trigger the area healing.\n Galio's  Hero's Entrance - Gives Sylas and allies  Shield of Durand's magic  shield, based on  Kingslayer rank.\n Gangplank's  Cannon Barrage - Does not steal cannon upgrades.\n Gnar's  GNAR! - Gains a usable ultimate regardless of cast on  Mini Gnar or  Mega Gnar.\n Gwen's  Needlework - Does not apply  Thousand Cuts.\n Heimerdinger's  UPGRADE!!! - Sylas's basic abilities are replaced with Heimerdinger's empowered abilities. The upgrade buff lasts until the ultimate can be stolen again.\n Illaoi's  Leap of Faith - Does not reduce  cooldown of  Kingslayer.\n Irelia's  Vanguard's Edge - Applies marks of  Bladesurge.\n Jax's  Grandmaster-At-Arms - Applies magic damage on-hit while holding onto Grandmaster-At-Arms and while it is active.\n Kassadin's  Riftwalk - Only provides one use.\n Kai'Sa's  Killer Instinct - Sylas' basic attacks,  Abduct and nearby allies'  immobilizations apply stacks of  Plasma, up to 4. Sylas is unable to apply the 5th stack necessary to expunge the stacks.\n Kalista's  Fate's Call - Only castable with a  link (purchasable in the Shop for  0 gold).\n Karma's  Mantra - Sylas' basic abilities are replaced with Karma's empowered abilities, according to Sylas' own ability ranks (including Hijack for Mantra bonuses).\n Katarina's  Death Lotus - Can be cast without a target.\n Kayn's  Umbral Trespass - Based on current form ( Shadow Assassin /  Rhaast).\n Kha'Zix's  Void Assault - Can steal the ability's  evolution bonus effects.\n Kennen's  Slicing Maelstrom - Applies  Mark of the Storm.\n Kled's  Chaaaaaaaarge!!! - Does not need  mount to cast.\n Kog'Maw's  Living Artillery - Only provides one use.\n LeBlanc's  Mimic - Uses the empowered version of  LeBlanc's last cast basic ability.  Mimic Sigil of Malice does not apply its mark. If she has not cast any abilities,  Mimic Sigil of Malice is copied.\n Leona's  Solar Flare - Does not apply  Sunlight.\n Lillia's  Lilting Lullaby - Sylas' abilities apply  Dream-Laden Bough's debuff, which does not deal its damage over time.\n Lucian's  The Culling - Can cast  Abscond and  Abduct freely during the channel.\n Lux's  Final Spark - Does not apply  Illumination.\n Master Yi's  Highlander -  Takedowns reduce basic ability cooldowns while holding onto Highlander and while it is active.\n Mordekaiser's  Realm of Death - Can join the dimension of outgoing realms if cast in the proper range (does not extend their duration).\n Nasus'  Fury of the Sands - Does not reduce  cooldown of  Chain Lash.\n Neeko's  Inherent Glamour - Always steals  Pop Blossom, regardless of the champion Neeko is disguised as.\n Olaf's  Ragnarok - Does not grant AD based on Sylas' AP, despite the tooltip indicating so.\n Orianna's  Command: Shockwave - Cast on self without a  Ball.\n Pantheon's  Grand Starfall - The spear deals damage based on  Chain Lash rank and scales with 46% AP.\n Quinn's  Behind Enemy Lines - Does not cast  Skystrike upon attacking an enemy champion. It can be casted manually however.\n Rengar's  Thrill of the Hunt - Sylas will gain  Unseen Predator on his next attack.\n Renekton's  Dominus - Grants Sylas 20 mana on cast and then 5 mana per second (up to 75 total mana over the duration).\n Rek'Sai's  Void Rush - Sylas' attacks against enemy champions will apply a  mark which can be used to cast the ability.\n Riven's  Blade of the Exile - Grants AD based on Sylas' AP on cast and grants him 75 bonus attack range for his auto attacks aswell for  Chain Lash and  Kingslayer.\n Samira's  Inferno Trigger - Can use without a  Grade.\n Seraphine's  Encore - Allies do not gain  Notes.\n Shaco's  Hallucinate - Creates a Sylas Clone that also copies Sylas' stolen ultimate indicator. The clone behaves like a Shaco clone, being able to  Backstab, apply  Two-Shiv Poison's slow scaling with  Abscond rank, and summoning  mini-boxes that deal damage based on  Hijack rank.\n Shyvana's  Dragon's Descent - Has a 200 second base cooldown.\n Skarner's  Impale - Can freely cast abilities during the suppression, but cannot basic attack or  Flash.\n Sylas'  Hijack - Steals the ability that the enemy Sylas has stolen. Cannot be targeted if no ability has been stolen.\n Syndra's  Unleashed Power - Throws a minimum of 3  spheres, which are left on the ground afterwards and vanish after 6 seconds.\n Talon's  Shadow Assault - Does not apply  Blade's End.\n Tahm Kench's  Devour - Sylas' basic attacks apply  An Acquired Taste, allowing him to cast Devour on enemies.\n Teemo's  Noxious Trap - Gains max charges.\n Tristana's  Buster Shot - Always has 525 cast range as Sylas does not benefit from  Draw a Bead's per-level cast range increase.\n Twitch's  Spray and Pray - Gains 300 attack range and his attacks produce missiles that travel 850 range. These attacks are classified as  melee.\n Udyr - Steals  Wingborne Storm, and can recast to  Awaken it. Effects are based on Hijack's rank.\n Urgot's  Fear Beyond Death - Can cast  Kingslayer during the recast.\n Varus'  Chain of Corruption - Applies stacks of  Blight to targets hit that can be detonated by Sylas' other abilities, dealing damage based on  Kingslayer rank.\n Vayne's  Final Hour - Gains the AD and MS bonuses. Additionally, Sylas gains  invisibility when he casts  Chain Lash.\n Vel'Koz's  Life Form Disintegration Ray - Does not apply  Organic Deconstruction.\n Viego's  Sovereign's Domination - Always steals  Heartbreaker, regardless of the champion Viego is possessing.\n Viktor's  Chaos Storm - Can steal the ability's  evolution bonus effects.\n Xayah's  Featherstorm -  Feathers do not interact with an ally or enemy  Xayah.\n Yasuo's  Last Breath -  Critical strikes ignore 50% of the target's  bonus armor after activation.\n Yuumi's  Final Chapter - Can freely cast abilities during the channel.\n Zac's  Let's Bounce! - Cannot declare attacks nor use any abilities nor while bouncing. Sylas does not create  chunks.\n Zeri's  Lightning Crash - Can gain Overcharge's effects and refresh it on basic attacks (even without being charged) and abilities.\n Zed's  Death Mark -  Shadow does not mimic abilities but can be reactivated to  swap places.",
         "blurb": "Active:  Sylas launches his chains at the target enemy champion, gaining a copy of their ultimate ability and briefly  revealing them. He cannot steal from the same champion again for a while, and can hold the hijacked ability for some time, during which he can recast Hijack.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -992,7 +1024,7 @@
   },
   "releaseDate": "2019-01-25",
   "releasePatch": "9.2",
-  "patchLastChanged": "14.10",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

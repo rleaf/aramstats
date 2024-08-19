@@ -4,7 +4,7 @@
   "name": "Neeko",
   "title": "the Curious Chameleon",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Neeko.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Neeko.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -914,7 +914,7 @@
   },
   "releaseDate": "2018-12-05",
   "releasePatch": "8.24",
-  "patchLastChanged": "14.14",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

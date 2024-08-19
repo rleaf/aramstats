@@ -4,7 +4,7 @@
   "name": "Aatrox",
   "title": "the Darkin Blade",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Aatrox.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Aatrox.png",
   "resource": "BLOOD_WELL",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -1868,7 +1868,7 @@
       "name": "Primordian",
       "id": 266033,
       "isBase": false,
-      "availability": "Upcoming",
+      "availability": "Available",
       "formatName": "Primordian",
       "lootEligible": true,
       "cost": 1820,
@@ -2004,7 +2004,7 @@
         }
       ],
       "lore": "When the Primordians first attacked, humanity was unprepared—until Anima Squad formed to become its last defense. But they are safe no longer, for the Primordians evolved in turn. Their apex being is called Aatrox, whose understanding of humanity only furthers his hatred. His flesh has no limits, his sword no mercy. He is the harbinger of Anima's end.",
-      "release": "0000-00-00",
+      "release": "2024-07-31",
       "set": [
         "Primordian"
       ],

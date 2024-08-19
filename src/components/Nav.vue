@@ -247,7 +247,7 @@
    background: var(--cell-panel);
    width: 400px;
    color: var(--color-font);
-   border-radius: 8px;
+   border-radius: 50px;
    border: 1px solid var(--cell-border);
    padding: 3px 2px;
    transition: 0.25s ease-in-out;

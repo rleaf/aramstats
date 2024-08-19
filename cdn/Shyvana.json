@@ -4,7 +4,7 @@
   "name": "Shyvana",
   "title": "the Half-Dragon",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Shyvana.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Shyvana.png",
   "resource": "FURY",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -733,11 +733,11 @@
                       100
                     ],
                     "units": [
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD"
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
                     ]
                   },
                   {
@@ -979,7 +979,7 @@
   },
   "releaseDate": "2011-11-01",
   "releasePatch": "1.0.0.128",
-  "patchLastChanged": "14.13",
+  "patchLastChanged": "14.15",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

@@ -4,7 +4,7 @@
   "name": "Darius",
   "title": "the Hand of Noxus",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Darius.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Darius.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -434,18 +434,18 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Darius/ability-icon/w",
         "effects": [
           {
-            "description": "Active: Darius empowers his next basic attack within 4 seconds to have an uncancellable windup, gain 25 bonus range, deal modified physical damage and slow the target by 90% for 1 second.",
+            "description": "Active: Darius empowers his next basic attack within 4 seconds to have an uncancellable windup, gain 25 bonus range, deal bonus physical damage and slow the target by 90% for 1 second. This damage is affected by critical strike modifiers.",
             "leveling": [
               {
-                "attribute": "Physical Damage",
+                "attribute": "Bonus Physical Damage",
                 "modifiers": [
                   {
                     "values": [
-                      140,
-                      145,
-                      150,
-                      155,
-                      160
+                      40,
+                      45,
+                      50,
+                      55,
+                      60
                     ],
                     "units": [
                       "% AD",
@@ -461,10 +461,6 @@
           },
           {
             "description": "If this attack kills the target, half of Crippling Strike's cooldown is reduced and its mana cost is refunded.",
-            "leveling": []
-          },
-          {
-            "description": "Crippling Strike's total damage is affected by critical strike modifiers.",
             "leveling": []
           },
           {
@@ -2344,6 +2340,41 @@
       ],
       "splashArtist": [
         "Huyy Nguyen",
+        "West Studio"
+      ]
+    },
+    {
+      "name": "Divine God-King",
+      "id": 122064,
+      "isBase": false,
+      "availability": "Upcoming",
+      "formatName": "Divine God-King",
+      "lootEligible": true,
+      "cost": "Special",
+      "sale": 0,
+      "distribution": "1% drop rate from Capsules or opening 30 Capsules",
+      "rarity": "Mythic",
+      "chromas": [],
+      "lore": "God-King Darius is a bringer of true carnage—the descendant of primordial deities long forgotten in the shadow of Demacia. Slaughtering monarchs and gods alike, he seeks to end the false world of unity and peace, ushering in an age of endless war where only the strongest will survive.",
+      "release": "0000-00-00",
+      "set": [
+        "Battle of the God-Kings"
+      ],
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/darius/skins/skin64/images/darius_splash_centered_64.skins_darius_skin64.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/darius/skins/skin64/images/darius_splash_uncentered_64.skins_darius_skin64.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/darius/skins/skin64/images/darius_splash_tile_64.skins_darius_skin64.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/darius/skins/skin64/dariusloadscreen_64.skins_darius_skin64.jpg",
+      "loadScreenVintagePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/darius/skins/skin64/dariusloadscreen_64_le.skins_darius_skin64.jpg",
+      "newEffects": true,
+      "newAnimations": true,
+      "newRecall": true,
+      "newVoice": true,
+      "newQuotes": false,
+      "voiceActor": [
+        "Chuck Kourouklis"
+      ],
+      "splashArtist": [
+        "David Villegas",
         "West Studio"
       ]
     }

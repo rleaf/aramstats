@@ -4,7 +4,7 @@
   "name": "Rell",
   "title": "the Iron Maiden",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Rell.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Rell.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -1004,7 +1004,7 @@
   },
   "releaseDate": "2020-12-10",
   "releasePatch": "10.25",
-  "patchLastChanged": "14.14",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

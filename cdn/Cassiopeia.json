@@ -4,7 +4,7 @@
   "name": "Cassiopeia",
   "title": "the Serpent's Embrace",
   "fullName": "Cassiopeia Du Couteau",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Cassiopeia.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Cassiopeia.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -953,7 +953,7 @@
   },
   "releaseDate": "2010-12-14",
   "releasePatch": "v1.0.0.107",
-  "patchLastChanged": "14.15",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

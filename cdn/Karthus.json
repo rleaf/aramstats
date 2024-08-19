@@ -4,7 +4,7 @@
   "name": "Karthus",
   "title": "the Deathsinger",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Karthus.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Karthus.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -842,7 +842,7 @@
   },
   "releaseDate": "2009-06-12",
   "releasePatch": "June 12, 2009 Patch",
-  "patchLastChanged": "14.14",
+  "patchLastChanged": "14.15",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

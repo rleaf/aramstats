@@ -4,19 +4,19 @@
   "name": "Irelia",
   "title": "the Blade Dancer",
   "fullName": "Xan Irelia",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Irelia.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Irelia.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
   "stats": {
     "health": {
-      "flat": 590,
+      "flat": 630,
       "percent": 0.0,
       "perLevel": 115,
       "percentPerLevel": 0.0
     },
     "healthRegen": {
-      "flat": 8.5,
+      "flat": 6,
       "percent": 0.0,
       "perLevel": 0.85,
       "percentPerLevel": 0.0
@@ -861,7 +861,7 @@
   },
   "releaseDate": "2010-11-16",
   "releasePatch": "1.0.0.105",
-  "patchLastChanged": "14.14",
+  "patchLastChanged": "14.15",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

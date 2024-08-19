@@ -4,7 +4,7 @@
   "name": "Zyra",
   "title": "Rise of the Thorns",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Zyra.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Zyra.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -747,7 +747,7 @@
   },
   "releaseDate": "2012-07-24",
   "releasePatch": "1.0.0.143",
-  "patchLastChanged": "14.14",
+  "patchLastChanged": "14.15",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

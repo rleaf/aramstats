@@ -4,7 +4,7 @@
   "name": "Aurelion Sol",
   "title": "The Star Forger",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/AurelionSol.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/AurelionSol.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -985,7 +985,7 @@
   },
   "releaseDate": "2016-03-24",
   "releasePatch": "6.6",
-  "patchLastChanged": "14.14",
+  "patchLastChanged": "14.15",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

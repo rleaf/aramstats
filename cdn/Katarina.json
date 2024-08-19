@@ -4,7 +4,7 @@
   "name": "Katarina",
   "title": "the Sinister Blade",
   "fullName": "Katarina Du Couteau",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Katarina.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Katarina.png",
   "resource": "NONE",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -278,10 +278,10 @@
                   {
                     "values": [
                       80,
-                      110,
-                      140,
-                      170,
-                      200
+                      120,
+                      160,
+                      200,
+                      240
                     ],
                     "units": [
                       "",
@@ -293,11 +293,11 @@
                   },
                   {
                     "values": [
-                      35,
-                      35,
-                      35,
-                      35,
-                      35
+                      45,
+                      45,
+                      45,
+                      45,
+                      45
                     ],
                     "units": [
                       "% AP",
@@ -460,10 +460,10 @@
                   {
                     "values": [
                       20,
-                      35,
+                      30,
+                      40,
                       50,
-                      65,
-                      80
+                      60
                     ],
                     "units": [
                       "",
@@ -690,9 +690,9 @@
                 "modifiers": [
                   {
                     "values": [
+                      25,
                       30,
-                      35,
-                      40
+                      35
                     ],
                     "units": [
                       "%",
@@ -755,7 +755,7 @@
   },
   "releaseDate": "2009-09-19",
   "releasePatch": "0.9.25.21",
-  "patchLastChanged": "14.10",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

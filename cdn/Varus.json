@@ -4,7 +4,7 @@
   "name": "Varus",
   "title": "the Arrow of Retribution",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Varus.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Varus.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -46,7 +46,7 @@
       "percentPerLevel": 0.0
     },
     "attackDamage": {
-      "flat": 57,
+      "flat": 59,
       "percent": 0.0,
       "perLevel": 3.4,
       "percentPerLevel": 0.0
@@ -1054,7 +1054,7 @@
   },
   "releaseDate": "2012-05-08",
   "releasePatch": "1.0.0.139",
-  "patchLastChanged": "14.13",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

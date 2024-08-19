@@ -4,7 +4,7 @@
   "name": "Pantheon",
   "title": "the Unbreakable Spear",
   "fullName": "Atreus",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Pantheon.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Pantheon.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -936,7 +936,7 @@
             ]
           },
           {
-            "description": "Active: Pantheon channels for 2 seconds, then leaps high into the air, vanishing and becoming immune to crowd control until he reappears. While in the air, Pantheon channels again for 2.2 seconds and grants sight around the target location 0.5 seconds into the channel.",
+            "description": "Active: Pantheon channels for 2 seconds, then leaps high into the air, vanishing and becoming immune to crowd control until he reappears. While in the air, Pantheon channels again for 2.25 seconds and grants sight around the target location 0.5 seconds into the channel.",
             "leveling": []
           },
           {
@@ -944,7 +944,7 @@
             "leveling": []
           },
           {
-            "description": "Over the remaining 1.2 seconds, Pantheon crashes down and creates a shockwave alongside himself that travels toward the target location, dealing magic damage to enemies hit, reduced by up to 50% for those hit at the edge of the area. Upon completion of the channel, Pantheon reappears at the target location and gains full stacks of Mortal Will.",
+            "description": "Over the remaining 1.25 seconds, Pantheon crashes down after 0.55 seconds and creates a shockwave alongside himself that travels toward the target location over 0.7 seconds, dealing magic damage to enemies hit, reduced by up to 50% for those hit at the edge of the area. Upon completion of the channel, Pantheon reappears at the target location and gains maximum stacks of Mortal Will.",
             "leveling": [
               {
                 "attribute": "Magic Damage",

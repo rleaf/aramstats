@@ -4,7 +4,7 @@
   "name": "Yasuo",
   "title": "the Unforgiven",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Yasuo.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Yasuo.png",
   "resource": "FLOW",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -34,7 +34,7 @@
       "percentPerLevel": 0.0
     },
     "armor": {
-      "flat": 30,
+      "flat": 32,
       "percent": 0.0,
       "perLevel": 4.6,
       "percentPerLevel": 0.0
@@ -838,7 +838,7 @@
   },
   "releaseDate": "2013-12-13",
   "releasePatch": "3.15",
-  "patchLastChanged": "14.11",
+  "patchLastChanged": "14.15",
   "price": {
     "blueEssence": 1350,
     "rp": 585,
@@ -2696,7 +2696,7 @@
       "name": "Battle Wolf",
       "id": 157077,
       "isBase": false,
-      "availability": "Upcoming",
+      "availability": "Available",
       "formatName": "Battle Wolf",
       "lootEligible": true,
       "cost": 1350,
@@ -2895,7 +2895,7 @@
         }
       ],
       "lore": "The first captain of the Wolf Squad, Yasuo fought alongside Riven in the early days of the invasion. He disappeared only to reemerge years later a battle-hardened survivalist, still wearing his original suit. He's here to warn Anima Squad that the enemy has evolved—and if they want to survive, they'll need all hands (and paws) on deck.",
-      "release": "0000-00-00",
+      "release": "2024-07-31",
       "set": [
         "Anima Squad"
       ],

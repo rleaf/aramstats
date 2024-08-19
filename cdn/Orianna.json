@@ -4,7 +4,7 @@
   "name": "Orianna",
   "title": "the Lady of Clockwork",
   "fullName": "Orianna Reveck",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Orianna.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Orianna.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -294,11 +294,11 @@
                   },
                   {
                     "values": [
-                      50,
-                      50,
-                      50,
-                      50,
-                      50
+                      55,
+                      55,
+                      55,
+                      55,
+                      55
                     ],
                     "units": [
                       "% AP",
@@ -331,11 +331,11 @@
                   },
                   {
                     "values": [
-                      35,
-                      35,
-                      35,
-                      35,
-                      35
+                      38.5,
+                      38.5,
+                      38.5,
+                      38.5,
+                      38.5
                     ],
                     "units": [
                       "% AP",
@@ -834,7 +834,7 @@
   },
   "releaseDate": "2011-06-01",
   "releasePatch": "v1.0.0.119",
-  "patchLastChanged": "14.13",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 4800,
     "rp": 880,
@@ -1801,6 +1801,64 @@
       "splashArtist": [
         "Félix Donadio",
         "West Studio"
+      ]
+    },
+    {
+      "name": "T1",
+      "id": 61038,
+      "isBase": false,
+      "availability": "Legacy",
+      "formatName": "T1",
+      "lootEligible": true,
+      "cost": 1350,
+      "sale": 0,
+      "distribution": null,
+      "rarity": "Epic",
+      "chromas": [
+        {
+          "name": "Elite",
+          "id": 61039,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/61/61039.png",
+          "colors": [
+            "#AE1F1F",
+            "#DF4F1A"
+          ],
+          "descriptions": [
+            {
+              "description": "This chroma was released as a bundle exclusive during T1 World Championship showcase.",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 2,
+              "region": "riot"
+            }
+          ]
+        }
+      ],
+      "lore": "Honoring Faker's winning performance as Orianna during the 2023 World Championship.",
+      "release": "2024-08-14",
+      "set": [
+        "World Champions: 2023"
+      ],
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/orianna/skins/skin38/images/orianna_splash_centered_38.skins_orianna_skin38.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/orianna/skins/skin38/images/orianna_splash_uncentered_38.skins_orianna_skin38.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/orianna/skins/skin38/images/orianna_splash_tile_38.skins_orianna_skin38.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/orianna/skins/skin38/oriannaloadscreen_38.skins_orianna_skin38.jpg",
+      "loadScreenVintagePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/orianna/skins/skin38/oriannaloadscreen_38_le.skins_orianna_skin38.jpg",
+      "newEffects": true,
+      "newAnimations": true,
+      "newRecall": true,
+      "newVoice": false,
+      "newQuotes": false,
+      "voiceActor": [
+        "Heath Pennington"
+      ],
+      "splashArtist": [
+        "Alsie Lau",
+        "Kelvin Law",
+        "Mo Yan"
       ]
     }
   ]

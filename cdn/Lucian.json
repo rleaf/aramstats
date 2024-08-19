@@ -4,7 +4,7 @@
   "name": "Lucian",
   "title": "the Purifier",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Lucian.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Lucian.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -233,7 +233,7 @@
             "leveling": []
           },
           {
-            "description": "Innate - Vigilance: Whenever Lucian is healed or shielded by an ally, or an enemy champion within 1000 units is immobilized, his next two shots within 6 seconds are empowered to deal 15 (+ 15% AD) bonus magic damage on-hit. He can store up to 4 empowered shots at a time.",
+            "description": "Innate - Vigilance: Whenever Lucian is healed or shielded by an ally, or an enemy champion within 1000 units is immobilized, his next two shots within 6 seconds are empowered to deal 15 (+ 20% AD) bonus magic damage on-hit. He can store up to 4 empowered shots at a time.",
             "leveling": []
           }
         ],
@@ -277,11 +277,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      95,
-                      125,
-                      155,
-                      185,
-                      215
+                      85,
+                      115,
+                      145,
+                      175,
+                      205
                     ],
                     "units": [
                       "",
@@ -1008,7 +1008,7 @@
   },
   "releaseDate": "2013-08-22",
   "releasePatch": "3.10a",
-  "patchLastChanged": "14.2",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 1350,
     "rp": 585,

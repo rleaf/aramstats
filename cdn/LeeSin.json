@@ -4,7 +4,7 @@
   "name": "Lee Sin",
   "title": "the Blind Monk",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/LeeSin.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/LeeSin.png",
   "resource": "ENERGY",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -142,7 +142,7 @@
       "percentPerLevel": 0.0
     },
     "aramHealing": {
-      "flat": 1.2,
+      "flat": 1.1,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0
@@ -2730,6 +2730,64 @@
       ],
       "splashArtist": [
         "Pandart Studio"
+      ]
+    },
+    {
+      "name": "T1",
+      "id": 64068,
+      "isBase": false,
+      "availability": "Legacy",
+      "formatName": "T1",
+      "lootEligible": true,
+      "cost": 1350,
+      "sale": 0,
+      "distribution": null,
+      "rarity": "Epic",
+      "chromas": [
+        {
+          "name": "Elite",
+          "id": 64069,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/64/64069.png",
+          "colors": [
+            "#AE1F1F",
+            "#DF4F1A"
+          ],
+          "descriptions": [
+            {
+              "description": "This chroma was released as a bundle exclusive during T1 World Championship showcase.",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 2,
+              "region": "riot"
+            }
+          ]
+        }
+      ],
+      "lore": "Honoring Oner's winning performance as Lee Sin during the 2023 World Championship.",
+      "release": "2024-08-14",
+      "set": [
+        "World Champions: 2023"
+      ],
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/leesin/skins/skin68/images/leesin_splash_centered_68.skins_leesin_skin68.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/leesin/skins/skin68/images/leesin_splash_uncentered_68.skins_leesin_skin68.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/leesin/skins/skin68/images/leesin_splash_tile_68.skins_leesin_skin68.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/leesin/skins/skin68/leesinloadscreen_68.skins_leesin_skin68.jpg",
+      "loadScreenVintagePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/leesin/skins/skin68/leesinloadscreen_68_le.skins_leesin_skin68.jpg",
+      "newEffects": true,
+      "newAnimations": true,
+      "newRecall": true,
+      "newVoice": false,
+      "newQuotes": false,
+      "voiceActor": [
+        "Feodor Chin"
+      ],
+      "splashArtist": [
+        "Alsie Lau",
+        "Kelvin Law",
+        "Mo Yan"
       ]
     }
   ]

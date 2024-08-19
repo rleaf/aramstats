@@ -4,7 +4,7 @@
   "name": "Sion",
   "title": "The Undead Juggernaut",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Sion.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Sion.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -160,7 +160,7 @@
       "percentPerLevel": 0.0
     },
     "aramAbilityHaste": {
-      "flat": -20,
+      "flat": -10,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0

@@ -4,7 +4,7 @@
   "name": "Ezreal",
   "title": "the Prodigal Explorer",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Ezreal.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Ezreal.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -829,7 +829,7 @@
   },
   "releaseDate": "2010-03-16",
   "releasePatch": "1.0.0.79",
-  "patchLastChanged": "14.12",
+  "patchLastChanged": "14.15",
   "price": {
     "blueEssence": 1350,
     "rp": 585,

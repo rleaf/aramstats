@@ -4,7 +4,7 @@
   "name": "Syndra",
   "title": "the Dark Sovereign",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Syndra.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Syndra.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -700,9 +700,9 @@
                 "modifiers": [
                   {
                     "values": [
-                      90,
-                      130,
-                      170
+                      100,
+                      140,
+                      180
                     ],
                     "units": [
                       "",
@@ -729,9 +729,9 @@
                 "modifiers": [
                   {
                     "values": [
-                      270,
-                      390,
-                      510
+                      300,
+                      420,
+                      540
                     ],
                     "units": [
                       "",
@@ -758,9 +758,9 @@
                 "modifiers": [
                   {
                     "values": [
-                      630,
-                      910,
-                      1190
+                      700,
+                      980,
+                      1260
                     ],
                     "units": [
                       "",
@@ -854,7 +854,7 @@
   },
   "releaseDate": "2012-09-13",
   "releasePatch": "1.0.0.147",
-  "patchLastChanged": "14.12",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

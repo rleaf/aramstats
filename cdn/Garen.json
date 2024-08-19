@@ -4,7 +4,7 @@
   "name": "Garen",
   "title": "The Might of Demacia",
   "fullName": "Garen Crownguard",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Garen.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Garen.png",
   "resource": "NONE",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -1919,6 +1919,41 @@
       "splashArtist": [
         "Silvia Meiliani",
         "Caravan Studio"
+      ]
+    },
+    {
+      "name": "Fallen God-King",
+      "id": 86044,
+      "isBase": false,
+      "availability": "Upcoming",
+      "formatName": "Fallen God-King",
+      "lootEligible": true,
+      "cost": "Special",
+      "sale": 0,
+      "distribution": "1% drop rate from Capsules or opening 30 Capsules",
+      "rarity": "Mythic",
+      "chromas": [],
+      "lore": "God-King Garen stands as the last scion of an ancient divinity, and the final bulwark against the end of all civilization. He rules the vast kingdom of Demacia with an iron fist, jealously protecting his people as a self-styled messiah, while rooting out and destroying all who would oppose him.",
+      "release": "0000-00-00",
+      "set": [
+        "Battle of the God-Kings"
+      ],
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/garen/skins/skin44/images/garen_splash_centered_44.skins_garen_skin44.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/garen/skins/skin44/images/garen_splash_uncentered_44.skins_garen_skin44.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/garen/skins/skin44/images/garen_splash_tile_44.skins_garen_skin44.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/garen/skins/skin44/garenloadscreen_44.skins_garen_skin44.jpg",
+      "loadScreenVintagePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/garen/skins/skin44/garenloadscreen_44_le.skins_garen_skin44.jpg",
+      "newEffects": true,
+      "newAnimations": true,
+      "newRecall": true,
+      "newVoice": true,
+      "newQuotes": false,
+      "voiceActor": [
+        "Mick Lauer"
+      ],
+      "splashArtist": [
+        "David Villegas",
+        "West Studio"
       ]
     }
   ]

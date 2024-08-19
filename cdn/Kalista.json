@@ -4,7 +4,7 @@
   "name": "Kalista",
   "title": "the Spear of Vengeance",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Kalista.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Kalista.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -166,7 +166,7 @@
       "percentPerLevel": 0.0
     },
     "aramAttackSpeed": {
-      "flat": 1.025,
+      "flat": 1.0,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0

@@ -4,7 +4,7 @@
   "name": "Azir",
   "title": "the Emperor of the Sands",
   "fullName": "Omah Azir",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Azir.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Azir.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -16,7 +16,7 @@
       "percentPerLevel": 0.0
     },
     "healthRegen": {
-      "flat": 3.5,
+      "flat": 5,
       "percent": 0.0,
       "perLevel": 0.75,
       "percentPerLevel": 0.0
@@ -34,7 +34,7 @@
       "percentPerLevel": 0.0
     },
     "armor": {
-      "flat": 22,
+      "flat": 25,
       "percent": 0.0,
       "perLevel": 5,
       "percentPerLevel": 0.0
@@ -905,7 +905,7 @@
   },
   "releaseDate": "2014-09-16",
   "releasePatch": "4.16",
-  "patchLastChanged": "14.10",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

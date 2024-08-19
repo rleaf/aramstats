@@ -4,7 +4,7 @@
   "name": "Taric",
   "title": "the Shield of Valoran",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Taric.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Taric.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -700,7 +700,7 @@
   },
   "releaseDate": "2009-08-19",
   "releasePatch": "0.9.22.15",
-  "patchLastChanged": "14.2",
+  "patchLastChanged": "14.15",
   "price": {
     "blueEssence": 1350,
     "rp": 585,

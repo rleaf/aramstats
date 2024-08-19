@@ -102,7 +102,7 @@ export default {
    <div class="champion-main" ref="championMain" :class="{ 'active-champion': this.championPool.has(this.data.championId) }" @click="this.toggleChampion(this.data.championId)">
       
       <div class="lhs">
-         <img class="dropdown" src="@/assets/svg/arrow3.svg" @click.stop="this.matchToggle = !this.matchToggle" :class="{ 'show-matches': this.matchToggle }">
+         <img class="dropdown" src="@/assets/svg/arrow3.svg" @click.stop="this.matchToggle = !this.matchToggle" :class="{ 'rotate': !this.matchToggle }">
          <div class="name-wrapper">
             <div class="icon-wrapper">
                <img class="icon" :src="championIcon" alt="">
@@ -323,7 +323,7 @@ export default {
       user-select: none;
    }
    
-   .show-matches {
+   .rotate {
       transform: rotate(180deg);
    }
 </style>

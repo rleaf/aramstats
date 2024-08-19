@@ -4,7 +4,7 @@
   "name": "Yorick",
   "title": "Shepherd of Souls",
   "fullName": "Yorick Mori",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Yorick.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Yorick.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -877,7 +877,7 @@
   },
   "releaseDate": "2011-06-22",
   "releasePatch": "v1.0.0.120",
-  "patchLastChanged": "14.5",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

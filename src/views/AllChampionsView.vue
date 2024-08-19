@@ -56,7 +56,7 @@ export default {
          for (const i in this.champions.sort((a, b) => b.winrate - a.winrate)) {
             const rank = Number(i) + 1
             this.champions[i].rank = rank
-            this.champions[i].grade = this.getGrade(rank, this.champions.length)
+            // this.champions[i].grade = this.getGrade(rank, this.champions.length)
          }
       },
       getGrade(rank, total) {
@@ -172,12 +172,12 @@ export default {
                   <polygon points="7 5, 14 14, 0 14"/>
                </svg>
             </div>
-            <div class="pickrate">
+            <!-- <div class="pickrate">
                <h2 @click="this.headerSort('pickRate')">Pickrate</h2>
                <svg v-if="this.sort === 'pickRate'" class="triangle" :class="{ 'descending': this.sortOrder === 1 }">
                   <polygon points="7 5, 14 14, 0 14"/>
                </svg>
-            </div>
+            </div> -->
             <div class="games">
                <h2 @click="this.headerSort('games')">Games</h2>
                <svg v-if="this.sort === 'games'" class="triangle" :class="{ 'descending': this.sortOrder === 1 }">
@@ -200,9 +200,9 @@ export default {
             <div :style="{ color: this.computeColor(champ.winrate) }" class="winrate">
                {{ champ.winrate }}%
             </div>
-            <div class="pickrate">
+            <!-- <div class="pickrate">
                {{ champ.pickRate }}
-            </div>
+            </div> -->
             <div class="games">
                {{ champ.games }}
             </div>
@@ -258,7 +258,7 @@ export default {
 
    .image-wrapper img {
       width: 100%;
-      transform: scale(1.2);
+      transform: scale(1.1);
    }
 
    .o {
@@ -322,11 +322,15 @@ export default {
       position: relative;
    }
 
+   .champion div span {
+      transition: 200ms ease-in-out;
+   }
+
    .champion div span:hover {
       color: var(--color-font-focus);
    }
 
-   .champion div span:after {    
+   /* .champion div span:after {    
       background: none repeat scroll 0 0 transparent;
       position: absolute;
       bottom: -3px;
@@ -337,7 +341,7 @@ export default {
       background: var(--color-font-focus);
       transition: width 0.3s ease 0s, left 0.3s ease 0s;
       width: 0;
-   }
+   } */
 
    .champion div span:hover:after { 
       width: 100%; 

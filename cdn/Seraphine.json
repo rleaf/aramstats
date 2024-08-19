@@ -4,7 +4,7 @@
   "name": "Seraphine",
   "title": "the Starry-Eyed Songstress",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Seraphine.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Seraphine.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -501,7 +501,7 @@
             ]
           },
           {
-            "description": "Surround Sound's effects can stack up to 2 times.",
+            "description": "Surround Sound's shield and bonus movement speed can stack up to 2 times.",
             "leveling": []
           }
         ],
@@ -873,7 +873,7 @@
   },
   "releaseDate": "2020-10-29",
   "releasePatch": "10.22",
-  "patchLastChanged": "14.9",
+  "patchLastChanged": "14.15",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

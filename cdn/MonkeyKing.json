@@ -4,7 +4,7 @@
   "name": "Wukong",
   "title": "the Monkey King",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/MonkeyKing.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/MonkeyKing.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -231,7 +231,7 @@
             "leveling": []
           },
           {
-            "description": "Strength of Stone: Wukong gains 5 − 9 (based on level) bonus armor and bonus health regeneration equal to 0.35% of his maximum health, increased by 100% for each stack up to a maximum of 30 − 54 (based on level) bonus armor and 2.1% maximum health regeneration.",
+            "description": "Strength of Stone: Wukong gains 6 − 10 (based on level) bonus armor and bonus health regeneration equal to 0.35% of his maximum health, increased by 100% for each stack up to a maximum of 36 − 60 (based on level) bonus armor and 2.1% maximum health regeneration.",
             "leveling": []
           }
         ],
@@ -591,11 +591,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      35,
                       40,
                       45,
                       50,
-                      55
+                      55,
+                      60
                     ],
                     "units": [
                       "%",
@@ -856,7 +856,7 @@
   },
   "releaseDate": "2011-07-26",
   "releasePatch": "1.0.0.122",
-  "patchLastChanged": "14.11",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

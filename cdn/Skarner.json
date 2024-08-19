@@ -4,15 +4,15 @@
   "name": "Skarner",
   "title": "the Primordial Sovereign",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Skarner.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Skarner.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
   "stats": {
     "health": {
-      "flat": 610,
+      "flat": 630,
       "percent": 0.0,
-      "perLevel": 105,
+      "perLevel": 110,
       "percentPerLevel": 0.0
     },
     "healthRegen": {
@@ -46,7 +46,7 @@
       "percentPerLevel": 0.0
     },
     "attackDamage": {
-      "flat": 60,
+      "flat": 63,
       "percent": 0.0,
       "perLevel": 3,
       "percentPerLevel": 0.0
@@ -287,11 +287,11 @@
                   },
                   {
                     "values": [
-                      60,
-                      60,
-                      60,
-                      60,
-                      60
+                      80,
+                      80,
+                      80,
+                      80,
+                      80
                     ],
                     "units": [
                       "% bonus AD",
@@ -340,11 +340,11 @@
                   },
                   {
                     "values": [
-                      180,
-                      180,
-                      180,
-                      180,
-                      180
+                      240,
+                      240,
+                      240,
+                      240,
+                      240
                     ],
                     "units": [
                       "% bonus AD",
@@ -519,11 +519,11 @@
                   },
                   {
                     "values": [
-                      60,
-                      60,
-                      60,
-                      60,
-                      60
+                      80,
+                      80,
+                      80,
+                      80,
+                      80
                     ],
                     "units": [
                       "% bonus AD",
@@ -744,7 +744,7 @@
         "projectile": "FALSE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "The shield is granted at the start of the cast time.\nThe shield ratio is equal to 48.8 − 191.6 (based on level) (+ 8% of his bonus health).\nSeismic Bastion does not affect enemies inside of Skarner.(bug)\nThis ability will cast from wherever the caster is at the end of the cast time.",
+        "notes": "The shield is granted at the start of the cast time.\nThe shield ratio is equal to 50.4 − 200 (based on level) (+ 8% of his bonus health).\nSeismic Bastion does not affect enemies inside of Skarner.(bug)\nThis ability will cast from wherever the caster is at the end of the cast time.",
         "blurb": "Active:  Skarner slams his claws into the ground,  shielding himself based on his maximum health and releasing a shockwave that quickly expands in a radius around him to deal magic damage to enemies hit and briefly  slow them.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -995,7 +995,7 @@
   },
   "releaseDate": "2011-08-09",
   "releasePatch": "1.0.0.123",
-  "patchLastChanged": "14.13",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

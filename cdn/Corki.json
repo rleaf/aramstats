@@ -4,7 +4,7 @@
   "name": "Corki",
   "title": "the Daring Bombardier",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Corki.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Corki.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -328,10 +328,10 @@
           "modifiers": [
             {
               "values": [
-                60,
-                65,
-                70,
-                75,
+                80,
+                80,
+                80,
+                80,
                 80
               ],
               "units": [
@@ -348,11 +348,11 @@
           "modifiers": [
             {
               "values": [
+                9,
+                8.5,
                 8,
                 7.5,
-                7,
-                6.5,
-                6
+                7
               ],
               "units": [
                 "",
@@ -889,7 +889,7 @@
   },
   "releaseDate": "2009-09-19",
   "releasePatch": "0.9.25.21",
-  "patchLastChanged": "14.14",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

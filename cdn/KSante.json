@@ -4,7 +4,7 @@
   "name": "K'Sante",
   "title": "the Pride of Nazumah",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/KSante.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/KSante.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -136,7 +136,7 @@
       "percentPerLevel": 0.0
     },
     "aramDamageDealt": {
-      "flat": 1,
+      "flat": 1.05,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0
@@ -768,37 +768,8 @@
             ]
           },
           {
-            "description": "If there is valid terrain 350 units in the cast direction from the target's location at the time of cast, the target is instead pulled to a location that is directly 450 units away from the edge of the other side of the terrain and K'Sante blinks 100 units behind that location, dealing them the magic damage once they emerge. At the end of the displacement, they remain airborne for 0.675 seconds and, after 0.4 seconds into the duration, K'Sante strikes them to deal additional magic damage. The target is also stunned for 0.5 seconds after 0.425 seconds into the airborne duration.",
+            "description": "If there is valid terrain 350 units in the cast direction from the target's location at the time of cast, the target is instead pulled to a location that is directly 450 units away from the edge of the other side of the terrain and K'Sante blinks 100 units behind that location, dealing them the magic damage near their emergence from the terrain. At the end of the displacement, they remain airborne for 0.264 seconds, after which they are stunned for 0.5 seconds. K'Sante strikes them after 0.132 seconds into the airborne duration to deal the same magic damage again.",
             "leveling": [
-              {
-                "attribute": "Additional Damage",
-                "modifiers": [
-                  {
-                    "values": [
-                      70,
-                      110,
-                      150
-                    ],
-                    "units": [
-                      "",
-                      "",
-                      ""
-                    ]
-                  },
-                  {
-                    "values": [
-                      65,
-                      65,
-                      65
-                    ],
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ]
-                  }
-                ]
-              },
               {
                 "attribute": "Total Magic Damage",
                 "modifiers": [
@@ -980,7 +951,7 @@
   },
   "releaseDate": "2022-11-02",
   "releasePatch": "12.21",
-  "patchLastChanged": "14.11",
+  "patchLastChanged": "14.15",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

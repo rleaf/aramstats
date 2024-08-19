@@ -4,7 +4,7 @@
   "name": "Maokai",
   "title": "the Twisted Treant",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Maokai.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Maokai.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -142,7 +142,7 @@
       "percentPerLevel": 0.0
     },
     "aramHealing": {
-      "flat": 0.8,
+      "flat": 0.9,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0

@@ -4,7 +4,7 @@
   "name": "Vi",
   "title": "the Piltover Enforcer",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Vi.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Vi.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -328,11 +328,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      45,
-                      70,
-                      95,
-                      120,
-                      145
+                      50,
+                      75,
+                      100,
+                      125,
+                      150
                     ],
                     "units": [
                       "",
@@ -365,11 +365,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      90,
-                      140,
-                      190,
-                      240,
-                      290
+                      100,
+                      150,
+                      200,
+                      250,
+                      300
                     ],
                     "units": [
                       "",
@@ -824,7 +824,7 @@
   },
   "releaseDate": "2012-12-19",
   "releasePatch": "1.0.0.153",
-  "patchLastChanged": "14.10",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 1350,
     "rp": 585,

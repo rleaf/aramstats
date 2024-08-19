@@ -4,7 +4,7 @@
   "name": "Viego",
   "title": "The Ruined King",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Viego.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Viego.png",
   "resource": "NONE",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -821,7 +821,7 @@
   },
   "releaseDate": "2021-01-21",
   "releasePatch": "11.2",
-  "patchLastChanged": "14.13",
+  "patchLastChanged": "14.15",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

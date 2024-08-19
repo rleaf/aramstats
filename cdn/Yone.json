@@ -4,7 +4,7 @@
   "name": "Yone",
   "title": "the Unforgotten",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Yone.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Yone.png",
   "resource": "FLOW",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -789,7 +789,7 @@
   },
   "releaseDate": "2020-08-06",
   "releasePatch": "10.16",
-  "patchLastChanged": "14.12",
+  "patchLastChanged": "14.15",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

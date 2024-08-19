@@ -4,7 +4,7 @@
   "name": "Qiyana",
   "title": "Empress of the Elements",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Qiyana.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Qiyana.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -34,7 +34,7 @@
       "percentPerLevel": 0.0
     },
     "armor": {
-      "flat": 28,
+      "flat": 31,
       "percent": 0.0,
       "perLevel": 4.7,
       "percentPerLevel": 0.0
@@ -266,18 +266,18 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Qiyana/ability-icon/q",
         "effects": [
           {
-            "description": "Active: Qiyana slashes forward in the target direction, dealing physical damage to enemies in a line, reduced to 75% damage against targets beyond the first. Edge of Ixtal deals 150% damage against monsters.",
+            "description": "Active: Qiyana slashes forward in the target direction, dealing physical damage to enemies in a line, reduced to 75% damage against targets beyond the first. Edge of Ixtal deals 175% damage against monsters.",
             "leveling": [
               {
                 "attribute": "Physical Damage",
                 "modifiers": [
                   {
                     "values": [
-                      50,
-                      85,
+                      60,
+                      90,
                       120,
-                      155,
-                      190
+                      150,
+                      180
                     ],
                     "units": [
                       "",
@@ -289,11 +289,11 @@
                   },
                   {
                     "values": [
-                      75,
-                      75,
-                      75,
-                      75,
-                      75
+                      90,
+                      90,
+                      90,
+                      90,
+                      90
                     ],
                     "units": [
                       "% bonus AD",
@@ -310,11 +310,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      37.5,
-                      63.75,
+                      45,
+                      67.5,
                       90,
-                      116.25,
-                      142.5
+                      112.5,
+                      135
                     ],
                     "units": [
                       "",
@@ -326,11 +326,11 @@
                   },
                   {
                     "values": [
-                      56.25,
-                      56.25,
-                      56.25,
-                      56.25,
-                      56.25
+                      67.5,
+                      67.5,
+                      67.5,
+                      67.5,
+                      67.5
                     ],
                     "units": [
                       "% bonus AD",
@@ -427,18 +427,18 @@
             "leveling": []
           },
           {
-            "description": "Enemies hit are dealt Edge of Ixtal's damage, reduced to 75% against subsequent enemies beyond the closest. Elemental Wrath deals 150% damage against monsters.",
+            "description": "Enemies hit are dealt Edge of Ixtal's damage, reduced to 75% against subsequent enemies beyond the closest. Elemental Wrath deals 175% damage against monsters.",
             "leveling": [
               {
                 "attribute": "Physical Damage",
                 "modifiers": [
                   {
                     "values": [
-                      50,
-                      85,
+                      60,
+                      90,
                       120,
-                      155,
-                      190
+                      150,
+                      180
                     ],
                     "units": [
                       "",
@@ -450,11 +450,11 @@
                   },
                   {
                     "values": [
-                      75,
-                      75,
-                      75,
-                      75,
-                      75
+                      90,
+                      90,
+                      90,
+                      90,
+                      90
                     ],
                     "units": [
                       "% bonus AD",
@@ -471,11 +471,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      37.5,
-                      63.75,
+                      45,
+                      67.5,
                       90,
-                      116.25,
-                      142.5
+                      112.5,
+                      135
                     ],
                     "units": [
                       "",
@@ -487,11 +487,11 @@
                   },
                   {
                     "values": [
-                      56.25,
-                      56.25,
-                      56.25,
-                      56.25,
-                      56.25
+                      67.5,
+                      67.5,
+                      67.5,
+                      67.5,
+                      67.5
                     ],
                     "units": [
                       "% bonus AD",
@@ -521,11 +521,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      80,
-                      136,
+                      96,
+                      144,
                       192,
-                      248,
-                      304
+                      240,
+                      288
                     ],
                     "units": [
                       "",
@@ -537,11 +537,11 @@
                   },
                   {
                     "values": [
-                      120,
-                      120,
-                      120,
-                      120,
-                      120
+                      144,
+                      144,
+                      144,
+                      144,
+                      144
                     ],
                     "units": [
                       "% bonus AD",
@@ -558,11 +558,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      67.5,
-                      114.75,
+                      81,
+                      121.5,
                       162,
-                      209.25,
-                      256.5
+                      202.5,
+                      243
                     ],
                     "units": [
                       "",
@@ -574,11 +574,11 @@
                   },
                   {
                     "values": [
-                      101.25,
-                      101.25,
-                      101.25,
-                      101.25,
-                      101.25
+                      121.5,
+                      121.5,
+                      121.5,
+                      121.5,
+                      121.5
                     ],
                     "units": [
                       "% bonus AD",
@@ -655,10 +655,10 @@
                   {
                     "values": [
                       8,
-                      22,
-                      36,
-                      50,
-                      64
+                      16,
+                      24,
+                      32,
+                      40
                     ],
                     "units": [
                       "",
@@ -787,8 +787,8 @@
         "affects": "Self",
         "spellshieldable": null,
         "resource": "MANA",
-        "damageType": "OTHER_DAMAGE",
-        "spellEffects": null,
+        "damageType": "MAGIC_DAMAGE",
+        "spellEffects": "proc",
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
@@ -955,9 +955,9 @@
                   },
                   {
                     "values": [
-                      170,
-                      170,
-                      170
+                      125,
+                      125,
+                      125
                     ],
                     "units": [
                       "% bonus AD",
@@ -992,6 +992,18 @@
                       "",
                       "",
                       ""
+                    ]
+                  },
+                  {
+                    "values": [
+                      125,
+                      125,
+                      125
+                    ],
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
                     ]
                   }
                 ]
@@ -1060,7 +1072,7 @@
   },
   "releaseDate": "2019-06-28",
   "releasePatch": "9.13",
-  "patchLastChanged": "14.1",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

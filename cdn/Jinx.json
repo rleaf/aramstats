@@ -4,7 +4,7 @@
   "name": "Jinx",
   "title": "the Loose Cannon",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Jinx.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Jinx.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -228,11 +228,11 @@
             "leveling": []
           },
           {
-            "description": "Additionally, she gains a stack of Get Excited! and is allowed to exceed the attack speed cap for the same duration. Only takedowns against enemy champions can grant stacks beyond the first.",
+            "description": "Additionally, she is allowed to exceed the attack speed cap and gains a stack of Get Excited! for the same duration, stacking up to 5 times. Only takedowns against enemy champions can grant stacks beyond the first.",
             "leveling": []
           },
           {
-            "description": "Each stack grants her 25% total attack speed, stacking up to 5 times for a maximum of 125%.",
+            "description": "Get Excited!: For each stack, Jinx gains 25% total attack speed, up to a maximum of 125%.",
             "leveling": []
           }
         ],
@@ -2416,6 +2416,64 @@
       "splashArtist": [
         "Jiunn Kuo",
         "Kudos Productions"
+      ]
+    },
+    {
+      "name": "T1",
+      "id": 222062,
+      "isBase": false,
+      "availability": "Legacy",
+      "formatName": "T1",
+      "lootEligible": true,
+      "cost": 1350,
+      "sale": 0,
+      "distribution": null,
+      "rarity": "Epic",
+      "chromas": [
+        {
+          "name": "Elite",
+          "id": 222063,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/222/222063.png",
+          "colors": [
+            "#AE1F1F",
+            "#DF4F1A"
+          ],
+          "descriptions": [
+            {
+              "description": "This chroma was released as a bundle exclusive during T1 World Championship showcase.",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 2,
+              "region": "riot"
+            }
+          ]
+        }
+      ],
+      "lore": "Honoring Gumayusi's winning performance as Jinx during the 2023 World Championship.",
+      "release": "2024-08-14",
+      "set": [
+        "World Champions: 2023"
+      ],
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/jinx/skins/skin62/images/jinx_splash_centered_62.skins_jinx_skin62.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/jinx/skins/skin62/images/jinx_splash_uncentered_62.skins_jinx_skin62.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/jinx/skins/skin62/images/jinx_splash_tile_62.skins_jinx_skin62.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/jinx/skins/skin62/jinxloadscreen_62.skins_jinx_skin62.jpg",
+      "loadScreenVintagePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/jinx/skins/skin62/jinxloadscreen_62_le.skins_jinx_skin62.jpg",
+      "newEffects": true,
+      "newAnimations": true,
+      "newRecall": true,
+      "newVoice": false,
+      "newQuotes": false,
+      "voiceActor": [
+        "Sarah Anne Williams"
+      ],
+      "splashArtist": [
+        "Alsie Lau",
+        "Kelvin Law",
+        "Mo Yan"
       ]
     }
   ]

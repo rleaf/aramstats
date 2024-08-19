@@ -4,7 +4,7 @@
   "name": "Sejuani",
   "title": "Fury of the North",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Sejuani.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Sejuani.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -923,7 +923,7 @@
   },
   "releaseDate": "2012-01-17",
   "releasePatch": "1.0.0.132",
-  "patchLastChanged": "14.9",
+  "patchLastChanged": "14.15",
   "price": {
     "blueEssence": 450,
     "rp": 260,

@@ -4,7 +4,7 @@
   "name": "Dr. Mundo",
   "title": "the Madman of Zaun",
   "fullName": "'Doctor' Mundo",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/DrMundo.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/DrMundo.png",
   "resource": "HEALTH",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -943,7 +943,7 @@
   },
   "releaseDate": "2009-09-02",
   "releasePatch": "0.9.22.16",
-  "patchLastChanged": "13.22",
+  "patchLastChanged": "14.15",
   "price": {
     "blueEssence": 450,
     "rp": 260,

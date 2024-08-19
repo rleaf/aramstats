@@ -4,7 +4,7 @@
   "name": "Briar",
   "title": "the Restrained Hunger",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Briar.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Briar.png",
   "resource": "FRENZY",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -1498,7 +1498,7 @@
       "name": "Primordian",
       "id": 233010,
       "isBase": false,
-      "availability": "Upcoming",
+      "availability": "Available",
       "formatName": "Primordian",
       "lootEligible": true,
       "cost": 1350,
@@ -1697,7 +1697,7 @@
         }
       ],
       "lore": "Briar was an early draft of Aatrox's perfection, but was deemed a “failure”—because instead of using her finely-honed mind to get back at surface-dwellers, she loves humans! Now that Briar has joined up with Anima Squad, maybe they can show her how to be more than what she was made to be.",
-      "release": "0000-00-00",
+      "release": "2024-07-31",
       "set": [
         "Primordian"
       ],

@@ -4,7 +4,7 @@
   "name": "Illaoi",
   "title": "the Kraken Priestess",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Illaoi.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Illaoi.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -1446,7 +1446,7 @@
       "name": "Battle Bear",
       "id": 420027,
       "isBase": false,
-      "availability": "Upcoming",
+      "availability": "Available",
       "formatName": "Battle Bear",
       "lootEligible": true,
       "cost": 1350,
@@ -1645,7 +1645,7 @@
         }
       ],
       "lore": "Every Anima Squad recruit knows Illaoi's booming laugh—and her notoriously tough training sessions—all too well. As someone always looking towards the future, it may seem strange that she is also Anima Squad's keeper of the Old Ways. But Illaoi knows that there was life before Final City, and she will ensure life continues long after the war is done.",
-      "release": "0000-00-00",
+      "release": "2024-07-31",
       "set": [
         "Anima Squad"
       ],

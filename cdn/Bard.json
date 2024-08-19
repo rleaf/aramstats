@@ -4,7 +4,7 @@
   "name": "Bard",
   "title": "the Wandering Caretaker",
   "fullName": "Bard",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Bard.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Bard.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -745,7 +745,7 @@
   },
   "releaseDate": "2015-03-12",
   "releasePatch": "5.5",
-  "patchLastChanged": "14.9",
+  "patchLastChanged": "14.15",
   "price": {
     "blueEssence": 4800,
     "rp": 880,
@@ -1589,6 +1589,65 @@
       "splashArtist": [
         "Su Fu",
         "Kudos Productions"
+      ]
+    },
+    {
+      "name": "T1",
+      "id": 432035,
+      "isBase": false,
+      "availability": "Legacy",
+      "formatName": "T1",
+      "lootEligible": true,
+      "cost": 1350,
+      "sale": 0,
+      "distribution": null,
+      "rarity": "Epic",
+      "chromas": [
+        {
+          "name": "Elite",
+          "id": 432036,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/432/432036.png",
+          "colors": [
+            "#AE1F1F",
+            "#DF4F1A"
+          ],
+          "descriptions": [
+            {
+              "description": "This chroma was released as a bundle exclusive during T1 World Championship showcase.",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 2,
+              "region": "riot"
+            }
+          ]
+        }
+      ],
+      "lore": "Honoring Keria's winning performance as Bard during the 2023 World Championship.",
+      "release": "2024-08-14",
+      "set": [
+        "World Champions: 2023"
+      ],
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/bard/skins/skin35/images/bard_splash_centered_35.skins_bard_skin35.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/bard/skins/skin35/images/bard_splash_uncentered_35.skins_bard_skin35.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/bard/skins/skin35/images/bard_splash_tile_35.skins_bard_skin35.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/bard/skins/skin35/bardloadscreen_35.skins_bard_skin35.jpg",
+      "loadScreenVintagePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/bard/skins/skin35/bardloadscreen_35_le.skins_bard_skin35.jpg",
+      "newEffects": true,
+      "newAnimations": true,
+      "newRecall": true,
+      "newVoice": false,
+      "newQuotes": false,
+      "voiceActor": [
+        "N/A; Utora",
+        "Sebastien 'Chemicalseb' Najand"
+      ],
+      "splashArtist": [
+        "Alsie Lau",
+        "Kelvin Law",
+        "Mo Yan"
       ]
     }
   ]

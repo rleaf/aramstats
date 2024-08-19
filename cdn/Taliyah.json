@@ -4,7 +4,7 @@
   "name": "Taliyah",
   "title": "the Stoneweaver",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Taliyah.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Taliyah.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -902,7 +902,7 @@
   },
   "releaseDate": "2016-05-18",
   "releasePatch": "6.10",
-  "patchLastChanged": "14.13",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

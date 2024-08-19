@@ -4,7 +4,7 @@
   "name": "Aurora",
   "title": "the Witch Between Worlds",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Aurora.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Aurora.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -34,7 +34,7 @@
       "percentPerLevel": 0.0
     },
     "armor": {
-      "flat": 27,
+      "flat": 23,
       "percent": 0.0,
       "perLevel": 4.5,
       "percentPerLevel": 0.0
@@ -160,7 +160,7 @@
       "percentPerLevel": 0.0
     },
     "aramAbilityHaste": {
-      "flat": 1.0,
+      "flat": 10,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0
@@ -226,7 +226,7 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Aurora/ability-icon/p",
         "effects": [
           {
-            "description": "Innate: Aurora's damaging basic attacks and abilities apply a stack of Spirit Abjuration to enemies for 4 seconds, refreshing on subsequent applications and stacking up to 3 times. The third stack against a target consumes them all to deal bonus magic damage equal to 4% (+ 1.5% per 100 AP) of the target's maximum health, capped at 100 − 180 (based on level) against monsters.",
+            "description": "Innate: Aurora's damaging basic attacks and abilities apply a stack of Spirit Abjuration to enemies for 4 seconds, refreshing on subsequent applications and stacking up to 3 times. The third stack against a target consumes them all to deal bonus magic damage equal to 2.5% (+ 2% per 100 AP) of the target's maximum health, capped at 100 − 180 (based on level) against monsters.",
             "leveling": []
           },
           {
@@ -317,7 +317,7 @@
             "leveling": []
           },
           {
-            "description": "Recast: Aurora expunges the curse from all marked targets, drawing the spiritual energy back to her as bolts that each deal magic damage to all enemies they pass through, reduced to 50% against minions and monsters and increased by 0% − 50% (based on target's missing health). Subsequent bolts against an enemy deal 20% damage.",
+            "description": "Recast: Aurora expunges the curse from all marked targets, drawing the spiritual energy back to her as bolts that each deal magic damage to all enemies they pass through, reduced to 40% against minions and 50% against monsters and increased by 0% − 50% (based on target's missing health). Subsequent bolts against an enemy deal 20% damage.",
             "leveling": [
               {
                 "attribute": "Minimum Magic Damage",
@@ -520,7 +520,7 @@
         "projectile": "TRUE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Spell shield can block the effects of the active and the recast.\nThe marked targets do not need to be visible in order for Aurora to recast Twofold Hex.\nThey do however need to be targetable; if all marked targets are  untargetable, Twofold Hex's recast is disabled.\nThis ability will cast from wherever the caster is at the end of the cast time.",
+        "notes": "The recast is granted from targets being marked once the bolt missile from the initial cast has fizzled.\n Spell shield can block the effects of the active and the recast.\nThe marked targets do not need to be visible in order for Aurora to recast Twofold Hex.\nThey do however need to be targetable; if all marked targets are  untargetable, Twofold Hex's recast is disabled.\nThis ability will cast from wherever the caster is at the end of the cast time.",
         "blurb": null,
         "missileSpeed": null,
         "rechargeRate": null,
@@ -890,7 +890,7 @@
   },
   "releaseDate": "2024-07-17",
   "releasePatch": "14.14",
-  "patchLastChanged": "14.14",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 7800,
     "rp": 975,

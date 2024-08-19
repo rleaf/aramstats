@@ -4,7 +4,7 @@
   "name": "Alistar",
   "title": "the Minotaur",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Alistar.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Alistar.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -753,7 +753,7 @@
   },
   "releaseDate": "2009-02-21",
   "releasePatch": "Alpha Week 2",
-  "patchLastChanged": "14.10",
+  "patchLastChanged": "14.16",
   "price": {
     "blueEssence": 1350,
     "rp": 585,

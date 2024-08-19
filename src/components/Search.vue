@@ -240,7 +240,7 @@ img.logo {
 .container {
    position: relative;
    z-index: 2;
-   background: var(--cell-panel);
+   background: var(--off-blue);
    display: flex;
    align-items: center;
    padding: 0.7rem 2rem;
@@ -251,7 +251,7 @@ img.logo {
 }
 
 .focus {
-   background: var(--cold-blue-focus);
+   background: var(--cell-panel);
    border-color: var(--light700);
 }
 

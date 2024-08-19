@@ -4,7 +4,7 @@
   "name": "Jayce",
   "title": "the Defender of Tomorrow",
   "fullName": "Jayce Giopara",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.15.1/img/champion/Jayce.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Jayce.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -2090,6 +2090,98 @@
       "splashArtist": [
         "Alsie Lau",
         "West Studio"
+      ]
+    },
+    {
+      "name": "T1",
+      "id": 126034,
+      "isBase": false,
+      "availability": "Legacy",
+      "formatName": "T1",
+      "lootEligible": true,
+      "cost": 1350,
+      "sale": 0,
+      "distribution": null,
+      "rarity": "Epic",
+      "chromas": [
+        {
+          "name": "Elite",
+          "id": 126037,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/126/126037.png",
+          "colors": [
+            "#AE1F1F",
+            "#DF4F1A"
+          ],
+          "descriptions": [
+            {
+              "description": "This chroma was released as a bundle exclusive during T1 World Championship showcase.",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 2,
+              "region": "riot"
+            }
+          ]
+        }
+      ],
+      "lore": "Honoring Zeus's winning performance as Jayce during the 2023 World Championship.",
+      "release": "2024-08-14",
+      "set": [
+        "World Champions: 2023"
+      ],
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/jayce/skins/skin34/images/jayce_splash_centered_34.skins_jayce_skin34.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/jayce/skins/skin34/images/jayce_splash_uncentered_34.skins_jayce_skin34.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/jayce/skins/skin34/images/jayce_splash_tile_34.skins_jayce_skin34.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/jayce/skins/skin34/jayceloadscreen_34.skins_jayce_skin34.jpg",
+      "loadScreenVintagePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/jayce/skins/skin34/jayceloadscreen_34_le.skins_jayce_skin34.jpg",
+      "newEffects": true,
+      "newAnimations": true,
+      "newRecall": true,
+      "newVoice": false,
+      "newQuotes": false,
+      "voiceActor": [
+        "Trevor Devall"
+      ],
+      "splashArtist": [
+        "Alsie Lau",
+        "Kelvin Law",
+        "Mo Yan"
+      ]
+    },
+    {
+      "name": "Prestige T1",
+      "id": 126036,
+      "isBase": false,
+      "availability": "Rare",
+      "formatName": "Prestige T1",
+      "lootEligible": true,
+      "cost": "Special",
+      "sale": 0,
+      "distribution": "125 Mythic Essence",
+      "rarity": "Mythic",
+      "chromas": [],
+      "lore": "After T1's shocking defeat at last year's Summoner's Cup, many lost hope that they'd ever be able to reclaim their throne. But Jayce's support for these legends never wavered. Sporting a bright white-and-gold glow, he stands tall in the front row and proudly cheers every victory, great or small, against WBG—a symbol of hope for all die-hard T1 fans.",
+      "release": "2024-08-14",
+      "set": [
+        "World Champions: 2023"
+      ],
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/jayce/skins/skin36/images/jayce_splash_centered_36.prestige2_worldswinners_jayce.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/jayce/skins/skin36/images/jayce_splash_uncentered_36.prestige2_worldswinners_jayce.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/jayce/skins/skin36/images/jayce_splash_tile_36.prestige2_worldswinners_jayce.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/jayce/skins/skin36/jayceloadscreen_36.prestige2_worldswinners_jayce.jpg",
+      "loadScreenVintagePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/jayce/skins/skin36/jayceloadscreen_36_le.prestige2_worldswinners_jayce.jpg",
+      "newEffects": true,
+      "newAnimations": true,
+      "newRecall": true,
+      "newVoice": false,
+      "newQuotes": false,
+      "voiceActor": [
+        "Trevor Devall"
+      ],
+      "splashArtist": [
+        "Pandart Studio"
       ]
     }
   ]
