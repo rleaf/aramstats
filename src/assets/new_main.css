@@ -1,0 +1,79 @@
+:root {
+   --dark-color-primary: rgb(173 198 255);
+   --dark-color-surface-tint: rgb(173 198 255);
+   --dark-color-on-primary: rgb(16 47 96);
+   --dark-color-primary-container: rgb(43 70 120);
+   --dark-color-on-primary-container: rgb(216 226 255);
+   --dark-color-secondary: rgb(191 198 220);
+   --dark-color-on-secondary: rgb(41 48 65);
+   --dark-color-secondary-container: rgb(63 71 89);
+   --dark-color-on-secondary-container: rgb(219 226 249);
+   --dark-color-tertiary: rgb(222 188 223);
+   --dark-color-on-tertiary: rgb(64 40 67);
+   --dark-color-tertiary-container: rgb(88 62 91);
+   --dark-color-on-tertiary-container: rgb(251 215 252);
+   --dark-color-error: rgb(255 180 171);
+   --dark-color-on-error: rgb(105 0 5);
+   --dark-color-error-container: rgb(147 0 10);
+   --dark-color-on-error-container: rgb(255 218 214);
+   --dark-color-background: rgb(17 19 24);
+   --dark-color-on-background: rgb(226 226 233);
+   --dark-color-surface: rgb(17 19 24);
+   --dark-color-on-surface: rgb(226 226 233);
+   --dark-color-surface-variant: rgb(68 71 79);
+   --dark-color-on-surface-variant: rgb(196 198 208);
+   --dark-color-outline: rgb(142 144 153);
+   --dark-color-outline-variant: rgb(68 71 79);
+   --dark-color-shadow: rgb(0 0 0);
+   --dark-color-scrim: rgb(0 0 0);
+   --dark-color-inverse-surface: rgb(226 226 233);
+   --dark-color-inverse-on-surface: rgb(47 48 54);
+   --dark-color-inverse-primary: rgb(68 94 145);
+   --dark-color-primary-fixed: rgb(216 226 255);
+   --dark-color-on-primary-fixed: rgb(0 26 65);
+   --dark-color-primary-fixed-dim: rgb(173 198 255);
+   --dark-color-on-primary-fixed-variant: rgb(43 70 120);
+   --dark-color-secondary-fixed: rgb(219 226 249);
+   --dark-color-on-secondary-fixed: rgb(20 27 44);
+   --dark-color-secondary-fixed-dim: rgb(191 198 220);
+   --dark-color-on-secondary-fixed-variant: rgb(63 71 89);
+   --dark-color-tertiary-fixed: rgb(251 215 252);
+   --dark-color-on-tertiary-fixed: rgb(41 19 45);
+   --dark-color-tertiary-fixed-dim: rgb(222 188 223);
+   --dark-color-on-tertiary-fixed-variant: rgb(88 62 91);
+   --dark-color-surface-dim: rgb(17 19 24);
+   --dark-color-surface-bright: rgb(55 57 62);
+   --dark-color-surface-container-lowest: rgb(12 14 19);
+   --dark-color-surface-container-low: rgb(26 27 32);
+   --dark-color-surface-container: rgb(30 31 37);
+   --dark-color-surface-container-high: rgb(40 42 47);
+   --dark-color-surface-container-highest: rgb(51 53 58);
+
+   --font-main: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+   --header-font: 'Thestral';
+}
+
+:root {
+   /* DARK MODE (Default) */
+   --color-background: var(--dark-color-background);
+   --color-font: var(--dark-color-inverse-surface);
+}
+
+.day {}
+
+body {
+   background: var(--color-background);
+   transition: background 0.25s;
+   min-height: 100vh;
+   margin: 0;
+   font-family: var(--font-main);
+   text-rendering: optimizeLegibility;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+   font-weight: normal;
+   font-size: 2rem;
+   color: var(--color-font);
+}
