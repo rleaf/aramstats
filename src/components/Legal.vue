@@ -16,7 +16,7 @@ export default {
 
 <style scoped>
 .legal {
-   color: var(--color-font);
+   color: var(--on-surface-variant);
    left: 0;
    right: 0;
    margin: 0 auto;
@@ -25,6 +25,5 @@ export default {
    max-width: 800px;
    font-size: 0.8rem;
    bottom: 3rem;
-   /* z-index: 10; */
 }
 </style>

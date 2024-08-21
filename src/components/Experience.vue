@@ -75,6 +75,7 @@ export default {
    left: 2vw;
 }
 
+
 /*
    Credit: https://codepen.io/dylanraga/pen/Qwqbab
 */
@@ -82,6 +83,7 @@ export default {
 .experience-toggle * {
    box-sizing: border-box;
    user-select: none;
+   cursor: pointer;
 }
 
 .experience-toggle input[type='checkbox']{
@@ -94,10 +96,12 @@ input[type='checkbox'] + label {
   display: flex;
   /* margin: .6em 0; */
   align-items: center;
-  color: var(--color-font-faded);
+  color: var(--on-surface-variant);
   font-size: 0.9rem;
   transition: color 250ms cubic-bezier(.4,.0,.23,1);
 }
+
+
 
 input[type='checkbox'] + label > span{
   display: flex;
@@ -107,14 +111,14 @@ input[type='checkbox'] + label > span{
   width: 1em;
   height: 1em;
   background: transparent;
-  border: 2px solid #9E9E9E;
+  border: 2px solid var(--on-surface-variant);
   border-radius: 2px;
   cursor: pointer;  
   transition: all 250ms cubic-bezier(.4,.0,.23,1);
 }
 
 input[type='checkbox']:checked + label > span{
-  border: .5em solid var(--ice-blue);
+  border: .5em solid var(--primary);
   animation: shrink-bounce 200ms cubic-bezier(.4,.0,.23,1);
 }
 
@@ -128,6 +132,10 @@ input[type='checkbox']:checked + label > span:before{
   transform: rotate(45deg);
   transform-origin: 0% 100%;
   animation: checkbox-check 125ms 250ms cubic-bezier(.4,.0,.23,1) forwards;
+}
+
+label:hover {
+   color: var(--on-surface) !important;
 }
 
 @keyframes shrink-bounce{
@@ -157,7 +165,7 @@ input[type='checkbox']:checked + label > span:before{
   100%{    
     width: .2em;
     height: .5em;    
-    border-color: #212121;
+    border-color: var(--on-primary);
     transform: translate3d(0,-.5em,0) rotate(45deg);
   }
 }

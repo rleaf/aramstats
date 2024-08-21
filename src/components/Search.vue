@@ -147,7 +147,7 @@ export default {
 
 .champion-search {
    position: relative;
-   background: var(--cold-blue-focus);
+   background: var(--surface-container);
    font-size: 0.85rem;
    margin-top: 5px;
    width: calc(380px);
@@ -184,35 +184,37 @@ export default {
 }
 
 .region-selection > div {
-   color: var(--color-font);
+   color: var(--on-secondary);
    text-align: center;
-   font-size: 0.9rem;
+   font-size: 0.85rem;
    margin: 0 .2rem;
-   padding: 3px 6px;
+   padding: 2px 6px;
    display: inline-block;
-   background: var(--light-13);
+   background: var(--secondary);
+   /* border: 1px solid var(--outline); */
    border-radius: 5px;
    cursor: pointer;
-   transition: 0.1s;
+   transition: 250ms ease-in-out;
 }
 .region-selection > div:hover {
-   background: var(--light-12);
-   color: var(--color-font-focus)
+   background: var(--secondary-hover);
+   /* color: var(--color-font-focus) */
 }
 
 button.region {
    right: 50px;
    display: inline-block;
    height: inherit;
-   color: var(--color-font);
+   color: var(--on-secondary);
    font-family: var(--font-main);
    font-size: 0.9rem;
-   background: var(--alpha-04);
+   background: var(--secondary);
    border-radius: 4px;
    cursor: pointer;
    border: none;
    margin: 0;
    padding: 2px 6px;
+   transition: 250ms ease-in-out;
 }
 
 .shake {
@@ -220,7 +222,7 @@ button.region {
 }
 
 button.region:hover {
-   background: var(--alpha-06);
+   background: var(--secondary-hover);
    transition: 0.1s ease-in-out;
 }
 
@@ -240,19 +242,20 @@ img.logo {
 .container {
    position: relative;
    z-index: 2;
-   background: var(--off-blue);
+   background: var(--surface);
+   /* background: var(--surface-container); */
    display: flex;
    align-items: center;
    padding: 0.7rem 2rem;
-   border: 1px solid var(--cell-border);
+   border: 1px solid var(--outline-variant);
    border-radius: 50px;
    width: 400px;
    transition: 0.25s;
 }
 
 .focus {
-   background: var(--cell-panel);
-   border-color: var(--light700);
+   /* background: var(--surface-container-low); */
+   border-color: var(--outline);
 }
 
 input {
@@ -261,13 +264,13 @@ input {
    border: none;
    padding-left: 1rem;
    font-size: 1rem;
-   color: var(--color-font);
+   color: var(--on-surface);
    width: 100%;
 }
 
 input:focus {
    outline: none;
-   color: var(--color-font);
+   color: var(--on-surface);
    transition: 0.4s;
 }
 
