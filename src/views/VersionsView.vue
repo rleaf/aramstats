@@ -1,10 +1,10 @@
 <script>
-import _updates from '../constants/updates'
+import _version from '../constants/version'
 
 export default {
    data() {
       return {
-         updates: _updates
+         version: _version,
       }
    },
 
@@ -18,26 +18,48 @@ export default {
 
 <template>
    <div class="update-main">
-      <div class="updates">
-         <div class="block" v-for="u in updates">
+      <div class="versioning">
+         <div class="block" v-for="v in version">
             <div class="header">
-               <div>
-                  <h2>{{ u.title }}</h2>
-                  <h3 v-if="u.version">v{{ u.version }}</h3>
-               </div>
-               <h3>{{ u.date }}</h3>
+               <h2>{{ v.version }}</h2>
+               <h3>{{ v.date }}</h3>
             </div>
             <div class="body">
-
-               <p v-for="p in u.body">{{ p }}</p>
-               <div class="update-links" v-if="u.links && u.links.length">
-                  <h4>Links</h4>
+               <div class="notes" v-if="v.notes && v.notes.length">
+                  <p>
+                     {{ v.notes }}
+                  </p>
+               </div>
+               <div v-if="v.add && v.add.length">
+                  <h4>Added</h4>
                   <ul>
-                     <li v-for="a in u.links"><a :href="a[1]" target="_blank">{{ a[0] }}</a></li>
+                     <li v-for="a in v.add">{{ a }}</li>
                   </ul>
                </div>
-               <img v-if="u.img" :src="getImage(u.img)" alt="">
-               <p class="sub" v-if="u.imgCaption">{{ u.imgCaption }}</p>
+               <div v-if="v.remove && v.remove.length">
+                  <h4>Removed</h4>
+                  <ul>
+                     <li v-for="r in v.remove">{{ r }}</li>
+                  </ul>
+               </div>
+               <div v-if="v.fix && v.fix.length">
+                  <h4>Fixed</h4>
+                  <ul>
+                     <li v-for="f in v.fix">{{ f }}</li>
+                  </ul>
+               </div>
+               <div v-if="v.adjust && v.adjust.length">
+                  <h4>Adjusted</h4>
+                  <ul>
+                     <li v-for="a in v.adjust">{{ a }}</li>
+                  </ul>
+               </div>
+               <div v-if="v.known && v.known.length">
+                  <h4>Known Issues</h4>
+                  <ul>
+                     <li v-for="a in v.known">{{ a }}</li>
+                  </ul>
+               </div>
             </div>
          </div>
       </div>

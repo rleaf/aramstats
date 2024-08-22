@@ -37,6 +37,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/Versions',
+      name: 'Versions',
+      component: () => import('../views/VersionsView.vue'),
+      meta: {
+        title: 'Versions | ARAM Stats'
+      }
+    },
+    {
       path: '/:region/:gameName-:tagLine',
       name: 'user',
       component: () => import('../views/UserView.vue')

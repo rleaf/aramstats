@@ -6,6 +6,7 @@
    --surface-tint: rgb(173 198 255);
    --surface: rgb(17 19 24);
    --on-surface: rgb(226 226 233);
+   --on-surface-rgb: 226, 226, 233;
    --surface-variant: rgb(68 71 79);
    --on-surface-variant: rgb(196 198 208);
    --inverse-surface: rgb(226 226 233);
@@ -15,8 +16,10 @@
    --surface-container-lowest: rgb(12 14 19);
    --surface-container-low: rgb(26 27 32);
    --surface-container: rgb(30 31 37);
+   --surface-container-hover: rgb(41, 43, 50);
    --surface-container-high: rgb(40 42 47);
    --surface-container-highest: rgb(51 53 58);
+   --surface-container-highest-hover: rgb(65, 67, 73);
 
    --primary: rgb(173 198 255);
    --on-primary: rgb(16 47 96);
@@ -62,18 +65,6 @@
 
    --font-main: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
    --header-font: 'Thestral';
-}
-
-:root {
-   /* DARK MODE (Default) */
-   --logo-filter: drop-shadow(3px 5px 2px rgba(0, 0, 0, 0.4));
-   --color-background: var(--background);
-   --color-background-rgb: 17, 19, 24;
-   --color-font: var(--on-surface-variant);
-   --color-font-focus: var(--on-surface);
-   --cell-panel: var(--surface-container);
-   --cell-border: var(--outline-variant);
-   --border-focus: var(--outline);
 
    --theme-icon: url('./svg/solari.svg');
    --theme-mask-size: 100%;
@@ -84,6 +75,7 @@
    --surface-tint: rgb(68 94 145);
    --surface: rgb(249 249 255);
    --on-surface: rgb(26 27 32);
+   --on-surface-rgb: 26, 27, 32;
    --surface-variant: rgb(225 226 236);
    --on-surface-variant: rgb(68 71 79);
    --inverse-surface: rgb(47 48 54);
@@ -95,6 +87,8 @@
    --surface-container: rgb(237 237 244);
    --surface-container-high: rgb(232 231 238);
    --surface-container-highest: rgb(226 226 233);
+   --surface-container-highest: #e2e2e9;
+   --surface-container-highest-hover: hsl(240, 14%, 84%);
 
    --primary: rgb(68 94 145);
    --on-primary: rgb(255 255 255);
@@ -138,6 +132,28 @@
 
    --theme-icon: url('./svg/lunari.svg');
    --theme-mask-size: 80%;
+}
+
+:root, .day {
+   /* DARK MODE (Default) */
+   /* --logo-filter: drop-shadow(3px 5px 2px rgba(0, 0, 0, 0.4));
+
+   --bg-panel: var(--surface-container);
+   --bg-panel-hover: var(--surface-container-highest);
+
+   --panel-one: var(--primary);
+   --panel-one-text: var(--on-primary);
+
+   --panel-two: var(--secondary);
+   --panel-two-text: var(--on-secondary);
+   --panel-two-hover: var(--secondary-hover); */
+
+
+   /* --color-background: var(--surface); */
+   /* --color-background-rgb: 17, 19, 24; */
+   --color-font: var(--on-surface-variant);
+   --color-font-focus: var(--on-surface);
+   --color-font-faded: rgba(var(--on-surface-rgb), 0.6);
 }
 
 body {

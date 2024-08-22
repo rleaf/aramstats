@@ -24,7 +24,9 @@ export default {
       },
       
       getAbilityImages(ability) {
-         return this.store.championCDN.abilities[ability.toUpperCase()][0].icon
+         if (this.store.championCDN) {
+            return this.store.championCDN.abilities[ability.toUpperCase()][0].icon
+         }
       },
 
       winrate(total, win) {

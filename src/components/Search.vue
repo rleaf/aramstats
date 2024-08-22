@@ -17,33 +17,7 @@ export default {
          region: 'RG',
          inputAlert: false,
          alertMessage: '',
-         regionOptions: ['na','euw','eune','kr','lan','las','oce','tr','ru','jp','br','vn','tw','th','sg','ph'],
-         showRegions: false,
-         containerFocus: false,
-         championNames: null,
-         champions: [],
-         patch: null,
-      }
-   },
-
-   created() {
-      const localRegion = localStorage.getItem('region')
-      if (localRegion) this.region = localRegion
-   },
-
-   methods: {
-      getImage(name) {
-         return new URL(`../assets/champion_icons/${name}.png`, import.meta.url).href
-      },
-      inputFocus() {
-         this.containerFocus = true
-         this.showRegions = false
-      },
-
-      summonerSearch() {
-         if (!this.input) return
-
-         const table = {
+         table: {
             'na': 'NA1',
             'euw': 'EUW',
             'eune': 'EUNE',
@@ -60,18 +34,85 @@ export default {
             'th': 'TH2',
             'sg': 'SG2',
             'ph': 'PH2',
+         },
+         showRegions: false,
+         containerFocus: false,
+         championNames: null,
+         champions: [],
+         patch: null,
+         step: -1,
+      }
+   },
+
+   created() {
+      if (localStorage.getItem('region')) this.region = localStorage.getItem('region')
+      this.region = 'RG'
+
+      window.addEventListener('keydown', this.trackIterate)
+   },
+
+   beforeUnmount() {
+      window.removeEventListener('keydown', this.trackIterate)
+   },
+
+   methods: {
+      trackIterate(e) {
+         if (!(e.key === 'ArrowDown' || e.key === 'ArrowUp')) return
+
+         if (this.filteredChamps.length) {
+            if (!this.$refs.champions.children || !this.$refs.champions.children[this.step]) this.step = -1 
+            if (this.step !== -1) this.$refs.champions.children[this.step].classList.remove('active')
+            
+            if (e.key === 'ArrowDown') {
+               if (this.$refs.champions.children[this.step + 1]) {
+                  this.step++
+               } else {
+                  this.step = 0
+                  this.$refs.champions.children[this.step]
+               }
+            }
+
+            if (e.key === 'ArrowUp') {
+               if (this.$refs.champions.children[this.step - 1]) {
+                  this.step--
+               } else {
+                  this.step = this.filteredChamps.length - 1
+                  this.$refs.champions.children[this.filteredChamps.length - 1]
+               }
+            } 
+            
+            if (this.step !== -1) this.$refs.champions.children[this.step].classList.add('active')
          }
+      },
+
+      getImage(name) {
+         return new URL(`../assets/champion_icons/${name}.png`, import.meta.url).href
+      },
+
+      inputFocus() {
+         this.containerFocus = true
+         this.showRegions = false
+      },
+
+      summonerSearch() {
+         if (!this.input) return
+
+         if (this.filteredChamps[this.step]) {
+            this.$router.push({ name: 'champions', params: {champion: this.filteredChamps[this.step].back}})
+            return
+         }
+
          if (this.region === 'RG') {
             this.$refs.regionButton.classList.add('shake')
             setTimeout(() => {
                this.$refs.regionButton.classList.remove('shake')
-            }, 830)
+            }, 1000)
             return
          }
 
          const identifiers = this.input.split('#')
          let _gameName = identifiers[0]
-         let _tagLine = (identifiers.length === 2) ? identifiers[1] : table[this.region]
+         let _tagLine = (identifiers.length === 2) ? identifiers[1] : this.table[this.region]
 
          this.$router.push({ name: `user`, params: {
             region: this.region,
@@ -80,19 +121,21 @@ export default {
          }})
       },
 
-      regionSelect(region) {
-         this.region = region
+      regionSelect() {
          localStorage.setItem('region', this.region)
          this.$refs.input.focus()
-         this.showRegions = false
       }, 
    },
 
    computed: {
       filteredChamps() {
-         if (!this.input) return
+         if (!this.input) {
+            this.step = -1
+            return 0
+         }
          return this.store.champions.filter(champ => champ.front.toLowerCase().startsWith(this.input.toLowerCase())).slice(0, 5)
-      }
+      },
+
    }
 }
 
@@ -102,25 +145,36 @@ export default {
    <div class="search-main">
       <img src="../assets/svg/logo.svg" class="logo" alt="">
       <div ref="container" class="container" :class="{ focus: this.containerFocus}">
-         <input ref="input" type="text" spellcheck="false" autocomplete="off"
-            @focus="inputFocus"
-            @keyup.enter="summonerSearch"
-            placeholder="Summoner or Champion"
-            v-model="input">
-         <button ref="regionButton" class="region" @click="this.showRegions = true, this.containerFocus = false">
-            {{ this.region.toUpperCase() }}
-         </button>
-      </div>
-      <div class="region-selection" v-show="showRegions">
-         <div v-for="region in this.regionOptions" :key="region" @click="regionSelect(region)">
-            {{ region.toUpperCase() }}
+         <div>
+            <input class="main-input" ref="input" type="text" spellcheck="false" autocomplete="off"
+               @focus="inputFocus"
+               @keyup.enter="summonerSearch"
+               placeholder="Summoner or Champion"
+               v-model="input">
+            <div class="shadow" v-show="this.input && this.region !== 'RG' && !this.input.includes('#')">
+               <p>{{ `${this.input}`}}</p>
+               <!-- <p style="padding-left: 15px" v-if="filteredChamps.length === 1">Press enter to search {{ filteredChamps[0].front }}</p>
+               <p v-else>#{{ this.table[this.region] }}</p> -->
+               <p>#{{ this.table[this.region] }}</p>
+            </div>
          </div>
+         <select ref="regionButton" v-if="this.region" v-model="this.region" @change="regionSelect()">
+            <option value="RG" hidden disabled>Region</option>
+            <option v-for="region in Object.keys(this.table)" :value="region" :key="region">{{ region.toUpperCase() }}</option>
+         </select>
       </div>
-      <div ref="champions" class="champion-search" v-show="this.containerFocus && this.input.length > 0">
-         <router-link :to="{ name: 'champions', params: {champion: champ.back} }" v-for="champ in filteredChamps">
-            <img :src="this.getImage(champ.image)" alt="" srcset="" rel="preload">
-            {{ champ.front }}
-         </router-link>
+      <div class="champion-search" v-show="this.containerFocus && filteredChamps.length > 0">
+         <div class="search-ux">
+            <kbd>↑</kbd>/<kbd>↓</kbd>/<kbd>Enter</kbd> key friendly
+         </div>
+         <div ref="champions">
+            <router-link :to="{ name: 'champions', params: {champion: champ.back} }" v-for="champ in filteredChamps">
+               <div class="img-wrapper">
+                  <img :src="this.getImage(champ.image)" alt="" srcset="" rel="preload">
+               </div>
+               {{ champ.front }}
+            </router-link>
+         </div>
       </div>
    </div>
    <div class="back" @click="this.containerFocus = false" v-if="this.containerFocus"></div>
@@ -151,11 +205,27 @@ export default {
    font-size: 0.85rem;
    margin-top: 5px;
    width: calc(380px);
-   border-radius: 5px;
+   border-radius: 3px;
    overflow: hidden;
+   border: 1px solid var(--outline-variant);
 }
 
-.champion-search > a {
+.search-ux {
+   color: var(--color-font);
+   font-size: 0.75rem;
+   padding: 2px 5px;
+   padding-bottom: 4px;
+   opacity: 0.5;
+   border-bottom: 1px solid var(--outline-variant);
+}
+
+.search-ux kbd {
+   border: 1px solid var(--outline-variant);
+   border-radius: 5px;
+   padding: 0px 3px;
+}
+
+.champion-search a {
    display: flex;
    align-items: center;
    gap: 10px;
@@ -164,19 +234,26 @@ export default {
    color: var(--color-font);
    text-decoration: none;
    padding: 4px;
-   margin: 4px 4px;
    padding-left: 1.5rem;
-   border-radius: 5px;
    transition: 0.15s;
 }
 
-.champion-search > a:hover {
-   background: var(--alpha-06);
+.champion-search a:hover, .champion-search a.active {
+   background: var(--surface-container-high);
    color: var(--color-font-focus)
 }
 
+
+.img-wrapper {
+   width: 30px;
+   height: 30px;
+   border: 1px solid var(--outline-variant);
+   overflow: hidden;
+}
+
 .champion-search img {
-   width: 32px;
+   width: 100%;
+   transform: scale(1.1);
 }
 
 .region-selection {
@@ -184,45 +261,91 @@ export default {
 }
 
 .region-selection > div {
-   color: var(--on-secondary);
+   color: var(--panel-two-text);
    text-align: center;
    font-size: 0.85rem;
    margin: 0 .2rem;
    padding: 2px 6px;
    display: inline-block;
-   background: var(--secondary);
-   /* border: 1px solid var(--outline); */
+   background: var(--panel-two);
    border-radius: 5px;
    cursor: pointer;
    transition: 250ms ease-in-out;
 }
 .region-selection > div:hover {
-   background: var(--secondary-hover);
-   /* color: var(--color-font-focus) */
+   background: var(--panel-two-hover);
+}
+
+.select-wrapper {
+   /* padding: 0 11px;
+   margin-right: 10px;
+   background: var(--surface-container-highest);
+   border-radius: 16px;
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   height: 30px; */
+}
+
+select {
+   /* border: 1px solid transparent; */
+   padding: 0 11px;
+   margin-right: 10px;
+   border-radius: 16px;
+   cursor: pointer;
+   height: 30px;
+   appearance: none;
+   width: 80px;
+   display: inline-block;
+   color: var(--color-font);
+   font-family: var(--font-main);
+   font-size: 0.75rem;
+   background: transparent;
+   background: var(--surface-container-highest);
+   background-image: url('../assets/svg/arrow3.svg');
+   background-repeat: no-repeat;
+   background-position: right 10px center;
+   border-radius: 15px;
+   cursor: pointer;
+   font-weight: bold;
+   border: none;
+   transition: 250ms ease-in-out;
+}
+
+select:focus {
+   outline: none;
+}
+
+select > option {
+   font-weight: bold;
 }
 
 button.region {
-   right: 50px;
+   height: 30px;
    display: inline-block;
-   height: inherit;
-   color: var(--on-secondary);
+   color: var(--color-font);
    font-family: var(--font-main);
-   font-size: 0.9rem;
-   background: var(--secondary);
-   border-radius: 4px;
+   font-size: 0.75rem;
+   /* background: var(--surface-container-highest); */
+   background: var(--surface-container-highest);
+   border-radius: 15px;
    cursor: pointer;
+   font-weight: bold;
    border: none;
    margin: 0;
-   padding: 2px 6px;
+   margin-right: 10px;
+   padding: 3px 15px;
    transition: 250ms ease-in-out;
 }
 
 .shake {
+   background-color: var(--error);
+   color: var(--on-error);
    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
 }
 
-button.region:hover {
-   background: var(--secondary-hover);
+select:hover {
+   background-color: var(--surface-container-highest-hover);
    transition: 0.1s ease-in-out;
 }
 
@@ -242,15 +365,43 @@ img.logo {
 .container {
    position: relative;
    z-index: 2;
-   background: var(--surface);
-   /* background: var(--surface-container); */
+   background: var(--surface-container);
    display: flex;
+   justify-content: space-between;
    align-items: center;
-   padding: 0.7rem 2rem;
+   /* padding: 0.7rem 2rem; */
    border: 1px solid var(--outline-variant);
    border-radius: 50px;
-   width: 400px;
+   width: 420px;
+   height: 45px;
    transition: 0.25s;
+}
+
+.shadow {
+   position: absolute;
+   width: inherit;
+   z-index: -4;
+   left: calc(2.5rem);
+   top: 50%;
+   transform: translateY(-50%);
+   -webkit-user-select: none; /* Safari */        
+   -moz-user-select: none; /* Firefox */
+   -ms-user-select: none; /* IE10+/Edge */
+   user-select: none; /* Standard */
+}
+
+.shadow p {
+   display: inline-block;
+   color: var(--on-surface);
+   font-size: 0.95rem;
+   opacity: 0.3;
+   margin: 0;
+}
+
+.shadow p:first-child {
+   opacity: 0;
+   max-width: 200px;
+   padding-right: 2px;
 }
 
 .focus {
@@ -262,10 +413,12 @@ input {
    display: inline-block;
    background: transparent;
    border: none;
-   padding-left: 1rem;
-   font-size: 1rem;
+   padding: 0;
+   font-family: var(--font-main);
+   font-size: 0.95rem;
    color: var(--on-surface);
-   width: 100%;
+   width: 200px;
+   padding-left: 2.5rem;  
 }
 
 input:focus {

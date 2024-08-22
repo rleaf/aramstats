@@ -119,41 +119,43 @@
 </script>
 
 <template>
+   <div v-if="navSearch">
+      <div :class="{'focus': this.store.focus}" class="nav-search">
+         <input ref="input" @focus="this.focusInput()" type="text" spellcheck="false" autocomplete="off"
+         placeholder="Summoner or Champion"
+         @keyup.enter="this.summonerSearch()"
+         v-model="input">
+         <button ref="regionButton" @click="this.regionFocus = true">{{ this.region.toUpperCase() }}</button>
+      </div>
+      <div class="regions" v-if="this.regionFocus">
+         <button v-for="region in this.regionOptions" @click="this.selectRegion(region)">
+            {{ region.toUpperCase() }}
+         </button>
+      </div>
+      <div class="champion-search" v-if="this.store.focus && !this.regionFocus">
+         <router-link @click="this.champSearch()" :to="{ name: 'champions', params: { champion: champ.back } }" v-for="champ in filteredChamps">
+            <img :src="this.getImage(champ.image)" alt="" srcset="" rel="preload">
+            {{ champ.front }}
+         </router-link>
+      </div>
+      <div v-if="this.store.focus || this.regionFocus" class="bg" @click="this.terminate()"></div>
+   </div>
+   
    <nav>
       <div class="left">
          <router-link class="nav-route" to="/">Home</router-link>
          <router-link class="nav-route" to="/champions">Champions</router-link>
       </div>
 
-      <div v-if="navSearch">
-         <div :class="{'focus': this.store.focus}" class="nav-search">
-            <input ref="input" @focus="this.focusInput()" type="text" spellcheck="false" autocomplete="off"
-            placeholder="Summoner or Champion"
-            @keyup.enter="this.summonerSearch()"
-            v-model="input">
-            <button ref="regionButton" @click="this.regionFocus = true">{{ this.region.toUpperCase() }}</button>
-         </div>
-         <div class="regions" v-if="this.regionFocus">
-            <button v-for="region in this.regionOptions" @click="this.selectRegion(region)">
-               {{ region.toUpperCase() }}
-            </button>
-         </div>
-         <div class="champion-search" v-if="this.store.focus && !this.regionFocus">
-            <router-link @click="this.champSearch()" :to="{ name: 'champions', params: { champion: champ.back } }" v-for="champ in filteredChamps">
-               <img :src="this.getImage(champ.image)" alt="" srcset="" rel="preload">
-               {{ champ.front }}
-            </router-link>
-         </div>
-         <div v-if="this.store.focus || this.regionFocus" class="bg" @click="this.terminate()"></div>
-      </div>
       
       <div class="right">
-         <div class="toad">
-         </div>
+         <!-- <div class="toad">
+         </div> -->
          <button @click="this.theme()" :class="{day: this.day}">
             <div class="theme"></div>
          </button>
          <router-link class="nav-route" to="/updates">Updates</router-link>
+         <router-link class="nav-route" to="/versions">Versions</router-link>
          <router-link class="nav-route" to="/about">About</router-link>
       </div>
    </nav>
@@ -239,10 +241,13 @@
 }
 
 .nav-search {
+   left: 50%;
+   top: 40px;
+   transform: translate(-50%, -50%);
    display: flex;
    justify-content: space-between;
    align-items: center;
-   position: relative;
+   position: absolute;
    z-index: 1;
    background: var(--cell-panel);
    width: 400px;
@@ -292,10 +297,10 @@
 }
 
 nav {
-   height: 5rem;
-   width: 100%;
    display: flex;
    justify-content: space-between;
+   height: 5rem;
+   width: 100%;
    align-items: center;
    align-items: center;
 }
