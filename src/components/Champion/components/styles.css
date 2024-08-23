@@ -16,31 +16,13 @@
    padding-bottom: 13vh;
 }
 
-.section-header .settings {
-   cursor: pointer;
-   transition: 0.2s ease-in-out;
-   border-radius: 7px;
-   padding: 3px 5px;
-   /* background: crimson; */
-   -webkit-touch-callout: none; /* iOS Safari */
-   -webkit-user-select: none; /* Safari */
-   -khtml-user-select: none; /* Konqueror HTML */
-   -moz-user-select: none; /* Old versions of Firefox */
-   -ms-user-select: none; /* Internet Explorer/Edge */
-   user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
-}
-
-.section-header .settings:hover {
-   background: var(--cold-blue-focus);
-}
-
 .sub-section-header {
    display: flex;
    justify-content: space-between;
    align-items: center;
    padding-bottom: 0.3rem;
    margin-bottom: 0.8rem;
-   border-bottom: 1px solid var(--cell-border);
+   border-bottom: 1px solid var(--outline-variant);
 }
 
 .sub-section-header img {
@@ -95,7 +77,6 @@
 
 .sub-section-header .title {
    font-family: 'Thestral';
-   /* display: inline-block; */
    margin: 0;
    font-size: 1.3rem;
    color: var(--color-font);
@@ -105,10 +86,9 @@
    transition: 0.15s ease-in-out;
    border-radius: 3px;
    cursor: pointer;
-   padding: 1px 3px;
 }
 .sub-section-header a:hover {
-   background: var(--cold-blue-focus);
+   color: var(--color-font-focus);
 }
 .sub-section-header .misc {
    padding-left: 15px;

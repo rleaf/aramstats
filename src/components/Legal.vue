@@ -16,7 +16,7 @@ export default {
 
 <style scoped>
 .legal {
-   color: var(--on-surface-variant);
+   color: var(--color-font);
    left: 0;
    right: 0;
    margin: 0 auto;

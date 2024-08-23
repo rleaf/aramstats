@@ -5,8 +5,7 @@ import router from './router'
 import VueGtag from 'vue-gtag'
 import VueHead from 'vue-head'
 
-// import './assets/main.css'
-import './assets/new_main.css'
+import './assets/main.css'
 
 const pinia = createPinia()
 const app = createApp(App)

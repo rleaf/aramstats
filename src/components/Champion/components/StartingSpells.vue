@@ -158,18 +158,19 @@ export default {
 }
 .skill div {
    position: absolute;
-   top: 17px;
-   left: 6px;
+   top: 16px;
+   left: 5px;
    z-index: 1;
    font-size: 0.85rem;
-   background: var(--color-background);
+   background: var(--surface);
+   border: 1px solid var(--outline-variant);
    text-align: center;
    width: 1rem;
 }
 
 .section img {
    width: 34px;
-   border: 1px solid var(--cell-border);
+   border: 1px solid var(--outline-variant);
 }
 .section img:not(:first-child) {
    margin-left: 5px;

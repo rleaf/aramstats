@@ -38,7 +38,7 @@ export default {
             <div class="setting-head">
                <h2>Desaturate colors</h2>
                <svg @click="this.config.runes.clarity = !this.config.runes.clarity" fill="none">
-                  <rect x="0.5" y="0.5" rx="13"/>
+                  <rect x="0.5" y="0.5" rx="13" :class="{ 'active': this.config.runes.clarity }"/>
                   <circle :class="{ 'storage-active': this.config.runes.clarity }" cx="25%" cy="50%" r="22%" rx="12"/>
                </svg>
             </div>

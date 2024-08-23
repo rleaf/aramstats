@@ -23,9 +23,10 @@ export default {
 /* scoped CSS doesn't work with v-html directive */
 
 .about-main code {
-   background: var(--alpha-07);
-   padding: 0.1rem 0.15rem;
-   border-radius: 5px;
+  background: var(--tertiary-container);
+  color: var(--on-tertiary-container);
+  padding: 0.1rem 0.15rem;
+  border-radius: 5px;
 }
 
 .about-main a {
@@ -50,9 +51,9 @@ export default {
   font-weight: normal;
   font-size: 1.5rem;
   text-align: left;
-  color: var(--color-font);
+  color: var(--color-font-focus);
   padding-bottom: 0.25rem;
-  border-bottom: 1px solid var(--cell-border);
+  border-bottom: 1px solid var(--outline);
 }
 
 .about-main ul {

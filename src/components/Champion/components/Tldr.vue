@@ -434,7 +434,7 @@ export default {
 .core-selection {
    display: flex;
    flex-direction: column;
-   border-right: 1px solid var(--cell-border);
+   border-right: 1px solid var(--outline);
 }
 
 .combinations {
@@ -444,22 +444,11 @@ export default {
 }
 
 .combinations::-webkit-scrollbar {
-   width: 4px;
-}
-
-.combinations::-webkit-scrollbar-track {
-   border-radius: 5px;
-   padding-right: 15px;
+   width: 2px;
 }
 
 .combinations::-webkit-scrollbar-thumb {
-   background: var(--alpha-06);
-   border-radius: 5px;
-   
-}
-.combinations::-webkit-scrollbar-thumb:hover {
-   background: var(--light-12);
-   transition: 0.25s;
+   background: var(--outline);
 }
 
 .starting-spells {
@@ -467,8 +456,6 @@ export default {
    padding-top: 30px;
    gap: 50px;
    align-items: center;
-   /* max-width: 150px; */
-   /* padding-right: 20px; */
 }
 
 .starting {
@@ -489,12 +476,12 @@ export default {
 
 .runes-wrapper img {
    filter: saturate(0);
-   opacity: 0.45;
+   opacity: 0.4;
 }
 
 img.active-rune {
    opacity: 1;
-   filter: saturate(1.15);
+   filter: saturate(1.3);
 }
 
 .tldr-primary, .tldr-secondary, .tldr-flex {
@@ -524,7 +511,7 @@ img.active-rune {
 .tldr-flex img {
    width: 24px;
    margin: 0 3px;
-   background: var(--alpha-02);
+   background: var(--surface-container);
    border-radius: 100%;
 }
 
@@ -546,20 +533,21 @@ img.active-rune {
    margin: 2px 1px;
    border: 1px solid transparent;
    border-radius: 2px;
-   background: var(--alpha-06);
+   background: var(--surface-container);
    text-align: center;
    font-size: 0.7rem;
    line-height: 1.5;
 }
 
 .active-level {
-   border: 1px solid var(--cell-border);
-   background: var(--alpha-07);
+   /* border: 1px solid var(--outline-variant); */
+   color: var(--on-secondary-container);
+   background: var(--secondary-container);
 }
 
 img.starting-image {
    width: 32px;
-   border: 1px solid var(--cell-border);
+   border: 1px solid var(--outline-variant);
 
 }
 
@@ -576,7 +564,7 @@ img.starting-image {
 }
 
 .column-bg {
-   background: var(--alpha-01);
+   background: var(--surface-container);
 }
 
 .items-wrapper {
@@ -600,7 +588,7 @@ img.starting-image {
    margin: 0 auto;
    margin-bottom: 3px;
    width: 32px;
-   border: 1px solid var(--cell-border);
+   border: 1px solid var(--outline-variant);
 }
 
 .core {
@@ -624,12 +612,12 @@ img.starting-image {
 }
 
 .core-focus {
-   background: var(--cold-blue-focus);
-   border: 1px solid var(--cell-border);
+   background: var(--surface-container);
+   border: 1px solid var(--outline);
 }
 
 .core:hover {
-   background: var(--cold-blue-focus);
+   background: var(--surface-container);
 }
 
 .core-img {
@@ -638,7 +626,7 @@ img.starting-image {
 
 .core-img img {
    width: 32px;
-   border: 1px solid var(--cell-border);
+   border: 1px solid var(--outline-variant);
 }
 
 .core-numbers {

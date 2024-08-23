@@ -89,8 +89,8 @@ const reg = (str) => {
    position: absolute;
    z-index: 5;
    color: var(--color-font);
-   background: var(--cell-panel);
-   border: 1px solid var(--cell-border);
+   background: var(--surface-container);
+   border: 1px solid var(--outline);
    padding: 0.5rem 1rem;
    font-size: 0.8rem;
    border-radius: 3px;

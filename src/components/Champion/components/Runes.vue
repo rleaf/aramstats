@@ -182,7 +182,7 @@ export default {
 }
 
 .flex img {
-   background: var(--alpha-01);
+   background: var(--surface-container-high);
    border-radius: 100%;
 }
 

@@ -170,7 +170,7 @@ export default {
    justify-content: space-between;
 }
 .synopsis {
-   border-right: 1px solid var(--cell-border);
+   border-right: 1px solid var(--outline);
    width: 270px;
    padding-left: 20px;
 }
@@ -236,20 +236,20 @@ text.slot {
 }
 
 rect.backdrop {
-   fill: var(--cell-backdrop);
+   fill: var(--surface-container);
    transform: rotate(180deg) scaleX(-1);
    transform-origin: center center;
    transition: 0.15s ease-in-out; 
 }
 rect.value {
-   fill: var(--alpha-12);
+   fill: var(--secondary);
    transform: rotate(180deg) scaleX(-1);
    transform-origin: center center;
    transition: height 0.5s;
 }
 
 rect.rect-focus {
-   fill: var(--light-15);
+   fill: var(--surface-container-highest);
 }
 
 .details {
@@ -273,8 +273,8 @@ rect.rect-focus {
 .image-wrapper {
    width: 42px;
    height: 42px;
-   border: 1px solid var(--cell-border);
-   background: var(--alpha-01);
+   border: 1px solid var(--outline-variant);
+   background: var(--surface-container);
 }
 .image-wrapper img {
    width: inherit;
@@ -325,12 +325,12 @@ rect.rect-focus {
 }
 
 .column::-webkit-scrollbar-thumb {
-   background: var(--alpha-06);
+   background: var(--outline-variant);
    border-radius: 5px;
    
 }
 .column::-webkit-scrollbar-thumb:hover {
-   background: var(--light-12);
+   background: var(--outline);
    transition: 0.25s;
 }
 
@@ -354,7 +354,7 @@ rect.rect-focus {
    font-size: 0.75rem;
 }
 .column-bg {
-   background: var(--alpha-01);
+   background: var(--surface-container);
 }
 
 .column img {
@@ -363,7 +363,7 @@ rect.rect-focus {
    margin-bottom: 3px;
    width: 34px;
    cursor: pointer;
-   border: 1px solid var(--cell-border);
+   border: 1px solid var(--outline-variant);
    transition: 0.25s ease-in-out;
 }
 

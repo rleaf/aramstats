@@ -53,7 +53,7 @@ export default {
             <div class="setting-head">
                <h2>Local Storage</h2>
                <svg @click="this.config.localStorage = !this.config.localStorage" fill="none">
-                  <rect x="0.5" y="0.5" rx="13"/>
+                  <rect x="0.5" y="0.5" rx="13" :class="{ 'active': this.config.localStorage }" />
                   <circle :class="{ 'storage-active': this.config.localStorage }" cx="25%" cy="50%" r="22%" rx="12"/>
                </svg>
             </div>
@@ -65,7 +65,7 @@ export default {
             <div class="setting-head">
                <h2>Sort by winrate</h2>
                <svg @click="this.config.winrateSort = !this.config.winrateSort" fill="none">
-                  <rect x="0.5" y="0.5" rx="13"/>
+                  <rect x="0.5" y="0.5" rx="13" :class="{ 'active': this.config.winrateSort }"/>
                   <circle :class="{ 'storage-active': this.config.winrateSort }" cx="25%" cy="50%" r="22%" rx="12"/>
                </svg>
             </div>

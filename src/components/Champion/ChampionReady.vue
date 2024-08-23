@@ -1,5 +1,4 @@
 <script>
-import axios from 'axios'
 import champions from '../../constants/champions'
 import { superStore } from '../../stores/superStore'
 import Tldr from './components/Tldr.vue'
@@ -83,8 +82,7 @@ export default {
 
       background() {
          const img = new URL(`../../assets/champion_splash/${this.backName.toLowerCase()}.webp`, import.meta.url).href
-         return `radial-gradient(ellipse at top, rgba(var(--color-background-rgb), 0.8), rgba(var(--color-background-rgb), 1) 73%), no-repeat -10% 25%/100% url('${img}')`
-         // return `linear-gradient(to right, rgba(var(--cell-panel-rgb), 1.0), rgba(var(--cell-panel-rgb), 0.9) 10%, rgba(var(--cell-panel-rgb), .8) 60%, rgba(var(--cell-panel-rgb), .7) 90%), no-repeat -20% 15%/100% url('${img}')`
+         return `radial-gradient(ellipse at top, rgba(var(--surface-rgb), 0.8), rgba(var(--surface-rgb), 1) 73%), no-repeat -10% 25%/100% url('${img}')`
       },
 
       championWinrate() {
@@ -146,7 +144,7 @@ export default {
    <div class="champion-ready-main">
       <Transition name="fade">
          <div v-if="this.patchAlert" class="alert">
-            Patch data unavailable, defaulting to latest.
+            Patch data unavailable. Defaulting to {{ this.cleanPatch(this.store.patches[0]) }}.
          </div>
       </Transition>
       <div class="gradient-bg" :style="{ background: background }"></div>
@@ -252,18 +250,17 @@ export default {
 
 .alert {
    font-size: 0.9rem;
-   color: var(--color-font-focus);
+   color: var(--on-error);
    position: absolute;
    text-align: center;
    left: 50%;
    margin-top: 10vh;
    transform: translateX(-50%);
    padding: 0.6rem 0.8rem;
-   border: 1px solid var(--ice-blue);
-   background: var(--cell-panel);
+   background: var(--error);
    border-radius: 3px;
    z-index: 5;
-   width: 300px;
+   max-width: 150px;
 }
 
 .gradient-bg {
@@ -292,13 +289,8 @@ export default {
    align-items: center;
    width: 100%;
    color: var(--color-font);
-   border-top: 1px solid var(--cell-border);
-   background: radial-gradient(ellipse at top, var(--cell-panel), var(--cell-panel-rgb) 25%);
-}
-
-.header-rhs {
-   /* width: 300px; */
-
+   border-top: 1px solid var(--outline);
+   background: radial-gradient(ellipse at top, var(--surface), var(--surface-rgb) 25%);
 }
 
 .main-stats {
@@ -306,20 +298,17 @@ export default {
    margin-bottom: 20px;
    gap: 40px;
    font-size: 1.1rem;
-   /* grid-template-columns: repeat(3, 100px); */
 }
 
 .main-stats div {
    font-weight: bold;
-   /* border: 1px solid white; */
-   /* width: 75px; */
-   /* grid-column: 1;
-   grid-row: 1; */
+   color: var(--color-font-focus);
 }
 
 .header-rhs span {
    font-size: 0.9rem;
    display: block;
+   padding-bottom: 5px;
    color: var(--color-font-faded);
    font-weight: normal;
 }
@@ -333,24 +322,6 @@ export default {
    font-size: 0.95rem;
    font-weight: bold;
 }
-
-/* .header-rhs {
-   display: flex;
-   gap: 80px;
-}
-
-.header-rhs h2 {
-   margin: 0;
-   color: var(--color-font-faded);
-   font-size: 0.9rem;
-   font-weight: normal;
-}
-
-.header-rhs div {
-   color: var(--color-font);
-   font-size: 1.5rem;
-   font-weight: bold;
-} */
 
 .settings {
    display: flex;
@@ -367,41 +338,32 @@ export default {
 
 .header-lhs {
    display: flex;
-   /* flex-direction: column; */
 }
 
 .settings .setting-content {
    display: none;
    position: absolute;
-   /* flex-wrap: wrap; */
    flex-direction: column;
-   /* justify-content: space-between; */
-   background-color: var(--cell-panel);
+   background: var(--surface-container-high);
    border-radius: 3px;
-   /* padding-top: 10px; */
-   /* width: 130px; */
-   /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
+   overflow: hidden;
    z-index: 1;
 }
 
 .setting-content > a {
-   /* margin: 2px; */
    display: inline-block;
    cursor: pointer;
    min-width: 45px;
-   padding: 0.4rem 0.8rem;
+   padding: 6px 10px;
 }
 
 .setting-content > a:hover {
-   background: var(--alpha-01);
-   border-radius: 3px;
-   /* padding: 2px 5px; */
+   background: var(--surface-container-highest);
 }
 
 .setting-content .message {
    padding: 0.4rem 0.8rem;
    font-size: 0.8rem;
-   /* font-style: italic; */
 }
 
 a.about {
@@ -416,16 +378,13 @@ a.about {
 .settings > div .setting-header {
    display: block; 
    text-align: center;
-   background: var(--cell-panel);
+   background: var(--surface-container-high);
    border: none;
    color: var(--color-font);
-   /* font-family: var(--header-font); */
-   font-weight: bold;
-   /* font-size: 0.8rem; */
    cursor: pointer;
    min-width: 45px;
    border-radius: 3px;
-   padding: 0.4rem 0.8rem;
+   padding: 6px 10px;
    margin-bottom: 5px;
 }
 
@@ -438,6 +397,7 @@ a.about {
    font-size: 2.8rem;
    margin: 0;
    font-family: var(--header-font);
+   color: var(--color-font-focus);
 }
 
 .title {
@@ -456,7 +416,7 @@ a.about {
 }
 .champion-abilities img {
    width: 36px;
-   border: 1px solid var(--cell-border);
+   border: 1px solid var(--outline-variant);
 }
 
 .champion-abilities > div {
@@ -469,10 +429,12 @@ a.about {
 
 .spell-letter {
    position: relative;
-   top: -23px;
+   top: -24px;
    left: -9px;
    font-size: 0.85rem;
-   background: var(--color-background);
+   background: var(--surface);
+   border-top: 1px solid var(--outline-variant);
+   border-right: 1px solid var(--outline-variant);
    text-align: center;
    width: 1rem;
 }
@@ -481,12 +443,11 @@ a.about {
    width: 100px;
    height: 100px;   
    overflow: hidden;
-   border: 1px solid var(--cell-border);
+   border: 1px solid var(--outline-variant);
 }
 
 .header-lhs-image img {
    width: 100%;
-   /* object-fit: cover; */
    transform: scale(1.2);
 }
 </style>

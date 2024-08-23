@@ -142,42 +142,19 @@ export default {
 <template>
    <div v-if="this.champions" class="champ-list-main">
       <div class="champ-table">
-         <!-- <div class="filters">
-            <div class="region-button" @click="">
-               {{ this.region}}
-            </div>
-         </div> -->
          <div class="champion header">
-            <!-- <div class="rank">
-               <h2 @click="this.headerSort('rank')">Rank</h2>
-               <svg v-if="this.sort === 'rank'" class="triangle" :class="{ 'descending': this.sortOrder === 1}">
-                  <polygon points="7 5, 14 14, 0 14"/>
-               </svg>
-            </div> -->
             <div class="name-image">
                <h2 @click="this.headerSort('_id')">Name</h2>
                <svg v-if="this.sort === '_id'" class="triangle" :class="{ 'descending': this.sortOrder === 1 }">
                   <polygon points="7 5, 14 14, 0 14"/>
                </svg>
             </div>
-            <!-- <div class="grade">
-               <h2 @click="this.headerSort('grade')">Grade</h2>
-               <svg v-if="this.sort === 'grade'" class="triangle" :class="{ 'descending': this.sortOrder === 1 }">
-                  <polygon points="7 5, 14 14, 0 14"/>
-               </svg>
-            </div> -->
             <div class="winrate">
                <h2 @click="this.headerSort('winrate')">Winrate</h2>
                <svg v-if="this.sort === 'winrate'" class="triangle" :class="{ 'descending': this.sortOrder === 1 }">
                   <polygon points="7 5, 14 14, 0 14"/>
                </svg>
             </div>
-            <!-- <div class="pickrate">
-               <h2 @click="this.headerSort('pickRate')">Pickrate</h2>
-               <svg v-if="this.sort === 'pickRate'" class="triangle" :class="{ 'descending': this.sortOrder === 1 }">
-                  <polygon points="7 5, 14 14, 0 14"/>
-               </svg>
-            </div> -->
             <div class="games">
                <h2 @click="this.headerSort('games')">Games</h2>
                <svg v-if="this.sort === 'games'" class="triangle" :class="{ 'descending': this.sortOrder === 1 }">
@@ -200,9 +177,6 @@ export default {
             <div :style="{ color: this.computeColor(champ.winrate) }" class="winrate">
                {{ champ.winrate }}%
             </div>
-            <!-- <div class="pickrate">
-               {{ champ.pickRate }}
-            </div> -->
             <div class="games">
                {{ champ.games }}
             </div>
@@ -223,7 +197,7 @@ export default {
    }
    .filters {
       margin-bottom: 20px;
-      border-bottom: 1px solid var(--cell-border)
+      border-bottom: 1px solid tomato;
    }
    .champ-list-main {
       display: flex;
@@ -233,7 +207,7 @@ export default {
    }
 
    .champ-table {
-      width: 1100px;
+      width: 700px;
       padding-bottom: 15vh;
       color: var(--color-font)
    }
@@ -243,17 +217,22 @@ export default {
       justify-content: space-around;
       align-items: center;
       width: 100%;
-      height: 45px;
-      border-radius: 3px;
-      font-size: 0.9rem;
+      height: 44px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+   }
+
+   .header {
+      border-radius: 0px;
+      border-bottom: 1px solid var(--outline);
    }
 
    .image-wrapper {
-      height: 34px;
-      width: 34px;
+      height: 32px;
+      width: 32px;
       margin-right: 10px;
       overflow: hidden;
-      border: 1px solid var(--cell-border);
+      border: 1px solid var(--outline-variant);
    }
 
    .image-wrapper img {
@@ -262,20 +241,14 @@ export default {
    }
 
    .o {
-      background: var(--cell-panel);
-      /* background: var(--alpha-01); */
+      background: var(--surface-container);
    }
 
    .header h2 {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: normal;
-      padding: 0.5rem;
-      width: auto;
       transition: 0.2s;
-      border-radius: 8px;
       cursor: pointer;
-      margin: 0;
-      margin-left: -0.5rem;
       -webkit-touch-callout: none; /* iOS Safari */
       -webkit-user-select: none; /* Safari */
       -khtml-user-select: none; /* Konqueror HTML */
@@ -285,13 +258,13 @@ export default {
    }
 
    .header h2:hover {
-      background: var(--cold-blue-focus);
+      color: var(--color-font-focus);
    }
 
    svg.triangle {
       width: 20px;
       height: 20px;
-      fill: var(--light-12);
+      fill: var(--secondary);
    }
 
    .descending {
@@ -313,6 +286,7 @@ export default {
    .champion a {
       display: flex;
       align-items: center;
+      font-family: var(--font-main);
       color: var(--color-font);
       text-decoration: none;
       transition: 0.2s;
@@ -330,24 +304,10 @@ export default {
       color: var(--color-font-focus);
    }
 
-   /* .champion div span:after {    
-      background: none repeat scroll 0 0 transparent;
-      position: absolute;
-      bottom: -3px;
-      content: "";
-      display: block;
-      height: 1px;
-      left: 50%;
-      background: var(--color-font-focus);
-      transition: width 0.3s ease 0s, left 0.3s ease 0s;
-      width: 0;
-   } */
-
    .champion div span:hover:after { 
       width: 100%; 
       left: 0;
    }
-   
 
    .rank, .grade {
       min-width: 80px;

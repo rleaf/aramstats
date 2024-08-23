@@ -1,9 +1,8 @@
 .settings {
    cursor: pointer;
    transition: 0.2s ease-in-out;
-   border-radius: 7px;
-   padding: 3px 5px;
-   /* background: crimson; */
+   border-radius: 5px;
+   padding: 1px 5px;
    -webkit-touch-callout: none;
    /* iOS Safari */
    -webkit-user-select: none;
@@ -19,19 +18,19 @@
 }
 
 .settings:hover {
-   background: var(--cold-blue-focus);
+   background: var(--surface-container-low);
 }
 
 h1 {
    font-family: 'Thestral';
-   color: var(--color-font);
+   color: var(--color-font-focus);
    font-size: 1.5rem;
    margin: 0;
    padding-bottom: 0.5rem;
 }
 
 .head {
-   border-bottom: 1px solid var(--cell-border);
+   border-bottom: 1px solid var(--outline);
    padding-bottom: 2rem;
    line-height: 1.25;
 }
@@ -75,13 +74,13 @@ h1 {
 }
 
 .setting-head .options div:hover {
-   background: var(--cold-blue-focus);
+   background: var(--surface-container-high);
 }
 
 .setting-head .options .active-option {
-   background: var(--cold-blue-focus);
+   background: var(--surface-container-high);
    color: var(--color-font);
-   border: 1px solid var(--cell-border);
+   border: 1px solid var(--outline);
 }
 
 h2 {
@@ -115,19 +114,23 @@ rect {
    width: calc(100% - 1px);
    height: calc(100% - 1px);
    /* height: 100%; */
-   stroke: var(--light-10);
+   stroke: var(--outline-variant);
    /* stroke-width: 2; */
 }
 
 circle {
-   fill: var(--alpha-07);
+   fill: var(--surface-container-highest);
    height: calc(100% - 8px);
    transition: 0.2s cubic-bezier(.25, .52, .64, .84);
 }
 
+rect.active {
+   stroke: var(--outline);
+}
+
 circle.storage-active {
    transform: translateX(50%);
-   fill: var(--light-01);
+   fill: var(--secondary);
 }
 
 p {
@@ -147,13 +150,13 @@ p {
    font-size: 0.8rem;
    color: var(--color-font-faded);
    border-radius: 8px;
-   background: var(--cell-panel);
+   background: var(--surface-container);
    z-index: 2;
 }
 
 .modal-back {
    position: absolute;
-   background-color: var(--black-alpha-9);
+   background-color: rgba(0, 0, 0, 0.3);
    top: 0;
    left: 0;
    width: 100%;

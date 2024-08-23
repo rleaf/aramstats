@@ -180,7 +180,7 @@ h2 {
    font-size: 1.5rem;
    font-family: var(--header-font);
    text-align: left;
-   color: var(--color-font);
+   color: var(--color-font-focus);
    margin-bottom: 0;
    
 }
