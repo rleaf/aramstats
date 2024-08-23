@@ -92,6 +92,7 @@ export default {
 }
 
 .stat-header .header-title {
+   color: var(--color-font-focus);
    font-weight: 600;
    cursor: pointer;
    -webkit-touch-callout: none;
@@ -108,7 +109,7 @@ export default {
 }
 
 .bordered {
-   border-left: 1px solid var(--cell-border);
+   border-left: 1px solid var(--outline-variant);
    padding-left: 0.4rem;
 }
 
@@ -170,6 +171,6 @@ div.encounters-stat {
 
 
 .o {
-   background: var(--alpha-01);
+   background: var(--surface-container);
 }
 </style>

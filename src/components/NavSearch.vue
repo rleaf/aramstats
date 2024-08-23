@@ -6,6 +6,7 @@ export default {
       return {
          store: superStore(),
          containerFocus: false,
+         step: -1,
          input: '',
          region: 'RG',
          table: {
@@ -70,6 +71,11 @@ export default {
          }
       },
 
+      blurInput() {
+         this.input = ''
+         this.containerFocus = false
+      },
+
       regionSelect() {
          localStorage.setItem('region', this.region)
          this.$refs.input.focus()
@@ -85,6 +91,7 @@ export default {
          if (this.filteredChamps[this.step]) {
             this.$router.push({ name: 'champions', params: {champion: this.filteredChamps[this.step].back}})
             this.containerFocus = false
+            this.input = ''
             this.$refs.input.blur()
             return
          }
@@ -108,6 +115,7 @@ export default {
          }})
 
          this.containerFocus = false
+         this.input = ''
          this.$refs.input.blur()
       },
    },
@@ -148,7 +156,7 @@ export default {
             <kbd>↑</kbd>/<kbd>↓</kbd>/<kbd>Enter</kbd> key friendly
          </div>
          <div ref="champions">
-            <router-link :to="{ name: 'champions', params: {champion: champ.back} }" v-for="champ in filteredChamps">
+            <router-link :to="{ name: 'champions', params: {champion: champ.back} }" @click="this.blurInput()" v-for="champ in filteredChamps">
                <div class="img-wrapper">
                   <img :src="this.getImage(champ.image)" alt="" srcset="" rel="preload">
                </div>
@@ -157,7 +165,6 @@ export default {
          </div>
       </div>
       <div class="back" @click="this.containerFocus = false" v-if="this.containerFocus"></div>
-      <!-- <div v-if="this.store.focus || this.regionFocus" class="bg" @click="this.terminate()"></div> -->
    </div>
 </template>
 
@@ -188,7 +195,7 @@ export default {
 }
 
 .champion-search {
-   z-index: 1;
+   z-index: 3;
    display: flex;
    position: relative;
    width: 380px;

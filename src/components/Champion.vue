@@ -188,37 +188,15 @@ export default {
 </template>
 
 <style scoped>
-
-   .patch-divider {
-      display: flex;
-      align-items: flex-end;
-      gap: 17px;
-      color: var(--color-font-faded);
-      font-size: 0.75rem;
-   }
-
-   .patch-divider > span {
-      width: 13px;
-      padding-bottom: 1px;
-   }
-   .patch-divider hr {
-      min-height: 21px;
-      width: 1px;
-      border: none;
-      background-color: var(--cell-border);
-      margin: 0;
-      margin-left: 12px;
-   }
-
    .active-champion {
-      background-color: var(--cold-blue-focus);
+      background: var(--surface-container);
    }
 
    .icon-wrapper {
       height: 34px;
       width: 34px;
       overflow: hidden;
-      border: 1px solid var(--cell-border);
+      border: 1px solid var(--outline-variant);
    }
 
    img.icon {
@@ -237,7 +215,7 @@ export default {
       padding: 2px 0;
       border-radius: 3px;
       border: 1px solid transparent;
-      transition: background .2s ease-in-out, border .1s ease-in-out;
+      transition: background .2s ease-in-out;
       -webkit-touch-callout: none;
       -webkit-user-select: none;
       -khtml-user-select: none;
@@ -246,12 +224,9 @@ export default {
       user-select: none;
    }
 
-   .champion-main:hover:not(.active-champion) {
-      border: 1px solid var(--cell-border);
+   .champion-main:hover {
+      border: 1px solid var(--outline-variant);
    }
-   /* .dropdown:hover {
-      border: 1px solid tomato;
-   } */
 
    .name-wrapper {
       display: flex;
@@ -261,7 +236,6 @@ export default {
    .per-minute-sub {
       font-size: 0.72rem;
       color: var(--color-font-faded);
-      /* font-style: italic; */
    }
    
    .rhs, .lhs {

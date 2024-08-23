@@ -162,12 +162,7 @@ export default {
                splitLine: {
                   lineStyle: {
                      color: [
-                        'var(--alpha-07)',
-                        'var(--alpha-07)',
-                        'var(--alpha-06)',
-                        'var(--alpha-05)',
-                        'var(--alpha-04)',
-                        'var(--alpha-03)',
+                        'rgba(var(--secondary-rgb), 0.3)',
                      ]
                   }
                },
@@ -176,7 +171,7 @@ export default {
                },
                axisLine: {
                   lineStyle: {
-                  color: 'var(--alpha-07)'
+                  color: 'rgba(var(--secondary-rgb), 0.3)'
                   }
                }
             },
@@ -188,7 +183,7 @@ export default {
                   data: [Object.values(this.tally)],
                   symbol: 'none',
                   itemStyle: {
-                  color: 'var(--ice-blue)' // ice blue
+                  color: 'var(--primary)' // ice blue
                   },
                   areaStyle: {
                      opacity: 0.25

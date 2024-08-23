@@ -26,12 +26,6 @@
          }
       },
 
-      computed: {
-         navSearch() {
-            return (this.$route.name != 'home') ? true : false
-         }
-      },
-
       props: {
          champions: null,
       }
@@ -47,7 +41,7 @@
          <router-link class="nav-route" to="/champions">Champions</router-link>
       </div>
 
-      <NavSearch v-if="navSearch" />
+      <NavSearch v-if="this.$route.name != 'home'" />
       
       <div class="right">
          <button @click="this.theme()" :class="{day: this.day}">

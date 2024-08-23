@@ -155,7 +155,7 @@ export default {
       min-height: 39px;
       width: 1px;
       border: none;
-      background-color: var(--cell-border);
+      background-color: var(--outline-variant);
       margin: 0;
       margin-left: 12px;
    }
@@ -168,7 +168,6 @@ export default {
       width: 100%;
       font-size: 0.75rem;
       border-radius: 3px;
-      background: linear-gradient(to right, rgba(var(--cell-panel-rgb), 1.0), rgba(var(--cell-panel-rgb), 0.9) 10%, rgba(var(--cell-panel-rgb), .8) 60%, rgba(var(--cell-panel-rgb), .7) 90%);
    }
 
    .win {
@@ -180,14 +179,12 @@ export default {
    }
 
    .time {
-      /* padding: 0 10px; */
       padding-left: 10px;
       width: 55px;
       font-size: 0.7rem;
    }
 
    .runes {
-      /* padding: 0 5px; */
       width: 32px;
       display: flex;
       justify-content: center;
@@ -220,7 +217,7 @@ export default {
    .items div {
       width: 22px;
       height: 22px;
-      background: var(--alpha-05);
+      background: rgba(122, 122, 122, 0.2);
       margin-left: 2px;
       border-radius: 3px;
       overflow: hidden;

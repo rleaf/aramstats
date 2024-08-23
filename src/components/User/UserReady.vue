@@ -771,7 +771,7 @@ export default {
                      </span>
                   </div>
                   <div class="toggle" style="margin-left: auto;">
-                     <button @click="this.toggleAll()">Toggle All</button>
+                     <button :class="{ 'active': this.toggleState }" @click="this.toggleAll()">Toggle All</button>
                   </div>
                   <UXTooltip :align="'right'" :tip="'championsTable'"/>
                </div>
@@ -809,7 +809,7 @@ export default {
    flex-direction: column;
    margin: 0 auto;
    width: 1100px;
-   color: var(--color-font);
+   color: var(--color-font-focus);
 }
 
 .header {
@@ -820,7 +820,7 @@ export default {
    margin-top: 5vh;
    padding-top: 4vh;
    padding-bottom: 6vh;
-   border-top: 1px solid var(--cell-border);
+   border-top: 1px solid var(--outline);
    /* background: radial-gradient(ellipse at top, var(--cell-panel), var(--cell-panel-rgb) 25%); */
 }
 
@@ -833,7 +833,7 @@ export default {
    height: 100px;
    overflow: hidden;
    border-radius: 100%;
-   border: 1px solid var(--cell-border);
+   border: 1px solid var(--outline-variant);
 }
 
 .header-summoner-icon img {
@@ -875,13 +875,15 @@ export default {
 }
 
 .buttons button {
-   padding: 0.5rem 1rem;
+   padding: 0.5rem 0.8rem;
+   min-width: 45px;
    cursor: pointer;
    border-radius: 3px;
-   border: 1px solid var(--cell-border);
-   background: var(--off-blue);
+   border: 1px solid var(--outline-variant);
+   /* border: none; */
+   background: var(--surface);
    color: var(--color-font);
-   font-size: 0.8rem;
+   font-size: 0.9rem;
    transition: 150ms ease-in-out;
    -webkit-touch-callout: none;
    -webkit-user-select: none;
@@ -897,8 +899,7 @@ button.active-update {
 }
 
 .buttons button:hover:not(.active-update) {
-   border: 1px solid var(--light-08);
-   color: var(--color-font-focus);
+   border: 1px solid var(--outline);
 }
 
 /* .buttons button:last-child:hover {
@@ -925,7 +926,7 @@ button.active-update {
 }
 
 .gradient-bg {
-   background: radial-gradient(ellipse at top, rgba(var(--color-background-rgb), 0.4), rgba(var(--color-background-rgb), 1) 73%), no-repeat -10% 25%/100% url('../../assets/summoner_assets/backdrop.webp');
+   background: radial-gradient(ellipse at top, rgba(var(--surface-rgb), 0.4), rgba(var(--surface-rgb), 1) 73%), no-repeat -10% 25%/100% url('../../assets/summoner_assets/backdrop.webp');
    position: absolute;
    z-index: -5;
    margin-top: 5vh;
@@ -940,7 +941,7 @@ button.active-update {
 }
 
 .section-header {
-   border-bottom: 1px solid var(--cell-border);
+   border-bottom: 1px solid var(--outline-variant);
    margin-bottom: 20px;
    display: flex;
    align-items: center;
@@ -1053,10 +1054,10 @@ button.active-update {
 .selections {
    width: 242px;
    z-index: 2;
-   background: var(--cold-blue-focus);
+   background: var(--surface-container);
    padding: 0.25rem 0.5rem;
    border-radius: 0 0 3px 3px;
-   border: 1px solid var(--cell-border);
+   border: 1px solid var(--outline-variant);
 }
 
 .selections div {
@@ -1076,7 +1077,7 @@ button.active-update {
 }
 
 .selections div:hover {
-   background: var(--alpha-01);
+   background: var(--surface-container-highest);
 }
 
 .outer-click {
@@ -1156,8 +1157,8 @@ button.active-update {
    justify-content: space-between;
    height: 30px;
    /* margin-bottom: 4px; */
-   /* border-bottom: 1px solid var(--cell-border); */
-   /* border-top: 1px solid var(--cell-border); */
+   /* border-bottom: 1px solid var(--outline-variant); */
+   /* border-top: 1px solid var(--outline-variant); */
    -webkit-touch-callout: none;
    -webkit-user-select: none;
    -khtml-user-select: none;
@@ -1171,7 +1172,7 @@ button.active-update {
    height: 1px;
    margin: 0;
    border: none;
-   background-color: var(--cell-border);
+   background-color: var(--outline-variant);
    outline: none;
    transition: transform .1s ease-in-out; 
 }
@@ -1210,7 +1211,7 @@ button.active-update {
 
 .keyboard-shortcut kbd {
    display: inline-flex;
-   border: 1px solid var(--cell-border);
+   border: 1px solid var(--outline-variant);
    border-radius: 3px;
    font-family: var(--font-main);
    justify-content: center;
@@ -1219,8 +1220,8 @@ button.active-update {
 }
 
 .utility input {
-   background: var(--off-blue);
-   border: 1px solid var(--cell-border);
+   background: var(--surface-container);
+   border: 1px solid var(--outline-variant);
    color: var(--color-font);
    padding: .4rem .45rem;
    border-radius: 3px;
@@ -1229,8 +1230,7 @@ button.active-update {
 
 .utility input:focus {
    outline: none;
-   background: var(--cold-blue-focus);
-   /* background: #141820; */
+   border: 1px solid var(--outline);
 }
 
 .utility button {
@@ -1241,15 +1241,20 @@ button.active-update {
    border: 0;
    margin-right: 10px;
    height: 30px;
-   border: 1px solid var(--cell-border);
-   background: var(--off-blue);
+   border: 1px solid var(--outline-variant);
+   background: var(--surface);
    color: var(--color-font);
    font-size: 0.75rem;
-   transition: background 150ms ease-in-out;
+   transition: 150ms ease-in-out;
+}
+
+button.active {
+   border: 1px solid var(--outline);
+   background: var(--surface-container);
 }
 
 .utility button:hover {
-   background: var(--cold-blue-focus);
+   border: 1px solid var(--outline);
 }
 
 .lhs div, .rhs div {
@@ -1258,9 +1263,7 @@ button.active-update {
 }
 
 div.ascending {
-   border-bottom: 2px solid var(--cell-border);
-   /* background: linear-gradient(to bottom, var(--alpha-01), 50%, transparent 100%); */
-   /* background: radial-gradient(ellipse at bottom, tomato 0, transparent 40%); */
+   border-bottom: 2px solid var(--outline-variant);
 }
 
 div.descending {
@@ -1268,7 +1271,6 @@ div.descending {
 }
 
 .table-headers .lhs, .table-headers .rhs {
-   /* color: var(--color-font-faded); */
    display: flex;
    font-weight: 600;
    gap: 5px;
@@ -1277,10 +1279,7 @@ div.descending {
 }
 
 .table-headers .rhs div {
-   /* background: tomato; */
    width: 70px;
-   /* padding: 8px 0; */
-   /* height: 30px; */
 }
 
 .table-headers .lhs div:first-child {

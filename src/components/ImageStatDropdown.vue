@@ -126,7 +126,7 @@ export default {
 }
 
 .header-title:hover {
-   background: var(--cold-blue-focus);
+   /* color: var(--color-font-focus); */
 }
 
 .stat-header {
@@ -139,6 +139,7 @@ export default {
 
 .stat-header .header-title {
    font-weight: 600;
+   color: var(--color-font-focus);
    cursor: pointer;
    -webkit-touch-callout: none;
    -webkit-user-select: none;
@@ -157,7 +158,7 @@ export default {
 }
 
 .bordered {
-   border-left: 1px solid var(--cell-border);
+   border-left: 1px solid var(--outline-variant);
    padding-left: 0.4rem;
 }
 
@@ -201,6 +202,6 @@ div.truncated {
 }
 
 .o {
-   background: var(--alpha-01);
+   background: var(--surface-container);
 }
 </style>

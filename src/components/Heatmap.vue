@@ -88,9 +88,9 @@ export default {
                   let o = (params.data[1] === 1) ? `${params.data[1]} game` : `${params.data[1]} games`
                   return `${o} on ${new Date(params.data[0]).toDateString()}`
                },
-               backgroundColor: 'var(--off-blue)',
+               backgroundColor: 'var(--surface-container)',
                borderWidth: 1,
-               borderColor: 'var(--cell-border)',
+               borderColor: 'var(--outline-variant)',
                textStyle: {
                   fontFamily: 'var(--font-main)',
                   fontWeight: 'normal',
@@ -105,8 +105,8 @@ export default {
                max: this.ceiling,
                inRange: {
                   color: [
-                     'rgba(255, 255, 255, 0.05)', // hmm
-                     '#7a90ca'
+                     'rgba(122, 122, 122, 0.2)', // hmm
+                     '#adc6ff'
                   ]
                },
                show: false
@@ -202,8 +202,7 @@ export default {
       border-radius: 3px;
       border: 0;
       height: 25px;
-      border: 1px solid transparent;
-      background: var(--color-background);
+      background: var(--surface);
       color: var(--color-font);
       font-size: 0.75rem;
       transition: background 150ms ease-in-out;
@@ -217,12 +216,12 @@ export default {
 
    
    .heatmap-main .year-selection button:hover {
-      background: var(--cold-blue-focus);
+      background: var(--surface-container);
    }
 
    .heatmap-main button.selected-year {
-      background: var(--cold-blue-focus);
-      border-color: var(--cell-border);
+      background: var(--surface-container);
+      border: 1px solid var(--outline);
    }
 
    .heatmap-main .year-selection::-webkit-scrollbar {

@@ -34,6 +34,7 @@
    --on-primary-container: rgb(216 226 255);
 
    --secondary: rgb(191 198 220);
+   --secondary-rgb: 191, 198, 220;
    --secondary-hover: rgb(212, 217, 231);
    --on-secondary: rgb(41 48 65);
    --secondary-container: rgb(63 71 89);
@@ -70,6 +71,12 @@
 
    --theme-icon: url('./svg/solari.svg');
    --theme-mask-size: 100%;
+
+   --red-side: #AD5757;
+   --blue-side: #4B6CDF;
+
+   --win: rgba(21, 106, 128, 0.2);
+   --loss: rgba(150, 33, 33, 0.2);
 }
 
 .day {
@@ -104,6 +111,7 @@
    --on-primary-fixed-variant: rgb(43 70 120);
 
    --secondary: rgb(87 94 113);
+   --secondary-rgb: 87, 94, 113;
    --secondary-hover: rgb(73, 79, 95);
    --on-secondary: rgb(255 255 255);
    --secondary-container: rgb(219 226 249);
@@ -135,6 +143,9 @@
 
    --theme-icon: url('./svg/lunari.svg');
    --theme-mask-size: 80%;
+
+   --win: rgba(58, 184, 216, 0.45);
+   --loss: rgba(226, 91, 91, 0.45);
 }
 
 :root, .day {

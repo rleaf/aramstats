@@ -76,7 +76,7 @@ export default {
 }
 
 .o {
-   background: var(--alpha-01);
+   background: var(--surface-container);
 }
 
 .challenge-main img {
@@ -91,11 +91,6 @@ export default {
    width: 100%;
    justify-content: space-between;
    margin-bottom: 5px;
-}
-
-.date {
-   /* font-size: 0.75rem; */
-   /* color: var(--color-font-faded); */
 }
 
 .body {

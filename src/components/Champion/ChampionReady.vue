@@ -344,7 +344,8 @@ export default {
    display: none;
    position: absolute;
    flex-direction: column;
-   background: var(--surface-container-high);
+   background: var(--surface);
+   border: 1px solid var(--outline-variant);
    border-radius: 3px;
    overflow: hidden;
    z-index: 1;
@@ -378,14 +379,18 @@ a.about {
 .settings > div .setting-header {
    display: block; 
    text-align: center;
-   background: var(--surface-container-high);
-   border: none;
+   background: var(--surface);
+   border: 1px solid var(--outline-variant);
    color: var(--color-font);
    cursor: pointer;
    min-width: 45px;
    border-radius: 3px;
    padding: 6px 10px;
    margin-bottom: 5px;
+   transition: 100ms ease-in-out;
+}
+.settings > div .setting-header:hover {
+   border: 1px solid var(--outline);
 }
 
 .header-lhs-one {
