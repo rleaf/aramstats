@@ -122,7 +122,7 @@ export default {
       },
 
       regionSelect() {
-         localStorage.setItem('region', this.region)
+         localStorage.setItem('region',  this.region)
          this.$refs.input.focus()
       }, 
    },
@@ -233,9 +233,9 @@ export default {
    z-index: 2;
    color: var(--color-font);
    text-decoration: none;
-   padding: 4px;
+   padding: 3px;
    padding-left: 1.5rem;
-   transition: 0.15s;
+   transition: 0.15s ease-in-out;
 }
 
 .champion-search a:hover, .champion-search a.active {
@@ -291,7 +291,6 @@ select {
    /* border: 1px solid transparent; */
    padding: 0 11px;
    margin-right: 10px;
-   border-radius: 16px;
    cursor: pointer;
    height: 30px;
    appearance: none;
