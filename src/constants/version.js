@@ -13,6 +13,21 @@
   
   const version = [
    {
+      version: "3.9.0",
+      date: "8/24/24",
+        notes: `Homogenizing site UI again. Day mode is a perpetual WIP.`,
+      add: [],
+      remove: [],
+      fix: [],
+      adjust: [
+         `UI. Focused mainly on improving colors and unifying actionable elements like buttons and the search bar.`,
+         `Improved Search UX. Able to use arrow & enter keys to traverse champion lookups. There is also visual indication showing when the search will use the region's default tagline when looking up a summoner.`
+      ],
+      known: [
+         `The Champions page is (hopefully temporary) a little ugly. I'm planning to implement some stuff that extends beyond the scope of this update that will affect that page's UX so I'm leaving it "open ended" for now.`
+      ],
+   }, 
+   {
       version: "3.8.1",
       date: "7/30/24",
       notes: ``,

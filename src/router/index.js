@@ -37,14 +37,6 @@ const router = createRouter({
       }
     },
     {
-      path: '/Versions',
-      name: 'Versions',
-      component: () => import('../views/VersionsView.vue'),
-      meta: {
-        title: 'Versions | ARAM Stats'
-      }
-    },
-    {
       path: '/:region/:gameName-:tagLine',
       name: 'user',
       component: () => import('../views/UserView.vue')
@@ -53,12 +45,29 @@ const router = createRouter({
       path: '/champions/:champion',
       name: 'champions',
       component: () => import('../views/ChampionView.vue'),
+      meta: {
+        // metaTags: [
+        //   {
+        //     name: 'description',
+        //     content: ':champion Champion Stats'
+        //   }
+        // ]
+      }
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
   if (to.meta.title)  document.title = to.meta.title
+  // if (to.meta.metaTags) {
+  //   for (const tag of to.meta.metaTags) {
+  //     let meta = document.createElement('meta')
+  //     meta.name = tag.name
+  //     meta.content = tag.content
+
+  //     document.head.appendChild(meta)
+  //   }
+  // }
   next()
 })
 

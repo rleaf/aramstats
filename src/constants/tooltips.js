@@ -4,12 +4,13 @@ export default {
    */
 
    'core': [
+      `The 10 most observed core builds are shown here, with their winrate & total games, in descending order and are clickable.`,
       `To consolidate data, these selections represent <b>combinations</b> of core builds - they are core builds irrespective of buy order. This means <b>[boots, kraken, ie]</b> is the same as <b>[kraken, ie, boots]</b> and any other arrangement of those items.`,
       `The boot icon represents all boots.`
    ],
    'items': [
-      `Item slots are laid out going left-to-right.`,
-      `Each slot is shown with two items where each item is accompanied with the winrate and total games observed for that core build.`,
+      `Purchase order is laid out going left to right with each purchase showing the two most popular items. Every item is accompanied with the winrate and the total games observed.`,
+      `You can, instead, sort by winrate by clicking the ellipses near "Overview" to view the settings.`
    ],
    'runes': [
       `Runes are computed by looking at the, depending on your settings, highest winrate or most popular primary and secondary tree. Afterwards it finds the highest winrate or most popular rune in each row for that tree.`
@@ -46,7 +47,8 @@ export default {
       `Top level information about your account.`,
    ],
    'championsTable': [
-      `A table showcasing various top level statistics for the champions you've played. Click on a champion row to view more specific aggregated statistics or click on the dropdown arrow to view the matches.`
+      `A table showcasing various top level statistics for the champions you've played. Click on a champion row to view more specific aggregated statistics or click on the dropdown arrow to view the matches.`,
+      `The smaller number the "per minute" variant of that stat.`
    ],
    'heatmap': [
       `Your activity on the abyss. Each cell represents a day where the brighter the color indicates more games played. Cells are hoverable for specific information.`,

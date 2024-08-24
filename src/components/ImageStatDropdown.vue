@@ -125,10 +125,6 @@ export default {
    height: 24px;
 }
 
-.header-title:hover {
-   /* color: var(--color-font-focus); */
-}
-
 .stat-header {
    display: flex;
    font-size: 0.85rem;

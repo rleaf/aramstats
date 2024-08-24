@@ -48,7 +48,6 @@
             <div class="theme"></div>
          </button>
          <router-link class="nav-route" to="/updates">Updates</router-link>
-         <router-link class="nav-route" to="/versions">Versions</router-link>
          <router-link class="nav-route" to="/about">About</router-link>
       </div>
    </nav>
@@ -110,6 +109,7 @@ nav .right {
 a.nav-route {
    margin: 0 0.5rem;
    padding: 5px 12px;
+   line-height: 0.9rem;
    font-size: 0.9rem;
    text-decoration: none;
    color: var(--color-font);
@@ -133,8 +133,8 @@ button {
 
 .theme {
    background-color: var(--color-font);
-   width: 27px;
-   height: 27px;
+   width: 24px;
+   height: 24px;
    mask-image: var(--theme-icon);
    mask-position: center;
    mask-size: var(--theme-mask-size);

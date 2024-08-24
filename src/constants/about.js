@@ -8,7 +8,7 @@ export default [
       body: [
          `Hello, my name is Ryan and I work on Aramstats for fun. You can get in touch with me via Discord @<code>ryli.</code> .`,
          `Aramstats provides insightful Howling Abyss summoner and champion statistics. Summoner information is calculated using all available games and their corresponding timeline data through the Riot API. Champion information is calculated from games on the most recent patch.`,
-         `Currently the crawler, what's collecting and computing champion stats, is only firing on <code>NA</code>, <code>EUW</code>, <code>EUNE</code>, <code>KR</code>, <code>TW</code>, <code>LAN</code>, <code>LAS</code> and only computes champion statistics on a global level because of hardware constraints. Adding region specific champion stats is not planned.`,
+         `Currently the crawler, what's collecting and computing champion stats, is firing on <code>NA</code>, <code>EUW</code>, <code>EUNE</code>, <code>KR</code>, <code>TW</code>, <code>LAN</code>, <code>LAS</code>, and only computes champion statistics on a global level.`,
       ]
    },
    {
@@ -21,7 +21,7 @@ export default [
    {
       title: `Why's some data is showing up weird.`,
       body: [
-         `Hmu - may be a bug.`
+         `Hmu.`
       ]
    },
 ]

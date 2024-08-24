@@ -109,5 +109,9 @@ export const superStore = defineStore('super', {
          this.tooltip.runeTree = params.runeTree
          this.tooltip.runeRow = params.runeRow
       }
+   },
+
+   getters: {
+      cleanPatch: (state) => state.patches[0].split('.').slice(0, 2).join('.')
    }
 })

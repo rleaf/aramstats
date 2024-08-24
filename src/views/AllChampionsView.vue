@@ -195,10 +195,10 @@ export default {
       /* width: 50px; */
       background: tomato;
    }
-   .filters {
+   /* .filters {
       margin-bottom: 20px;
       border-bottom: 1px solid tomato;
-   }
+   } */
    .champ-list-main {
       display: flex;
       flex-direction: column;
@@ -224,7 +224,7 @@ export default {
 
    .header {
       border-radius: 0px;
-      border-bottom: 1px solid var(--outline);
+      /* border-bottom: 1px solid var(--outline); */
    }
 
    .image-wrapper {

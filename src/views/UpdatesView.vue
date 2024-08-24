@@ -1,10 +1,13 @@
 <script>
 import _updates from '../constants/updates'
+import _version from '../constants/version'
 
 export default {
    data() {
       return {
-         updates: _updates
+         version: _version,
+         updates: _updates,
+         tab: 0,
       }
    },
 
@@ -18,7 +21,11 @@ export default {
 
 <template>
    <div class="update-main">
-      <div class="updates">
+      <div class="update-tabs">
+         <div @click="this.tab = 0" :class="{ active: !this.tab }">Updates</div>
+         <div @click="this.tab = 1" :class="{ active: this.tab }">Versioning</div>
+      </div>
+      <div class="updates" v-show="this.tab === 0">
          <div class="block" v-for="u in updates">
             <div class="header">
                <div>
@@ -38,6 +45,51 @@ export default {
                </div>
                <img v-if="u.img" :src="getImage(u.img)" alt="">
                <p class="sub" v-if="u.imgCaption">{{ u.imgCaption }}</p>
+            </div>
+         </div>
+      </div>
+      <div class="versioning" v-show="this.tab === 1">
+         <div class="block" v-for="v in version">
+            <div class="header">
+               <h2>{{ v.version }}</h2>
+               <h3>{{ v.date }}</h3>
+            </div>
+            <div class="body">
+               <div class="notes" v-if="v.notes && v.notes.length">
+                  <p>
+                     {{ v.notes }}
+                  </p>
+               </div>
+               <div v-if="v.add && v.add.length">
+                  <h4>Added</h4>
+                  <ul>
+                     <li v-for="a in v.add">{{ a }}</li>
+                  </ul>
+               </div>
+               <div v-if="v.remove && v.remove.length">
+                  <h4>Removed</h4>
+                  <ul>
+                     <li v-for="r in v.remove">{{ r }}</li>
+                  </ul>
+               </div>
+               <div v-if="v.fix && v.fix.length">
+                  <h4>Fixed</h4>
+                  <ul>
+                     <li v-for="f in v.fix">{{ f }}</li>
+                  </ul>
+               </div>
+               <div v-if="v.adjust && v.adjust.length">
+                  <h4>Adjusted</h4>
+                  <ul>
+                     <li v-for="a in v.adjust">{{ a }}</li>
+                  </ul>
+               </div>
+               <div v-if="v.known && v.known.length">
+                  <h4>Known Issues</h4>
+                  <ul>
+                     <li v-for="a in v.known">{{ a }}</li>
+                  </ul>
+               </div>
             </div>
          </div>
       </div>
@@ -68,7 +120,7 @@ export default {
 }
 
 h4 {
-   color: var(--color-font);
+   color: var(--color-font-focus);
    font-weight: normal;
    margin: 0;
 }
@@ -97,11 +149,11 @@ h4 {
 }
 
 .update-tabs div {
-   padding: 0.4rem 1rem;
-   font-size: 0.95rem;
+   padding: 6px 10px;
+   font-size: 0.9rem;
    border-radius: 4px;
    border: 1px solid transparent;
-   background: var(--surface-container);
+   /* background: var(--surface-container); */
    cursor: pointer;
    transition: 0.2s;
    -webkit-touch-callout: none; /* iOS Safari */
@@ -113,20 +165,18 @@ h4 {
 }
 
 .update-tabs > div:hover {
-   background: var(--primary);
-   color: var(--color-font-focus);
+   background: var(--surface-container);
 }
 div.active {
-   /* background: var(--cold-blue-focus); */
-   color: var(--color-font-focus);
-   border: 1px solid var(--cell-border);
+   background: var(--surface-container);
+   border: 1px solid var(--outline);
 }
 
 .update-tabs {
    display: flex;
    width: 800px;
    gap: 20px;
-   margin-bottom: 2vh;
+   padding-bottom: 6vh;
    color: var(--color-font);
 }
 .update-main {
@@ -134,15 +184,11 @@ div.active {
    width: 100%;
    flex-direction: column;
    align-items: center;
-   padding: 15vh 0;
+   padding: 10vh 0;
 }
 
 .block {
    width: 800px;
-   /* background-color: var(--surface-container); */
-   /* border-radius: 5px; */
-   padding: 0 2rem;
-   /* border: 1px solid var(--outline-variant); */
    margin-bottom: 6rem;
 }
 
