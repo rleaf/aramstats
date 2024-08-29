@@ -4,7 +4,7 @@
   "name": "LeBlanc",
   "title": "the Deceiver",
   "fullName": "Emilia (Evaine) LeBlanc",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Leblanc.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Leblanc.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -310,11 +310,11 @@
                   },
                   {
                     "values": [
-                      45,
-                      45,
-                      45,
-                      45,
-                      45
+                      40,
+                      40,
+                      40,
+                      40,
+                      40
                     ],
                     "units": [
                       "% AP",
@@ -352,11 +352,11 @@
                   },
                   {
                     "values": [
-                      90,
-                      90,
-                      90,
-                      90,
-                      90
+                      80,
+                      80,
+                      80,
+                      80,
+                      80
                     ],
                     "units": [
                       "% AP",
@@ -470,11 +470,11 @@
                   },
                   {
                     "values": [
-                      75,
-                      75,
-                      75,
-                      75,
-                      75
+                      70,
+                      70,
+                      70,
+                      70,
+                      70
                     ],
                     "units": [
                       "% AP",

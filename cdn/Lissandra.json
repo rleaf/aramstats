@@ -4,7 +4,7 @@
   "name": "Lissandra",
   "title": "the Ice Witch",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Lissandra.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Lissandra.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -270,10 +270,10 @@
                   {
                     "values": [
                       80,
-                      110,
-                      140,
-                      170,
-                      200
+                      115,
+                      150,
+                      185,
+                      220
                     ],
                     "units": [
                       "",
@@ -819,8 +819,8 @@
                 "modifiers": [
                   {
                     "values": [
-                      30,
-                      52.5,
+                      45,
+                      60,
                       75
                     ],
                     "units": [

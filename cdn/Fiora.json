@@ -4,7 +4,7 @@
   "name": "Fiora",
   "title": "the Grand Duelist",
   "fullName": "Fiora Laurent",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Fiora.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Fiora.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -2971,7 +2971,7 @@
         }
       ],
       "lore": "Nobles in the cutthroat queendom of Telum conspired against Fiora's rise to power, taking her eye and proclaiming her dead. Yet from flowers and flame she arose, then prevailed, in the Grand Coronation. Queen Fiora now oversees arms manufacturing in her nation's steel gardens, and secures her succession by training and tempering a certain fiery princess.",
-      "release": "0000-00-00",
+      "release": "2024-08-28",
       "set": [
         "Battle Queens"
       ],

@@ -4,7 +4,7 @@
   "name": "Katarina",
   "title": "the Sinister Blade",
   "fullName": "Katarina Du Couteau",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Katarina.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Katarina.png",
   "resource": "NONE",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -278,10 +278,10 @@
                   {
                     "values": [
                       80,
-                      120,
-                      160,
-                      200,
-                      240
+                      115,
+                      150,
+                      185,
+                      220
                     ],
                     "units": [
                       "",
@@ -293,11 +293,11 @@
                   },
                   {
                     "values": [
-                      45,
-                      45,
-                      45,
-                      45,
-                      45
+                      40,
+                      40,
+                      40,
+                      40,
+                      40
                     ],
                     "units": [
                       "% AP",

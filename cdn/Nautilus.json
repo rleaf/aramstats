@@ -4,7 +4,7 @@
   "name": "Nautilus",
   "title": "the Titan of the Depths",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Nautilus.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Nautilus.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -1892,6 +1892,39 @@
       "voiceActor": [],
       "splashArtist": [
         "Joshua Raphael",
+        "West Studio"
+      ]
+    },
+    {
+      "name": "Crystalis Indomitus",
+      "id": 111036,
+      "isBase": false,
+      "availability": "Upcoming",
+      "formatName": "Crystalis Indomitus",
+      "lootEligible": true,
+      "cost": "Special",
+      "sale": 0,
+      "distribution": "100 Mythic Essence",
+      "rarity": "Mythic",
+      "chromas": [],
+      "lore": "Long ago, Nautilus had been a fisherman by his friend Xerath's side. Together the two discovered a mass of powerful crystals, and greed drove his comrade to cast Nautilus into the water to drown. A single crystal sustained him and, as he slumbered, corrupted and empowered his body and mind. But even this could not destroy his strongest desire—revenge.",
+      "release": "0000-00-00",
+      "set": [
+        "Crystalis Indomitus"
+      ],
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/nautilus/skins/skin36/images/nautilus_splash_centered_36.skins_nautilus_skin36.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/nautilus/skins/skin36/images/nautilus_splash_uncentered_36.skins_nautilus_skin36.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/nautilus/skins/skin36/images/nautilus_splash_tile_36.skins_nautilus_skin36.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/nautilus/skins/skin36/nautilusloadscreen_36.skins_nautilus_skin36.jpg",
+      "loadScreenVintagePath": null,
+      "newEffects": true,
+      "newAnimations": true,
+      "newRecall": true,
+      "newVoice": false,
+      "newQuotes": false,
+      "voiceActor": [],
+      "splashArtist": [
+        "Marie Magny",
         "West Studio"
       ]
     }

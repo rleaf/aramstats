@@ -4,7 +4,7 @@
   "name": "Gwen",
   "title": "The Hallowed Seamstress",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Gwen.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Gwen.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -2145,7 +2145,7 @@
         }
       ],
       "lore": "Gwen of Caligo—a faraway, ancient queendom long thought lost to time—cut through the nation's protective clouds to reconnect with the rest of Elysia. Her predecessor, Queen Isolde, trusts Gwen's pure heart and sharp mind to affirm Caligo's strength and ally with fellow rulers—for dark times lie ahead, and only a steadfast pact may prevent the worst.",
-      "release": "0000-00-00",
+      "release": "2024-08-28",
       "set": [
         "Battle Queens"
       ],

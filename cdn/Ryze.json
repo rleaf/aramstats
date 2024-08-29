@@ -4,7 +4,7 @@
   "name": "Ryze",
   "title": "the Rune Mage",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Ryze.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Ryze.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -267,18 +267,18 @@
             "leveling": []
           },
           {
-            "description": "Active: Ryze unleashes a runic blast in the target direction that deals magic damage to the first enemy hit and consumes all Rune Rune stacks.",
+            "description": "Active: Ryze unleashes a runic blast in the target direction that deals magic damage to the first enemy hit and consumes all Rune stacks.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
                 "modifiers": [
                   {
                     "values": [
-                      70,
-                      90,
-                      110,
-                      130,
-                      150
+                      75,
+                      95,
+                      115,
+                      135,
+                      155
                     ],
                     "units": [
                       "",
@@ -749,9 +749,9 @@
           "modifiers": [
             {
               "values": [
-                210,
                 180,
-                150
+                160,
+                140
               ],
               "units": [
                 "",

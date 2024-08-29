@@ -4,7 +4,7 @@
   "name": "Senna",
   "title": "the Redeemer",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Senna.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Senna.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -284,10 +284,10 @@
                   {
                     "values": [
                       40,
-                      60,
-                      80,
-                      100,
-                      120
+                      55,
+                      70,
+                      85,
+                      100
                     ],
                     "units": [
                       "",
@@ -315,11 +315,11 @@
                   },
                   {
                     "values": [
-                      80,
-                      80,
-                      80,
-                      80,
-                      80
+                      60,
+                      60,
+                      60,
+                      60,
+                      60
                     ],
                     "units": [
                       "% AP",
@@ -787,9 +787,9 @@
                   },
                   {
                     "values": [
-                      70,
-                      70,
-                      70
+                      50,
+                      50,
+                      50
                     ],
                     "units": [
                       "% AP",

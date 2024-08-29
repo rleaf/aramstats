@@ -4,7 +4,7 @@
   "name": "Lee Sin",
   "title": "the Blind Monk",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/LeeSin.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/LeeSin.png",
   "resource": "ENERGY",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -1348,6 +1348,27 @@
           "colors": [
             "#5F432B",
             "#5F432B"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 5,
+              "region": "TENCENT"
+            }
+          ]
+        },
+        {
+          "name": "Royal",
+          "id": 64070,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/64/64070.png",
+          "colors": [
+            "#AA48C8",
+            "#451D22"
           ],
           "descriptions": [
             {

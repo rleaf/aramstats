@@ -4,7 +4,7 @@
   "name": "Rumble",
   "title": "the Mechanized Menace",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Rumble.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Rumble.png",
   "resource": "HEAT",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -235,7 +235,7 @@
             "leveling": []
           },
           {
-            "description": "Overheated: Rumble's mech becomes Overheated, disabling his abilities as his Heat decays back down to 0 over 4 seconds. During this time, he gains 50% − 130% (based on level) bonus attack speed and empowers his basic attacks to deal 5 − 40 (based on level) (+ 25% AP) (+ 6% of the target's maximum health) bonus magic damage on-hit. The damage based on the target's health ratio is capped at 65 − 150 (based on level) against monsters.",
+            "description": "Overheated: Rumble's mech becomes Overheated, disabling his abilities as his Heat decays back down to 0 over 4 seconds. During this time, he gains 50% − 130% (based on level) bonus attack speed and empowers his basic attacks to deal 5 − 40 (based on level) (+ 25% AP) (+ 5% of the target's maximum health) bonus magic damage on-hit. The damage based on the target's health ratio is capped at 65 − 150 (based on level) against monsters.",
             "leveling": []
           }
         ],

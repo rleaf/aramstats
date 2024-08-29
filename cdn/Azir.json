@@ -4,7 +4,7 @@
   "name": "Azir",
   "title": "the Emperor of the Sands",
   "fullName": "Omah Azir",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Azir.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Azir.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -1402,6 +1402,41 @@
       "splashArtist": [
         "Augusto Quirino",
         "West Studio"
+      ]
+    },
+    {
+      "name": "Attorney",
+      "id": 268019,
+      "isBase": false,
+      "availability": "Upcoming",
+      "formatName": "Attorney",
+      "lootEligible": true,
+      "cost": 1350,
+      "sale": 0,
+      "distribution": null,
+      "rarity": "Epic",
+      "chromas": [],
+      "lore": "Azir's oral arguments are frequently struck from the record due to his flagrant objecting to every motion, as well as his habit of following every statement by a judge with “the order is given!” Anyone in need of his services can find his number plastered across every bus stop in town.",
+      "release": "0000-00-00",
+      "set": [
+        "Day Job"
+      ],
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/azir/skins/skin19/images/azir_splash_centered_19.skins_azir_skin19.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/azir/skins/skin19/images/azir_splash_uncentered_19.skins_azir_skin19.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/azir/skins/skin19/images/azir_splash_tile_19.skins_azir_skin19.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/azir/skins/skin19/azirloadscreen_19.skins_azir_skin19.jpg",
+      "loadScreenVintagePath": null,
+      "newEffects": true,
+      "newAnimations": true,
+      "newRecall": true,
+      "newVoice": false,
+      "newQuotes": false,
+      "voiceActor": [
+        "Travis Willingham"
+      ],
+      "splashArtist": [
+        "Yuyu Wong",
+        "Kudos Productions"
       ]
     }
   ]

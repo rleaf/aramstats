@@ -4,7 +4,7 @@
   "name": "Fiddlesticks",
   "title": "the Ancient Fear",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Fiddlesticks.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Fiddlesticks.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -2321,10 +2321,10 @@
       "set": [
         "Blood Moon"
       ],
-      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/fiddlesticks/skins/skin37/images/fiddlesticks_splash_centered_37.skins_fiddlesticks_skin37.jpg",
-      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/fiddlesticks/skins/skin37/images/fiddlesticks_splash_uncentered_37.skins_fiddlesticks_skin37.jpg",
-      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/fiddlesticks/skins/skin37/images/fiddlesticks_splash_tile_37.skins_fiddlesticks_skin37.jpg",
-      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/fiddlesticks/skins/skin37/fiddlesticksloadscreen_37.skins_fiddlesticks_skin37.jpg",
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/fiddlesticks/skins/skin37/images/fiddlesticks_splash_centered_37.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/fiddlesticks/skins/skin37/images/fiddlesticks_splash_uncentered_37.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/fiddlesticks/skins/skin37/images/fiddlesticks_splash_tile_37.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/fiddlesticks/skins/skin37/fiddlesticksloadscreen_37.jpg",
       "loadScreenVintagePath": null,
       "newEffects": true,
       "newAnimations": true,

@@ -4,7 +4,7 @@
   "name": "Twisted Fate",
   "title": "the Card Master",
   "fullName": "Tobias",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/TwistedFate.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/TwistedFate.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -277,10 +277,10 @@
                   {
                     "values": [
                       60,
-                      100,
-                      140,
-                      180,
-                      220
+                      105,
+                      150,
+                      195,
+                      240
                     ],
                     "units": [
                       "",

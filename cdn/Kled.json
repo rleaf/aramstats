@@ -4,7 +4,7 @@
   "name": "Kled",
   "title": "the Cantankerous Cavalier",
   "fullName": "Kled and Skaarl",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Kled.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Kled.png",
   "resource": "COURAGE",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -226,7 +226,7 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Kled/ability-icon/p",
         "effects": [
           {
-            "description": "Innate: Kled rides his semi-trusty mount, Skaarl. While Mounted, all damage dealt to the duo is suffered by Skaarl, who has 400 − 1550 (based on level) (+ 100% bonus health) base health. Effects based on percentage health consider Kled and Skaarl's combined maximum health.",
+            "description": "Innate: Kled rides his semi-trusty mount, Skaarl. While Mounted, all damage dealt to the duo is suffered by Skaarl, who has 400 − 1550 (based on level) base health; additional sources of health are applied to Skaarl's maximum health. Effects based on percentage health consider Kled and Skaarl's combined maximum health.",
             "leveling": []
           },
           {
@@ -249,7 +249,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "It is possible for the Nexus Obelisk to not be able to bring Kled down from  Skaarl for a few seconds, even if  Skaarl has no health.\nKled's health is rounded up while  Skaarl's health is rounded down.\n Health regeneration only regenerates Kled's or  Skaarl's health, not both.\nIf  Skaarl's health is reduced to 0 by  Eclipse's Ever Rising Moon, Kled will take the excess damage.(bug)",
+        "notes": "Kled's health is rounded up while  Skaarl's health is rounded down.\nThe rounding is only visual and bears no effect on gameplay.\n Health regeneration regenerates either only Kled's or  Skaarl's health, prioritizing  Skaarl's health until full.\nIf  Skaarl's health is reduced to 0 by  Eclipse's Ever Rising Moon, Kled will take the triggering attack's damage.(bug)",
         "blurb": "Innate:  Kled rides his semi-trusty steed,  Skaarl, whom takes damage for him while he is Mounted. When  Skaarl's health depletes, Kled dismounts,  cleansing from all  crowd control.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -300,7 +300,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Clones are counted as champions for all of this passive's effects, other than the takedown one.\nAfter attacking a champion, the bonus movement speed buff is granted for 1.5 seconds regardless of whether he is moving towards a visible enemy or not.\nIt is possible to get the Courage from base but have Kled and  Skaarl reunite out of base.\nIf Kled achieves 100 Courage while  resurrecting or enters it while in the process of remounting, the remount will be deferred to after he revives.\n PENDING FOR TEST:  Wild Growth and  Elixir of Iron",
+        "notes": "Clones are counted as champions for all of this passive's effects, other than the takedown one.\nAfter attacking a champion, the bonus movement speed buff is granted for 1.5 seconds regardless of whether he is moving towards a visible enemy or not.\nIt is possible to get the Courage from base but have Kled and  Skaarl reunite out of base.\nIf Kled achieves 100 Courage while  resurrecting or enters it while in the process of remounting, the remount will be deferred to after he revives.",
         "blurb": "Innate: While Dismounted,  Kled suffers all damage taken and is vulnerable to  death. Kled's base health cannot be improved through any means, his movement speed is reduced, and his basic attacks against  champions deal less physical damage. However, Kled gains a large amount of bonus movement speed when moving toward  visible enemy champions, and he has the ability to restore  Skaarl's  Courage to  mount again.",
         "missileSpeed": null,
         "rechargeRate": null,

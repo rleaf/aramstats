@@ -4,7 +4,7 @@
   "name": "Zac",
   "title": "the Secret Weapon",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Zac.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Zac.png",
   "resource": "HEALTH",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -474,7 +474,7 @@
         "projectile": "TRUE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "The following features were added in patch V7.10 to increase Stretching Strikes' reliability and usability:\nIf the first attack's target is a minion, would die from the damage, and is above a certain amount of health, the minion is instead left at 1 health. The health threshold increases with Stretching Strikes' damage.\nIf the second attack's target would die from the damage, it won't be dealt until they are slammed to the first target.\nNon-champion units that are affected by Stretching Strikes' displacement are prevented from taking any damage until they are slammed together. Note that this often confuses players who are trying to secure  monsters via  Smite while Zac is slamming the wanted target, resulting in Smite dealing no damage to it. It is currently unknown whatever the side effects of this feature are intentional or not.\n Spell shields will block a single instance of damage only.\nIf the tethered target is  untargetable during the second Stretching Strike via basic attack, they are completely unaffected by the ability.\n Displacement immunity will also resist the application of the  stun.\nThis ability will cast from wherever the caster is at the end of the cast time.\nIf the target becomes  untargetable,  dies, or is too far away during the empowered attack's cast time, it is cancelled but not consumed.\nThe following refers for interactions during the activation's cast time:\n\n\nType\n\nCast time\n\n\nAttacking\n\nDisabled\n\n\nAbilities\n\nDisabled\n\n\nMovement\n\nDisabled\n\n\nItems\n\nUsable\n\n Shurelya's Battlesong  Youmuu's Ghostblade  Randuin's Omen\n\n\nDisabled\n\nAll the other item-actives are disabled\n\n\nInterrupted by\n\nN/A\n\n\nConsumables\n\nUsable\n\n\nSpells\n\nUsable\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite\n\n\nDisabled\n\n Flash  Teleport  Recall  Hexflash\n\n\nInterrupted by\n\nN/A\n\n\nInterrupted by\n\nDeath, unless protected by  Resurrection",
+        "notes": "The following features were added in patch V7.10 to increase Stretching Strikes' reliability and usability:\nIf the second attack's target would die from the damage, it won't be dealt until they are slammed to the first target.\nIf the first target is standing on top of other enemies, the second hit will reliably choose a different target from the first.\nNon-champion units that are affected by Stretching Strikes' displacement are prevented from taking any damage until they are slammed together. Note that this often confuses players who are trying to secure  monsters via  Smite while Zac is slamming the wanted target, resulting in Smite dealing no damage to it. It is currently unknown whatever the side effects of this feature are intentional or not.\n Spell shields will block a single instance of damage only.\nIf the tethered target is  untargetable during the second Stretching Strike via basic attack, they are completely unaffected by the ability.\n Displacement immunity will also resist the application of the  stun.\nThis ability will cast from wherever the caster is at the end of the cast time.\nIf the target becomes  untargetable,  dies, or is too far away during the empowered attack's cast time, it is cancelled but not consumed.\nThe following refers for interactions during the activation's cast time:\n\n\nType\n\nCast time\n\n\nAttacking\n\nDisabled\n\n\nAbilities\n\nDisabled\n\n\nMovement\n\nDisabled\n\n\nItems\n\nUsable\n\n Shurelya's Battlesong  Youmuu's Ghostblade  Randuin's Omen\n\n\nDisabled\n\nAll the other item-actives are disabled\n\n\nInterrupted by\n\nN/A\n\n\nConsumables\n\nUsable\n\n\nSpells\n\nUsable\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite\n\n\nDisabled\n\n Flash  Teleport  Recall  Hexflash\n\n\nInterrupted by\n\nN/A\n\n\nInterrupted by\n\nDeath, unless protected by  Resurrection",
         "blurb": "Active:  Zac stretches his arm in the target direction that briefly  slows and deals magic damage to the first enemy hit based on his maximum health. He also forms a  revealing  tether with the target for a short time, during which his next basic attack is replaced with a second Stretching Strike.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -559,7 +559,7 @@
             ]
           },
           {
-            "description": "Zac grants ghosting to monsters hit for 5 seconds.",
+            "description": "Zac grants ghosting to aggroed monsters hit for 5 seconds.",
             "leveling": []
           },
           {
@@ -617,7 +617,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "No additional details.",
+        "notes": "If  Unstable Matter is the cause of monster aggro, the monsters will not receive  ghosting.\nSubsequent uses of  Unstable Matter within 5 seconds after the previous will not grant  ghosting either.(bug)",
         "blurb": "Active:  Zac explodes to deal magic damage to nearby enemies hit based on their maximum health.",
         "missileSpeed": null,
         "rechargeRate": null,

@@ -4,7 +4,7 @@
   "name": "Smolder",
   "title": "the Fiery Fledgling",
   "fullName": "Ignacarious Gigantareno Rex Le Spes Offerentis",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Smolder.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Smolder.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -706,7 +706,7 @@
             ]
           },
           {
-            "description": "Tier 3 - 225 stacks: Enemies hit are set on fire for 3 seconds, causing them to take bonus true damage equal to[ 2% per 100 bonus AD (+ 1% per 100 AP) (+ 0.8% per 100 Dragon Practice stacks) of their maximum health over the duration, capped at 300 against monsters. ][ 0.67% per 100 bonus AD (+ 0.33% per 100 AP) (+ 0.27% per 100 Dragon Practice stacks) of their maximum health each second, capped at 100 per tick against monsters. ]Subsequent applications of the burn stack, though not refreshing the duration of the previous burn. Enemy champions afflicted with the burn are also executed once Smolder damages them while they are below 6.5% of their maximum health.",
+            "description": "Tier 3 - 225 stacks: Enemies hit are set on fire for 3 seconds, causing them to take bonus true damage equal to[ 2% per 100 bonus AD (+ 1% per 100 AP) (+ 0.8% per 100 Dragon Practice stacks) of their maximum health over the duration, capped at 300 against monsters. ][ 0.67% per 100 bonus AD (+ 0.33% per 100 AP) (+ 0.27% per 100 Dragon Practice stacks) of their maximum health each second, capped at 100 per tick against monsters. ]Subsequent applications of the burn stack, though not refreshing the duration of the previous burn. Enemy champions afflicted with the burn are also executed once Smolder does damage to them that would leave them below 6.5% of their maximum health.",
             "leveling": []
           }
         ],

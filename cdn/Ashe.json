@@ -4,7 +4,7 @@
   "name": "Ashe",
   "title": "the Frost Archer",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Ashe.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Ashe.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -136,7 +136,7 @@
       "percentPerLevel": 0.0
     },
     "aramDamageDealt": {
-      "flat": 1,
+      "flat": 1.05,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0
@@ -166,7 +166,7 @@
       "percentPerLevel": 0.0
     },
     "aramAttackSpeed": {
-      "flat": 1.025,
+      "flat": 1.03,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0

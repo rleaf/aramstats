@@ -4,7 +4,7 @@
   "name": "Darius",
   "title": "the Hand of Noxus",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Darius.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Darius.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -2356,7 +2356,7 @@
       "rarity": "Mythic",
       "chromas": [],
       "lore": "God-King Darius is a bringer of true carnage—the descendant of primordial deities long forgotten in the shadow of Demacia. Slaughtering monarchs and gods alike, he seeks to end the false world of unity and peace, ushering in an age of endless war where only the strongest will survive.",
-      "release": "0000-00-00",
+      "release": "2024-08-28",
       "set": [
         "Battle of the God-Kings"
       ],

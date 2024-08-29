@@ -4,7 +4,7 @@
   "name": "Varus",
   "title": "the Arrow of Retribution",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Varus.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Varus.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -136,7 +136,7 @@
       "percentPerLevel": 0.0
     },
     "aramDamageDealt": {
-      "flat": 0.95,
+      "flat": 0.98,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0
@@ -286,11 +286,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      10,
-                      46.67,
-                      83.33,
-                      120,
-                      156.67
+                      60,
+                      106.67,
+                      153.33,
+                      200,
+                      246.67
                     ],
                     "units": [
                       "",
@@ -302,18 +302,18 @@
                   },
                   {
                     "values": [
-                      83.33,
-                      86.67,
-                      90,
-                      93.33,
-                      96.67
+                      100,
+                      106.67,
+                      113.33,
+                      120,
+                      126.67
                     ],
                     "units": [
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD"
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
                     ]
                   }
                 ]
@@ -323,11 +323,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      15,
-                      70,
-                      125,
-                      180,
-                      235
+                      90,
+                      160,
+                      230,
+                      300,
+                      370
                     ],
                     "units": [
                       "",
@@ -339,18 +339,18 @@
                   },
                   {
                     "values": [
-                      125,
-                      130,
-                      135,
-                      140,
-                      145
+                      150,
+                      160,
+                      170,
+                      180,
+                      190
                     ],
                     "units": [
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD"
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
                     ]
                   }
                 ]
@@ -360,11 +360,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      3.3,
-                      15.4,
-                      27.5,
-                      39.6,
-                      51.7
+                      19.8,
+                      35.2,
+                      50.6,
+                      66,
+                      81.4
                     ],
                     "units": [
                       "",
@@ -376,18 +376,18 @@
                   },
                   {
                     "values": [
-                      27.5,
-                      28.6,
-                      29.7,
-                      30.8,
-                      31.9
+                      33,
+                      35.2,
+                      37.4,
+                      39.6,
+                      41.8
                     ],
                     "units": [
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD"
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
                     ]
                   }
                 ]
@@ -397,11 +397,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      4.95,
-                      23.1,
-                      41.25,
-                      59.4,
-                      77.55
+                      29.7,
+                      52.8,
+                      75.9,
+                      99,
+                      122.1
                     ],
                     "units": [
                       "",
@@ -413,18 +413,18 @@
                   },
                   {
                     "values": [
-                      41.25,
-                      42.9,
-                      44.55,
-                      46.2,
-                      47.85
+                      49.5,
+                      52.8,
+                      56.1,
+                      59.4,
+                      62.7
                     ],
                     "units": [
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD",
-                      "% AD"
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
                     ]
                   }
                 ]
@@ -830,11 +830,11 @@
                   },
                   {
                     "values": [
-                      90,
-                      90,
-                      90,
-                      90,
-                      90
+                      110,
+                      110,
+                      110,
+                      110,
+                      110
                     ],
                     "units": [
                       "% bonus AD",

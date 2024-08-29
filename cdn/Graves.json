@@ -4,7 +4,7 @@
   "name": "Graves",
   "title": "the Outlaw",
   "fullName": "Malcolm Graves",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Graves.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Graves.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -286,10 +286,10 @@
                   {
                     "values": [
                       45,
-                      60,
-                      75,
-                      90,
-                      105
+                      65,
+                      85,
+                      105,
+                      125
                     ],
                     "units": [
                       "",
@@ -365,10 +365,10 @@
                   {
                     "values": [
                       130,
-                      180,
-                      230,
-                      280,
-                      330
+                      185,
+                      240,
+                      295,
+                      350
                     ],
                     "units": [
                       "",
@@ -424,10 +424,10 @@
             {
               "values": [
                 13,
-                11.5,
-                10,
-                8.5,
-                7
+                11.25,
+                9.5,
+                7.75,
+                6
               ],
               "units": [
                 "",

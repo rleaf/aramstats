@@ -4,7 +4,7 @@
   "name": "Annie",
   "title": "the Dark Child",
   "fullName": "Annie Hastur",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Annie.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Annie.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -2208,7 +2208,7 @@
         }
       ],
       "lore": "Annie revealed her magical talents before Telum's royal court, transforming her dear teddy bear into a knight of steel and flame. Though a near-fatal display for many aristocrats, Queen Fiora embraced the child's potential and named her successor. Annie trains to triumph in a future Coronation… and causes a fair amount of mischief for her regal mentor.",
-      "release": "0000-00-00",
+      "release": "2024-08-28",
       "set": [
         "Battle Queens"
       ],

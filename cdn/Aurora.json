@@ -4,7 +4,7 @@
   "name": "Aurora",
   "title": "the Witch Between Worlds",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Aurora.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Aurora.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -769,9 +769,9 @@
                 "modifiers": [
                   {
                     "values": [
-                      200,
-                      325,
-                      450
+                      175,
+                      275,
+                      375
                     ],
                     "units": [
                       "",

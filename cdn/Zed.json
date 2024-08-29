@@ -4,7 +4,7 @@
   "name": "Zed",
   "title": "the Master of Shadows",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Zed.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Zed.png",
   "resource": "ENERGY",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -2399,10 +2399,10 @@
       "set": [
         "Blood Moon"
       ],
-      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zed/skins/skin58/images/zed_splash_centered_58.skins_zed_skin58.jpg",
-      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zed/skins/skin58/images/zed_splash_uncentered_58.skins_zed_skin58.jpg",
-      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zed/skins/skin58/images/zed_splash_tile_58.skins_zed_skin58.jpg",
-      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zed/skins/skin58/zedloadscreen_58.skins_zed_skin58.jpg",
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zed/skins/skin58/images/zed_splash_centered_58.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zed/skins/skin58/images/zed_splash_uncentered_58.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zed/skins/skin58/images/zed_splash_tile_58.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zed/skins/skin58/zedloadscreen_58.jpg",
       "loadScreenVintagePath": null,
       "newEffects": true,
       "newAnimations": true,

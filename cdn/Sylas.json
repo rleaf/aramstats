@@ -4,7 +4,7 @@
   "name": "Sylas",
   "title": "the Unshackled",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Sylas.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Sylas.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -592,11 +592,11 @@
                   },
                   {
                     "values": [
-                      70,
-                      70,
-                      70,
-                      70,
-                      70
+                      60,
+                      60,
+                      60,
+                      60,
+                      60
                     ],
                     "units": [
                       "% AP",

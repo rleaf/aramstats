@@ -4,7 +4,7 @@
   "name": "Zyra",
   "title": "Rise of the Thorns",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Zyra.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Zyra.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -2252,10 +2252,10 @@
       "set": [
         "Blood Moon"
       ],
-      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zyra/skins/skin55/images/zyra_splash_centered_55.skins_zyra_skin55.jpg",
-      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zyra/skins/skin55/images/zyra_splash_uncentered_55.skins_zyra_skin55.jpg",
-      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zyra/skins/skin55/images/zyra_splash_tile_55.skins_zyra_skin55.jpg",
-      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zyra/skins/skin55/zyraloadscreen_55.skins_zyra_skin55.jpg",
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zyra/skins/skin55/images/zyra_splash_centered_55.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zyra/skins/skin55/images/zyra_splash_uncentered_55.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zyra/skins/skin55/images/zyra_splash_tile_55.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zyra/skins/skin55/zyraloadscreen_55.jpg",
       "loadScreenVintagePath": null,
       "newEffects": true,
       "newAnimations": true,

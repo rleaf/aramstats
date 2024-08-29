@@ -4,7 +4,7 @@
   "name": "Thresh",
   "title": "the Chain Warden",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Thresh.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Thresh.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -1023,9 +1023,9 @@
       "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/thresh/skins/skin04/images/thresh_splash_tile_4.jpg",
       "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/thresh/skins/skin04/threshloadscreen_4.jpg",
       "loadScreenVintagePath": null,
-      "newEffects": true,
-      "newAnimations": true,
-      "newRecall": true,
+      "newEffects": false,
+      "newAnimations": false,
+      "newRecall": false,
       "newVoice": false,
       "newQuotes": false,
       "voiceActor": [
@@ -2301,6 +2301,41 @@
       "splashArtist": [
         "Jiunn Kuo",
         "Kudos Productions"
+      ]
+    },
+    {
+      "name": "Janitor",
+      "id": 412059,
+      "isBase": false,
+      "availability": "Upcoming",
+      "formatName": "Janitor",
+      "lootEligible": true,
+      "cost": 1350,
+      "sale": 0,
+      "distribution": null,
+      "rarity": "Epic",
+      "chromas": [],
+      "lore": "There aren't many places, let alone stock brokerage firms, that will hire an ethically questionable, skull-faced custodian named Thresh, but Mundo wouldn't be a trillionaire if he didn't know a good bet when he saw one. Who better to clean up dirty money than a demon janitor?",
+      "release": "0000-00-00",
+      "set": [
+        "Day Job"
+      ],
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/thresh/skins/skin59/images/thresh_splash_centered_59.skins_thresh_skin59.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/thresh/skins/skin59/images/thresh_splash_uncentered_59.skins_thresh_skin59.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/thresh/skins/skin59/images/thresh_splash_tile_59.skins_thresh_skin59.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/thresh/skins/skin59/threshloadscreen_59.skins_thresh_skin59.jpg",
+      "loadScreenVintagePath": null,
+      "newEffects": true,
+      "newAnimations": true,
+      "newRecall": true,
+      "newVoice": false,
+      "newQuotes": false,
+      "voiceActor": [
+        "Mark Oliver"
+      ],
+      "splashArtist": [
+        "Huyy Nguyen",
+        "West Studio"
       ]
     }
   ]

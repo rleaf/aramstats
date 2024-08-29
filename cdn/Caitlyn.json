@@ -4,7 +4,7 @@
   "name": "Caitlyn",
   "title": "the Sheriff of Piltover",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Caitlyn.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Caitlyn.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -572,11 +572,11 @@
         "blurb": "Active:  Caitlyn sets a trap at the target location that lasts for a while. The trap springs when an enemy champion steps on it,  revealing and  rooting them.",
         "missileSpeed": null,
         "rechargeRate": [
-          30,
-          24,
-          19,
-          15,
-          12
+          26,
+          22,
+          18,
+          14,
+          10
         ],
         "collisionRadius": "15",
         "tetherRadius": null,

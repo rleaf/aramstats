@@ -4,7 +4,7 @@
   "name": "Kindred",
   "title": "The Eternal Hunters",
   "fullName": "Lamb and Wolf",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Kindred.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Kindred.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -269,7 +269,7 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Kindred/ability-icon/q",
         "effects": [
           {
-            "description": "Active: Lamb dashes toward the target location, gaining 30% (+ 5% per mark) bonus attack speed for 4 seconds and firing an arrow at up to 3 nearby visible enemies that deals physical damage. Her current attack target within any proximity will be prioritized by one of the arrows.",
+            "description": "Active: Lamb dashes toward the target location, gaining 35% (+ 5% per mark) bonus attack speed for 4 seconds and firing an arrow at up to 3 nearby visible enemies that deals physical damage. Her current attack target within any proximity will be prioritized by one of the arrows.",
             "leveling": [
               {
                 "attribute": "Physical Damage",
@@ -652,10 +652,10 @@
                   {
                     "values": [
                       80,
-                      100,
-                      120,
+                      110,
                       140,
-                      160
+                      170,
+                      200
                     ],
                     "units": [
                       "",
@@ -667,11 +667,11 @@
                   },
                   {
                     "values": [
-                      80,
-                      80,
-                      80,
-                      80,
-                      80
+                      100,
+                      100,
+                      100,
+                      100,
+                      100
                     ],
                     "units": [
                       "% bonus AD",
@@ -705,10 +705,10 @@
                   {
                     "values": [
                       80,
-                      100,
-                      120,
+                      110,
                       140,
-                      160
+                      170,
+                      200
                     ],
                     "units": [
                       "",
@@ -720,11 +720,11 @@
                   },
                   {
                     "values": [
-                      80,
-                      80,
-                      80,
-                      80,
-                      80
+                      100,
+                      100,
+                      100,
+                      100,
+                      100
                     ],
                     "units": [
                       "% bonus AD",
@@ -743,11 +743,11 @@
                       7.5
                     ],
                     "units": [
-                      "% (+ 2.25%) (+ 0.75% (+ 0.175%) per Mark) of target's missing health",
-                      "% (+ 2.25%) (+ 0.75% (+ 0.175%) per Mark) of target's missing health",
-                      "% (+ 2.25%) (+ 0.75% (+ 0.175%) per Mark) of target's missing health",
-                      "% (+ 2.25%) (+ 0.75% (+ 0.175%) per Mark) of target's missing health",
-                      "% (+ 2.25%) (+ 0.75% (+ 0.175%) per Mark) of target's missing health"
+                      "% (+ 2%) (+ 0.75% (+ 0.2%) per Mark) of target's missing health",
+                      "% (+ 2%) (+ 0.75% (+ 0.2%) per Mark) of target's missing health",
+                      "% (+ 2%) (+ 0.75% (+ 0.2%) per Mark) of target's missing health",
+                      "% (+ 2%) (+ 0.75% (+ 0.2%) per Mark) of target's missing health",
+                      "% (+ 2%) (+ 0.75% (+ 0.2%) per Mark) of target's missing health"
                     ]
                   }
                 ]
@@ -784,10 +784,10 @@
             {
               "values": [
                 14,
-                13,
-                12,
+                12.5,
                 11,
-                10
+                9.5,
+                8
               ],
               "units": [
                 "",

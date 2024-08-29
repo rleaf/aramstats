@@ -4,7 +4,7 @@
   "name": "Nocturne",
   "title": "the Eternal Nightmare",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/Nocturne.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Nocturne.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -130,7 +130,7 @@
       "percentPerLevel": 0.0
     },
     "aramDamageTaken": {
-      "flat": 0.85,
+      "flat": 0.9,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0

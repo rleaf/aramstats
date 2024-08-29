@@ -4,7 +4,7 @@
   "name": "Miss Fortune",
   "title": "the Bounty Hunter",
   "fullName": "Sarah Fortune",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.16.1/img/champion/MissFortune.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/MissFortune.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -2575,7 +2575,7 @@
         }
       ],
       "lore": "Queen Katarina's decree rang throughout Elysia: the Grand Coronation ordains honorable battle among nations, army versus army. Miss Fortune of Cyrenia welcomed this change, commanding her sky-fleet in an explosive display of wealth and munitions. While allied to the secluded Aurai, Miss Fortune's crowning proves the ruthlessness of the brigades above.",
-      "release": "0000-00-00",
+      "release": "2024-08-28",
       "set": [
         "Battle Queens"
       ],
