@@ -25,15 +25,6 @@ export default {
       }
    },
 
-   head: {
-      meta: function() {
-         return [
-            { name: 'description', content: `${this.$route.params.champion} ARAM champion builds & stats - view data tailored to the most popular core builds for patch ${this.store.cleanPatch}.`},
-            { name: 'keywords', content: `${this.$route.params.champion} ARAM build, ${this.$route.params.champion} ARAM items`}
-         ]
-      }
-   },
-
    created() {
       const champ = champions.imageName[champions.urlToId[this.$route.params.champion.toLowerCase()]]
       if (champ) this.store.initChampion(champ)

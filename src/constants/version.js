@@ -16,7 +16,9 @@
       version: "3.9.1",
       date: "8/29/24",
       notes: ``,
-      add: [],
+      add: [
+         `A lil seo.`
+      ],
       remove: [],
       fix: [
          `Styles for unparsed summoners notification.`

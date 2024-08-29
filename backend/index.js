@@ -48,6 +48,7 @@ class Server {
 
       if (process.env.NODE_ENV === 'production') {
          http.createServer(this.app).listen(80)
+         this.app.use(require('prerender-node').set('prerenderToken', 'erLRALWh2UVeJLoGflnj'))
          this.app.enable('trust proxy')
          this.app.use((req, res, next) => {
             req.secure ? next() : res.redirect('https://' + req.headers.host + req.url)

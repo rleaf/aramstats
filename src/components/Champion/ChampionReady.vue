@@ -28,6 +28,20 @@ export default {
       }
 
    },
+   
+   head: {
+      meta: function() {
+         return [
+            { name: 'og:title', content: `${this.name} | ARAM Stats`},
+            { name: 'og:type', content: `website`},
+            { name: 'og:image', content: `${`https://ddragon.leagueoflegends.com/cdn/${this.store.patches[0]}/img/champion/${this.backName}.png`}`},
+            { name: 'og:url', content: `https://aramstats.lol${this.$route.fullPath}`},
+            { name: 'og:description', content: `${this.$route.params.champion} ARAM champion builds & stats - view data tailored to the most popular core builds for patch ${this.store.cleanPatch}.`},
+            { name: 'description', content: `${this.$route.params.champion} ARAM champion builds & stats - view data tailored to the most popular core builds for patch ${this.store.cleanPatch}.`},
+            { name: 'keywords', content: `${this.$route.params.champion} ARAM build, ${this.$route.params.champion} ARAM items`}
+         ]
+      }
+   },
 
    created() {
       document.title = `${this.name} | ARAM Stats`
