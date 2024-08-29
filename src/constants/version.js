@@ -13,9 +13,21 @@
   
   const version = [
    {
+      version: "3.9.1",
+      date: "8/29/24",
+      notes: ``,
+      add: [],
+      remove: [],
+      fix: [
+         `Styles for unparsed summoners notification.`
+      ],
+      adjust: [],
+      known: [],
+   }, 
+   {
       version: "3.9.0",
       date: "8/24/24",
-        notes: `Homogenizing site UI again. Day mode is a perpetual WIP.`,
+      notes: `Homogenizing site UI again. Day mode is a perpetual WIP.`,
       add: [],
       remove: [],
       fix: [],
