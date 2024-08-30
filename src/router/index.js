@@ -45,13 +45,13 @@ const router = createRouter({
       path: '/champions/:champion',
       name: 'champions',
       component: () => import('../views/ChampionView.vue'),
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: '404',
+      component: () => import('../components/Error.vue'),
       meta: {
-        // metaTags: [
-        //   {
-        //     name: 'description',
-        //     content: ':champion Champion Stats'
-        //   }
-        // ]
+        title: '404 | ARAM Stats'
       }
     }
   ]

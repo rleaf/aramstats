@@ -3,7 +3,7 @@ export default {
    data() {
       return {
          rouletteArr: [
-            'https://cdn.discordapp.com/attachments/160890057459236864/1235082968226336791/884bea0a13f7f916f82f4594099b4904919fe2f3.png?ex=66350e66&is=6633bce6&hm=7a76769d225a358e207fb6e4ca99166830cca77a4dfbd91002a7a860f4790a2f&',
+            'https://preview.redd.it/dhywo66hzm7d1.jpeg?auto=webp&s=283c651d3956bb6492688825a1c941c5b65acedd',
             'https://i.redd.it/6p956lq5yiq81.jpg',
             'https://i.redd.it/k8obvr07gfb91.png',
             'https://i.redd.it/uek3ydziwvtb1.jpg',

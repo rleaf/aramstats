@@ -1,16 +1,16 @@
 <script>
 import Loading from '../components/Loading.vue'
-import ChampionError from '../components/Champion/ChampionError.vue'
 import ChampionReady from '../components/Champion/ChampionReady.vue'
 import champions from '../constants/champions'
 import { superStore } from '../stores/superStore'
 import axios from 'axios'
+import Error from '../components/Error.vue'
 
 export default {
    components: {
       Loading,
-      ChampionError,
       ChampionReady,
+      Error,
    },
 
    data() {
@@ -62,5 +62,5 @@ export default {
       v-else-if="lookup && this.store.patches && !this.loading && this.champion"
       :champion="this.champion"
       :key="this.renderKey"/>
-   <ChampionError v-else/>
+   <Error v-else/>
 </template>

@@ -13,6 +13,20 @@
   
   const version = [
    {
+      version: "3.9.2",
+      date: "8/30/24",
+      notes: ``,
+      add: [
+         `404 page`,
+      ],
+      remove: [],
+      fix: [
+         `seo`
+      ],
+      adjust: [],
+      known: [],
+   }, 
+   {
       version: "3.9.1",
       date: "8/29/24",
       notes: ``,
