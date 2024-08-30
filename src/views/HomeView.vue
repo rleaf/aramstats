@@ -19,12 +19,12 @@ export default {
 
   head: {
     meta: [
-      {name: 'og:title', content: `ARAM Stats`},
-      {name: 'og:type', content: `website`},
-      {name: 'og:url', content: `https://aramstats.lol` },
-      {name: 'og:description', content: `Aramstats provides insightful Howling Abyss summoner and champion statistics.` },
-      {name: 'description', content: `Aramstats provides insightful Howling Abyss summoner and champion statistics` },
-      {name: 'keywords', content: `ARAM, Howling Abyss, Stats`},
+      { property: 'og:title', content: `ARAM Stats` },
+      { property: 'og:type', content: `website` },
+      { property: 'og:url', content: `https://aramstats.lol`  },
+      { property: 'og:description', content: `Aramstats provides insightful Howling Abyss summoner and champion statistics.`  },
+      { name: 'description', content: `Aramstats provides insightful Howling Abyss summoner and champion statistics`  },
+      { name: 'keywords', content: `ARAM, Howling Abyss, Stats` },
     ]
   }
 

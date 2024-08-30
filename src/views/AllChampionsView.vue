@@ -27,10 +27,10 @@ export default {
    head: {
       meta: function() {
          return [
-            { name: 'og:title', content: `${this.$route.meta.title}`},
-            { name: 'og:type', content: `website`},
-            { name: 'og:url', content: `https://aramstats.lol${this.$route.fullPath}`},
-            { name: 'og:description', content: `ARAM tier list for patch ${this.store.cleanPatch}.`},
+            { property: 'og:title', content: `${this.$route.meta.title}`},
+            { property: 'og:type', content: `website`},
+            { property: 'og:url', content: `https://aramstats.lol${this.$route.fullPath}`},
+            { property: 'og:description', content: `ARAM tier list for patch ${this.store.cleanPatch}.`},
             { name: 'description', content: `ARAM tier list for patch ${this.store.cleanPatch}.`},
             { name: 'keywords', content: `ARAM tier list`}
          ]

@@ -55,6 +55,8 @@ class Server {
          })
 
          this.app.use(express.static(__dirname + '/public/'))
+         this.app.get(/.sitemap.xml/, (req, res) => res.sendFile(__dirname + '/public/sitemap.xml'))
+         this.app.get(/.robots.txt/, (req, res) => res.sendFile(__dirname + '/public/robots.txt'))
          this.app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'))
 
          this.server = https.createServer({
