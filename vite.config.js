@@ -5,7 +5,7 @@ import glsl from 'vite-plugin-glsl'
 import Sitemap from 'vite-plugin-sitemap'
 import champions from './src/constants/champions'
 
-const routes = champions.names.map(n => `/champions/${n[1]}`)
+const routes = Object.values(champions.urlName).map(n => `/champions/${n}`)
 
 // https://vitejs.dev/config/
 export default defineConfig({
