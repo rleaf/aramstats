@@ -83,6 +83,7 @@ export default {
    523: ['Marksman'],
    22: ['Marksman'],
    136: ['Battlemage'],
+   893: ['Mage'],
    268: ['Specialist'],
    432: ['Catcher'],
    200: ['Skirmisher'],

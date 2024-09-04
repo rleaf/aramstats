@@ -36,9 +36,9 @@ export default {
             { property: 'og:type', content: `website`},
             { property: 'og:image', content: `${`https://ddragon.leagueoflegends.com/cdn/${this.store.patches[0]}/img/champion/${this.backName}.png`}`},
             { property: 'og:url', content: `https://aramstats.lol${this.$route.fullPath}`},
-            { property: 'og:description', content: `${this.$route.params.champion} ARAM champion builds & stats - view data tailored to the most popular core builds for patch ${this.store.cleanPatch}.`},
-            { name: 'description', content: `${this.$route.params.champion} ARAM champion builds & stats - view data tailored to the most popular core builds for patch ${this.store.cleanPatch}.`},
-            { name: 'keywords', content: `${this.$route.params.champion} ARAM build, ${this.$route.params.champion} ARAM items`}
+            { property: 'og:description', content: `${this.name} builds and stats for ARAM on patch ${this.store.cleanPatch}. View data tailored to the most popular core builds.`},
+            { name: 'description', content: `${this.name} builds and stats for ARAM on patch ${this.store.cleanPatch}. View data tailored to the most popular core builds.`},
+            { name: 'keywords', content: `${this.name} ARAM build, ${this.name} ARAM items, Howling Abyss, spooky bridge`}
          ]
       }
    },

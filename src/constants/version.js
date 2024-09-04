@@ -13,6 +13,20 @@
   
   const version = [
    {
+      version: "3.9.3",
+      date: "9/4/24",
+      notes: ``,
+      add: [
+         `Search UX enhancements. 'Ctrl+K' to focus input & 'Esc' to blur.`
+      ],
+      remove: [],
+      fix: [
+         'Add Aurora to radar chart'
+      ],
+      adjust: [],
+      known: [],
+   }, 
+   {
       version: "3.9.2",
       date: "8/30/24",
       notes: ``,

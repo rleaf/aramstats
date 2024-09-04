@@ -1212,11 +1212,11 @@ button.active-update {
 .keyboard-shortcut kbd {
    display: inline-flex;
    border: 1px solid var(--outline-variant);
-   border-radius: 3px;
+   border-radius: 5px;
    font-family: var(--font-main);
    justify-content: center;
    line-height: 0.3rem;
-   padding: 6px 4px;
+   padding: 6px 5px;
 }
 
 .utility input {

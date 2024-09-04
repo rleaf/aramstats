@@ -46,15 +46,21 @@ export default {
    created() {
       if (localStorage.getItem('region')) this.region = localStorage.getItem('region')
 
-      window.addEventListener('keydown', this.trackIterate)
+      window.addEventListener('keydown', this.eventHandler)
    },
 
    beforeUnmount() {
-      window.removeEventListener('keydown', this.trackIterate)
+      window.removeEventListener('keydown', this.eventHandler)
    },
 
    methods: {
-      trackIterate(e) {
+      eventHandler(e) {
+         if (e.ctrlKey && e.key === 'k') {
+            e.preventDefault()
+            this.$refs.input.focus()
+            return
+         }
+
          if (!(e.key === 'ArrowDown' || e.key === 'ArrowUp')) return
          e.preventDefault()
 
@@ -87,6 +93,11 @@ export default {
       getImage(name) {
          return new URL(`../assets/champion_icons/${name}.png`, import.meta.url).href
       },
+
+      blurInput() {
+         this.$refs.input.blur()
+         this.containerFocus = false
+      }, 
 
       inputFocus() {
          
@@ -146,9 +157,13 @@ export default {
          <div>
             <input class="main-input" ref="input" type="text" spellcheck="false" autocomplete="off"
                @focus="this.containerFocus = true"
+               @keyup.esc="this.blurInput()"
                @keyup.enter="summonerSearch"
-               placeholder="Summoner or Champion"
                v-model="input">
+            <span class="placeholder" v-show="!this.input">
+               Summoner or Champion
+               <kbd>Ctrl + K</kbd>
+            </span>
             <div class="shadow" v-show="this.input && this.region !== 'RG' && !this.input.includes('#')">
                <p>{{ `${this.input}`}}</p>
                <!-- <p style="padding-left: 15px" v-if="filteredChamps.length === 1">Press enter to search {{ filteredChamps[0].front }}</p>
@@ -163,7 +178,12 @@ export default {
       </div>
       <div class="champion-search" v-show="this.containerFocus && filteredChamps.length > 0">
          <div class="search-ux">
-            <kbd>↑</kbd>/<kbd>↓</kbd>/<kbd>Enter</kbd> key friendly
+            <div>
+               <kbd>↑</kbd> up <kbd>↓</kbd> down <kbd>Enter</kbd> search
+            </div>
+            <div>
+               <kbd>Ctrl+K</kbd> focus <kbd>Esc</kbd> close 
+            </div>
          </div>
          <div ref="champions">
             <router-link :to="{ name: 'champions', params: {champion: champ.back} }" v-for="champ in filteredChamps">
@@ -209,6 +229,8 @@ export default {
 }
 
 .search-ux {
+   display: flex;
+   justify-content: space-between;
    color: var(--color-font);
    font-size: 0.75rem;
    padding: 2px 5px;
@@ -222,6 +244,7 @@ export default {
    border-radius: 5px;
    padding: 0px 3px;
 }
+
 
 .champion-search a {
    display: flex;
@@ -424,6 +447,25 @@ input:focus {
    outline: none;
    color: var(--on-surface);
    transition: 0.4s;
+}
+
+span.placeholder {
+   z-index: 0;
+   pointer-events: none;
+   position: absolute;
+   left: 2.5rem;
+   font-size: 0.9rem;
+   font-family: var(--font-main);
+   color: var(--color-font-faded);
+
+}
+
+span.placeholder kbd {
+   display: inline-flex;
+   border: 1px solid var(--outline-variant);
+   border-radius: 5px;
+   font-family: var(--font-main);
+   padding: 0px 5px;
 }
 
 button {
