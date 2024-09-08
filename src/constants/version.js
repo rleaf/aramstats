@@ -17,7 +17,8 @@
       date: "9/4/24",
       notes: ``,
       add: [
-         `Search UX enhancements. 'Ctrl+K' to focus input & 'Esc' to blur.`
+         `Search UX enhancements. 'Ctrl+K' to focus input & 'Esc' to blur.`,
+         `Add 'champions played' stat to summoner profile. Shows the sum of champions played.`
       ],
       remove: [],
       fix: [

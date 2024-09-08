@@ -206,18 +206,8 @@ export default {
             }
          }
 
-         // return [
-         //    `${(a_w / a_g * 100).toFixed(2)}%`,
-         //    `${Math.round(a_tp / 1440 * 100 ) / 100} days`,
-         //    `${a_g}`,
-         //    `${a_g - rsg}`, 
-         //    `${rsg}`,
-         //    `${(bw / a_w * 100).toFixed(2)}%`,
-         //    `${(rw / a_w * 100).toFixed(2)}%`,
-         //    `${this.data.fountainSitter}`
-         // ]
-
          return {
+            'champs': `${this.data.championData.length}`,
             'winrate': `${(a_w / a_g * 100).toFixed(2)}%`,
             'time': `${Math.round(a_tp / 1440 * 100 ) / 100} days`,
             'games': `${a_g}`,
@@ -482,6 +472,7 @@ export default {
 
       getAccountStats() {
          return [
+            ['Champions Played', this.computeAccountStats['champs']],
             ['Winrate', this.computeAccountStats['winrate']],
             ['Time Played', this.computeAccountStats['time']],
             ['Games', this.computeAccountStats['games']],
