@@ -297,17 +297,6 @@ export default {
    background: var(--panel-two-hover);
 }
 
-.select-wrapper {
-   /* padding: 0 11px;
-   margin-right: 10px;
-   background: var(--surface-container-highest);
-   border-radius: 16px;
-   cursor: pointer;
-   display: flex;
-   align-items: center;
-   height: 30px; */
-}
-
 select {
    /* border: 1px solid transparent; */
    padding: 0 11px;
