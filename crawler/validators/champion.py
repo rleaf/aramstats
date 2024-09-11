@@ -81,10 +81,7 @@ champion_schema = {
                         "x": { "bsonType": "long" },
                         "xx": { "bsonType": "long" },
                      }
-                  },
-                  # "dtpm": { "bsonType": "object" },
-                  # "dmpm": { "bsonType": "object" },
-                  # "gpm": { "bsonType": "object" },
+                  }
                }
             }
          }

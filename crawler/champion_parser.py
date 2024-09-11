@@ -3,7 +3,7 @@ import util
 import time
 import validators as V
 from itertools import repeat
-from multiprocessing import Pool, Value, Manager
+from multiprocessing import Pool
 from pymongo import MongoClient, UpdateOne
 from bson.objectid import ObjectId
 from bson.int64 import Int64
@@ -18,10 +18,8 @@ class ChampionParser():
       db = MongoClient(os.environ['DB_CONNECTION_STRING'])['aramstats']
       patch = util.get_latest_patch(two=True)
       collection_list = db.list_collection_names()
-      # match_collection_name = f"{patch[0]}_matches"
-      match_collection_name = f"14.17_matches"
+      match_collection_name = f"{patch[0]}_matches"
       champion_collection = f"TEST_{patch[0]}_championstats"
-      m = Manager()
       self.items = util.get_items()
       self.champions = util.get_champions()
       self.batch_size = 10 # Number of match documents in a batch. Care bear: 1 match = 10 champions, so bulk_writing to 100 champion documents for a 10 batch size
@@ -41,48 +39,23 @@ class ChampionParser():
          else:
             self.index = meta_collection.find_one({ "_id": "crawler" })["champ_parse_index"]
             self.trail = meta_collection.find_one({ "_id": "crawler" })["trail"]
-      # self.query = {} if self.trail is None else { '_id': { "$gt": self.trail } }
-      self.query = {}
+      self.query = {} if self.trail is None else { '_id': { "$gt": self.trail } }
       print("Starting champion parser")
 
-      
-      # metrics_schema = m.dict({
-      #    "games": m.Value('i', 0),
-      #    "dmpm": m.dict({"m": 0, "v": 0}),
-      #    "dpm": m.dict({"m": 0, "v": 0}),
-      #    "dtpm": m.dict({"m": 0, "v": 0}),
-      #    "gpm": m.dict({"m": 0, "v": 0}),
-      # })
-      # welford_cache = { int(c["key"]): metrics_schema for c in self.champions.values() }
       trail_id = None
       for i, batch in enumerate(self.get_batches()):
-         
-         # for doc in self.champion_stats_collection.find({}):
-            # if 'metrics' in doc:
-               # welford_cache[doc["_id"]] = m.dict({
-               #    "games": m.Value('i', doc["games"]),
-               #    "dmpm": m.dict({"m": doc["metrics"]["dmpm"]["m"], "v": doc["metrics"]["dmpm"]["v"]}),
-               #    "dpm": m.dict({"m": doc["metrics"]["dpm"]["m"], "v": doc["metrics"]["dpm"]["v"]}),
-               #    "dtpm": m.dict({"m": doc["metrics"]["dtpm"]["m"], "v": doc["metrics"]["dtpm"]["v"]}),
-               #    "gpm": m.dict({"m": doc["metrics"]["gpm"]["m"], "v": doc["metrics"]["gpm"]["v"]}),
-               # })
-               
-         # print("Starting value: ", welford_cache[51]['games'].value)
          trail_id = batch[-1]['_id']
          # if (i % 5 == 0 and i > 0): # Update every 50 matches
          #    meta_collection.update_one({ "_id": "crawler" }, { "$set": {"trail": ObjectId(trail_id)} })
+         
          # start = time.perf_counter()
-         print(f"On batch {i} @@@@@@@@@@@@@@")
+         print(f"On batch {i}")
          with Pool() as p:
-            # bin = p.starmap(forward, zip(batch, repeat(self.items), repeat(welford_cache)))
             bin = p.starmap(forward, zip(batch, repeat(self.items)))
             flat = [x for xs in bin for x in xs] 
             self.champion_stats_collection.bulk_write(flat)
             time.sleep(0.2)
-         # print(welford_cache[51]['games'].value)
-         # print(welford_cache[266]['games'].value)
-         # print(welford_cache[103]['games'].value)
-         # print(turkey)
+            
          # finish = time.perf_counter()   
          # print(f"Finished batch {i} in {round(finish-start, 2)} second(s)")
    
@@ -276,53 +249,11 @@ def forward(match, items):
             'dmpm': int(participant['damageSelfMitigated'] / game_duration_min),
             'gpm': int(participant['goldEarned'] / game_duration_min),
          }
-
-         welford_metrics = []
-         # welford_cache[participant["championId"]]["games"].value += 1
-
-         # for k, v in metrics.items():
-            # if welford_cache[participant["championId"]][k]["m"] == 0:
-            #    posterior_mean = v
-            #    posterior_variance = 0
-            # else:
-            #    posterior_mean = welford_mean(v, welford_cache[participant["championId"]]["games"].value, welford_cache[participant['championId']][k]["m"])
-            #    posterior_variance = welford_variance(v, posterior_mean, welford_cache[participant['championId']][k]["m"], welford_cache[participant['championId']][k]["v"])
-            
-            # if participant['championId'] == 51 and k == 'dpm': # Caitlyn
-            #    print(f'Index: {welford_cache[participant["championId"]]["games"].value}')
-            #    print(f'Datum: {v}')
-            #    print(f'Prior M: {welford_cache[participant["championId"]]["dpm"]["m"]}')
-            #    print(f'Prior V: {welford_cache[participant["championId"]]["dpm"]["v"]}')
-            #    print(f'Posterior M: {posterior_mean}')
-            #    print(f'Posterior V: {posterior_variance}')
-            #    print(welford_cache[266]['games'], welford_cache[266]['dpm']['m'], '@@@@')
-            #    print(welford_cache[103]['games'], welford_cache[103]['dpm']['m'])
-               # print(turkey)
-
-            
-            
-            # welford_cache[participant['championId']][k]["m"] = posterior_mean
-            # welford_cache[participant['championId']][k]["v"] = posterior_variance
-
-            # if participant['championId'] == 51 and k == 'dpm': # Caitlyn
-            #    print(f'Setting Prior M to: {welford_cache[participant['championId']][k]["m"]}')
-            #    print(f'Setting Prior V to: {welford_cache[participant['championId']][k]["v"]}')
-            #    print('--------------------------------')
-            # welford_metrics.append([posterior_mean, posterior_variance])
-
          
          update["$inc"][f"skills.{level_order}.games"] = 1
          update["$inc"][f"skills.{level_order}.wins"] = win
          update["$inc"][f"starting.{starting_build}.games"] = 1
          update["$inc"][f"starting.{starting_build}.wins"] = win
-         # update["$set"]["metrics.dpm.m"] = welford_metrics[0][0]
-         # update["$set"]["metrics.dpm.v"] = welford_metrics[0][1]
-         # update["$set"]["metrics.dtpm.m"] = welford_metrics[1][0]
-         # update["$set"]["metrics.dtpm.v"] = welford_metrics[1][1]
-         # update["$set"]["metrics.dmpm.m"] = welford_metrics[2][0]
-         # update["$set"]["metrics.dmpm.v"] = welford_metrics[2][1]
-         # update["$set"]["metrics.gpm.m"] = welford_metrics[3][0]
-         # update["$set"]["metrics.gpm.v"] = welford_metrics[3][1]
          update["$inc"]["metrics.dpm.x"] = Int64(metrics["dpm"])
          update["$inc"]["metrics.dpm.xx"] = Int64(metrics["dpm"] ** 2)
          update["$inc"]["metrics.dtpm.x"] = Int64(metrics["dtpm"])
