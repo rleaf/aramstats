@@ -1,0 +1,37 @@
+How to compute the mean and variance for a champions minute metrics (dpm, dtpm, dmpm, gpm, etc...)
+
+Computing mean is not very expensive/difficult so selecting based off easiest/most efficient way to compute variance
+There are 3 ways to compute variance: the vanilla method, sum of squares, and welford's method that i found.
+
+Sum of Squares
+ - Numerically unstable. Although convenient in computing variance, need to store the E(X^2) and E(X)^2 through the whole iteration.
+   If X, a champions DPM, has a sample mean of 1900 then, using upper bound of ~250k matches, 250,000 * (1,900) = 475,000,000 and
+   250,000 * (1,900^2) = 902,500,000,000. These numbers are probably fine but the growth is concerning. What happens if my api key goes from 500 to 1000? To 2000?
+
+Vanilla Method
+ - Requires a double iteration over the data. Because it uses the sample mean when computing the variance, I first would have to iterate once to compute the sample mean, then iterate again to take the deltas for the variance. Mmmm can't double iterate cause I'm not a praise the moon.
+
+Welford's method
+ - The most pragmatic? Computes mean and var using a stream of input data relying only on an index and the prior mean & var. The problem is how the champion crawler is designed. Because I'm multiprocessing to compute champion statistics, the prior values may have concurrency issues (idk)? I would have to fetch prior to each batch mp and then cache those values. Can use https://docs.python.org/3/library/multiprocessing.html#sharing-state-between-processes
+
+ - Okay take 2. I can just batch process the welford parameters as well. I will need a cache that, upon init, gets from DB and just prior to next batch loop, write values to cache. A problem is that to compute the mean at any point, the current observations are needed (gamecount). If processes are running concurrently on a batch, in the situation where a batch has two games of the same champion, the game counter for computing the means for both champions will be X, when it should be sequential, X, X+1, X+2...etc. Need to share memory for games between processes.
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+welford's method
+
+all 'during*' would have to be fetched from the db.
+fetching from db is not ideal in a MP situation, so could fetch prior to each batch, cache it, and then use the cache. The problem is that the values operate on batches, so for each value of the batch, -it'd be mutated
+
+MEAN REQUIRES
+ - index (games for champion) | post
+ - current datum (observed dpm for a game) | during
+ - prior mean (initialized to current datum for m_0) | during*
+
+VARIANCE REQUIRES
+ - prior mean (previous timestep to variance computation) | during*
+ - current mean (same timestep as variance computation) | during
+ - current datum (observed dpm for a game) | during
+ - prior variance (initialized to 0) | during*

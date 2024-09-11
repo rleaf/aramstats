@@ -109,6 +109,12 @@ def get_items():
    res = requests.get(url).json()
    return res['data']
 
+def get_champions():
+   patch = get_latest_patch(True)
+   url = f'https://ddragon.leagueoflegends.com/cdn/{patch}/data/en_US/champion.json'
+   res = requests.get(url).json()
+   return res['data']
+
 def get_runes():
    # patch = get_latest_patch(True)
    # url = f'https://ddragon.leagueoflegends.com/cdn/{patch}/data/en_US/runesReforged.json'

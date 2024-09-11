@@ -49,6 +49,43 @@ champion_schema = {
             "raw": {
                "bsonType": "object",
                "description": "raw data to be preproessed on championparse",
+            },
+            "metrics": {
+               "bsonType": "object",
+               "description": "Rolling per minute statistics computed using sum of squares. Welford method not playing nice with multiprocessing.",
+               "properties": {
+                  "dpm": {
+                     "bsonType": "object",
+                     "properties": {
+                        "x": { "bsonType": "long" },
+                        "xx": { "bsonType": "long" },
+                     }
+                  },
+                  "dtpm": {
+                     "bsonType": "object",
+                     "properties": {
+                        "x": { "bsonType": "long" },
+                        "xx": { "bsonType": "long" },
+                     }
+                  },
+                  "dmpm": {
+                     "bsonType": "object",
+                     "properties": {
+                        "x": { "bsonType": "long" },
+                        "xx": { "bsonType": "long" },
+                     }
+                  },
+                  "gpm": {
+                     "bsonType": "object",
+                     "properties": {
+                        "x": { "bsonType": "long" },
+                        "xx": { "bsonType": "long" },
+                     }
+                  },
+                  # "dtpm": { "bsonType": "object" },
+                  # "dmpm": { "bsonType": "object" },
+                  # "gpm": { "bsonType": "object" },
+               }
             }
          }
       }

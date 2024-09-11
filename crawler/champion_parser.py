@@ -3,9 +3,10 @@ import util
 import time
 import validators as V
 from itertools import repeat
-from multiprocessing import Pool
+from multiprocessing import Pool, Value, Manager
 from pymongo import MongoClient, UpdateOne
 from bson.objectid import ObjectId
+from bson.int64 import Int64
 from dotenv import load_dotenv
 
 import pprint
@@ -17,9 +18,12 @@ class ChampionParser():
       db = MongoClient(os.environ['DB_CONNECTION_STRING'])['aramstats']
       patch = util.get_latest_patch(two=True)
       collection_list = db.list_collection_names()
-      match_collection_name = f"{patch[0]}_matches"
+      # match_collection_name = f"{patch[0]}_matches"
+      match_collection_name = f"14.17_matches"
       champion_collection = f"TEST_{patch[0]}_championstats"
+      m = Manager()
       self.items = util.get_items()
+      self.champions = util.get_champions()
       self.batch_size = 10 # Number of match documents in a batch. Care bear: 1 match = 10 champions, so bulk_writing to 100 champion documents for a 10 batch size
 
       if match_collection_name in collection_list:
@@ -37,29 +41,51 @@ class ChampionParser():
          else:
             self.index = meta_collection.find_one({ "_id": "crawler" })["champ_parse_index"]
             self.trail = meta_collection.find_one({ "_id": "crawler" })["trail"]
-      self.query = {} if self.trail is None else { '_id': { "$gt": self.trail } }
-
+      # self.query = {} if self.trail is None else { '_id': { "$gt": self.trail } }
+      self.query = {}
       print("Starting champion parser")
 
+      
+      # metrics_schema = m.dict({
+      #    "games": m.Value('i', 0),
+      #    "dmpm": m.dict({"m": 0, "v": 0}),
+      #    "dpm": m.dict({"m": 0, "v": 0}),
+      #    "dtpm": m.dict({"m": 0, "v": 0}),
+      #    "gpm": m.dict({"m": 0, "v": 0}),
+      # })
+      # welford_cache = { int(c["key"]): metrics_schema for c in self.champions.values() }
       trail_id = None
       for i, batch in enumerate(self.get_batches()):
-         # print(self.match_collection)
+         
+         # for doc in self.champion_stats_collection.find({}):
+            # if 'metrics' in doc:
+               # welford_cache[doc["_id"]] = m.dict({
+               #    "games": m.Value('i', doc["games"]),
+               #    "dmpm": m.dict({"m": doc["metrics"]["dmpm"]["m"], "v": doc["metrics"]["dmpm"]["v"]}),
+               #    "dpm": m.dict({"m": doc["metrics"]["dpm"]["m"], "v": doc["metrics"]["dpm"]["v"]}),
+               #    "dtpm": m.dict({"m": doc["metrics"]["dtpm"]["m"], "v": doc["metrics"]["dtpm"]["v"]}),
+               #    "gpm": m.dict({"m": doc["metrics"]["gpm"]["m"], "v": doc["metrics"]["gpm"]["v"]}),
+               # })
+               
+         # print("Starting value: ", welford_cache[51]['games'].value)
          trail_id = batch[-1]['_id']
          # if (i % 5 == 0 and i > 0): # Update every 50 matches
          #    meta_collection.update_one({ "_id": "crawler" }, { "$set": {"trail": ObjectId(trail_id)} })
-            
          # start = time.perf_counter()
-         print(f"On batch {i}")
-         
+         print(f"On batch {i} @@@@@@@@@@@@@@")
          with Pool() as p:
+            # bin = p.starmap(forward, zip(batch, repeat(self.items), repeat(welford_cache)))
             bin = p.starmap(forward, zip(batch, repeat(self.items)))
-            flat = [x for xs in bin for x in xs]
+            flat = [x for xs in bin for x in xs] 
             self.champion_stats_collection.bulk_write(flat)
             time.sleep(0.2)
-
-         # finish = time.perf_counter()
+         # print(welford_cache[51]['games'].value)
+         # print(welford_cache[266]['games'].value)
+         # print(welford_cache[103]['games'].value)
+         # print(turkey)
+         # finish = time.perf_counter()   
          # print(f"Finished batch {i} in {round(finish-start, 2)} second(s)")
-
+   
       print(f"Updating index")
       # if trail_id is not None: meta_collection.update_one({ "_id": "crawler" }, { "$set": {"trail": ObjectId(trail_id)} })
       self.preprocess()
@@ -113,7 +139,7 @@ class ChampionParser():
       """
       batch = []
       i = 0
-      # for i, doc in enumerate(self.match_collection.find(skip=self.index)):
+
       for i, doc in enumerate(self.match_collection.find(self.query).sort("_id", 1)):
          if i % self.batch_size == 0 and i > 0:
             yield batch
@@ -122,41 +148,19 @@ class ChampionParser():
          batch.append(doc)
       yield batch
 
-def levels(i):
-   """ 
-   Reduce redundant levels. Sort input in descending and combine the wins & games of lower leveled skillpaths.
-
-   Q: Do I have to manually watch for champs that auto point into an ability such as Azir and Zeri? 
-   A: Yes, their auto skilled ability is not recorded in timeline.
-   """
-   raw = sorted(i[1], key=lambda x: len(x[0]), reverse=True)
-   cleaned = [[raw[0][0], raw[0][1]["games"], raw[0][1]["wins"]]]
-   for o in raw[1:]: #  ('123114222211334334', {'games': 1, 'wins': 0})
-      cleaned_levels = ''.join(sorted(o[0][:3])) + o[0][3:] # Use combinations > permutations for levels 1-3. (112 == 121)
-      push = True
-
-      for x in cleaned:
-         if o[0] in x[0]:
-            x[1] += o[1]["games"]
-            x[2] += o[1]["wins"]
-            push = False
-            break
-
-      if push:
-         cleaned.append([cleaned_levels, o[1]["games"], o[1]["wins"]])
-
-   cleaned.sort(key=lambda x: x[2], reverse=True)
-   return [i[0], cleaned]
-
 def forward(match, items):
    """
    Iterate through matchdata and update champion documents for observed champions.
    """
    bin = []
+   game_duration_min = match['info']['gameDuration'] / 60
 
    for participant in match["info"]["participants"]:
 
-      update = { "$inc": {} }
+      update = {
+         "$inc": {},
+         "$set": {}
+      }
 
       # <int> Win
       win = 1 if participant["win"] else 0
@@ -265,10 +269,68 @@ def forward(match, items):
             elif len(arr) == 1:
                level_order += table[arr[0]]
 
+         # Compute metrics (DPM, DTPM, DMPM, GPM)
+         metrics = {
+            'dpm': int(participant['totalDamageDealtToChampions'] / game_duration_min),
+            'dtpm': int(participant['totalDamageTaken'] / game_duration_min),
+            'dmpm': int(participant['damageSelfMitigated'] / game_duration_min),
+            'gpm': int(participant['goldEarned'] / game_duration_min),
+         }
+
+         welford_metrics = []
+         # welford_cache[participant["championId"]]["games"].value += 1
+
+         # for k, v in metrics.items():
+            # if welford_cache[participant["championId"]][k]["m"] == 0:
+            #    posterior_mean = v
+            #    posterior_variance = 0
+            # else:
+            #    posterior_mean = welford_mean(v, welford_cache[participant["championId"]]["games"].value, welford_cache[participant['championId']][k]["m"])
+            #    posterior_variance = welford_variance(v, posterior_mean, welford_cache[participant['championId']][k]["m"], welford_cache[participant['championId']][k]["v"])
+            
+            # if participant['championId'] == 51 and k == 'dpm': # Caitlyn
+            #    print(f'Index: {welford_cache[participant["championId"]]["games"].value}')
+            #    print(f'Datum: {v}')
+            #    print(f'Prior M: {welford_cache[participant["championId"]]["dpm"]["m"]}')
+            #    print(f'Prior V: {welford_cache[participant["championId"]]["dpm"]["v"]}')
+            #    print(f'Posterior M: {posterior_mean}')
+            #    print(f'Posterior V: {posterior_variance}')
+            #    print(welford_cache[266]['games'], welford_cache[266]['dpm']['m'], '@@@@')
+            #    print(welford_cache[103]['games'], welford_cache[103]['dpm']['m'])
+               # print(turkey)
+
+            
+            
+            # welford_cache[participant['championId']][k]["m"] = posterior_mean
+            # welford_cache[participant['championId']][k]["v"] = posterior_variance
+
+            # if participant['championId'] == 51 and k == 'dpm': # Caitlyn
+            #    print(f'Setting Prior M to: {welford_cache[participant['championId']][k]["m"]}')
+            #    print(f'Setting Prior V to: {welford_cache[participant['championId']][k]["v"]}')
+            #    print('--------------------------------')
+            # welford_metrics.append([posterior_mean, posterior_variance])
+
+         
          update["$inc"][f"skills.{level_order}.games"] = 1
          update["$inc"][f"skills.{level_order}.wins"] = win
          update["$inc"][f"starting.{starting_build}.games"] = 1
          update["$inc"][f"starting.{starting_build}.wins"] = win
+         # update["$set"]["metrics.dpm.m"] = welford_metrics[0][0]
+         # update["$set"]["metrics.dpm.v"] = welford_metrics[0][1]
+         # update["$set"]["metrics.dtpm.m"] = welford_metrics[1][0]
+         # update["$set"]["metrics.dtpm.v"] = welford_metrics[1][1]
+         # update["$set"]["metrics.dmpm.m"] = welford_metrics[2][0]
+         # update["$set"]["metrics.dmpm.v"] = welford_metrics[2][1]
+         # update["$set"]["metrics.gpm.m"] = welford_metrics[3][0]
+         # update["$set"]["metrics.gpm.v"] = welford_metrics[3][1]
+         update["$inc"]["metrics.dpm.x"] = Int64(metrics["dpm"])
+         update["$inc"]["metrics.dpm.xx"] = Int64(metrics["dpm"] ** 2)
+         update["$inc"]["metrics.dtpm.x"] = Int64(metrics["dtpm"])
+         update["$inc"]["metrics.dtpm.xx"] = Int64(metrics["dtpm"] ** 2)
+         update["$inc"]["metrics.dmpm.x"] = Int64(metrics["dmpm"])
+         update["$inc"]["metrics.dmpm.xx"] = Int64(metrics["dmpm"] ** 2)
+         update["$inc"]["metrics.gpm.x"] = Int64(metrics["gpm"])
+         update["$inc"]["metrics.gpm.xx"] = Int64(metrics["gpm"] ** 2)
 
          if core:
             update["$inc"][f"core.{core}.games"] = 1
@@ -343,7 +405,46 @@ def forward(match, items):
          update["$inc"][f"items.{i+1}.{item}.wins"] = win
 
       bin.append(UpdateOne({ "_id": id }, update, upsert=True))
+   
    return bin
+
+def levels(i):
+   """ 
+   Reduce redundant levels. Sort input in descending and combine the wins & games of lower leveled skillpaths.
+
+   Q: Do I have to manually watch for champs that auto point into an ability such as Azir and Zeri? 
+   A: Yes, their auto skilled ability is not recorded in timeline.
+   """
+   raw = sorted(i[1], key=lambda x: len(x[0]), reverse=True)
+   cleaned = [[raw[0][0], raw[0][1]["games"], raw[0][1]["wins"]]]
+   for o in raw[1:]: #  ('123114222211334334', {'games': 1, 'wins': 0})
+      cleaned_levels = ''.join(sorted(o[0][:3])) + o[0][3:] # Use combinations > permutations for levels 1-3. (112 == 121)
+      push = True
+
+      for x in cleaned:
+         if o[0] in x[0]:
+            x[1] += o[1]["games"]
+            x[2] += o[1]["wins"]
+            push = False
+            break
+
+      if push:
+         cleaned.append([cleaned_levels, o[1]["games"], o[1]["wins"]])
+
+   cleaned.sort(key=lambda x: x[2], reverse=True)
+   return [i[0], cleaned]
+
+def welford_mean(x, k, m_old):
+   return int(m_old + ((x - m_old) / k))
+
+def welford_variance(x, m, m_old, v_old):
+   return int(v_old + (x - m_old) * (x - m))
+
+def init_pool_process(o, d):
+   global GAMES_ARRAY
+   global TEST_DICT
+   GAMES_ARRAY = o
+   TEST_DICT = d
 
 if __name__ == "__main__":
    ChampionParser()
