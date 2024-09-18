@@ -224,10 +224,10 @@ export default {
                </div>
             </div>
             <div>
-               <div class="setting-header">Global*</div>
+               <div class="setting-header">Global</div>
                <div class="setting-content">
                   <div class="message">
-                     *Currently, only global is available. Check <router-link class="about" :to="{ name: 'about' }">about</router-link>
+                     Currently, only global is available. Check <router-link class="about" :to="{ name: 'about' }">about</router-link>
                   </div>
                </div>
             </div>
@@ -363,11 +363,13 @@ export default {
    border-radius: 3px;
    overflow: hidden;
    z-index: 1;
+   padding: 4px 5px;
 }
 
 .setting-content > a {
    display: inline-block;
    cursor: pointer;
+   border-radius: 3px;
    min-width: 45px;
    padding: 6px 10px;
 }

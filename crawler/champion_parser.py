@@ -20,6 +20,7 @@ class ChampionParser():
       collection_list = db.list_collection_names()
       match_collection_name = f"{patch[0]}_matches"
       champion_collection = f"TEST_{patch[0]}_championstats"
+      self.diagnostics = True if os.environ['NODE_ENV'] == 'dev' else False
       self.items = util.get_items()
       self.champions = util.get_champions()
       self.batch_size = 10 # Number of match documents in a batch. Care bear: 1 match = 10 champions, so bulk_writing to 100 champion documents for a 10 batch size
@@ -33,11 +34,9 @@ class ChampionParser():
       if "meta" in collection_list:
          meta_collection = db["meta"]
          if meta_collection.find_one({ "_id": "crawler" })["patch"] != patch:
-            meta_collection.update_one({ "_id": "crawler" }, { "$set": {"patch": patch, "champ_parse_index": 0} })
-            self.index = 0
+            meta_collection.update_one({ "_id": "crawler" }, { "$set": {"patch": patch} })
             self.trail = None
          else:
-            self.index = meta_collection.find_one({ "_id": "crawler" })["champ_parse_index"]
             self.trail = meta_collection.find_one({ "_id": "crawler" })["trail"]
       self.query = {} if self.trail is None else { '_id': { "$gt": self.trail } }
       print("Starting champion parser")

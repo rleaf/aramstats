@@ -44,6 +44,9 @@ export default {
 
       getSecondaryRune() {
          return new URL(`../assets/runes/${this.data.sr}.png`, import.meta.url).href
+      },
+      kdar() {
+         return `${((this.data.k + this.data.a) / this.data.d).toFixed(2)}`
       }
 
    },
@@ -87,6 +90,9 @@ export default {
          <div class="match-rhs">
             <div> <!-------- KDA ----------->
                {{ `${this.data.k}/${this.data.d}/${this.data.a}` }}
+               <span class="sub">
+                  {{ this.kdar }}
+               </span>
             </div>
             <div> <!-------- KP ------------>
                {{ Math.round(this.data.kp * 100) }}%

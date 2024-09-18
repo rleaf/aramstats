@@ -33,7 +33,8 @@ export default {
          summonerStore: summonerStore(),     // Store for summoner settings
          names: _names,                      // Constant names to map championId to name
          championFilter: '',                 // Filter for table champion search 
-         sortFilter: null,                   // Determine if sort is active
+         sortFilter: 0,                      // Determine if sort is active
+         sortMod: false,                     // Determine if sort by PER MINUTE variant
          toggleState: false,                 // Determine if toggle all button has been clicked
          descending: false,                  // Determine if sort is in descending
          moduleStats: false,                 // Determine if module stats window is active
@@ -55,7 +56,7 @@ export default {
    
    methods: {
       championSearchFocus(e) {
-         if (e.key !== 's' || document.activeElement === this.$refs.championSearch || this.superStore.focus) return
+         if (e.key !== 's' || document.activeElement === this.$refs.championSearch || this.superStore.focus || this.superStore.navContainerFocus) return
 
          e.preventDefault()
          this.$refs.championSearch.focus()
@@ -129,45 +130,76 @@ export default {
    },
    
    computed: {
+      sortTable() {
+         return ['Games', ...this.lhsHeaders, ...this.rhsHeaders]
+      },
 
       filteredChampions() {
          return this.data.championData.filter(c => this.names.urlName[c.championId].toLowerCase().includes(this.championFilter.toLowerCase()))
       },
       
       sortedChampions() {
-         switch (this.sortFilter) {
-            case 0:
-               return (this.descending) ? this.filteredChampions.sort((a, b) => this.names.urlName[b.championId].localeCompare(this.names.urlName[a.championId])) : 
-                  this.filteredChampions.sort((a, b) => this.names.urlName[a.championId].localeCompare(this.names.urlName[b.championId]))
-            case 1:
-               return (this.descending) ? this.filteredChampions.sort((a, b) => (a.wins / a.games) - (b.wins / b.games)) : 
-                  this.filteredChampions.sort((a, b) => (b.wins / b.games) - (a.wins / a.games))
-            case 2:
-               return (this.descending) ? this.filteredChampions.sort((a, b) => ((a.avg.k + a.avg.a) / a.avg.d) - ((b.avg.k + b.avg.a) / b.avg.d)) :
-                  this.filteredChampions.sort((a, b) => ((b.avg.k + b.avg.a) / b.avg.d) - ((a.avg.k + a.avg.a) / a.avg.d))
-            case 3:
-               return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.kp) - (b.avg.kp)) :
-                  this.filteredChampions.sort((a, b) => (b.avg.kp) - (a.avg.kp))
-            case 4:
-               return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.tdd) - (b.avg.tdd)) :
-                  this.filteredChampions.sort((a, b) => (b.avg.tdd) - (a.avg.tdd))
-            case 5:
-               return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.tdt) - (b.avg.tdt)) :
-                  this.filteredChampions.sort((a, b) => (b.avg.tdt) - (a.avg.tdt))
-            case 6:
-               return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.tsm) - (b.avg.tsm)) :
-                  this.filteredChampions.sort((a, b) => (b.avg.tsm) - (a.avg.tsm))
-            case 7:
-               return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.th) - (b.avg.th)) :
-                  this.filteredChampions.sort((a, b) => (b.avg.th) - (a.avg.th))
-            case 8:
-               return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.ah) - (b.avg.ah)) :
-                  this.filteredChampions.sort((a, b) => (b.avg.ah) - (a.avg.ah))
-            case 9:
-               return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.ge) - (b.avg.ge)) :
-                  this.filteredChampions.sort((a, b) => (b.avg.ge) - (a.avg.ge))
-            default:
-               return this.filteredChampions.sort((a, b) => (b.games) - (a.games))
+         if (this.sortMod) {
+            switch (this.sortFilter) {
+              case 5:
+                  return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.dpm) - (b.avg.dpm)) :
+                     this.filteredChampions.sort((a, b) => (b.avg.dpm) - (a.avg.dpm))
+               case 6:
+                  return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.dtpm) - (b.avg.dtpm)) :
+                     this.filteredChampions.sort((a, b) => (b.avg.dtpm) - (a.avg.dtpm))
+               case 7:
+                  return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.smpm) - (b.avg.smpm)) :
+                     this.filteredChampions.sort((a, b) => (b.avg.smpm) - (a.avg.smpm))
+               case 8:
+                  return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.hpm) - (b.avg.hpm)) :
+                     this.filteredChampions.sort((a, b) => (b.avg.hpm) - (a.avg.hpm))
+               case 9:
+                  return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.ahpm) - (b.avg.ahpm)) :
+                     this.filteredChampions.sort((a, b) => (b.avg.ahpm) - (a.avg.ahpm))
+               case 10:
+                  return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.gpm) - (b.avg.gpm)) :
+                     this.filteredChampions.sort((a, b) => (b.avg.gpm) - (a.avg.gpm))
+               default:
+                  return this.filteredChampions.sort((a, b) => (b.games) - (a.games)) 
+            }
+         } else {
+            switch (this.sortFilter) {
+               case 0:
+                  return (this.descending) ? this.filteredChampions.sort((a, b) => (a.games) - (b.games)) :
+                     this.filteredChampions.sort((a, b) => (b.games) - (a.games))
+               case 1:
+                  return (this.descending) ? this.filteredChampions.sort((a, b) => this.names.urlName[b.championId].localeCompare(this.names.urlName[a.championId])) : 
+                     this.filteredChampions.sort((a, b) => this.names.urlName[a.championId].localeCompare(this.names.urlName[b.championId]))
+               case 2:
+                  return (this.descending) ? this.filteredChampions.sort((a, b) => (a.wins / a.games) - (b.wins / b.games)) : 
+                     this.filteredChampions.sort((a, b) => (b.wins / b.games) - (a.wins / a.games))
+               case 3:
+                  return (this.descending) ? this.filteredChampions.sort((a, b) => ((a.avg.k + a.avg.a) / a.avg.d) - ((b.avg.k + b.avg.a) / b.avg.d)) :
+                     this.filteredChampions.sort((a, b) => ((b.avg.k + b.avg.a) / b.avg.d) - ((a.avg.k + a.avg.a) / a.avg.d))
+               case 4:
+                  return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.kp) - (b.avg.kp)) :
+                     this.filteredChampions.sort((a, b) => (b.avg.kp) - (a.avg.kp))
+               case 5:
+                  return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.tdd) - (b.avg.tdd)) :
+                     this.filteredChampions.sort((a, b) => (b.avg.tdd) - (a.avg.tdd))
+               case 6:
+                  return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.tdt) - (b.avg.tdt)) :
+                     this.filteredChampions.sort((a, b) => (b.avg.tdt) - (a.avg.tdt))
+               case 7:
+                  return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.tsm) - (b.avg.tsm)) :
+                     this.filteredChampions.sort((a, b) => (b.avg.tsm) - (a.avg.tsm))
+               case 8:
+                  return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.th) - (b.avg.th)) :
+                     this.filteredChampions.sort((a, b) => (b.avg.th) - (a.avg.th))
+               case 9:
+                  return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.ah) - (b.avg.ah)) :
+                     this.filteredChampions.sort((a, b) => (b.avg.ah) - (a.avg.ah))
+               case 10:
+                  return (this.descending) ? this.filteredChampions.sort((a, b) => (a.avg.ge) - (b.avg.ge)) :
+                     this.filteredChampions.sort((a, b) => (b.avg.ge) - (a.avg.ge))
+               default:
+                  return this.filteredChampions.sort((a, b) => (b.games) - (a.games))
+            }
          }
       },
 
@@ -761,22 +793,40 @@ export default {
                         Press <kbd>s</kbd> to search
                      </span>
                   </div>
-                  <div class="toggle" style="margin-left: auto;">
+                  <div class="rhs-utility" style="margin-left: auto;">
+                     <div class="champion-sort">
+                        <!-- <span class="superscript">Sorting by: {{ this.sortTable[this.sortFilter] + (this.sortMod ? ' Per Minute' : '') }}</span> -->
+                        <span class="superscript">Sorting by{{ this.sortMod ? ' per minute:' : ':' }}</span>
+                        <div>
+                           <button>{{ this.sortTable[this.sortFilter] }}</button>
+                           <div class="champion-sort-options">
+                              <div v-for="(o, i) in this.sortTable" :key="i">
+                                 <span @click="this.sortFilter = i; this.sortMod = false">{{ o }}</span>
+                                 <span v-if="i > 4" @click="this.sortFilter = i; this.sortMod = true">/m</span>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <button class="asc-des-button" @click="this.descending = !this.descending">
+                        <svg width="18" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                           <rect class="asc-des" x="2" y="8" :width="this.descending ? '6' : '18'" height="2" />
+                           <rect class="asc-des" x="2" y="13" width="11" height="2" />
+                           <rect class="asc-des" x="2" y="18" :width="this.descending ? '18' : '6'" height="2" />
+                        </svg>
+                     </button>
                      <button :class="{ 'active': this.toggleState }" @click="this.toggleAll()">Toggle All</button>
                   </div>
                   <UXTooltip :align="'right'" :tip="'championsTable'"/>
                </div>
                <div class="table-headers">
                   <div class="lhs">
-                     <div @click="this.sort(i)" v-for="(h, i) in lhsHeaders" :key="i">
+                     <div :class="{ 'sort-focus' : this.sortFilter === i + 1 }" v-for="(h, i) in lhsHeaders" :key="i">
                         {{ h }}
-                        <hr v-show="this.sortFilter === i" :class="{ 'descending': this.descending }">
                      </div>
                   </div>
                   <div class="rhs">
-                     <div @click="this.sort(i+2)" v-for="(h, i) in rhsHeaders" :key="i">
+                     <div :class="{ 'sort-focus' : this.sortFilter === i + 3 }" v-for="(h, i) in rhsHeaders" :key="i">
                         {{ h }}
-                        <hr v-show="this.sortFilter === i+2" :class="{ 'descending': this.descending }">
                      </div>
                   </div>
                </div>
@@ -1182,7 +1232,11 @@ button.active-update {
 .utility {
    display: flex;
    align-items: center;
-   margin-bottom: 15px;
+   margin-bottom: 10px;
+}
+
+.utility > *:not(.rhs-utility) {
+   margin-bottom: 5px;
 }
 
 .utility div:first-child {
@@ -1249,7 +1303,6 @@ button.active {
 }
 
 .lhs div, .rhs div {
-   cursor: pointer;
    line-height: 30px;
 }
 
@@ -1324,7 +1377,7 @@ circle.toggle-all {
    fill: var(--color-font);
 } */
 
-.toggle {
+.rhs-utility {
    display: flex;
    align-items: center;
    -webkit-touch-callout: none;
@@ -1335,11 +1388,86 @@ circle.toggle-all {
    user-select: none;
 }
 
-.toggle span {
+.rhs-utility > *:not(.champion-sort) {
+   margin-bottom: 5px;
+}
+
+.champion-sort {
    font-size: 0.8rem;
    color: var(--color-font-faded);
-   padding-right: 5px;
+}
+
+.rhs-utility span {
+   font-size: 0.8rem;
+   color: var(--color-font-faded);
    transition: color 0.3s cubic-bezier(.25, .52, .64, .84);
+}
+
+.champion-sort .superscript {
+   text-wrap: nowrap;
+   position: absolute;
+   transform: translateY(-1.1rem);
+   font-size: 0.75rem;
+}
+
+.champion-sort button {
+   min-width: 100px;
+   /* padding: 0; */
+   margin-bottom: 5px;
+}
+
+.champion-sort-options {
+   display: none;
+   position: absolute;
+   flex-direction: column;
+   background: var(--surface);
+   padding: 4px 5px;
+   border-radius: 3px;
+   border: 1px solid var(--outline-variant);
+}
+
+.champion-sort-options div {
+   display: flex;
+   gap: 5px;
+}
+
+.champion-sort-options span:first-child {
+   width: 85px;
+}
+
+.champion-sort-options span:last-child {
+   font-size: 0.8rem;
+}
+
+.champion-sort-options span {
+   padding: 5px 8px;
+   cursor: pointer;
+   transition: 100ms ease-in-out;
+   border-radius: 3px;
+   color: var(--color-font);
+}
+
+.champion-sort > div:hover .champion-sort-options {
+   display: flex;
+}
+
+.champion-sort-options span:hover {
+   background: var(--surface-container-highest);
+   /* padding: 6px 10px;
+   cursor: pointer; */
+}
+
+.sort-focus {
+   color: var(--primary);
+}
+
+.asc-des {
+   fill: var(--color-font);
+   transition: 500ms ease-out;
+}
+
+button.asc-des-button {
+   padding: 0 5px;
 }
 
 span.toggled {

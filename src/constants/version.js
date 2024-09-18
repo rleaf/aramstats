@@ -13,6 +13,25 @@
   
   const version = [
    {
+      version: "3.10.0",
+      date: "9/18/24",
+      notes: `Although this update is geared towards UX improvements for the Summoner Page, I've done some prep for proceeding updates. In 3.9.0 I talk about how the 'Champions Page' is a litle ugly because I intend to add more stuff to it. Some of the stuff I've done as of now is compute the sample mean & variance for what I'll be referring to as the main stats for every champion: "damage per minute", "self mitigated per minute", "damage taken per minute", and "gold per minute". I won't be doing the third/fourth moments as I'm feelycrafting the distributions to be symmetric. You can probably expect these stats in 3.11.0.`,
+      add: [
+         `Improved champion sorting UX on summoner profiles. There is increased clarity on how the table is sorted and more options for sorting (you can now sort by a 'per minute' stat).`,
+         `Show KDA ratio beneath K/D/A champion & match rows on summoner page: ((K + A) / D).`,
+         `** Sample Mean & Sample Variance. Check notes above. **`,
+      ],
+      remove: [],
+      fix: [
+         `Nav search event listener interfering with champion table search event listener on summoner pages. Now when the nav search is focused, pressing S will not re-focus towards the champion table search.`
+      ],
+      adjust: [
+         `Only go back to 5 most recent patches for Champion page.`,
+         `Styles.`
+      ],
+      known: [],
+   }, 
+   {
       version: "3.9.3",
       date: "9/4/24",
       notes: ``,

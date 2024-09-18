@@ -5,7 +5,7 @@ export default {
    data() {
       return {
          store: superStore(),
-         containerFocus: false,
+         // containerFocus: false,
          step: -1,
          input: '',
          region: 'RG',
@@ -48,7 +48,7 @@ export default {
             return
          }
 
-         if (!(e.key === 'ArrowDown' || e.key === 'ArrowUp') || !this.containerFocus) return
+         if (!(e.key === 'ArrowDown' || e.key === 'ArrowUp') || !this.store.navContainerFocus) return
          e.preventDefault()
 
          if (this.filteredChamps.length) {
@@ -80,7 +80,7 @@ export default {
       blurInput() {
          this.$refs.input.blur()
          this.input = ''
-         this.containerFocus = false
+         this.store.navContainerFocus = false
       },
 
       regionSelect() {
@@ -97,7 +97,7 @@ export default {
 
          if (this.filteredChamps[this.step]) {
             this.$router.push({ name: 'champions', params: {champion: this.filteredChamps[this.step].back}})
-            this.containerFocus = false
+            this.store.navContainerFocus = false
             this.input = ''
             this.$refs.input.blur()
             return
@@ -121,7 +121,7 @@ export default {
             tagLine: _tagLine
          }})
 
-         this.containerFocus = false
+         this.store.navContainerFocus = false
          this.input = ''
          this.$refs.input.blur()
       },
@@ -141,10 +141,10 @@ export default {
 
 <template>
    <div>
-      <div class="nav-search" :class="{ focus: this.containerFocus }">
+      <div class="nav-search" :class="{ focus: this.store.navContainerFocus }">
          <div>
             <input ref="input" type="text" spellcheck="false" autocomplete="off"
-            @focus="this.containerFocus = true"
+            @focus="this.store.navContainerFocus = true"
             @keyup.enter="this.summonerSearch()"
             @keyup.esc="this.blurInput()"
             v-model="input">
@@ -162,7 +162,7 @@ export default {
             <option v-for="region in Object.keys(this.table)" :value="region" :key="region">{{ region.toUpperCase() }}</option>
          </select>
       </div>
-      <div class="champion-search" v-show="this.containerFocus && this.filteredChamps.length">
+      <div class="champion-search" v-show="this.store.navContainerFocus && this.filteredChamps.length">
          <div class="search-ux">
             <div>
                <kbd>↑</kbd> up <kbd>↓</kbd> down <kbd>Enter</kbd> search
@@ -180,7 +180,7 @@ export default {
             </router-link>
          </div>
       </div>
-      <div class="back" @click="this.containerFocus = false" v-if="this.containerFocus"></div>
+      <div class="back" @click="this.store.navContainerFocus = false" v-if="this.store.navContainerFocus"></div>
    </div>
 </template>
 

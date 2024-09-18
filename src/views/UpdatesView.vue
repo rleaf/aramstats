@@ -43,7 +43,7 @@ export default {
                      <li v-for="a in u.links"><a :href="a[1]" target="_blank">{{ a[0] }}</a></li>
                   </ul>
                </div>
-               <img v-if="u.img" :src="getImage(u.img)" alt="">
+               <img v-if="u.img && u.img.length" :src="getImage(u.img)" alt="">
                <p class="sub" v-if="u.imgCaption">{{ u.imgCaption }}</p>
             </div>
          </div>
@@ -101,7 +101,7 @@ export default {
 .notes p {
    color: var(--color-font-faded);
    font-size: 0.93rem;
-   line-height: 1.3;
+   line-height: 1.5;
    margin-bottom: 2rem;
 }
 

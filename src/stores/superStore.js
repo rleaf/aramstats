@@ -8,7 +8,7 @@ export const superStore = defineStore('super', {
          champions: [],          // Array of champions for search bars. Initialized in App.vue
          focus: false,           // Boolean to determine if nav search bar is focused.
          notification: '',       // Notifacation message
-         patches: null,          // Array of 10 most recent patches
+         patches: null,          // Array of 5 most recent patches
          championCDN: null,      // (CDN) Champion on most recent patch
          items: null,            // (CDN) Items on most recent patch
          runes: null,            // (CDN) Runes on most recent patch
@@ -23,6 +23,7 @@ export const superStore = defineStore('super', {
             runeTree: null,
             runeRow: null,
          },
+         navContainerFocus: false, // Boolean to determine if nav search bar is focused.
       }
    },
    actions: {
@@ -72,7 +73,7 @@ export const superStore = defineStore('super', {
          if (!this.patches) {
             try {
                const url = 'https://ddragon.leagueoflegends.com/api/versions.json'
-               this.patches = (await axios.get(url)).data.slice(0, 10)
+               this.patches = (await axios.get(url)).data.slice(0, 5)
             } catch (e) {
                if (e instanceof Error) console.log(e)
             }

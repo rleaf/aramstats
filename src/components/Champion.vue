@@ -89,6 +89,10 @@ export default {
          return this.data.matches.sort((a, b) => (b.gc) - (a.gc))
       },
 
+      kdar() {
+         return `${((this.data.avg.k + this.data.avg.a) / this.data.avg.d).toFixed(2)}`
+      }
+
    },
 
    props: {
@@ -121,6 +125,9 @@ export default {
       <div class="rhs">
          <div class="kda">
             {{ this.data.avg.k }}/{{ this.data.avg.d }}/{{ this.data.avg.a }}
+            <div class="per-minute-sub">
+               {{ this.kdar }}
+            </div>
          </div>
          <div class="kp">
             {{ this.data.avg.kp }}%
