@@ -14,15 +14,18 @@
   const version = [
    {
       version: "3.11.0",
-      date: "9/19/24",
-      notes: ``,
+      date: "9/20/24",
+      notes: `Peep 3.11.0 update. Everything in 'Added' is for the Champions List Page.`,
       add: [
-         `Damage per Minute (DPM), Self Mitigated per Minute (SMPM), Damage Taken per Minute (DTPM), and Gold Per Minute (GPM) first and second central moments to Tierlist page.`,
+         `Damage per Minute (DPM), Self Mitigated per Minute (SMPM), Damage Taken per Minute (DTPM), and Gold Per Minute (GPM) first and second central moments to Champions List Page.`,
+         `Patch selection (tentative).`,
+         `Buttons for sorting UX.`,
       ],
       remove: [],
       fix: [],
       adjust: [
-         `Tierlist page UI.`
+         `Champions List UI update.`,
+         `Summoner Page table headers are clickable & sticky. Still have to use the button to see per minute variant.`
       ],
       known: [],
    }, 

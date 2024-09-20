@@ -26,6 +26,7 @@ export default {
          descending: false,
          metricSort: false,
          mean: false,
+         patchParam: '',
       }
    },
 
@@ -47,11 +48,9 @@ export default {
    },
    
    methods: {
-      // sortBy(sort, metricSort = false, mean = false) {
-      //    this.sort = sort
-      //    this.metricSort = metricSort
-      //    this.mean = mean
-      // },
+      patchChange(patch) {
+         this.$router.push({ query: { patch: this.cleanPatch(patch) } })
+      },
 
       computeSampleMean(o, g) {
          if (!o) return '-'
@@ -69,7 +68,9 @@ export default {
 
       lookup() {
          const url = `/api/championsList`
-         axios.get(url).then(res => {
+         this.patchParam = new URLSearchParams(window.location.search).get('patch')
+
+         axios.get(url, {params: { patch: this.patchParam }}).then(res => {
             this.champions = res.data
             this.computeWinrates()
          }).catch(e => {
@@ -89,18 +90,17 @@ export default {
             }
             
             delete c.metrics
-
             if (c.winrate > this.winrates.max) this.winrates.max = c.winrate
             if (c.winrate < this.winrates.min) this.winrates.min = c.winrate
          }
-
+         
          // this.winrates is for the lerp homie.
          this.winrates.delta = this.winrates.max - this.winrates.min
       },
 
       headerSort(sort) {
          if (sort === this.sort) {
-            this.sortOrder = this.sortOrder * -1
+            this.descending = !this.descending
          } else {
             this.sort = sort
          }
@@ -192,28 +192,28 @@ export default {
                case 3:
                   return (this.descending) ? this.champions.sort((a, b) => (a.pickRate) - (b.pickRate)) :
                      this.champions.sort((a, b) => (b.pickRate) - (a.pickRate))
-               case 4:
+               case 4 && this.champions[0].dpm:
                   return (this.descending) ? this.champions.sort((a, b) => (a.dpm.m) - (b.dpm.m)) :
                      this.champions.sort((a, b) => (b.dpm.m) - (a.dpm.m))
-               case 5:
+               case 5 && this.champions[0].dpm:
                   return (this.descending) ? this.champions.sort((a, b) => (a.dpm.v) - (b.dpm.v)) :
                      this.champions.sort((a, b) => (b.dpm.v) - (a.dpm.v))
-               case 6:
+               case 6 && this.champions[0].dtpm:
                   return (this.descending) ? this.champions.sort((a, b) => (a.dtpm.m) - (b.dtpm.m)) :
                      this.champions.sort((a, b) => (b.dtpm.m) - (a.dtpm.m))
-               case 7:
+               case 7 && this.champions[0].dtpm:
                   return (this.descending) ? this.champions.sort((a, b) => (a.dtpm.v) - (b.dtpm.v)) :
                      this.champions.sort((a, b) => (b.dtpm.v) - (a.dtpm.v))
-               case 8:
+               case 8 && this.champions[0].dmpm:
                   return (this.descending) ? this.champions.sort((a, b) => (a.dmpm.m) - (b.dmpm.m)) :
                      this.champions.sort((a, b) => (b.dmpm.m) - (a.dmpm.m))
-               case 9:
+               case 9 && this.champions[0].dmpm:
                   return (this.descending) ? this.champions.sort((a, b) => (a.dmpm.v) - (b.dmpm.v)) :
                      this.champions.sort((a, b) => (b.dmpm.v) - (a.dmpm.v))
-               case 10:
+               case 10 && this.champions[0].gpm:
                   return (this.descending) ? this.champions.sort((a, b) => (a.gpm.m) - (b.gpm.m)) :
                      this.champions.sort((a, b) => (b.gpm.m) - (a.gpm.m))
-               case 11:
+               case 11 && this.champions[0].gpm:
                   return (this.descending) ? this.champions.sort((a, b) => (a.gpm.v) - (b.gpm.v)) :
                      this.champions.sort((a, b) => (b.gpm.v) - (a.gpm.v))
                default:
@@ -231,13 +231,15 @@ export default {
       <div class="utilities">
 
          <div class="patch-wrapper">
-            <button class="patch-button">Patch</button>
+            <span class="superscript">Patch:</span>
+            <button class="patch-button">{{ this.patchParam || this.cleanPatch(this.patch) }}</button>
             <div class="patch-options">
-               <button @click="this.patch = patch" v-for="patch in this.store.patches" :key="patch">{{ this.cleanPatch(patch) }}</button>
+               <button @click="this.patchChange(patch)" v-for="patch in this.store.patches" :key="patch">{{ this.cleanPatch(patch) }}</button>
             </div>
          </div>
 
          <div class="sort-wrapper">
+            <span class="superscript">Sorting by:</span>
             <button v-if="this.sort < 4" class="sort-button">{{ this.headers[this.sort][0] }}</button>
             <button v-else class="sort-button">{{ this.headersExtended(this.sort) }}</button>
             <div class="sort-options">
@@ -266,24 +268,24 @@ export default {
             <div v-for="(h, i) in this.headers" :key="i">
                <div v-if="i < 4">
                   <h2 :class="{'highlight': this.sort === i}"
-                     @click="this.sort = i">{{ h[0] }}</h2>
+                     @click="this.headerSort(i)">{{ h[0] }}</h2>
                </div>
                <div v-else class="metrics">
                   <div>
-                     <h3 @click="this.headerSort(h[1])">{{ h[0] }}</h3>
+                     <h3 @click="this.headerSort(i)">{{ h[0] }}</h3>
                      <hr>
                   </div>
                   <div>
                      <h2 :class="{'highlight': this.sort === (Math.floor(i / 4) - 1) * 4 + i + (i % 4)}"
-                        @click="this.sort = (Math.floor(i / 4) - 1) * 4 + i + (i % 4)">µ</h2>
+                        @click="this.headerSort((Math.floor(i / 4) - 1) * 4 + i + (i % 4))">µ</h2>
                      <h2 :class="{'highlight': this.sort === (Math.floor(i / 4) - 1) * 4 + i + (i % 4) + 1}"
-                        @click="this.sort = (Math.floor(i / 4) - 1) * 4 + i + (i % 4) + 1">σ</h2>
+                        @click="this.headerSort((Math.floor(i / 4) - 1) * 4 + i + (i % 4) + 1)">σ</h2>
                   </div>
                </div>
             </div>
          </div>
          <div :class="{'o': i % 2 === 0}" class="champion" v-for="(champ, i) in getChampionsList" :key="i">
-            <div>
+            <div class="index">
                {{ i+1 }}
             </div>
             <div>
@@ -307,20 +309,20 @@ export default {
                {{ champ.pickRate }}%
             </div>
             <div class="metric-value">
-               <span>{{ champ.dpm.m }}</span>
-               <span>{{ champ.dpm.v }}</span>
+               <span>{{ (champ.dpm) ? champ.dpm.m : '-' }}</span>
+               <span>{{ (champ.dpm) ? champ.dpm.v : '-' }}</span>
             </div>
             <div class="metric-value">
-               <span>{{ champ.dtpm.m }}</span>
-               <span>{{ champ.dtpm.v }}</span>
+               <span>{{ (champ.dtpm) ? champ.dtpm.m : '-' }}</span>
+               <span>{{ (champ.dtpm) ? champ.dtpm.v : '-' }}</span>
             </div>
             <div class="metric-value">
-               <span>{{ champ.dmpm.m }}</span>
-               <span>{{ champ.dmpm.v }}</span>
+               <span>{{ (champ.dmpm) ? champ.dmpm.m : '-' }}</span>
+               <span>{{ (champ.dmpm) ? champ.dmpm.v : '-' }}</span>
             </div>
             <div class="metric-value">
-               <span>{{ champ.gpm.m }}</span>
-               <span>{{ champ.gpm.v }}</span>
+               <span>{{ (champ.gpm) ? champ.gpm.m : '-' }}</span>
+               <span>{{ (champ.gpm) ? champ.gpm.v : '-' }}</span>
             </div>
          </div>
       </div>
@@ -401,6 +403,14 @@ export default {
       margin-bottom: 5px;
    }
 
+   .superscript {
+      color: var(--color-font-faded);
+      position: absolute;
+      font-size: 0.75rem;
+      transform: translateY(-1.1rem);
+      text-wrap: nowrap;
+   }
+
    .patch-options button, .sort-options button {
       border: none;
       display: inline-block;
@@ -455,7 +465,7 @@ export default {
       display: flex;
       padding-left: 20px;
       align-items: center;
-      height: 43px;
+      height: 40px;
       border-radius: 3px;
       font-size: 0.85rem;
    }
@@ -476,8 +486,8 @@ export default {
    }
 
    .image-wrapper {
-      height: 32px;
-      width: 32px;
+      height: 30px;
+      width: 30px;
       margin-right: 10px;
       overflow: hidden;
       border: 1px solid var(--outline-variant);

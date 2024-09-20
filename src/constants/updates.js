@@ -12,6 +12,24 @@
 
 const updates = [
    {
+      title: "Updated Champions List Page",
+      version: "3.11.0",
+      date: "9/20/24",
+      body: [
+         `I've been calling it a lot of things, but I'm talking about the page when you click 'Champions' in the nav bar. In this update, I'll be calling it the Champions List Page. A little verbose, but it's not really a "Tierlist" and calling it the "Champions" page sounds too similar to "Champion" page which is the page when you search a champion.`,
+         `I've redesigned the Champions List Page to show data that provides more quantitative metrics for champions. Specifically, I've (so far) added the sample mean and standard deviation for damage per minute, damage taken per minute, self mitigated damage per minute, and gold per minute. A potential drawback however is, because I'm multiprocessing, I am using the sum of squares method to compute these moments versus something more ideal like the Welford method; sum of squares is known to be numerically unstable when working with big ass numbers. With my current rate limit & speeds I don't *believe* I will encounter these issues, however I'll be keeping an eye out for them.`,
+         `Some things tentative about the page currently:`,
+         `1. Patch selection. I may remove this to be conservative with hardware.`,
+         `2. Data Vis. I originally planned to add eye candy by showing gaussians for all the stats. Since I'm already computing the parameters for them I figured "why not?". After thinking about it more however, I'm not confident enough in the sampled distributions to assume them gaussian - and so the eye candy is on the back burner until I test for normality.`,
+         `3. Datums. The four datums (DPM, DTPM, SMPM, and GPM) are pretty specific, and depending on interpretation, *too* specific. For instance, enchanter heavy players are left behind with no information on ally healing per minute and a lot of tanks have healing built into their kits, but there's no healing per minute. I do plan to add these specific stats (AHPM & HPM), but I want to start small and gradually increase. I am thinking of neato stats outside of the "per minute" domain as well.`,
+      ],
+      links: [
+         
+      ],
+      img: [], // Expected webp format
+      imgCaption: ""
+   },
+   {
       title: "🎉 New Summoner UI is out 🎉",
       version: "3.5.0",
       date: "4/30/24",

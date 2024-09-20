@@ -55,6 +55,17 @@ export default {
    },
    
    methods: {
+      headerSort(i) {
+         if (this.sortFilter === i) {
+            this.descending = !this.descending
+         } else {
+            this.sortFilter = i
+         }
+
+         this.sortMod = false
+         // this.sortFilter = i; this.sortMod = false
+      },
+
       championSearchFocus(e) {
          if (e.key !== 's' || document.activeElement === this.$refs.championSearch || this.superStore.focus || this.superStore.navContainerFocus) return
 
@@ -785,52 +796,50 @@ export default {
 
          <div class="rhs-body">
             <Heatmap :data="this.data.championData" />
-            <div class="champions-panel-header">
-               <div class="utility">
-                  <div>
-                     <input ref="championSearch" @keyup.escape="this.$refs.championSearch.blur()" @click="this.championFilter = ''" type="text" v-model="this.championFilter" spellcheck="false">
-                     <span v-show="!this.championFilter.length" class="keyboard-shortcut">
-                        Press <kbd>s</kbd> to search
-                     </span>
-                  </div>
-                  <div class="rhs-utility" style="margin-left: auto;">
-                     <div class="champion-sort">
-                        <!-- <span class="superscript">Sorting by: {{ this.sortTable[this.sortFilter] + (this.sortMod ? ' Per Minute' : '') }}</span> -->
-                        <span class="superscript">Sorting by{{ this.sortMod ? ' per minute:' : ':' }}</span>
-                        <div>
-                           <button>{{ this.sortTable[this.sortFilter] }}</button>
-                           <div class="champion-sort-options">
-                              <div v-for="(o, i) in this.sortTable" :key="i">
-                                 <span @click="this.sortFilter = i; this.sortMod = false">{{ o }}</span>
-                                 <span v-if="i > 4" @click="this.sortFilter = i; this.sortMod = true">/m</span>
-                              </div>
+            <!-- <div class="champions-panel-header">
+            </div> -->
+            <div class="utility">
+               <div>
+                  <input ref="championSearch" @keyup.escape="this.$refs.championSearch.blur()" @click="this.championFilter = ''" type="text" v-model="this.championFilter" spellcheck="false">
+                  <span v-show="!this.championFilter.length" class="keyboard-shortcut">
+                     Press <kbd>s</kbd> to search
+                  </span>
+               </div>
+               <div class="rhs-utility" style="margin-left: auto;">
+                  <div class="champion-sort">
+                     <span class="superscript">Sorting by{{ this.sortMod ? ' per minute:' : ':' }}</span>
+                     <div>
+                        <button>{{ this.sortTable[this.sortFilter] }}</button>
+                        <div class="champion-sort-options">
+                           <div v-for="(o, i) in this.sortTable" :key="i">
+                              <span @click="this.sortFilter = i; this.sortMod = false">{{ o }}</span>
+                              <span v-if="i > 4" @click="this.sortFilter = i; this.sortMod = true">/m</span>
                            </div>
                         </div>
                      </div>
-                     <button class="asc-des-button" @click="this.descending = !this.descending">
-                        <svg width="18" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                           <rect class="asc-des" x="2" y="8" :width="this.descending ? '6' : '18'" height="2" />
-                           <rect class="asc-des" x="2" y="13" width="11" height="2" />
-                           <rect class="asc-des" x="2" y="18" :width="this.descending ? '18' : '6'" height="2" />
-                        </svg>
-                     </button>
-                     <button :class="{ 'active': this.toggleState }" @click="this.toggleAll()">Toggle All</button>
                   </div>
-                  <UXTooltip :align="'right'" :tip="'championsTable'"/>
+                  <button class="asc-des-button" @click="this.descending = !this.descending">
+                     <svg width="18" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect class="asc-des" x="2" y="8" :width="this.descending ? '6' : '18'" height="2" />
+                        <rect class="asc-des" x="2" y="13" width="11" height="2" />
+                        <rect class="asc-des" x="2" y="18" :width="this.descending ? '18' : '6'" height="2" />
+                     </svg>
+                  </button>
+                  <button :class="{ 'active': this.toggleState }" @click="this.toggleAll()">Toggle All</button>
                </div>
-               <div class="table-headers">
-                  <div class="lhs">
-                     <div :class="{ 'sort-focus' : this.sortFilter === i + 1 }" v-for="(h, i) in lhsHeaders" :key="i">
-                        {{ h }}
-                     </div>
-                  </div>
-                  <div class="rhs">
-                     <div :class="{ 'sort-focus' : this.sortFilter === i + 3 }" v-for="(h, i) in rhsHeaders" :key="i">
-                        {{ h }}
-                     </div>
+               <UXTooltip :align="'right'" :tip="'championsTable'"/>
+            </div>
+            <div class="table-headers">
+               <div class="lhs">
+                  <div @click="this.headerSort(i+1)" :class="{ 'sort-focus' : this.sortFilter === i + 1 }" v-for="(h, i) in lhsHeaders" :key="i">
+                     {{ h }}
                   </div>
                </div>
-               <hr>
+               <div class="rhs">
+                  <div @click="this.headerSort(i+3)" :class="{ 'sort-focus' : this.sortFilter === i + 3 }" v-for="(h, i) in rhsHeaders" :key="i">
+                     {{ h }}
+                  </div>
+               </div>
             </div>
             <div class="champions">
                <Champion
@@ -1167,55 +1176,28 @@ button.active-update {
    background: var(--blue-side);
 }
 
-/* svg {
-   width: 100%;
-   height: 20px;
-   overflow: hidden;
-   cursor: pointer;
-   -webkit-touch-callout: none;
-   -webkit-user-select: none;
-   -khtml-user-select: none;
-   -moz-user-select: none;
-   -ms-user-select: none;
-   user-select: none;
-} */
-
-/* rect {
-   width: calc(100% - 1px);
-   height: calc(100% - 1px);
-   stroke: var(--light-10);
-} */
-
 .rhs-body {
    flex: 0 0 800px;
 }
 
-.champions-panel-header .table-headers {
-   /* background: rgba(255, 255, 255, 0.05); */
+.table-headers {
+   position: sticky;
+   padding-top: 2vh;
+   background: var(--surface);
+   top: 0;
    display: flex;
    font-size: 0.8rem;
+   z-index: 2;
    align-items: center;
    justify-content: space-between;
    height: 30px;
-   /* margin-bottom: 4px; */
-   /* border-bottom: 1px solid var(--outline-variant); */
-   /* border-top: 1px solid var(--outline-variant); */
+   border-bottom: 1px solid var(--outline-variant);
    -webkit-touch-callout: none;
    -webkit-user-select: none;
    -khtml-user-select: none;
    -moz-user-select: none;
    -ms-user-select: none;
    user-select: none;
-}
-
-
-.champions-panel-header hr {
-   height: 1px;
-   margin: 0;
-   border: none;
-   background-color: var(--outline-variant);
-   outline: none;
-   transition: transform .1s ease-in-out; 
 }
 
 .table-headers hr {
@@ -1232,7 +1214,7 @@ button.active-update {
 .utility {
    display: flex;
    align-items: center;
-   margin-bottom: 10px;
+   margin-top: 10px;
 }
 
 .utility > *:not(.rhs-utility) {
@@ -1304,6 +1286,7 @@ button.active {
 
 .lhs div, .rhs div {
    line-height: 30px;
+   cursor: pointer;
 }
 
 div.ascending {
@@ -1418,6 +1401,7 @@ circle.toggle-all {
 
 .champion-sort-options {
    display: none;
+   z-index: 3;
    position: absolute;
    flex-direction: column;
    background: var(--surface);
