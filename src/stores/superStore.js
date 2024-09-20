@@ -113,6 +113,9 @@ export const superStore = defineStore('super', {
    },
 
    getters: {
-      cleanPatch: (state) => state.patches[0].split('.').slice(0, 2).join('.')
+      cleanPatch: (state) => {
+         if (!state.patches) return
+         return state.patches[0].split('.').slice(0, 2).join('.')
+      }
    }
 })

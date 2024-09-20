@@ -1,12 +1,14 @@
 <script>
 import Loading from '../components/Loading.vue'
+import UXTooltip from '../components/UXTooltip.vue'
 import axios from 'axios'
 import champions from '../constants/champions'
 import { superStore } from '@/stores/superStore'
 
 export default {
    components: {
-      Loading
+      Loading,
+      UXTooltip
    },
    data() {
       return {
@@ -14,13 +16,16 @@ export default {
          champions: null,
          total: null,
          region: 'Global',
-         sort: 'rank',
+         sort: 1,
          sortOrder: 1,
          winrates: {
             max: 0,
             min: 101,
             delta: 0
-         }
+         },
+         descending: false,
+         metricSort: false,
+         mean: false,
       }
    },
 
@@ -42,54 +47,57 @@ export default {
    },
    
    methods: {
+      // sortBy(sort, metricSort = false, mean = false) {
+      //    this.sort = sort
+      //    this.metricSort = metricSort
+      //    this.mean = mean
+      // },
+
+      computeSampleMean(o, g) {
+         if (!o) return '-'
+         return Math.round(o / g)
+      },
+      
+      computeSampleVariance(games, x, xx) {
+         if (!games) return '-'
+         return Math.round(Math.sqrt((( xx ) - (( x**2 ) / games)) / (games - 1)))
+      },
+      
       champIcon(id) {
          return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/champion/${champions.imageName[id]}.png`
       },
+
       lookup() {
          const url = `/api/championsList`
          axios.get(url).then(res => {
             this.champions = res.data
-            this.populate()
+            this.computeWinrates()
          }).catch(e => {
             console.log('error', e)
          })
       },
-      populate() {
+      
+      computeWinrates() {
          for (const i in this.champions) {
             const c = this.champions[i]
-            // c.frontName = this.getName(c._id)
-            // c.pickrate = this.getPickRate(c.games)
-            c.winrate = this.getWinrate(c.wins, c.games)
+            c.winrate = Math.round(c.wins / c.games * 10000) / 100
+
+            for (const j in c.metrics) {
+               c[j] = {}
+               c[j].m = this.computeSampleMean(c.metrics[j].x, c.games)
+               c[j].v = this.computeSampleVariance(c.games, c.metrics[j].x, c.metrics[j].xx)
+            }
+            
+            delete c.metrics
+
             if (c.winrate > this.winrates.max) this.winrates.max = c.winrate
             if (c.winrate < this.winrates.min) this.winrates.min = c.winrate
          }
 
+         // this.winrates is for the lerp homie.
          this.winrates.delta = this.winrates.max - this.winrates.min
+      },
 
-         for (const i in this.champions.sort((a, b) => b.winrate - a.winrate)) {
-            const rank = Number(i) + 1
-            this.champions[i].rank = rank
-            // this.champions[i].grade = this.getGrade(rank, this.champions.length)
-         }
-      },
-      getGrade(rank, total) {
-         const val = rank / total
-         if (val < 0.02) return 'S'
-         if (val < 0.06) return 'A'
-         if (val < 0.2) return 'B'
-         if (val < 0.42) return 'C'
-         return 'D'
-      },
-      getWinrate(w, g) {
-         return Math.round((w / g) * 10000) / 100
-      },
-      getName(name) {
-         return (name in champions.table) ? champions.table[name] : name
-      },
-      getPickRate(g) {
-         // if (this.total) return (g / this.total * 1000)
-         if (this.total) return Math.round(g / this.total * 10000) / 10
-      },
       headerSort(sort) {
          if (sort === this.sort) {
             this.sortOrder = this.sortOrder * -1
@@ -97,6 +105,7 @@ export default {
             this.sort = sort
          }
       },
+
       winrateColors(g) {
          if (g === 'D') return 'color: red;'
          if (g === 'C') return 'color: orange;'
@@ -104,6 +113,7 @@ export default {
          if (g === 'A') return 'color: var(--green100);'
          if (g === 'S') return 'color: var(--orange100);'
       },
+
       computeColor(g) {
          const val = (g - this.winrates.min) / this.winrates.delta 
          const green = [79, 201, 79]
@@ -119,32 +129,96 @@ export default {
 
       champMap(name){
          return champions.urlName[name]
+      },
+
+      cleanPatch(patch) {
+         return patch.split('.').slice(0, 2).join('.')
+      },
+
+      headersExtended(val) {
+         switch (val) {
+            case 4:
+               return 'DPM µ'
+            case 5:
+               return 'DPM σ'
+            case 6:
+               return 'DTPM µ'
+            case 7:
+               return 'DTPM σ'
+            case 8:
+               return 'DMPM µ'
+            case 9:
+               return 'DMPM σ'
+            case 10:
+               return 'GPM µ'
+            case 11:
+               return 'GPM σ'
+            default:
+               return '-'
+         }
       }
    },
 
    computed: {
+      headers() {
+         return [
+            ['Champion', '_id'],
+            ['Winrate', 'winrate'],
+            ['Games', 'games'],
+            ['Pickrate', 'pickRate'],
+            ['DPM', 'dpm'],
+            ['DTPM', 'dtpm'],
+            ['SMPM', 'dmpm'],
+            ['GPM', 'gpm'],
+         ]
+      },
+
       patch() {
          if (this.store.patches) return this.store.patches[0]
       },
+
       getChampionsList() {
          if (this.champions) {
-            // const table = {
-            //    'S' : 1,
-            //    'A' : 2,
-            //    'B' : 3,
-            //    'C' : 4,
-            //    'D' : 5
-            // }
-
-            if (this.sort === '_id') {
-               return this.champions.sort((a, b) => champions.humanName[a[this.sort]].localeCompare(champions.humanName[b[this.sort]]) * this.sortOrder)
+            switch (this.sort) {
+               case 0:
+                  return (this.descending) ? this.champions.sort((a, b) => champions.humanName[b._id].localeCompare(champions.humanName[a._id])) :
+                     this.champions.sort((a, b) => champions.humanName[a._id].localeCompare(champions.humanName[b._id]))
+               case 1:
+                  return (this.descending) ? this.champions.sort((a, b) => (a.winrate) - (b.winrate)) :
+                     this.champions.sort((a, b) => (b.winrate) - (a.winrate))
+               case 2:
+                  return (this.descending) ? this.champions.sort((a, b) => (a.games) - (b.games)) :
+                     this.champions.sort((a, b) => (b.games) - (a.games))
+               case 3:
+                  return (this.descending) ? this.champions.sort((a, b) => (a.pickRate) - (b.pickRate)) :
+                     this.champions.sort((a, b) => (b.pickRate) - (a.pickRate))
+               case 4:
+                  return (this.descending) ? this.champions.sort((a, b) => (a.dpm.m) - (b.dpm.m)) :
+                     this.champions.sort((a, b) => (b.dpm.m) - (a.dpm.m))
+               case 5:
+                  return (this.descending) ? this.champions.sort((a, b) => (a.dpm.v) - (b.dpm.v)) :
+                     this.champions.sort((a, b) => (b.dpm.v) - (a.dpm.v))
+               case 6:
+                  return (this.descending) ? this.champions.sort((a, b) => (a.dtpm.m) - (b.dtpm.m)) :
+                     this.champions.sort((a, b) => (b.dtpm.m) - (a.dtpm.m))
+               case 7:
+                  return (this.descending) ? this.champions.sort((a, b) => (a.dtpm.v) - (b.dtpm.v)) :
+                     this.champions.sort((a, b) => (b.dtpm.v) - (a.dtpm.v))
+               case 8:
+                  return (this.descending) ? this.champions.sort((a, b) => (a.dmpm.m) - (b.dmpm.m)) :
+                     this.champions.sort((a, b) => (b.dmpm.m) - (a.dmpm.m))
+               case 9:
+                  return (this.descending) ? this.champions.sort((a, b) => (a.dmpm.v) - (b.dmpm.v)) :
+                     this.champions.sort((a, b) => (b.dmpm.v) - (a.dmpm.v))
+               case 10:
+                  return (this.descending) ? this.champions.sort((a, b) => (a.gpm.m) - (b.gpm.m)) :
+                     this.champions.sort((a, b) => (b.gpm.m) - (a.gpm.m))
+               case 11:
+                  return (this.descending) ? this.champions.sort((a, b) => (a.gpm.v) - (b.gpm.v)) :
+                     this.champions.sort((a, b) => (b.gpm.v) - (a.gpm.v))
+               default:
+                  return this.champions.sort((a, b) => champions.humanName[b._id].localeCompare(champions.humanName[a._id]))
             }
-
-            // if (this.sort === 'grade') {
-            //    return this.champions.sort((a, b) => (table[a[this.sort]] - table[b[this.sort]]) * this.sortOrder)
-            // }
-
-            return this.champions.sort((a, b) => (a[this.sort] - b[this.sort]) * this.sortOrder)
          }
       },
    }
@@ -154,29 +228,65 @@ export default {
 
 <template>
    <div v-if="this.champions" class="champ-list-main">
+      <div class="utilities">
+
+         <div class="patch-wrapper">
+            <button class="patch-button">Patch</button>
+            <div class="patch-options">
+               <button @click="this.patch = patch" v-for="patch in this.store.patches" :key="patch">{{ this.cleanPatch(patch) }}</button>
+            </div>
+         </div>
+
+         <div class="sort-wrapper">
+            <button v-if="this.sort < 4" class="sort-button">{{ this.headers[this.sort][0] }}</button>
+            <button v-else class="sort-button">{{ this.headersExtended(this.sort) }}</button>
+            <div class="sort-options">
+               <div v-for="(h, i) in this.headers" :key="i">
+                  <button v-if="i < 4" @click="this.sort = i">{{ h[0] }}</button>
+                  <div class="sort-metrics" v-else>
+                     <span>{{ h[0] }}:</span>
+                     <button @click="this.sort = (Math.floor(i / 4) - 1) * 4 + i + (i % 4)">µ</button>
+                     <button @click="this.sort = (Math.floor(i / 4) - 1) * 4 + i + (i % 4) + 1">σ</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <button @click="this.descending = !this.descending">
+            <svg width="18" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <rect class="asc-des" x="2" y="8" :width="this.descending ? '6' : '18'" height="2" />
+               <rect class="asc-des" x="2" y="13" width="11" height="2" />
+               <rect class="asc-des" x="2" y="18" :width="this.descending ? '18' : '6'" height="2" />
+            </svg>
+         </button>
+         <UXTooltip class='toads' :align="'left'" :tip="'tierlist'" />
+      </div>
       <div class="champ-table">
-         <div class="champion header">
-            <div class="name-image">
-               <h2 @click="this.headerSort('_id')">Name</h2>
-               <svg v-if="this.sort === '_id'" class="triangle" :class="{ 'descending': this.sortOrder === 1 }">
-                  <polygon points="7 5, 14 14, 0 14"/>
-               </svg>
-            </div>
-            <div class="winrate">
-               <h2 @click="this.headerSort('winrate')">Winrate</h2>
-               <svg v-if="this.sort === 'winrate'" class="triangle" :class="{ 'descending': this.sortOrder === 1 }">
-                  <polygon points="7 5, 14 14, 0 14"/>
-               </svg>
-            </div>
-            <div class="games">
-               <h2 @click="this.headerSort('games')">Games</h2>
-               <svg v-if="this.sort === 'games'" class="triangle" :class="{ 'descending': this.sortOrder === 1 }">
-                  <polygon points="7 5, 14 14, 0 14"/>
-               </svg>
+         <div class="header">
+            <div v-for="(h, i) in this.headers" :key="i">
+               <div v-if="i < 4">
+                  <h2 :class="{'highlight': this.sort === i}"
+                     @click="this.sort = i">{{ h[0] }}</h2>
+               </div>
+               <div v-else class="metrics">
+                  <div>
+                     <h3 @click="this.headerSort(h[1])">{{ h[0] }}</h3>
+                     <hr>
+                  </div>
+                  <div>
+                     <h2 :class="{'highlight': this.sort === (Math.floor(i / 4) - 1) * 4 + i + (i % 4)}"
+                        @click="this.sort = (Math.floor(i / 4) - 1) * 4 + i + (i % 4)">µ</h2>
+                     <h2 :class="{'highlight': this.sort === (Math.floor(i / 4) - 1) * 4 + i + (i % 4) + 1}"
+                        @click="this.sort = (Math.floor(i / 4) - 1) * 4 + i + (i % 4) + 1">σ</h2>
+                  </div>
+               </div>
             </div>
          </div>
          <div :class="{'o': i % 2 === 0}" class="champion" v-for="(champ, i) in getChampionsList" :key="i">
-            <div class="name-image">
+            <div>
+               {{ i+1 }}
+            </div>
+            <div>
                <router-link :to="{ name: 'champions', params: { champion: this.champMap(champ._id) } }">
                   <div class="image-wrapper">
 
@@ -190,8 +300,27 @@ export default {
             <div :style="{ color: this.computeColor(champ.winrate) }" class="winrate">
                {{ champ.winrate }}%
             </div>
-            <div class="games">
+            <div>
                {{ champ.games }}
+            </div>
+            <div>
+               {{ champ.pickRate }}%
+            </div>
+            <div class="metric-value">
+               <span>{{ champ.dpm.m }}</span>
+               <span>{{ champ.dpm.v }}</span>
+            </div>
+            <div class="metric-value">
+               <span>{{ champ.dtpm.m }}</span>
+               <span>{{ champ.dtpm.v }}</span>
+            </div>
+            <div class="metric-value">
+               <span>{{ champ.dmpm.m }}</span>
+               <span>{{ champ.dmpm.v }}</span>
+            </div>
+            <div class="metric-value">
+               <span>{{ champ.gpm.m }}</span>
+               <span>{{ champ.gpm.v }}</span>
             </div>
          </div>
       </div>
@@ -203,15 +332,112 @@ export default {
 </template>
 
 <style scoped>
+   .utilities {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 950px;
+   }
+
+   .toads {
+      /* alignment */
+      margin-bottom: 5px;
+   }
+   
+   .highlight {
+      color: var(--surface-tint);
+   }
+
+   .patch-options, .sort-options {
+      display: none;
+      position: absolute;
+      flex-direction: column;
+      background: var(--surface);
+      padding: 4px 5px;
+      border-radius: 3px;
+      border: 1px solid var(--outline-variant);
+      z-index: 2;
+   }
+
+   .patch-wrapper:hover .patch-options {
+      display: flex;
+   }
+   
+   .sort-wrapper:hover .sort-options {
+      display: flex;
+   }
+
+   .patch-wrapper:hover .patch-button {
+      border: 1px solid var(--outline);
+   }
+   .sort-wrapper:hover .sort-button {
+      border: 1px solid var(--outline);
+   }
+   
+   .utilities > button {
+      margin-bottom: 5px;
+   }
+   
+   .utilities button {
+      font-size: 0.9rem;
+      padding: 0rem 1rem;
+      height: 30px;
+      min-width: 45px;
+      cursor: pointer;
+      border-radius: 3px;
+      border: 1px solid var(--outline-variant);
+      background: var(--surface);
+      color: var(--color-font);
+      transition: 150ms ease-in-out;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+   }
+
+   .patch-wrapper > button, .sort-wrapper > button {
+      margin-bottom: 5px;
+   }
+
+   .patch-options button, .sort-options button {
+      border: none;
+      display: inline-block;
+      cursor: pointer;
+      border-radius: 3px;
+      min-width: 45px;
+      padding: 6px 10px;
+   }
+
+   button.sort-button {
+      min-width: 100px;
+   }
+
+   .patch-options button:hover, .sort-options button:hover {
+      background: var(--surface-container-highest);
+   }
+
+   .sort-metrics span {
+      display: inline-block;
+      font-weight: normal;
+      font-size: 0.7rem;
+      padding-left: 10px;
+      width: 40px;
+      color: var(--color-font-faded);
+   }
+
+   .asc-des {
+      padding: 0;
+      fill: var(--color-font);
+      transition: 500ms ease-out;
+   }
+   
    .region-button {
       padding: 0.5rem 1rem;
-      /* width: 50px; */
       background: tomato;
    }
-   /* .filters {
-      margin-bottom: 20px;
-      border-bottom: 1px solid tomato;
-   } */
+
    .champ-list-main {
       display: flex;
       flex-direction: column;
@@ -220,24 +446,33 @@ export default {
    }
 
    .champ-table {
-      width: 700px;
+      width: 950px;
       padding-bottom: 15vh;
       color: var(--color-font)
    }
 
    .champion {
       display: flex;
-      justify-content: space-around;
+      padding-left: 20px;
       align-items: center;
-      width: 100%;
-      height: 44px;
-      border-radius: 4px;
+      height: 43px;
+      border-radius: 3px;
       font-size: 0.85rem;
    }
 
    .header {
+      position: sticky;
+      padding-top: 4vh;
+      top: 0;
+      background: var(--surface);
+      z-index: 1;
       border-radius: 0px;
-      /* border-bottom: 1px solid var(--outline); */
+      display: flex;
+      align-items: flex-end;
+      padding-left: 50px; /* Same width as .champion:nth-child(1) */
+      border-bottom: 1px solid var(--outline-variant);
+      padding-bottom: 10px;
+      margin-bottom: 5px;
    }
 
    .image-wrapper {
@@ -259,9 +494,25 @@ export default {
 
    .header h2 {
       font-size: 0.85rem;
-      font-weight: normal;
+      font-weight: 600;
       transition: 0.2s;
       cursor: pointer;
+      margin: 0;
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+      -khtml-user-select: none; /* Konqueror HTML */
+      -moz-user-select: none; /* Old versions of Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+      user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+   }
+   
+   .header h3 {
+      display: inline-block;
+      text-wrap: nowrap;
+      font-size: 0.7rem;
+      color: var(--color-font-faded);
+      font-weight: normal;
+      margin: 0;
       -webkit-touch-callout: none; /* iOS Safari */
       -webkit-user-select: none; /* Safari */
       -khtml-user-select: none; /* Konqueror HTML */
@@ -270,8 +521,27 @@ export default {
       user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
    }
 
-   .header h2:hover {
-      color: var(--color-font-focus);
+   .metrics hr {
+      border: none;
+      background-color: var(--outline-variant);
+      display: inline-block;
+      width: 60%;
+      height: 1px;
+      margin: 0;
+   }
+
+   .metrics {
+      width: 120px;
+   }
+
+   .metrics > div {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+   }
+
+   .metrics > div h2 {
+      width: 59px;
    }
 
    svg.triangle {
@@ -284,11 +554,6 @@ export default {
       transform-box: fill-box;
       transform-origin: 7px 10px;
       transform: rotate(180deg);
-   }
-
-   .header div {
-      display: flex;
-      gap: 10px;
    }
 
    .champion div {
@@ -326,16 +591,57 @@ export default {
       min-width: 80px;
    }
 
-   .name-image {
-      min-width: 150px;
+   /* INDEX */
+   .champion > div:nth-child(1) {
+      min-width: 30px; 
    }
 
-   .winrate, .pickrate {
-      min-width: 100px;
+   /* CHAMPINON NAME */
+   .champion > div:nth-child(2), .header > div:nth-child(1) {
+      min-width: 150px; 
    }
 
-   .games {
-      min-width: 100px;
+   /* WINRATE */
+   .champion > div:nth-child(3), .header > div:nth-child(2) {
+      min-width: 90px;
+   }
+
+   /* GAMES */
+   .champion > div:nth-child(4), .header > div:nth-child(3) {
+      min-width: 90px;
+   }
+   
+   /* PICKRATE */
+   .champion > div:nth-child(5), .header > div:nth-child(4) {
+      min-width: 90px;
+   }
+
+   /* DPM */
+   .champion > div:nth-child(6), .header > div:nth-child(5) {
+      min-width: 120px;
+   }
+
+   /* DTPM */
+   .champion > div:nth-child(7), .header > div:nth-child(6) {
+      min-width: 120px;
+   }
+
+   /* SMPM */
+   .champion > div:nth-child(8), .header > div:nth-child(7) {
+      min-width: 120px;
+   }
+
+   /* GPM */
+   .champion > div:nth-child(9), .header > div:nth-child(8) {
+      min-width: 120px;
+   }
+
+   .metric-value {
+      gap: 2px;
+   }
+
+   .metric-value span {
+      width: 59px;
    }
 
    .loading-champ-list {

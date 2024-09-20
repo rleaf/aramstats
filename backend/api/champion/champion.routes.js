@@ -18,7 +18,7 @@ class ChampionRoutes {
 
    async getChampionList(req, res) {
       const coll = await util.loadChampionStatsCollection(this.db)
-      const pancakes = await coll.find({}, { projection: { _id: 1, games: 1, wins: 1, pickRate: 1 } }).toArray()
+      const pancakes = await coll.find({}, { projection: { _id: 1, games: 1, wins: 1, pickRate: 1, metrics: 1 } }).toArray()
       res.send(pancakes)
    }
 }

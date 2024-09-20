@@ -1,5 +1,17 @@
 export default {
    /**
+   * Tierlist Tooltips
+   */
+   'tierlist': [
+      `<b>µ</b>: The sample mean for a particular stat.`,
+      `<b>σ</b>: The standard deviation for a particular stat.`,
+      `<b>DPM</b>: Damage per minute.`,
+      `<b>DTPM</b>: Damage taken per minute.`,
+      `<b>DMPM</b>: Damage mitigated per minute.`,
+      `<b>GPM</b>: Gold per minute.`,
+   ],
+
+   /**
    * Champion Tooltips  
    */
 

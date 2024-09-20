@@ -13,6 +13,20 @@
   
   const version = [
    {
+      version: "3.11.0",
+      date: "9/19/24",
+      notes: ``,
+      add: [
+         `Damage per Minute (DPM), Self Mitigated per Minute (SMPM), Damage Taken per Minute (DTPM), and Gold Per Minute (GPM) first and second central moments to Tierlist page.`,
+      ],
+      remove: [],
+      fix: [],
+      adjust: [
+         `Tierlist page UI.`
+      ],
+      known: [],
+   }, 
+   {
       version: "3.10.0",
       date: "9/18/24",
       notes: `Although this update is geared towards UX improvements for the Summoner Page, I've done some prep for proceeding updates. In 3.9.0 I talk about how the 'Champions Page' is a litle ugly because I intend to add more stuff to it. Some of the stuff I've done as of now is compute the sample mean & variance for what I'll be referring to as the main stats for every champion: "damage per minute", "self mitigated per minute", "damage taken per minute", and "gold per minute". I won't be doing the third/fourth moments as I'm feelycrafting the distributions to be symmetric. You can probably expect these stats in 3.11.0.`,
