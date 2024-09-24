@@ -93,7 +93,7 @@ export default {
 }
 
 code {
-   background: var(--light-16);
+   background: var(--tertiary-container);
    padding: 0.05rem 0.1rem;
    border-radius: 5px;
 }

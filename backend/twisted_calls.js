@@ -50,7 +50,7 @@ async function retryWrapper(fn, args) {
          return (await fn(...args)).response
       } catch (e) {
          if (e instanceof Error && e.status !== 404) { // Do not retry on 404
-            if (e.status === 403) throw e
+            if (e.status === 403 || e.status === 400) throw e
             retry()
          } else {
             throw e
@@ -144,6 +144,34 @@ async function getMatchInfo(matchId, region) {
 }
 
 /* 
+* Batched match info.
+*/
+async function getBatchedMatchInfo(matchlist, region) {
+   return await Promise.all(matchlist.map(async matchId => {
+      try {
+         return (await lolApi.MatchV5.get(matchId, REGION_GROUPS[region])).response
+      } catch (e) {
+         if (e instanceof Error && e.status !== 404) throw e
+      }
+   }))
+   // return await retryWrapper(lolApi.MatchV5.get.bind(lolApi.MatchV5), [matchId, REGION_GROUPS[region]])
+}
+
+/* 
+* Batched timeline info.
+*/
+async function getBatchedTimelineInfo(matchlist, region) {
+   return await Promise.all(matchlist.map(async matchId => {
+      try {
+         return (await lolApi.MatchV5.timeline(matchId, REGION_GROUPS[region])).response
+      } catch (e) {
+         if (e instanceof Error && e.status !== 404) throw e
+      }
+   }))
+   // return await retryWrapper(lolApi.MatchV5.get.bind(lolApi.MatchV5), [matchId, REGION_GROUPS[region]])
+}
+
+/* 
 * Match timeline info.
 */
 async function getMatchTimeline(matchId, region) {
@@ -165,6 +193,8 @@ module.exports = {
    getAllSummonerMatches,
    getSummonerMatchesOnPatch,
    getMatchInfo,
+   getBatchedMatchInfo,
+   getBatchedTimelineInfo,
    getMatchTimeline,
    playerChallenges
 }

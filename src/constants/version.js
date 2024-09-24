@@ -13,6 +13,19 @@
   
   const version = [
    {
+      version: "3.11.1",
+      date: "9/24/24",
+      notes: `Check corresponding 3.11.1 update.`,
+      add: [],
+      remove: [],
+      fix: [],
+      adjust: [
+         `Increased Summoner parsing speeds. (Dramatic improvements when tested & compared locally).`,
+         `Styles.`
+      ],
+      known: [],
+   }, 
+   {
       version: "3.11.0",
       date: "9/20/24",
       notes: `Peep 3.11.0 update. Everything in 'Added' is for the Champions List Page.`,

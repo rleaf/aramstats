@@ -13,7 +13,7 @@ class SummonerRoutes {
          .get(config.UPDATE_SUMMONER_PREFIX, this.updateSummoner)
          .get(config.CHECK_SUMMONER_PREFIX, this.checkSummoner.bind(this))
          // .get(config.JANE_DOE_PREFIX, this.getRandom)
-         // .delete(config.DELETE_SUMMONER_PREFIX_PREFIX, this.deleteSummoner)
+         // .delete(config.DELETE_SUMMONER_PREFIX, this.deleteSummoner)
          
    }
    
@@ -29,8 +29,7 @@ class SummonerRoutes {
          return
       }
 
-      // use findbyid instead
-      const dbSumm = await summonerModel.findOne({ '_id': summoner.puuid })
+      const dbSumm = await summonerModel.findById(summoner.puuid)
 
       if (dbSumm) {
          let response
@@ -64,6 +63,7 @@ class SummonerRoutes {
          return // occasional 11000 errors, which if they occur should be ignored.
       }
 
+      console.log(position, 'position')
       if (position === 1 && this.queue.inactiveRegions.has(summoner.region)) {
          res.status(200).send({ parse: { status: config.STATUS_PARSING, current: 'TBD', total: 'TBD' } })
       } else {
@@ -93,7 +93,7 @@ class SummonerRoutes {
             } catch (e) {
                qSummoner = await this.queue.get(summoner.region)
                this.queue.inactiveRegions.add(summoner.region)
-               console.log(e, 'rip bozo') // Also clog so I'm not scrolling for hours
+               // console.log(e, 'rip bozo') // Also clog so I'm not scrolling for hours
                throw e
             }
          }
@@ -108,7 +108,6 @@ class SummonerRoutes {
       let summoner
       let summonerResponse
       let summonerDocument
-      let championIds = new Set()
 
       try {
          summoner = await util.findSummoner(req.params.gameName, req.params.tagLine, req.params.region)
@@ -130,7 +129,6 @@ class SummonerRoutes {
          return
       }
 
-
       summonerDocument.challenges = challenges
       summonerDocument.gameName = summoner.gameName
       summonerDocument.tagLine = summoner.tagLine
@@ -138,8 +136,7 @@ class SummonerRoutes {
       summonerDocument.level = summoner.summonerLevel
       summonerDocument.profileIcon = summoner.profileIconId
       
-      championIds = await util.parseMatchlist(summonerDocument, matchlist, championIds)
-      await util.computeChampionAverages(summonerDocument, championIds)
+      await util.initialParse(summonerDocument, matchlist)
 
       summonerResponse = (await util.aggregateSummoner(summoner.puuid))[0]
       res.status(200).send(summonerResponse)
@@ -199,6 +196,8 @@ class SummonerRoutes {
             throw e
          }
       }
+
+      summoner = await summonerModel.findById(summoner.puuid)
 
       util.deleteSummoner(summoner)
       res.status(200).send(config.SUMMONER_DELETED)

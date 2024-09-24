@@ -269,7 +269,7 @@ export default {
    border: 1px solid var(--outline-variant);
    padding: 3px 2px;
    transition: 0.25s ease-in-out;
-   opacity: 0.6;
+   opacity: 0.8;
    overflow: hidden;
 }
 

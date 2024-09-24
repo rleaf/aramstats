@@ -1,0 +1,46 @@
+9/23/24
+
+Taiwan Spike Problem:
+   Site got shared on a bb there and queue grew to ~550+ users in queue. Currently the avg time, T, it takes for a user to parse is too long. Goal is to minimize the T to ammeliorate parse times.
+
+How to minimize T:
+   T decomposes into 3 things tmk:
+      1. Shit code.
+      2. Rate limit.
+      3. Hardware.
+
+   Look at 1 -> 2 -> 3. 1 is first cause human. 2 is second to actually test the rate limit, which I've never done. 3 is third cause I'm cheap.
+
+Notes for the sections. Numbers correspond to above:
+   1.1.
+      SETUP & PROBLEM:
+         The checkSummoner() method immediately pings Riot for the summoner data. This is not ideal because as the queue grows, if users are leaving their tabs open to poll their profile, every open tab will fire checkSummoner(). For N tabs there will be N*2 unnecessary api calls. The queue uses PUUID (which requires 1 api call) to store player position.
+      SOLUTION:
+         Check the queue prior to fetching the summoner data from Riot. I can *only* fetch for PUUID which will halve the api calls to N*1.
+         
+         Use gameName#tagLine to store player position instead of PUUID. gameName will be unique index replacing puuid and tagline will just be a further discriminator which I shouldn't have to index (time isn't very important, queue won't get that large, already finding on a subset of indexed queries). This strat will preclude any api calls on a check summoner while that summoner is in queue.
+
+   1.2.
+      SETUP & PROBLEM:
+         I don't actually know how shit the code is. Checking rate limit [2] to see if I always have extra calls in the response header can help figure this out. If code is a limiting factor, I should always have extra api calls in the response header. Only if the rate limit is not being fully utilized warrants checking rest of the code? 
+      SOLUTION:
+         clog the response header. Can do this safely while ganked by taiwan with another region fortunately. "Only if the rate limit is not being fully utilized warrants checking rest of the code?" - not necessarily. Should still check everywhere I am making an initial api call to see if I can cut back on unnecessary calls...
+         
+         But also maybe... I am processing summoners on the backend which could benefit from MP. Can Node MP? My EC2 is probably 1 core.
+
+   2.1.
+      SETUP & PROBLEM:
+         Low rate limit. 500 is not fast enough to comfortably parse a "significant" amount of users. (significant being relative here)
+      SOLUTION:
+         If I am efficiently using all of my rate limit. Ask Riot for a bump.
+
+   3.1.
+      SETUP & PROBLEM:
+         Slow hardware. Need lightning mcqueen. However, need to be sure that hardware is the actual limiting factor.
+      SOLUTION:
+         Find ways to see if hardware is limiting. Currently Cloudwatch never spikes beyond...~25% and 
+
+
+Discovery
+   - It's bad code. I never tested it, but I'm not hitting anywhere *near* the rate limit of 500/10 || 30k/600. *Unecessary* API calls mentioned in 1.2 are irrelevant. Quick fix?: I'm processing the match after each GET. Instead batch 50/100/X GETs together and then bulk process them.
+

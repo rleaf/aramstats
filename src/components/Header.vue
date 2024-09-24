@@ -10,7 +10,7 @@ export default {
 </script>
 
 <template>
-   <div class="header-main">
+   <div class="header-main red">
       <RouterLink to="/updates">{{ this.msg }}</RouterLink>
    </div>
 </template>
@@ -29,7 +29,7 @@ export default {
    }
 
    .red {
-      background: var(--loss);
+      background:linear-gradient(90deg, rgba(167, 94, 94, 0.25), rgba(129, 32, 32, 0.25));
    }
    
    a, p {

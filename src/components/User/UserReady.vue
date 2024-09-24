@@ -124,20 +124,20 @@ export default {
          }
       },
 
-      async deleteProfile() {
-         if (!confirm('Delete summoner?')) return
+      // async deleteProfile() {
+      //    if (!confirm('Delete summoner?')) return
 
-         const url = `/api/delete/${this.$route.params.region}/${this.$route.params.gameName}/${this.$route.params.tagLine}`
+      //    const url = `/api/delete/${this.$route.params.region}/${this.$route.params.gameName}/${this.$route.params.tagLine}`
 
-         try {
-            await axios.delete(url)   
-         } catch (e) {
+      //    try {
+      //       await axios.delete(url)   
+      //    } catch (e) {
             
-         }
+      //    }
 
-         this.$router.push({ name: 'home' })
-         this.superStore.setNotification(`${this.data.gameName}#${this.data.tagLine} deleted`, 5000)
-      }
+      //    this.$router.push({ name: 'home' })
+      //    this.superStore.setNotification(`${this.data.gameName}#${this.data.tagLine} deleted`, 5000)
+      // }
    },
    
    computed: {

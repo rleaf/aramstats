@@ -12,11 +12,34 @@
 
 const updates = [
    {
+      title: "Slow Queue Update Continued (Taiwan)",
+      version: "3.11.1",
+      date: "9/24/24",
+      body: [
+         `This is the continued update in regards to the spike of Taiwan users.`,
+         `I've not tested the new code on the backend server, but in this update, parsing summoners performs dramatically faster when compared to the previous iteration (both in local environments). While I hope this is enough for expediting the queue, I'll keep looking for other areas of improvement. Again, sorry for any inconveniences.`,
+      ],
+      links: [],
+      img: [], // Expected webp format
+      imgCaption: ""
+   },
+   {
+      title: "Slow Queue Update (Taiwan)",
+      version: "",
+      date: "9/24/24",
+      body: [
+         `This update is directed towards Taiwan users. I'll be pushing an update tomorrow that will speed up summoner parsing. Sorry for any inconvenience & thanks for trying out the site.`,
+      ],
+      links: [],
+      img: [], // Expected webp format
+      imgCaption: ""
+   },
+   {
       title: "Updated Champions List Page",
       version: "3.11.0",
       date: "9/20/24",
       body: [
-         `I've been calling it a lot of things, but I'm talking about the page when you click 'Champions' in the nav bar. In this update, I'll be calling it the Champions List Page. A little verbose, but it's not really a "Tierlist" and calling it the "Champions" page sounds too similar to "Champion" page which is the page when you search a champion.`,
+         `I've been calling it a lot of things, but I'm talking about the page when you click 'Champions' in the nav bar. In this update I'll be calling it the Champions List Page. A little verbose, but it's not really a "Tierlist" and calling it the "Champions" page sounds too similar to "Champion" page which is the page when you search a champion.`,
          `I've redesigned the Champions List Page to show data that provides more quantitative metrics for champions. Specifically, I've (so far) added the sample mean and standard deviation for damage per minute, damage taken per minute, self mitigated damage per minute, and gold per minute. A potential drawback however is, because I'm multiprocessing, I am using the sum of squares method to compute these moments versus something more ideal like the Welford method; sum of squares is known to be numerically unstable when working with big ass numbers. With my current rate limit & speeds I don't *believe* I will encounter these issues, however I'll be keeping an eye out for them.`,
          `Some things tentative about the page currently:`,
          `1. Patch selection. I may remove this to be conservative with hardware.`,
