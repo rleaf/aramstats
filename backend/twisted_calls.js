@@ -62,6 +62,24 @@ async function retryWrapper(fn, args) {
       })
 }
 
+async function axiosRetryWrapper(fn, args) {
+   return await promiseRetry(async retry => {
+      try {
+         return (await fn(...args)).response
+      } catch (e) {
+         // if (e instanceof Error && e.error.code === 'ETIMEDOUT') { // Do not retry on 404
+         if (e instanceof Error && e.name === 'GenericError') { // Do not retry on 404
+            retry()
+         } else {
+            throw e
+         }
+      }
+   }, { retries: 1, factor: 2, minTimeout: 2000 })
+      .catch(e => {
+         if (e instanceof Error) throw e
+      })
+}
+
 /*
 * Summoner info w/ account-v1
 * Tethered to AMERICAS region rn because closest to backend server. Can move if need to balance rate limits
@@ -149,7 +167,8 @@ async function getMatchInfo(matchId, region) {
 async function getBatchedMatchInfo(matchlist, region) {
    return await Promise.all(matchlist.map(async matchId => {
       try {
-         return (await lolApi.MatchV5.get(matchId, REGION_GROUPS[region])).response
+         // return (await lolApi.MatchV5.get(matchId, REGION_GROUPS[region])).response
+         return await axiosRetryWrapper(lolApi.MatchV5.get.bind(lolApi.MatchV5), [matchId, REGION_GROUPS[region]])
       } catch (e) {
          if (e instanceof Error && e.status !== 404) throw e
       }
@@ -163,7 +182,8 @@ async function getBatchedMatchInfo(matchlist, region) {
 async function getBatchedTimelineInfo(matchlist, region) {
    return await Promise.all(matchlist.map(async matchId => {
       try {
-         return (await lolApi.MatchV5.timeline(matchId, REGION_GROUPS[region])).response
+         // return (await lolApi.MatchV5.timeline(matchId, REGION_GROUPS[region])).response
+         return await axiosRetryWrapper(lolApi.MatchV5.timeline.bind(lolApi.MatchV5), [matchId, REGION_GROUPS[region]])
       } catch (e) {
          if (e instanceof Error && e.status !== 404) throw e
       }

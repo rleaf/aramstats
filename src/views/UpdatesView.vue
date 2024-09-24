@@ -13,7 +13,8 @@ export default {
 
    methods: {
       getImage(fileName) {
-         return new URL(`../assets/images/${fileName}.webp`, import.meta.url).href
+         return fileName.includes('imgur.com') ? fileName : new URL(`../assets/images/${fileName}.webp`, import.meta.url).href
+         // return new URL(`../assets/images/${fileName}.webp`, import.meta.url).href || fileName[0]
       }
    },
 }
@@ -43,7 +44,7 @@ export default {
                      <li v-for="a in u.links"><a :href="a[1]" target="_blank">{{ a[0] }}</a></li>
                   </ul>
                </div>
-               <img v-if="u.img && u.img.length" :src="getImage(u.img)" alt="">
+               <img :src="getImage(u)" alt="" v-for="u in u.img">
                <p class="sub" v-if="u.imgCaption">{{ u.imgCaption }}</p>
             </div>
          </div>
@@ -250,7 +251,6 @@ p.sub {
    text-align: center;
    font-size: 0.8rem;
    color: var(--color-font-faded);
-   font-style: italic;
-   margin-top: 0;
+   margin-top: 10px;
 }
 </style>

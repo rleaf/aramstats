@@ -13,6 +13,18 @@
   
   const version = [
    {
+      version: "3.11.2",
+      date: "9/24/24",
+        notes: `Check 3.11.1 ✨edit✨`,
+      add: [],
+      remove: [],
+      fix: [
+         `(Attempted fix) Axios timeout concurrency issues`
+      ],
+      adjust: [],
+      known: [],
+   }, 
+   {
       version: "3.11.1",
       date: "9/24/24",
       notes: `Check corresponding 3.11.1 update.`,

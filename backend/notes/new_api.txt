@@ -1,0 +1,119 @@
+NEW API (9/24/24)
+
+PROBLEMS:
+   [1]: There are sprinkles of inefficiencies.
+      [1]: Inefficient usage of Riot calls (summoner checks).
+      [2]: Comms between front & back is overly complicated.
+   [2]: Ugly to look at.
+      [1]: After continuous interative updates, the code has Frankenstein'd into a spaghetti monster.
+      [2]: [1][2].
+
+STEPS FOR RESOLUTION:
+   [1]: This would be my third rewrite of the API. The most recent one was supposed to be an improvement on the first, but that was really only a structural change (which tbf did help a lot). So to do this properly, wireframe it (this) before coding.
+   [2]: Build it bottom up (NAND -> ALU). Going top down ie (ALU -> NAND) will bias me to making shit modular components.
+      [1]: Hm. Top down is still nice because it gives direction.
+   [3]: It is okay to create more endpoints. Some of them may be overly complex.
+   
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+BOT -> UP
+
+retryWrapper (do i need?)
+batchTimeline
+batchMatches
+getChallenges
+getAllSummonerMatches
+getAccount
+getSummoner
+
+
+TOP -> DOWN
+
+checkIfSummInDB
+checkIfSummInQueue
+   getSummonerFromRiot
+   getSummonerFromDB
+workTheQueue
+updateSummoner
+deleteSummoner (utility)
+
+0|index  | 2024-09-24T16:15:56: GenericError: read ECONNRESET
+0|index  | 2024-09-24T16:15:56:     at MatchV5Api.getError (/home/ubuntu/lolaram/node_modules/twisted/dist/base/base.js:148:16)
+0|index  | 2024-09-24T16:15:56:     at MatchV5Api.<anonymous> (/home/ubuntu/lolaram/node_modules/twisted/dist/base/base.js:155:36)
+0|index  | 2024-09-24T16:15:56:     at Generator.next (<anonymous>)
+0|index  | 2024-09-24T16:15:56:     at /home/ubuntu/lolaram/node_modules/twisted/dist/base/base.js:31:71
+0|index  | 2024-09-24T16:15:56:     at new Promise (<anonymous>)
+0|index  | 2024-09-24T16:15:56:     at __awaiter (/home/ubuntu/lolaram/node_modules/twisted/dist/base/base.js:27:12)
+0|index  | 2024-09-24T16:15:56:     at MatchV5Api.retryRateLimit (/home/ubuntu/lolaram/node_modules/twisted/dist/base/base.js:154:16)
+0|index  | 2024-09-24T16:15:56:     at MatchV5Api.<anonymous> (/home/ubuntu/lolaram/node_modules/twisted/dist/base/base.js:236:35)
+0|index  | 2024-09-24T16:15:56:     at Generator.throw (<anonymous>)
+0|index  | 2024-09-24T16:15:56:     at rejected (/home/ubuntu/lolaram/node_modules/twisted/dist/base/base.js:29:65) {
+0|index  | 2024-09-24T16:15:56:   status: 500,
+0|index  | 2024-09-24T16:15:56:   body: undefined,
+0|index  | 2024-09-24T16:15:56:   rateLimits: {
+0|index  | 2024-09-24T16:15:56:     Type: null,
+0|index  | 2024-09-24T16:15:56:     AppRateLimit: null,
+0|index  | 2024-09-24T16:15:56:     AppRateLimitCount: null,
+0|index  | 2024-09-24T16:15:56:     MethodRateLimit: undefined,
+0|index  | 2024-09-24T16:15:56:     MethodRatelimitCount: null,
+0|index  | 2024-09-24T16:15:56:     RetryAfter: 0,
+0|index  | 2024-09-24T16:15:56:     EdgeTraceId: undefined
+0|index  | 2024-09-24T16:15:56:   },
+0|index  | 2024-09-24T16:15:56:   error: AxiosError: read ECONNRESET
+0|index  | 2024-09-24T16:15:56:       at AxiosError.from (/home/ubuntu/lolaram/node_modules/axios/dist/node/axios.cjs:836:14)
+0|index  | 2024-09-24T16:15:56:       at RedirectableRequest.handleRequestError (/home/ubuntu/lolaram/node_modules/axios/dist/node/axios.cjs:3086:25)
+0|index  | 2024-09-24T16:15:56:       at RedirectableRequest.emit (node:events:513:28)
+0|index  | 2024-09-24T16:15:56:       at eventHandlers.<computed> (/home/ubuntu/lolaram/node_modules/follow-redirects/index.js:38:24)
+0|index  | 2024-09-24T16:15:56:       at ClientRequest.emit (node:events:513:28)
+0|index  | 2024-09-24T16:15:56:       at TLSSocket.socketErrorListener (node:_http_client:494:9)
+0|index  | 2024-09-24T16:15:56:       at TLSSocket.emit (node:events:513:28)
+0|index  | 2024-09-24T16:15:56:       at emitErrorNT (node:internal/streams/destroy:151:8)
+0|index  | 2024-09-24T16:15:56:       at emitErrorCloseNT (node:internal/streams/destroy:116:3)
+0|index  | 2024-09-24T16:15:56:       at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+0|index  | 2024-09-24T16:15:56:       at Axios.request (/home/ubuntu/lolaram/node_modules/axios/dist/node/axios.cjs:3876:41)
+0|index  | 2024-09-24T16:15:56:       at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+0|index  | 2024-09-24T16:15:56:     syscall: 'read',
+0|index  | 2024-09-24T16:15:56:     code: 'ECONNRESET',
+0|index  | 2024-09-24T16:15:56:     errno: -104,
+0|index  | 2024-09-24T16:15:56:     config: {
+0|index  | 2024-09-24T16:15:56:       transitional: [Object],
+0|index  | 2024-09-24T16:15:56:       adapter: [Array],
+0|index  | 2024-09-24T16:15:56:       transformRequest: [Array],
+0|index  | 2024-09-24T16:15:56:       transformResponse: [Array],
+0|index  | 2024-09-24T16:15:56:       timeout: 0,
+0|index  | 2024-09-24T16:15:56:       xsrfCookieName: 'XSRF-TOKEN',
+0|index  | 2024-09-24T16:15:56:       xsrfHeaderName: 'X-XSRF-TOKEN',
+0|index  | 2024-09-24T16:15:56:       maxContentLength: -1,
+0|index  | 2024-09-24T16:15:56:       maxBodyLength: -1,
+0|index  | 2024-09-24T16:15:56:       env: [Object],
+0|index  | 2024-09-24T16:15:56:       validateStatus: [Function: validateStatus],
+0|index  | 2024-09-24T16:15:56:       headers: [Object [AxiosHeaders]],
+0|index  | 2024-09-24T16:15:56:       url: 'https://sea.api.riotgames.com/lol/match/v5/matches/TW2_241954714/timeline',
+0|index  | 2024-09-24T16:15:56:       method: 'get',
+0|index  | 2024-09-24T16:15:56:       data: undefined
+0|index  | 2024-09-24T16:15:56:     },
+0|index  | 2024-09-24T16:15:56:     request: Writable {
+0|index  | 2024-09-24T16:15:56:       _writableState: [WritableState],
+0|index  | 2024-09-24T16:15:56:       _events: [Object: null prototype],
+0|index  | 2024-09-24T16:15:56:       _eventsCount: 3,
+0|index  | 2024-09-24T16:15:56:       _maxListeners: undefined,
+0|index  | 2024-09-24T16:15:56:       _options: [Object],
+0|index  | 2024-09-24T16:15:56:       _ended: true,
+0|index  | 2024-09-24T16:15:56:       _ending: true,
+0|index  | 2024-09-24T16:15:56:       _redirectCount: 0,
+0|index  | 2024-09-24T16:15:56:       _redirects: [],
+0|index  | 2024-09-24T16:15:56:       _requestBodyLength: 0,
+0|index  | 2024-09-24T16:15:56:       _requestBodyBuffers: [],
+0|index  | 2024-09-24T16:15:56:       _onNativeResponse: [Function (anonymous)],
+0|index  | 2024-09-24T16:15:56:       _currentRequest: [ClientRequest],
+0|index  | 2024-09-24T16:15:56:       _currentUrl: 'https://sea.api.riotgames.com/lol/match/v5/matches/TW2_241954714/timeline',
+0|index  | 2024-09-24T16:15:56:       [Symbol(kCapture)]: false
+0|index  | 2024-09-24T16:15:56:     },
+0|index  | 2024-09-24T16:15:56:     cause: Error: read ECONNRESET
+0|index  | 2024-09-24T16:15:56:         at TLSWrap.onStreamRead (node:internal/stream_base_commons:217:20) {
+0|index  | 2024-09-24T16:15:56:       errno: -104,
+0|index  | 2024-09-24T16:15:56:       code: 'ECONNRESET',
+0|index  | 2024-09-24T16:15:56:       syscall: 'read'
+0|index  | 2024-09-24T16:15:56:     }
+0|index  | 2024-09-24T16:15:56:   }
+0|index  | 2024-09-24T16:15:56: }

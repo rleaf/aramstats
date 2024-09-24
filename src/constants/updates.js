@@ -18,10 +18,13 @@ const updates = [
       body: [
          `This is the continued update in regards to the spike of Taiwan users.`,
          `I've not tested the new code on the backend server, but in this update, parsing summoners performs dramatically faster when compared to the previous iteration (both in local environments). While I hope this is enough for expediting the queue, I'll keep looking for other areas of improvement. Again, sorry for any inconveniences.`,
+         `✨EDIT✨: Hello, it's me from the future. Summoners are indeed parsing dramatically faster however it will take a little bit to run through the backlog. The limiting factor is now the CPU and its bursting capabilities. There also seems to be issues with Axios handling concurrent HTTP requests where ~1/20 users will have to reparse. I am attempting to fix this. Thank you for your sacrifice.`
       ],
       links: [],
-      img: [], // Expected webp format
-      imgCaption: ""
+      img: [
+         'https://i.imgur.com/jiOcVei.png',
+      ], // Expected webp format
+      imgCaption: "(1) is when the I implemented this update - 3.11.1. (2) is when I ran out of bursting credits. Even though processing won't be as performant as it was between (1) and (2), it should be good enough."
    },
    {
       title: "Slow Queue Update (Taiwan)",
@@ -228,7 +231,9 @@ const updates = [
          `The second is because there's some cleaning up to do. I never intended for this site to be up this long or to even open it up to multiple regions. This started because I wanted to see my performance on certain champs and to try and convince some friends, using empirical data, that maybe Aurelion Sol is just not for them or taking Glacial Augment on Azir deserves a ban. As more people use this site, I'd like to revamp the backend to ameliorate UX and try and make it more efficient so it crashes less.`,
          `I'm using these two reasons as an excuse to start fresh on the database. I haven't actually started working on it yet, but just wanted to let those interested know. Hmu @ryli. on Discord for any questions.`,
       ],
-      img: "leo",
+      img: [
+         "leo"
+      ],
       imgCaption: "...guys listen to me...glacial Azir is OP - they're doing it everywhere in Korea."
    },
    {
@@ -237,7 +242,9 @@ const updates = [
       body: [
          `Moving database from an old laptop to a Raspberry Pi 4. Planned to do this a while ago as this was the original goal, but they've always been out of stock.`
       ],
-      img: "piserver"
+      img: [
+         "piserver"
+      ]
    },
    {
       title: "Match-level data available",
