@@ -4,7 +4,7 @@
   "name": "Pantheon",
   "title": "the Unbreakable Spear",
   "fullName": "Atreus",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Pantheon.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Pantheon.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -136,7 +136,7 @@
       "percentPerLevel": 0.0
     },
     "aramDamageDealt": {
-      "flat": 1.05,
+      "flat": 1,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0

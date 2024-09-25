@@ -4,7 +4,7 @@
   "name": "Aurora",
   "title": "the Witch Between Worlds",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Aurora.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Aurora.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -160,7 +160,7 @@
       "percentPerLevel": 0.0
     },
     "aramAbilityHaste": {
-      "flat": 10,
+      "flat": 1.0,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0
@@ -520,7 +520,7 @@
         "projectile": "TRUE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "The recast is granted from targets being marked once the bolt missile from the initial cast has fizzled.\n Spell shield can block the effects of the active and the recast.\nThe marked targets do not need to be visible in order for Aurora to recast Twofold Hex.\nThey do however need to be targetable; if all marked targets are  untargetable, Twofold Hex's recast is disabled.\nThis ability will cast from wherever the caster is at the end of the cast time.",
+        "notes": "Twofold Hex can also be recast for 0.66 seconds after the 0.1-second delay. If the recast is used during this time window, Twofold Hex will be buffered to recast automatically as soon as the bolt missile from the first cast has fizzled from reaching maximum range, even if no targets are marked. This automatic recast can also be buffered during the 0.1-second delay.\n Spell shield can block the effects of the active and the recast.\nThe marked targets do not need to be visible in order for Aurora to recast Twofold Hex.\nThey do however need to be targetable; if all marked targets are  untargetable, Twofold Hex's recast is disabled.\nThis ability will cast from wherever the caster is at the end of the cast time.",
         "blurb": null,
         "missileSpeed": null,
         "rechargeRate": null,
@@ -740,7 +740,7 @@
         "projectile": "FALSE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Aurora is locked out of using all abilities, summoner spells, and item actives during the dash, except for  Between Worlds.\nWhile  grounded or  rooted, The Weirding can be cast but Aurora will not  dash.\nSimilarly, if Aurora is affected by ground or root during the cast time, she will not dash afterwards.\nThis only applies to ground and root.  Immobilizing effects will not prevent the dash afterwards.(bug)\nThis ability will cast from wherever the caster is at the end of the cast time.",
+        "notes": "Aurora is locked out of using all abilities, summoner spells, and item actives during the dash, except for  Between Worlds.\nWhile  grounded or  rooted, The Weirding can be cast but Aurora will not  dash.\nSimilarly, if Aurora is affected by ground or root during the cast time, she will not dash afterwards.\nThis only applies to ground and root.  Immobilizing effects will not prevent the dash afterwards.(note)\nThis ability will cast from wherever the caster is at the end of the cast time.",
         "blurb": null,
         "missileSpeed": null,
         "rechargeRate": null,
@@ -762,7 +762,7 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Aurora/ability-icon/r",
         "effects": [
           {
-            "description": "Active: Aurora leaps in the target direction with displacement immunity over 0.5 seconds. She then gains Realm Hopper for 4 seconds and unleashes a pulse of energy at a location directly 425 units in front of her, expanding in a radius over 0.75 seconds to deal magic damage to enemies hit and slow them by 30% for 2 seconds. Once the pulse has fully expanded, it manifests a circular rift to the Spirit Realm for a duration.",
+            "description": "Active: Aurora leaps in the target direction with displacement immunity over 0.4 seconds. She then gains Realm Hopper for 4 seconds and unleashes a pulse of energy at a location directly 425 units in front of her, expanding in a radius over 0.75 seconds to deal magic damage to enemies hit and slow them by 30% for 2 seconds. Once the pulse has fully expanded, it manifests a circular rift to the Spirit Realm for a duration.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
@@ -798,9 +798,9 @@
                 "modifiers": [
                   {
                     "values": [
-                      2.25,
-                      2.75,
-                      3.25
+                      1.25,
+                      1.75,
+                      2.25
                     ],
                     "units": [
                       " seconds",
@@ -884,13 +884,13 @@
         "angle": null,
         "castTime": "none",
         "effectRadius": "700",
-        "targetRange": "750"
+        "targetRange": null
       }
     ]
   },
   "releaseDate": "2024-07-17",
   "releasePatch": "14.14",
-  "patchLastChanged": "14.16",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 7800,
     "rp": 975,

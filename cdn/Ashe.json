@@ -4,13 +4,13 @@
   "name": "Ashe",
   "title": "the Frost Archer",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Ashe.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Ashe.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
   "stats": {
     "health": {
-      "flat": 640,
+      "flat": 610,
       "percent": 0.0,
       "perLevel": 101,
       "percentPerLevel": 0.0
@@ -245,7 +245,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Ashe's critical strikes are still considered critical strike damage that will be reduced by  Randuin's Omen.\n Runaan's Hurricane's will not deal additional damage on  critical strikes.\n Cheap Shot will trigger on a subsequent basic attack even when the target is no longer slowed.(bug)",
+        "notes": "Ashe's critical strikes are still considered critical strike damage that will be reduced by  Randuin's Omen.\n Runaan's Hurricane's will not deal additional damage on  critical strikes.\n Cheap Shot will trigger on a subsequent basic attack even when the target is no longer slowed.(note)",
         "blurb": "Innate - Frost Shot:  Ashe's basic attacks apply a  slow on-hit and cause her subsequent attacks to deal increased damage.",
         "missileSpeed": null,
         "rechargeRate": null,

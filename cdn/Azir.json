@@ -4,7 +4,7 @@
   "name": "Azir",
   "title": "the Emperor of the Sands",
   "fullName": "Omah Azir",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Azir.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Azir.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -429,23 +429,23 @@
                   {
                     "values": [
                       0.0,
-                      4.529411764705882,
-                      9.058823529411764,
-                      13.588235294117647,
-                      18.11764705882353,
-                      22.647058823529413,
-                      27.176470588235293,
-                      31.705882352941174,
-                      36.23529411764706,
-                      40.76470588235294,
-                      45.294117647058826,
-                      49.8235294117647,
-                      54.35294117647059,
-                      58.88235294117647,
-                      63.41176470588235,
-                      67.94117647058823,
-                      72.47058823529412,
-                      77.0
+                      2.6470588235294117,
+                      5.294117647058823,
+                      7.9411764705882355,
+                      10.588235294117647,
+                      13.235294117647058,
+                      15.882352941176471,
+                      18.52941176470588,
+                      21.176470588235293,
+                      23.823529411764707,
+                      26.470588235294116,
+                      29.11764705882353,
+                      31.764705882352942,
+                      34.411764705882355,
+                      37.05882352941176,
+                      39.705882352941174,
+                      42.35294117647059,
+                      45.0
                     ],
                     "units": [
                       "",
@@ -486,10 +486,10 @@
                   },
                   {
                     "values": [
-                      55,
-                      55,
-                      55,
-                      55,
+                      35,
+                      40,
+                      45,
+                      50,
                       55
                     ],
                     "units": [
@@ -563,7 +563,7 @@
         "projectile": "FALSE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "The Sand Soldier's attack will be mitigated by  block and  dodge but not  blind.\n Nearsighting effects will only allow Azir to perform attacks from soldiers within his own sight radius.\nAzir must rank Arise! as his first ability, and will do so automatically if he reaches level 2 before ranking an ability.\nAzir can only command his soldiers to attack if he is able to declare basic attack commands himself, meaning  crowd control effects that disable attacking, such as  disarm, do not allow him to order his soldiers to attack in his stead.\nDamage to enemy champions from Sand Soldier stabs will draw minion aggro even if the enemy champion was not the primary target.(bug)\nCommanding a soldier to attack will trigger on-attack effects, but will not apply any of these effects to the target hit.\nSand Soldiers will attack the closest enemy to Azir when using attack move (or A + RMB / Shift + RMB) or  auto-attack.\n     An exclamation mark (!) will appear above the Sand Soldier's head when within the range of an enemy  turret.",
+        "notes": "The Sand Soldier's attack will be mitigated by  block and  dodge but not  blind.\n Nearsighting effects will only allow Azir to perform attacks from soldiers within his own sight radius.\nAzir must rank Arise! as his first ability, and will do so automatically if he reaches level 2 before ranking an ability.\nAzir can only command his soldiers to attack if he is able to declare basic attack commands himself, meaning  crowd control effects that disable attacking, such as  disarm, do not allow him to order his soldiers to attack in his stead.\nDamage to enemy champions from Sand Soldier stabs will draw minion aggro even if the enemy champion was not the primary target.(note)\nCommanding a soldier to attack will trigger on-attack effects, but will not apply any of these effects to the target hit.\nSand Soldiers will attack the closest enemy to Azir when using attack move (or A + RMB / Shift + RMB) or  auto-attack.\n     An exclamation mark (!) will appear above the Sand Soldier's head when within the range of an enemy  turret.",
         "blurb": "Active:  Azir summons a Sand Soldier to attack nearby targets for him, replacing his basic attacks against enemies within their range. Their attacks deal magic damage to enemies in a line.",
         "missileSpeed": null,
         "rechargeRate": [
@@ -905,7 +905,7 @@
   },
   "releaseDate": "2014-09-16",
   "releasePatch": "4.16",
-  "patchLastChanged": "14.16",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 4800,
     "rp": 880,
@@ -1408,16 +1408,185 @@
       "name": "Attorney",
       "id": 268019,
       "isBase": false,
-      "availability": "Upcoming",
+      "availability": "Available",
       "formatName": "Attorney",
       "lootEligible": true,
       "cost": 1350,
       "sale": 0,
       "distribution": null,
       "rarity": "Epic",
-      "chromas": [],
+      "chromas": [
+        {
+          "name": "Citrine",
+          "id": 268022,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/268/268022.png",
+          "colors": [
+            "#DF9117",
+            "#DF9117"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        },
+        {
+          "name": "Emerald",
+          "id": 268023,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/268/268023.png",
+          "colors": [
+            "#2DA130",
+            "#2DA130"
+          ],
+          "descriptions": [
+            {
+              "description": "Obtained through Influencer audience giveaways.",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 1,
+              "region": "riot"
+            }
+          ]
+        },
+        {
+          "name": "Jasper",
+          "id": 268024,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/268/268024.png",
+          "colors": [
+            "#9F4A25",
+            "#9F4A25"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        },
+        {
+          "name": "Obsidian",
+          "id": 268027,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/268/268027.png",
+          "colors": [
+            "#27211C",
+            "#27211C"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        },
+        {
+          "name": "Pearl",
+          "id": 268025,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/268/268025.png",
+          "colors": [
+            "#ECF9F8",
+            "#ECF9F8"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        },
+        {
+          "name": "Rose Quartz",
+          "id": 268021,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/268/268021.png",
+          "colors": [
+            "#E58BA5",
+            "#E58BA5"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 1,
+              "region": "TENCENT"
+            }
+          ]
+        },
+        {
+          "name": "Ruby",
+          "id": 268020,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/268/268020.png",
+          "colors": [
+            "#D33528",
+            "#D33528"
+          ],
+          "descriptions": [
+            {
+              "description": "This chroma was released as a bundle exclusive in 2024.",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 1,
+              "region": "riot"
+            }
+          ]
+        },
+        {
+          "name": "Sapphire",
+          "id": 268026,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/268/268026.png",
+          "colors": [
+            "#2756CE",
+            "#2756CE"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        }
+      ],
       "lore": "Azir's oral arguments are frequently struck from the record due to his flagrant objecting to every motion, as well as his habit of following every statement by a judge with “the order is given!” Anyone in need of his services can find his number plastered across every bus stop in town.",
-      "release": "0000-00-00",
+      "release": "2024-09-11",
       "set": [
         "Day Job"
       ],

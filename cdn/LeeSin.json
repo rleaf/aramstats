@@ -4,7 +4,7 @@
   "name": "Lee Sin",
   "title": "the Blind Monk",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/LeeSin.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/LeeSin.png",
   "resource": "ENERGY",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -1017,7 +1017,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Applies  spell damage to the primary target and  area damage to secondary targets.\nThe spell indicator for this ability also displays the direction for the knock back relative to Lee Sin's position.\nIf the target of Dragon Rage  dies initially on the first hit there will be no displacement of any kind.\nThe  displacement's direction is decided at the moment of impact and not by Lee Sin and his target's relative locations at the start of the cast (the only way for Lee Sin to control where his target is displaced is by using  Flash before the cast time of Dragon's Rage ends).\nIf the  airborne debuff is removed from the target, its ability to collide with enemies is removed aswell, even if the target has not come to a stop yet.(bug)\nThe airborne debuff and with it collision of the target remains for the normal duration even if its trajectory is  displaced by another source (i.e -  Headbutt).\nThe target may still collide with other enemies for the remaining airborne duration after they reach their destination, as the airborne debuff lasts longer than the displacement.\nThe knockback distance is intended to be 800, but due to a bug, this is reduced by up-to the sum of Lee Sin's and his target's  gameplay radius, depending on how far they are away from one another at the end of the cast time.\nIf the target becomes  untargetable,  dies, or is too far away or no longer in  sight during the cast time, this ability will cancel but does not go on  cooldown nor pay its cost (if applicable).",
+        "notes": "Applies  spell damage to the primary target and  area damage to secondary targets.\nThe spell indicator for this ability also displays the direction for the knock back relative to Lee Sin's position.\nIf the target of Dragon Rage  dies initially on the first hit there will be no displacement of any kind.\nThe  displacement's direction is decided at the moment of impact and not by Lee Sin and his target's relative locations at the start of the cast (the only way for Lee Sin to control where his target is displaced is by using  Flash before the cast time of Dragon's Rage ends).\nIf the  airborne debuff is removed from the target, its ability to collide with enemies is removed aswell, even if the target has not come to a stop yet.(note)\nThe airborne debuff and with it collision of the target remains for the normal duration even if its trajectory is  displaced by another source (i.e -  Headbutt).\nThe target may still collide with other enemies for the remaining airborne duration after they reach their destination, as the airborne debuff lasts longer than the displacement.\nThe knockback distance is intended to be 800, but due to a bug, this is reduced by up-to the sum of Lee Sin's and his target's  gameplay radius, depending on how far they are away from one another at the end of the cast time.\nIf the target becomes  untargetable,  dies, or is too far away or no longer in  sight during the cast time, this ability will cancel but does not go on  cooldown nor pay its cost (if applicable).",
         "blurb": "Active: Lee Sin  roots the target enemy champion and roundhouse kicks them, dealing physical damage and  knocking them back.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -1175,10 +1175,6 @@
             {
               "rarity": 5,
               "region": "TENCENT"
-            },
-            {
-              "rarity": 0,
-              "region": "riot"
             }
           ]
         },
@@ -1200,10 +1196,6 @@
             {
               "rarity": 5,
               "region": "TENCENT"
-            },
-            {
-              "rarity": 0,
-              "region": "riot"
             }
           ]
         },
@@ -1225,10 +1217,6 @@
             {
               "rarity": 5,
               "region": "TENCENT"
-            },
-            {
-              "rarity": 0,
-              "region": "riot"
             }
           ]
         },

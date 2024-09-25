@@ -4,7 +4,7 @@
   "name": "Brand",
   "title": "the Burning Vengeance",
   "fullName": "Kegan Rodhe",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Brand.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Brand.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -232,11 +232,11 @@
             "leveling": []
           },
           {
-            "description": "Ablaze: While afflicted with Ablaze, the target is dealt magic damage equal to[ 2% of their maximum health over 4 seconds. ][ 0.167% of their maximum health every 0.25 seconds over 4 seconds. ]Each stack of Ablaze deals damage to the target individually and applies their damage ticks dependent on the time they were applied, even if the duration of all the stacks are refreshed. Ablaze deals 215% damage per tick to monsters, capped at 80.",
+            "description": "Ablaze: While afflicted with Ablaze, the target is dealt magic damage equal to[ 2% of their maximum health over 4 seconds. ][ 0.167% of their maximum health every 0.25 seconds over 4 seconds. ]Each stack of Ablaze deals damage to the target individually and applies their damage ticks dependent on the time they were applied, even if the duration of all the stacks are refreshed. Ablaze deals 215% damage per tick to monsters; this damage is capped at[ 7.5 / 15 / 22.5 (based on Ablaze stacks) per tick against non-epic monsters and 20 / 40 / 60 (based on Ablaze stacks) per tick against epic monsters. ][ a total of 120 / 240 / 360 (based on Ablaze stacks) against non-epic monsters and 320 / 640 / 960 (based on Ablaze stacks) against epic monsters. ]",
             "leveling": []
           },
           {
-            "description": "Upon applying 3 stacks of Ablaze to a large monster or enemy champion, the fire becomes unstable, forming an area around the target that grants sight and explodes after 2 seconds, consuming all of their stacks. All enemies within the detonation are dealt magic damage equal to 9% − 13% (based on level) of their maximum health (+ 2% per 100 AP), reduced by 50% against epic monsters, and applied a stack of Ablaze. The explosion will still occur if the target dies to the ability applying the third stack or during the delay.",
+            "description": "Upon applying 3 stacks of Ablaze to a large monster or enemy champion, the fire becomes unstable, forming an area around the target that grants sight and explodes after 2 seconds, consuming all of their stacks. All enemies within the detonation are dealt magic damage equal to 9% − 13% (based on level) of their maximum health (+ 2% per 100 AP), capped at 250 / 325 / 400 / 475 (based on level) against monsters, and applied a stack of Ablaze. The explosion will still occur if the target dies to the ability applying the third stack or during the delay.",
             "leveling": []
           },
           {
@@ -255,7 +255,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Ablaze is a  debuff that persists through death.\nThe explosion is not considered a  tether effect and will not affect  untargetable targets, even if the explosion originated from them.\nGiven the behavior of the stacking mechanic, the damage over time will deal varying amounts of damage based on the time the stacks were applied:\nAt sub-optimal applied times, 2 stacks will deal a minimum of 6% maximum health damage over 4 seconds, but will deal 7% maximum health at optimal applied times.\nAgainst small-medium units 3 stacks will deal a minimum of 9% maximum health at sub-optimal times, but 11% maximum health at optimal times. If these stacks are further refreshed at optimal times they can deal up to 12% maximum health over 4 seconds.\nThe burn is  persistent damage and the explosion is  area damage.",
+        "notes": "Ablaze is a  debuff that persists through death.\nAblaze's damage cap against a  monster is applied after the increased monster damage.\nThe explosion is not considered a  tether effect and will not affect  untargetable targets, even if the explosion originated from them.\nGiven the behavior of the stacking mechanic, the damage over time will deal varying amounts of damage based on the time the stacks were applied:\nAt sub-optimal applied times, 2 stacks will deal a minimum of 6% maximum health damage over 4 seconds, but will deal 7% maximum health at optimal applied times.\nAgainst small-medium units 3 stacks will deal a minimum of 9% maximum health at sub-optimal times, but 11% maximum health at optimal times. If these stacks are further refreshed at optimal times they can deal up to 12% maximum health over 4 seconds.\nThe burn is  persistent damage and the explosion is  area damage.",
         "blurb": "Innate:  Brand's abilities apply a stack of Ablaze to enemies hit. Subsequent abilities used against a target with Ablaze are empowered. Killing an enemy afflicted with Ablaze or with an ability restores  mana.",
         "missileSpeed": null,
         "rechargeRate": null,

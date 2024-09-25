@@ -4,7 +4,7 @@
   "name": "Katarina",
   "title": "the Sinister Blade",
   "fullName": "Katarina Du Couteau",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Katarina.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Katarina.png",
   "resource": "NONE",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -510,7 +510,7 @@
             ]
           },
           {
-            "description": "Shunpo resets Katarina's basic attack timer, unless the target was killed by Shunpo(bug). Upon blinking, Katarina enters a 0.15-second cast time.",
+            "description": "Shunpo resets Katarina's basic attack timer, unless the target was killed by Shunpo(note). Upon blinking, Katarina enters a 0.15-second cast time.",
             "leveling": []
           }
         ],
@@ -545,7 +545,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Shunpo can be used on any unit except structures and  wards.\nShunpo can be cast on Daggers that haven't landed yet.\nShunpo prioritizes damaging enemy champions within range at the targetted location.\nAfter the cast time, Katarina will attempt to move towards the closest enemy in  acquisition radius range and basic attack them, prioritizing champions, unless an attack command was already active on another target in range or any attack command was applied during the cast time. Movement commands applied during cast time will override the automatic attack, but they may not override an already active manually applied attack command. If no enemy is in range, pre-cast commands will remain active, and attack commands applied during the cast time will be ignored (bug).\nIf a Dagger is picked during the cast time, pre-cast commands will be cancelled, even if no enemy is nearby. And if an enemy is nearby, Katarina may or may not start an automatic attack (bug).\nIf the target is very close to a wall and Katarina targets Shunpo behind the target, she can blink over the wall.\nShunpo  will still deal damage but not apply on-hit effects if  dodged. It cannot be  blocked nor can it be missed while Katarina is  blinded.\nShunpo does not require the enemy to be within targeting range to damage them. It only requires them to be within the max range around a unit that Shunpo allows them to blink to.\n\n\nType\n\nCast time\n\n\nAttacking\n\nDisabled\n\n\nAbilities\n\nDisabled\n\n\nMovement\n\nDisabled\n\n\nItems\n\nUsable\n\n Shurelya's Battlesong  Youmuu's Ghostblade  Randuin's Omen\n\n\nDisabled\n\nAll the other item-actives are disabled\n\n\nInterrupted by\n\nN/A\n\n\nConsumables\n\nUsable\n\n\nSpells\n\nUsable\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite  Flash\n\n\nDisabled\n\n Teleport  Recall  Hexflash\n\n\nInterrupted by\n\nN/A\n\n\nInterrupted by\n\nDeath, unless protected by  Resurrection",
+        "notes": "Shunpo can be used on any unit except structures and  wards.\nShunpo can be cast on Daggers that haven't landed yet.\nShunpo prioritizes damaging enemy champions within range at the targetted location.\nAfter the cast time, Katarina will attempt to move towards the closest enemy in  acquisition radius range and basic attack them, prioritizing champions, unless an attack command was already active on another target in range or any attack command was applied during the cast time. Movement commands applied during cast time will override the automatic attack, but they may not override an already active manually applied attack command. If no enemy is in range, pre-cast commands will remain active, and attack commands applied during the cast time will be ignored (note).\nIf a Dagger is picked during the cast time, pre-cast commands will be cancelled, even if no enemy is nearby. And if an enemy is nearby, Katarina may or may not start an automatic attack (note).\nIf the target is very close to a wall and Katarina targets Shunpo behind the target, she can blink over the wall.\nShunpo  will still deal damage but not apply on-hit effects if  dodged. It cannot be  blocked nor can it be missed while Katarina is  blinded.\nShunpo does not require the enemy to be within targeting range to damage them. It only requires them to be within the max range around a unit that Shunpo allows them to blink to.\n\n\nType\n\nCast time\n\n\nAttacking\n\nDisabled\n\n\nAbilities\n\nDisabled\n\n\nMovement\n\nDisabled\n\n\nItems\n\nUsable\n\n Shurelya's Battlesong  Youmuu's Ghostblade  Randuin's Omen\n\n\nDisabled\n\nAll the other item-actives are disabled\n\n\nInterrupted by\n\nN/A\n\n\nConsumables\n\nUsable\n\n\nSpells\n\nUsable\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite  Flash\n\n\nDisabled\n\n Teleport  Recall  Hexflash\n\n\nInterrupted by\n\nN/A\n\n\nInterrupted by\n\nDeath, unless protected by  Resurrection",
         "blurb": "Active:  Katarina  blinks to the target location around the target unit or Dagger, dealing magic damage to the nearest enemy and applying  on-hit effects.",
         "missileSpeed": null,
         "rechargeRate": null,

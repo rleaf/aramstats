@@ -4,7 +4,7 @@
   "name": "Rumble",
   "title": "the Mechanized Menace",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Rumble.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Rumble.png",
   "resource": "HEAT",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -251,7 +251,7 @@
         "onHitEffects": null,
         "occurrence": null,
         "notes": "While Rumble is overheating, a  Silenced icon will appear above him to signify he cannot cast abilities. This is visible to all units.\nThe attacks do not deal the bonus damage against structures.",
-        "blurb": "Innate:  Rumble's basic ability casts generate  Heat, which gradually expires after a few seconds without generating Heat. Rumble enters the Danger Zone while he has at least  50% Heat, and becomes Overheated at  Max Heat.",
+        "blurb": "Innate:  Rumble's basic ability casts generate  Heat, which gradually expires after a few seconds without generating Heat. Rumble enters the Danger Zone while he has at least  50 Heat, and becomes Overheated at  Max Heat.",
         "missileSpeed": null,
         "rechargeRate": null,
         "collisionRadius": null,
@@ -279,10 +279,10 @@
                 "modifiers": [
                   {
                     "values": [
-                      80,
-                      105,
-                      130,
-                      155,
+                      60,
+                      90,
+                      120,
+                      150,
                       180
                     ],
                     "units": [
@@ -295,11 +295,11 @@
                   },
                   {
                     "values": [
-                      110,
-                      110,
-                      110,
-                      110,
-                      110
+                      100,
+                      100,
+                      100,
+                      100,
+                      100
                     ],
                     "units": [
                       "% AP",
@@ -332,10 +332,10 @@
                 "modifiers": [
                   {
                     "values": [
-                      6.667,
-                      8.75,
-                      10.833,
-                      12.917,
+                      5,
+                      7.5,
+                      10,
+                      12.5,
                       15
                     ],
                     "units": [
@@ -348,11 +348,11 @@
                   },
                   {
                     "values": [
-                      9.17,
-                      9.17,
-                      9.17,
-                      9.17,
-                      9.17
+                      8.33,
+                      8.33,
+                      8.33,
+                      8.33,
+                      8.33
                     ],
                     "units": [
                       "% AP",
@@ -385,10 +385,10 @@
                 "modifiers": [
                   {
                     "values": [
-                      56,
-                      73.5,
-                      91,
-                      108.5,
+                      42,
+                      63,
+                      84,
+                      105,
                       126
                     ],
                     "units": [
@@ -401,11 +401,11 @@
                   },
                   {
                     "values": [
-                      77,
-                      77,
-                      77,
-                      77,
-                      77
+                      70,
+                      70,
+                      70,
+                      70,
+                      70
                     ],
                     "units": [
                       "% AP",
@@ -438,10 +438,10 @@
                 "modifiers": [
                   {
                     "values": [
-                      4.667,
-                      6.125,
-                      7.583,
-                      9.042,
+                      3.5,
+                      5.25,
+                      7,
+                      8.75,
                       10.5
                     ],
                     "units": [
@@ -454,11 +454,11 @@
                   },
                   {
                     "values": [
-                      6.417,
-                      6.417,
-                      6.417,
-                      6.417,
-                      6.417
+                      5.833,
+                      5.833,
+                      5.833,
+                      5.833,
+                      5.833
                     ],
                     "units": [
                       "% AP",
@@ -496,10 +496,10 @@
                 "modifiers": [
                   {
                     "values": [
-                      120,
-                      157.5,
-                      195,
-                      232.5,
+                      90,
+                      135,
+                      180,
+                      225,
                       270
                     ],
                     "units": [
@@ -512,11 +512,11 @@
                   },
                   {
                     "values": [
-                      165,
-                      165,
-                      165,
-                      165,
-                      165
+                      150,
+                      150,
+                      150,
+                      150,
+                      150
                     ],
                     "units": [
                       "% AP",
@@ -549,10 +549,10 @@
                 "modifiers": [
                   {
                     "values": [
-                      10,
-                      13.125,
-                      16.25,
-                      19.375,
+                      7.5,
+                      11.25,
+                      15,
+                      18.75,
                       22.5
                     ],
                     "units": [
@@ -565,11 +565,11 @@
                   },
                   {
                     "values": [
-                      13.75,
-                      13.75,
-                      13.75,
-                      13.75,
-                      13.75
+                      12.5,
+                      12.5,
+                      12.5,
+                      12.5,
+                      12.5
                     ],
                     "units": [
                       "% AP",
@@ -602,10 +602,10 @@
                 "modifiers": [
                   {
                     "values": [
-                      84,
-                      110.25,
-                      136.5,
-                      162.75,
+                      63,
+                      94.5,
+                      126,
+                      157.5,
                       189
                     ],
                     "units": [
@@ -618,11 +618,11 @@
                   },
                   {
                     "values": [
-                      115.5,
-                      115.5,
-                      115.5,
-                      115.5,
-                      115.5
+                      105,
+                      105,
+                      105,
+                      105,
+                      105
                     ],
                     "units": [
                       "% AP",
@@ -655,10 +655,10 @@
                 "modifiers": [
                   {
                     "values": [
-                      7,
-                      9.1875,
-                      11.375,
-                      13.5625,
+                      5.25,
+                      7.875,
+                      10.5,
+                      13.125,
                       15.75
                     ],
                     "units": [
@@ -671,11 +671,11 @@
                   },
                   {
                     "values": [
-                      9.625,
-                      9.625,
-                      9.625,
-                      9.625,
-                      9.625
+                      8.75,
+                      8.75,
+                      8.75,
+                      8.75,
+                      8.75
                     ],
                     "units": [
                       "% AP",
@@ -986,11 +986,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      60,
-                      85,
-                      110,
-                      135,
-                      160
+                      55,
+                      80,
+                      105,
+                      130,
+                      155
                     ],
                     "units": [
                       "",
@@ -1023,11 +1023,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      120,
-                      170,
-                      220,
-                      270,
-                      320
+                      110,
+                      160,
+                      210,
+                      260,
+                      310
                     ],
                     "units": [
                       "",
@@ -1153,11 +1153,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      90,
-                      127.5,
-                      165,
-                      202.5,
-                      240
+                      82.5,
+                      120,
+                      157.5,
+                      195,
+                      232.5
                     ],
                     "units": [
                       "",
@@ -1190,11 +1190,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      180,
-                      255,
-                      330,
-                      405,
-                      480
+                      165,
+                      240,
+                      315,
+                      390,
+                      465
                     ],
                     "units": [
                       "",
@@ -1344,7 +1344,7 @@
         "projectile": "TRUE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "If Rumble lands a Harpoon on a target that already has a stack of magic resistance reduction while in  Danger Zone, it will increase the reduction from this first stack to the enhanced amount, as well.\nA buff with the magic resistance reduction tooltip is applied to  minions and  pets, but their magic resistance is unaffected by Electro Harpoon.(bug)\nEach Electro Harpoon cast triggers  Spellblade and stacks  Force Pulse.\nElectro Harpoon's missile will fail to fire if Rumble is  suppressed during the cast time.(bug)\nThis ability will cast from wherever the caster is at the end of the cast time.\nRumble stocks an Electro Harpoon charge before the ability is even learned.",
+        "notes": "If Rumble lands a Harpoon on a target that already has a stack of magic resistance reduction while in  Danger Zone, it will increase the reduction from this first stack to the enhanced amount, as well.\nA buff with the magic resistance reduction tooltip is applied to  minions and  pets, but their magic resistance is unaffected by Electro Harpoon.(bug)\nEach Electro Harpoon cast triggers  Spellblade and stacks  Force Pulse.\nElectro Harpoon's missile will fail to fire if Rumble is  suppressed during the cast time.(note)\nThis ability will cast from wherever the caster is at the end of the cast time.\nRumble stocks an Electro Harpoon charge before the ability is even learned.",
         "blurb": "Active:  Rumble shoots a harpoon in the target direction that deals magic damage and briefly  slows the first enemy hit, reducing their  magic resist for a few seconds. These effects can stack with multiple harpoons.",
         "missileSpeed": null,
         "rechargeRate": [
@@ -1514,7 +1514,7 @@
   },
   "releaseDate": "2011-04-26",
   "releasePatch": "1.0.0.116",
-  "patchLastChanged": "14.14",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

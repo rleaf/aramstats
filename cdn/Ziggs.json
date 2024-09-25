@@ -4,7 +4,7 @@
   "name": "Ziggs",
   "title": "the Hexplosives Expert",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Ziggs.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Ziggs.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -226,7 +226,7 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Ziggs/ability-icon/p",
         "effects": [
           {
-            "description": "Innate: Periodically, Ziggs empowers his next basic attack to deal 20 − 160 (based on level) (+ 50% AP) bonus magic damage,[ increased by 150% against structures. ][ increased to 50 − 400 (based on level) (+ 125% AP) against structures. ]",
+            "description": "Innate: Periodically, Ziggs empowers his next basic attack to deal 20 − 160 (based on level) (+ 50% AP) bonus magic damage,[ increased by 75% against structures. ][ increased to 35 − 280 (based on level) (+ 87.5% AP) against structures. ]",
             "leveling": []
           },
           {
@@ -894,7 +894,7 @@
   },
   "releaseDate": "2012-02-01",
   "releasePatch": "1.0.0.133",
-  "patchLastChanged": "14.3",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

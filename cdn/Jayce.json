@@ -4,7 +4,7 @@
   "name": "Jayce",
   "title": "the Defender of Tomorrow",
   "fullName": "Jayce Giopara",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Jayce.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Jayce.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -312,12 +312,12 @@
                 "modifiers": [
                   {
                     "values": [
-                      30,
                       35,
                       40,
                       45,
                       50,
-                      55
+                      55,
+                      60
                     ],
                     "units": [
                       "%",
@@ -557,7 +557,7 @@
         "projectile": "TRUE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "This ability will cast from wherever the caster is at the end of the cast time.\nUpon touching  Acceleration Gate, the enhanced missile gains its remaining range equal to [ 1600 units - travelled distance of the standard missile ].\nThis means that the range of the enhanced Shock Blast is always the same, regardless of how early or late it interacted with Acceleration Gate.\nSupercharging the Shock Blast as soon as possible, however, will improve its average speed significantly.\nFor this, Jayce must stand inside or very close to the Acceleration Gate, or place it very close to himself right after Shock Blast's cast time.\nShock Blast's effect radius is centered around the location of the missile as it collides.\nShock Blast will always damage the enemy it collided with, even if it is so large that it is outside the effect radius.\nThe non-enhanced Shock Blast detonation has a slightly smaller sight radius than the radius in which it deals damage.(bug)",
+        "notes": "This ability will cast from wherever the caster is at the end of the cast time.\nUpon touching  Acceleration Gate, the enhanced missile gains its remaining range equal to [ 1600 units - travelled distance of the standard missile ].\nThis means that the range of the enhanced Shock Blast is always the same, regardless of how early or late it interacted with Acceleration Gate.\nSupercharging the Shock Blast as soon as possible, however, will improve its average speed significantly.\nFor this, Jayce must stand inside or very close to the Acceleration Gate, or place it very close to himself right after Shock Blast's cast time.\nShock Blast's effect radius is centered around the location of the missile as it collides.\nShock Blast will always damage the enemy it collided with, even if it is so large that it is outside the effect radius.\nThe non-enhanced Shock Blast detonation has a slightly smaller sight radius than the radius in which it deals damage.(note)",
         "blurb": "Active:  Jayce fires an electric bolt in the target direction that detonates upon hitting an enemy or max range, dealing physical damage to nearby enemies.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -1026,12 +1026,12 @@
                 "modifiers": [
                   {
                     "values": [
-                      30,
                       35,
                       40,
                       45,
                       50,
-                      55
+                      55,
+                      60
                     ],
                     "units": [
                       "%",
@@ -1248,7 +1248,7 @@
   },
   "releaseDate": "2012-07-07",
   "releasePatch": "1.0.0.142",
-  "patchLastChanged": "14.14",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

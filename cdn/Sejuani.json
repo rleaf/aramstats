@@ -4,7 +4,7 @@
   "name": "Sejuani",
   "title": "Fury of the North",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Sejuani.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Sejuani.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -313,7 +313,7 @@
             ]
           },
           {
-            "description": "Sejuani can cast any of her abilities during the dash. Arctic Assault will cast at max range if cast beyond that.",
+            "description": "Arctic Assault can be cast during her other abilities without cancelling them and vice versa. Arctic Assault will cast at max range if cast beyond that.",
             "leveling": []
           }
         ],

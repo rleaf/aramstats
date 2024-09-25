@@ -4,7 +4,7 @@
   "name": "Miss Fortune",
   "title": "the Bounty Hunter",
   "fullName": "Sarah Fortune",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/MissFortune.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/MissFortune.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -46,7 +46,7 @@
       "percentPerLevel": 0.0
     },
     "attackDamage": {
-      "flat": 55,
+      "flat": 53,
       "percent": 0.0,
       "perLevel": 2.4,
       "percentPerLevel": 0.0
@@ -837,7 +837,7 @@
   },
   "releaseDate": "2010-09-08",
   "releasePatch": "1.0.0.100",
-  "patchLastChanged": "14.14",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 450,
     "rp": 260,
@@ -2397,7 +2397,7 @@
       "name": "Battle Queen",
       "id": 21060,
       "isBase": false,
-      "availability": "Upcoming",
+      "availability": "Available",
       "formatName": "Battle Queen",
       "lootEligible": true,
       "cost": 1350,

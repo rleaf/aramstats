@@ -4,7 +4,7 @@
   "name": "Fizz",
   "title": "the Tidal Trickster",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Fizz.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Fizz.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -154,7 +154,7 @@
       "percentPerLevel": 0.0
     },
     "aramTenacity": {
-      "flat": 1.2,
+      "flat": 1.1,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0

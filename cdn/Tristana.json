@@ -4,7 +4,7 @@
   "name": "Tristana",
   "title": "the Yordle Gunner",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Tristana.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Tristana.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -18,7 +18,7 @@
     "healthRegen": {
       "flat": 4,
       "percent": 0.0,
-      "perLevel": 0.65,
+      "perLevel": 0.5,
       "percentPerLevel": 0.0
     },
     "mana": {
@@ -36,7 +36,7 @@
     "armor": {
       "flat": 30,
       "percent": 0.0,
-      "perLevel": 4.5,
+      "perLevel": 4,
       "percentPerLevel": 0.0
     },
     "magicResistance": {
@@ -46,9 +46,9 @@
       "percentPerLevel": 0.0
     },
     "attackDamage": {
-      "flat": 59,
+      "flat": 60,
       "percent": 0.0,
-      "perLevel": 3.7,
+      "perLevel": 2.5,
       "percentPerLevel": 0.0
     },
     "movespeed": {
@@ -100,7 +100,7 @@
       "percentPerLevel": 0.0
     },
     "attackSpeedRatio": {
-      "flat": 0.679,
+      "flat": 0.694,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0
@@ -124,7 +124,7 @@
       "percentPerLevel": 0.0
     },
     "attackRange": {
-      "flat": 525,
+      "flat": 550,
       "percent": 0.0,
       "perLevel": 0,
       "percentPerLevel": 0.0
@@ -226,7 +226,7 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Tristana/ability-icon/p",
         "effects": [
           {
-            "description": "Innate: Tristana's basic attacks, Explosive Charge and Buster Shot gain 0 − 136 (based on level) bonus range, for a total of 525 − 661 (based on level).",
+            "description": "Innate: Tristana's basic attacks, Explosive Charge and Buster Shot gain 0 − 125 (based on level) bonus range, for a total of 550 − 675 (based on level).",
             "leveling": []
           }
         ],
@@ -270,11 +270,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      50,
-                      65,
-                      80,
-                      95,
-                      110
+                      60,
+                      75,
+                      90,
+                      105,
+                      120
                     ],
                     "units": [
                       "%",
@@ -361,18 +361,18 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Tristana/ability-icon/w",
         "effects": [
           {
-            "description": "Active: Tristana jumps to the target location. Upon landing, she deals magic damage to nearby enemies and slows them by 60% for a duration.",
+            "description": "Active: Tristana jumps to the target location. Upon landing, she deals magic damage to nearby enemies and slows them by 40% for 2 seconds.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
                 "modifiers": [
                   {
                     "values": [
-                      95,
-                      145,
-                      195,
-                      245,
-                      295
+                      70,
+                      105,
+                      140,
+                      175,
+                      210
                     ],
                     "units": [
                       "",
@@ -380,6 +380,22 @@
                       "",
                       "",
                       ""
+                    ]
+                  },
+                  {
+                    "values": [
+                      75,
+                      75,
+                      75,
+                      75,
+                      75
+                    ],
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
                     ]
                   },
                   {
@@ -396,27 +412,6 @@
                       "% AP",
                       "% AP",
                       "% AP"
-                    ]
-                  }
-                ]
-              },
-              {
-                "attribute": "Slow Duration",
-                "modifiers": [
-                  {
-                    "values": [
-                      1,
-                      1.5,
-                      2,
-                      2.5,
-                      3
-                    ],
-                    "units": [
-                      " seconds",
-                      " seconds",
-                      " seconds",
-                      " seconds",
-                      " seconds"
                     ]
                   }
                 ]
@@ -511,11 +506,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      55,
-                      80,
-                      105,
-                      130,
-                      155
+                      45,
+                      60,
+                      75,
+                      90,
+                      105
                     ],
                     "units": [
                       "",
@@ -553,11 +548,11 @@
                 "modifiers": [
                   {
                     "values": [
+                      60,
                       70,
                       80,
                       90,
-                      100,
-                      110
+                      100
                     ],
                     "units": [
                       "",
@@ -569,11 +564,11 @@
                   },
                   {
                     "values": [
-                      50,
-                      75,
                       100,
-                      125,
-                      150
+                      110,
+                      120,
+                      130,
+                      140
                     ],
                     "units": [
                       "% bonus AD",
@@ -604,18 +599,18 @@
             ]
           },
           {
-            "description": "Tristana's basic attacks on-hit and abilities against the target increase Explosive Charge's damage by 30%, stacking up to 4 times for a maximum 120% increase, upon which the charge also detonates instantly.The charge's total damage is additionally increased by 0% − 33.3% (based on critical strike chance).",
+            "description": "Tristana's basic attacks on-hit and abilities against the target increase Explosive Charge's damage by 25%, stacking up to 4 times for a maximum 100% increase, upon which the charge also detonates instantly. The charge's total damage is additionally increased by 0% − 75% (based on critical strike chance) (+ 0% − 40% (based on critical strike chance).",
             "leveling": [
               {
                 "attribute": "Bonus Damage Per Stack",
                 "modifiers": [
                   {
                     "values": [
-                      21,
-                      24,
-                      27,
-                      30,
-                      33
+                      15,
+                      17.5,
+                      20,
+                      22.5,
+                      25
                     ],
                     "units": [
                       "",
@@ -627,11 +622,11 @@
                   },
                   {
                     "values": [
-                      15,
-                      22.5,
+                      25,
+                      27.5,
                       30,
-                      37.5,
-                      45
+                      32.5,
+                      35
                     ],
                     "units": [
                       "% bonus AD",
@@ -643,11 +638,64 @@
                   },
                   {
                     "values": [
-                      15,
-                      15,
-                      15,
-                      15,
-                      15
+                      12.5,
+                      12.5,
+                      12.5,
+                      12.5,
+                      12.5
+                    ],
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Maximum Bonus Damage",
+                "modifiers": [
+                  {
+                    "values": [
+                      60,
+                      70,
+                      80,
+                      90,
+                      100
+                    ],
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ]
+                  },
+                  {
+                    "values": [
+                      100,
+                      110,
+                      120,
+                      130,
+                      140
+                    ],
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
+                    ]
+                  },
+                  {
+                    "values": [
+                      50,
+                      50,
+                      50,
+                      50,
+                      50
                     ],
                     "units": [
                       "% AP",
@@ -664,11 +712,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      205,
-                      235,
-                      264,
-                      293,
-                      323
+                      120,
+                      140,
+                      160,
+                      180,
+                      200
                     ],
                     "units": [
                       "",
@@ -680,11 +728,11 @@
                   },
                   {
                     "values": [
-                      146.6,
-                      219.9,
-                      293.3,
-                      366.6,
-                      439.9
+                      200,
+                      220,
+                      240,
+                      260,
+                      280
                     ],
                     "units": [
                       "% bonus AD",
@@ -696,11 +744,11 @@
                   },
                   {
                     "values": [
-                      146.6,
-                      146.6,
-                      146.6,
-                      146.6,
-                      146.6
+                      100,
+                      100,
+                      100,
+                      100,
+                      100
                     ],
                     "units": [
                       "% AP",
@@ -782,7 +830,7 @@
         "angle": null,
         "castTime": "0.226 (at base attack speed)",
         "effectRadius": "300 / 300 / 600",
-        "targetRange": "525 − 661 (based on level)"
+        "targetRange": "550 − 675 (based on level)"
       }
     ],
     "R": [
@@ -791,21 +839,33 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Tristana/ability-icon/r",
         "effects": [
           {
-            "description": "Active: Tristana fires a massive cannonball at the target enemy that deals magic damage. They and surrounding enemies are also knocked back and stunned for up-to 0.75 seconds, during which they are revealed.",
+            "description": "Active: Tristana fires a massive cannonball at the target enemy that deals magic damage. They and surrounding enemies are also knocked back and stunned for a duration, during which all targets are revealed.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
                 "modifiers": [
                   {
                     "values": [
-                      300,
-                      400,
-                      500
+                      275,
+                      325,
+                      375
                     ],
                     "units": [
                       "",
                       "",
                       ""
+                    ]
+                  },
+                  {
+                    "values": [
+                      70,
+                      70,
+                      70
+                    ],
+                    "units": [
+                      "% bonus AD",
+                      "% bonus AD",
+                      "% bonus AD"
                     ]
                   },
                   {
@@ -838,6 +898,23 @@
                     ]
                   }
                 ]
+              },
+              {
+                "attribute": "Stun Duration",
+                "modifiers": [
+                  {
+                    "values": [
+                      0.4,
+                      0.55,
+                      0.7
+                    ],
+                    "units": [
+                      " seconds",
+                      " seconds",
+                      " seconds"
+                    ]
+                  }
+                ]
               }
             ]
           }
@@ -862,8 +939,8 @@
           "modifiers": [
             {
               "values": [
-                120,
-                110,
+                100,
+                100,
                 100
               ],
               "units": [
@@ -884,7 +961,7 @@
         "projectile": "TRUE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Applies  spell damage to the primary target and deals 0  default damage to secondary targets.\nThe 0 damage to secondary targets triggers  turret aggro, but does not stack  Explosive Charge.\nTristana will attempt to basic attack the target afterwards.\nBuster Shot's  displacement direction is based on Tristana's location at the end of the cast time.\nThe primary target is pushed in a straight line away from that location, but the knockback distance and speed may be impeded by terrain.\nSecondary targets are displaced parallel to the primary target's displacement.\nThe   crowd control is removed early when the forced movement stops.\nAt normal knockback distance and knockback speed, this changes the duration of the disable to circa 0.4 / 0.5 / 0.6 seconds by default.\n Displacement immunity will also resist the application of the  stun.\nIf the target becomes  untargetable,  dies, or is too far away or no longer in  sight during the cast time, this ability will cancel but does not go on  cooldown nor pay its cost (if applicable).",
+        "notes": "Applies  spell damage to the primary target and deals 0  default damage to secondary targets.\nThe 0 damage to secondary targets triggers  turret aggro, but does not stack  Explosive Charge.\nTristana will attempt to basic attack the target afterwards.\nBuster Shot's  displacement direction is based on Tristana's location at the end of the cast time.\nThe primary target is pushed in a straight line away from that location, but the knockback distance and speed may be impeded by terrain.\nSecondary targets are displaced parallel to the primary target's displacement.\nThe  debuff is removed early when the forced movement stops.\n Displacement immunity will also resist the application of the  stun.\nIf the target becomes  untargetable,  dies, or is too far away or no longer in  sight during the cast time, this ability will cancel but does not go on  cooldown nor pay its cost (if applicable).",
         "blurb": "Active:  Tristana fires a massive cannonball at the target enemy that deals magic damage. They and surrounding enemies are also briefly  knocked back and  stunned, during which they are  revealed.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -897,7 +974,7 @@
         "angle": null,
         "castTime": "0.25",
         "effectRadius": "200",
-        "targetRange": "525 − 661 (based on level)"
+        "targetRange": "550 − 675 (based on level)"
       }
     ]
   },

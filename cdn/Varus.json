@@ -4,7 +4,7 @@
   "name": "Varus",
   "title": "the Arrow of Retribution",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Varus.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Varus.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -302,11 +302,11 @@
                   },
                   {
                     "values": [
+                      86.67,
+                      93.33,
                       100,
                       106.67,
-                      113.33,
-                      120,
-                      126.67
+                      113.33
                     ],
                     "units": [
                       "% bonus AD",
@@ -339,11 +339,11 @@
                   },
                   {
                     "values": [
+                      130,
+                      140,
                       150,
                       160,
-                      170,
-                      180,
-                      190
+                      170
                     ],
                     "units": [
                       "% bonus AD",
@@ -376,11 +376,11 @@
                   },
                   {
                     "values": [
+                      28.6,
+                      30.8,
                       33,
                       35.2,
-                      37.4,
-                      39.6,
-                      41.8
+                      37.4
                     ],
                     "units": [
                       "% bonus AD",
@@ -413,11 +413,11 @@
                   },
                   {
                     "values": [
+                      42.9,
+                      46.2,
                       49.5,
                       52.8,
-                      56.1,
-                      59.4,
-                      62.7
+                      56.1
                     ],
                     "units": [
                       "% bonus AD",
@@ -830,11 +830,11 @@
                   },
                   {
                     "values": [
-                      110,
-                      110,
-                      110,
-                      110,
-                      110
+                      100,
+                      100,
+                      100,
+                      100,
+                      100
                     ],
                     "units": [
                       "% bonus AD",
@@ -1054,7 +1054,7 @@
   },
   "releaseDate": "2012-05-08",
   "releasePatch": "1.0.0.139",
-  "patchLastChanged": "14.16",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

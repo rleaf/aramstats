@@ -4,7 +4,7 @@
   "name": "LeBlanc",
   "title": "the Deceiver",
   "fullName": "Emilia (Evaine) LeBlanc",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Leblanc.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Leblanc.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -154,7 +154,7 @@
       "percentPerLevel": 0.0
     },
     "aramTenacity": {
-      "flat": 1.1,
+      "flat": 1.0,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0

@@ -4,7 +4,7 @@
   "name": "Sett",
   "title": "the Boss",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Sett.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Sett.png",
   "resource": "GRIT",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -616,7 +616,7 @@
             "leveling": []
           },
           {
-            "description": "Sett is unable to move or attack for 0.25 seconds after Facebreaker's cast time.",
+            "description": "If no enemies are hit, Sett is unable to move or attack for 0.25 seconds after Facebreaker's cast time.",
             "leveling": []
           }
         ],
@@ -651,7 +651,7 @@
         "projectile": "FALSE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Sett will afterwards attempt to basic attack the closest target picked up by Facebreaker, prioritising champions and prioritising those in front of him.\nIf Facebreaker does not hit an enemy,  Haymaker is also unable to be cast for 0.25 seconds after the cast time.\nTargets will be pulled towards Sett's location in a straight line and rebound to 150 units from him back in the same line.\nThe spell indicator is slightly shorter than the actual hitbox' rectangle length, and slightly wider than the width (note that the effects are edge-range from the hitbox rectangle).\nIf targets on either opposite side are protected by  spell shields, Facebreaker will not  stun.\nThis ability will cast from wherever the caster is at the end of the cast time.\n\n\nType\n\nCast time\n\n\nAttacking\n\nDisabled\n\n\nAbilities\n\nDisabled\n\n\nMovement\n\nDisabled\n\n\nItems\n\nUsable\n\n Shurelya's Battlesong  Youmuu's Ghostblade  Randuin's Omen\n\n\nDisabled\n\nAll the other item-actives are disabled\n\n\nInterrupted by\n\nN/A\n\n\nConsumables\n\nUsable\n\n\nSpells\n\nUsable\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite\n\n\nDisabled\n\n Flash  Teleport  Recall  Hexflash\n\n\nInterrupted by\n\nN/A\n\n\nInterrupted by\n\nDeath, unless protected by  Resurrection",
+        "notes": "Sett will afterwards attempt to basic attack the closest target picked up by Facebreaker, prioritising champions and prioritising those in front of him.\nTargets will be pulled towards Sett's location in a straight line and rebound to 150 units from him back in the same line.\nThe spell indicator is slightly shorter than the actual hitbox' rectangle length, and slightly wider than the width (note that the effects are edge-range from the hitbox rectangle).\nTargets protected by  spell shields don't count toward the requirement to  stun.\nThis ability will cast from wherever the caster is at the end of the cast time.\n\n\nType\n\nCast time\n\n\nAttacking\n\nDisabled\n\n\nAbilities\n\nDisabled\n\n\nMovement\n\nDisabled\n\n\nItems\n\nUsable\n\n Shurelya's Battlesong  Youmuu's Ghostblade  Randuin's Omen\n\n\nDisabled\n\nAll the other item-actives are disabled\n\n\nInterrupted by\n\nN/A\n\n\nConsumables\n\nUsable\n\n\nSpells\n\nUsable\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite\n\n\nDisabled\n\n Flash  Teleport  Recall  Hexflash\n\n\nInterrupted by\n\nN/A\n\n\nInterrupted by\n\nDeath, unless protected by  Resurrection",
         "blurb": "Active:  Sett  pulls in enemies along the target direction from both sides of himself, dealing physical damage and briefly  slowing.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -795,7 +795,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "At maximum cast range and if the dash is not shortened due to terrain in Sett's way, The Show Stopper's movement takes 1.5 seconds, causing the slam within 1.23 seconds.\nSett will dash from The Show Stopper even if the target resists the  attachment or detaches from him, which can be done so by negating or removing the  suppression. This includes if the target:\nHas a  spell shield.\nIs  crowd control immune or  displacement immune.\nUses a  cleansing effect, either before or after the attachment.\n Dies or enters  resurrection.\nIs  Devoured.\nSett will only attach the target to him if they are still suppressed upon his arrival.\nIf the dash is interrupted, the target will be detached from Sett and the suppression will end immediately.\nIf Sett enters  resurrection the moment before the attachment, Sett will continue to perform the dash.(bug)\nIf the target is  untargetable upon Sett's arrival, he will stop the dash immediately.\nIf the target is 2000 or more units away before Sett's arrival, he will not attach them to him. The  suppression will last 5 seconds in this case.(bug)\nThe \"crater\" VFX originates from the target's landing, which inaccurately illustrates the damage's area of effect (from Sett).(bug)",
+        "notes": "At maximum cast range and if the dash is not shortened due to terrain in Sett's way, The Show Stopper's movement takes 1.5 seconds, causing the slam within 1.23 seconds.\nSett will dash from The Show Stopper even if the target resists the  attachment or detaches from him, which can be done so by negating or removing the  suppression. This includes if the target:\nHas a  spell shield.\nIs  crowd control immune or  displacement immune.\nUses a  cleansing effect, either before or after the attachment.\n Dies or enters  resurrection.\nIs  Devoured.\nSett will only attach the target to him if they are still suppressed upon his arrival.\nIf the dash is interrupted, the target will be detached from Sett and the suppression will end immediately.\nIf Sett enters  resurrection the moment before the attachment, Sett will continue to perform the dash.(bug)\nIf the target is  untargetable upon Sett's arrival, he will stop the dash immediately.\nIf the target is 2000 or more units away before Sett's arrival, he will not attach them to him. The  suppression will last 5 seconds in this case.(bug)\nThe \"crater\" VFX originates from the target's landing, which inaccurately illustrates the damage's area of effect (from Sett).(note)",
         "blurb": "Active:  Sett  carries the target enemy  champion and  dashes through the air with  displacement immunity, then slams them into the ground to deal physical damage to nearby enemies based on the target's bonus health. Enemies hit are also briefly  slowed.",
         "missileSpeed": null,
         "rechargeRate": null,

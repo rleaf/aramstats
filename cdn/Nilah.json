@@ -4,7 +4,7 @@
   "name": "Nilah",
   "title": "the Joy Unbound",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Nilah.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Nilah.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -271,7 +271,7 @@
             "leveling": []
           },
           {
-            "description": "Active: Nilah cracks her whip-blade in a line in the target direction that deals physical damage to enemies hit, increased by 0% − 100% (based on critical strike chance). Formless Blade can hit structures and applies life steal at 100% effectiveness.",
+            "description": "Active: Nilah cracks her whip-blade in a line in the target direction that deals physical damage to enemies hit, increased by 0% − 100% (based on critical strike chance). Formless Blade can hit structures and applies life steal at 100% effectiveness to one target.",
             "leveling": [
               {
                 "attribute": "Minimum Physical Damage",
@@ -408,7 +408,7 @@
         "projectile": "FALSE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "This ability will cast from wherever the caster is at the end of the cast time.\nFormless Blade's active cast triggers call for help for dealing damage despite not being a targeted spell.(bug)\nApplies  area damage on the empowered attacks.\n Spell shield will not block Formless Blade's empowered basic attacks.\nParrying effects ( dodge,  block,  blind) will negate Formless Blade's empowered attacks only as the primary target.\nFormless Blade's damage to the primary target of the enhanced attacks is affected by  Infinity Edge and classified as  basic damage.",
+        "notes": "This ability will cast from wherever the caster is at the end of the cast time.\nFormless Blade's active cast triggers call for help for dealing damage despite not being a targeted spell.(bug)\nApplies  area damage on the empowered attacks.\n Spell shield will not block Formless Blade's empowered basic attacks.\nParrying effects ( dodge,  block,  blind) will negate Formless Blade's empowered attacks only as the primary target.\nFormless Blade's damage to the primary target of the enhanced attacks is affected by  Infinity Edge and classified as  basic damage.\nThe target to which Nilah applies life steal to is unpredictable.",
         "blurb": "Passive:  Nilah gains  armor penetration based on her  critical strike chance. Her basic attacks and Formless Blade  heal her for a portion of the damage dealt to  champions based on her  critical strike chance, converting overhealing into  shielding that lasts a few seconds.",
         "missileSpeed": null,
         "rechargeRate": null,

@@ -4,7 +4,7 @@
   "name": "Kog'Maw",
   "title": "the Mouth of the Abyss",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/KogMaw.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/KogMaw.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -2295,7 +2295,7 @@
           ],
           "descriptions": [
             {
-              "description": "This Chroma was awarded to players who accumulated at least 1600 Split Points and reached Bronze rank in any Summoner's Rift ranked queue in Season 2024 - Split 1",
+              "description": "This Chroma was awarded to players who accumulated at least 1000 Split Points and reached Bronze rank in any Summoner's Rift ranked queue in Season 2024 - Split 1",
               "region": "riot"
             }
           ],
@@ -2463,7 +2463,7 @@
           ],
           "descriptions": [
             {
-              "description": "This Chroma was awarded to players who accumulated at least 1600 Split Points and reached Silver rank in any Summoner's Rift ranked queue in Season 2024 - Split 1",
+              "description": "This Chroma was awarded to players who accumulated at least 1000 Split Points and reached Silver rank in any Summoner's Rift ranked queue in Season 2024 - Split 1",
               "region": "riot"
             }
           ],

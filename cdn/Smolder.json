@@ -4,13 +4,13 @@
   "name": "Smolder",
   "title": "the Fiery Fledgling",
   "fullName": "Ignacarious Gigantareno Rex Le Spes Offerentis",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Smolder.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Smolder.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
   "stats": {
     "health": {
-      "flat": 605,
+      "flat": 575,
       "percent": 0.0,
       "perLevel": 100,
       "percentPerLevel": 0.0
@@ -242,7 +242,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Super Scorcher Breath still grants stacks if the target dies while the initial missile is in flight.\n Achooo! can only grant a stack of Dragon Practice with the first hit against each enemy champion.",
+        "notes": "Super Scorcher Breath still grants stacks if the target dies while the initial missile is in flight.\n Achooo! can only grant a stack of Dragon Practice with the first hit against each enemy champion.\n Flap, Flap, Flap can only grant one stack of Dragon Practice per cast.",
         "blurb": "Innate:  Smolder generates a stack of Dragon Practice from damaging champions with abilities, or when  Super Scorcher Breath kills  minions and  monsters. His basic abilities deal bonus magic damage based on stacks.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -271,11 +271,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      20,
-                      30,
-                      40,
-                      50,
-                      60
+                      15,
+                      25,
+                      35,
+                      45,
+                      55
                     ],
                     "units": [
                       "",
@@ -300,22 +300,6 @@
                       "% AD",
                       "% AD"
                     ]
-                  },
-                  {
-                    "values": [
-                      15,
-                      15,
-                      15,
-                      15,
-                      15
-                    ],
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ]
                   }
                 ]
               },
@@ -324,11 +308,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      22,
-                      33,
-                      44,
-                      55,
-                      66
+                      16.5,
+                      27.5,
+                      38.5,
+                      49.5,
+                      60.5
                     ],
                     "units": [
                       "",
@@ -353,22 +337,6 @@
                       "% AD",
                       "% AD"
                     ]
-                  },
-                  {
-                    "values": [
-                      16.5,
-                      16.5,
-                      16.5,
-                      16.5,
-                      16.5
-                    ],
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ]
                   }
                 ]
               },
@@ -377,11 +345,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      35,
-                      52.5,
-                      70,
-                      87.5,
-                      105
+                      26.25,
+                      43.75,
+                      61.25,
+                      78.75,
+                      96.25
                     ],
                     "units": [
                       "",
@@ -406,22 +374,6 @@
                       "% AD",
                       "% AD"
                     ]
-                  },
-                  {
-                    "values": [
-                      26.25,
-                      26.25,
-                      26.25,
-                      26.25,
-                      26.25
-                    ],
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ]
                   }
                 ]
               },
@@ -430,11 +382,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      38.5,
-                      57.75,
-                      77,
-                      96.25,
-                      115.5
+                      28.875,
+                      48.125,
+                      67.375,
+                      86.625,
+                      105.875
                     ],
                     "units": [
                       "",
@@ -459,22 +411,6 @@
                       "% AD",
                       "% AD"
                     ]
-                  },
-                  {
-                    "values": [
-                      28.875,
-                      28.875,
-                      28.875,
-                      28.875,
-                      28.875
-                    ],
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ]
                   }
                 ]
               }
@@ -496,11 +432,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      15,
-                      22.5,
-                      30,
-                      37.5,
-                      45
+                      11.25,
+                      18.75,
+                      26.25,
+                      33.75,
+                      41.25
                     ],
                     "units": [
                       "",
@@ -525,22 +461,6 @@
                       "% AD",
                       "% AD"
                     ]
-                  },
-                  {
-                    "values": [
-                      11.25,
-                      11.25,
-                      11.25,
-                      11.25,
-                      11.25
-                    ],
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ]
                   }
                 ]
               },
@@ -549,11 +469,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      16.5,
-                      24.75,
-                      33,
-                      41.25,
-                      49.5
+                      12.375,
+                      20.625,
+                      28.875,
+                      37.125,
+                      45.375
                     ],
                     "units": [
                       "",
@@ -578,22 +498,6 @@
                       "% AD",
                       "% AD"
                     ]
-                  },
-                  {
-                    "values": [
-                      12.375,
-                      12.375,
-                      12.375,
-                      12.375,
-                      12.375
-                    ],
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ]
                   }
                 ]
               },
@@ -602,11 +506,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      26.25,
-                      39.375,
-                      52.5,
-                      65.625,
-                      78.75
+                      19.6875,
+                      32.8125,
+                      45.9375,
+                      59.0625,
+                      72.1875
                     ],
                     "units": [
                       "",
@@ -631,22 +535,6 @@
                       "% AD",
                       "% AD"
                     ]
-                  },
-                  {
-                    "values": [
-                      19.6875,
-                      19.6875,
-                      19.6875,
-                      19.6875,
-                      19.6875
-                    ],
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ]
                   }
                 ]
               },
@@ -655,11 +543,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      28.875,
-                      43.3125,
-                      57.75,
-                      72.1875,
-                      86.625
+                      21.65625,
+                      36.09375,
+                      50.53125,
+                      64.96875,
+                      79.40625
                     ],
                     "units": [
                       "",
@@ -684,29 +572,13 @@
                       "% AD",
                       "% AD"
                     ]
-                  },
-                  {
-                    "values": [
-                      21.65625,
-                      21.65625,
-                      21.65625,
-                      21.65625,
-                      21.65625
-                    ],
-                    "units": [
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP",
-                      "% AP"
-                    ]
                   }
                 ]
               }
             ]
           },
           {
-            "description": "Tier 3 - 225 stacks: Enemies hit are set on fire for 3 seconds, causing them to take bonus true damage equal to[ 2% per 100 bonus AD (+ 1% per 100 AP) (+ 0.8% per 100 Dragon Practice stacks) of their maximum health over the duration, capped at 300 against monsters. ][ 0.67% per 100 bonus AD (+ 0.33% per 100 AP) (+ 0.27% per 100 Dragon Practice stacks) of their maximum health each second, capped at 100 per tick against monsters. ]Subsequent applications of the burn stack, though not refreshing the duration of the previous burn. Enemy champions afflicted with the burn are also executed once Smolder does damage to them that would leave them below 6.5% of their maximum health.",
+            "description": "Tier 3 - 225 stacks: Enemies hit are set on fire for 3 seconds, causing them to take bonus true damage equal to[ 2% per 100 bonus AD (+ 1% per 100 AP) (+ 0.8% per 100 Dragon Practice stacks) of their maximum health over the duration, capped at 300 against monsters. ][ 0.67% per 100 bonus AD (+ 0.33% per 100 AP) (+ 0.27% per 100 Dragon Practice stacks) of their maximum health each second, capped at 100 per tick against monsters. ]Subsequent applications of the burn stack, though not refreshing the duration of the previous burn. Enemy champions afflicted with the burn are also executed once Smolder deals damage to them that would leave them below 6.5% of their maximum health.",
             "leveling": []
           }
         ],
@@ -789,11 +661,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      50,
-                      80,
-                      110,
-                      140,
-                      170
+                      45,
+                      75,
+                      105,
+                      135,
+                      165
                     ],
                     "units": [
                       "",
@@ -900,11 +772,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      70,
-                      112,
-                      154,
-                      196,
-                      238
+                      63,
+                      105,
+                      147,
+                      189,
+                      231
                     ],
                     "units": [
                       "",
@@ -1209,7 +1081,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "The number of additional bolts based on  Dragon Practice stacks are rounded down.\nSmolder reveals himself while attacking enemies, even inside terrain.\n Spell shield will block only one bolt.\nSelf  immobilizations such as  Zhonya's Hourglass also count for ending Flap, Flap, Flap.\n Recall is disabled while Smolder is inside terrain.\nFlap, Flap, Flap can interact with player-generated terrain.\nIf Smolder is inside terrain when the effect ends, he will be placed correspondingly to the nearest valid space.\nSmolder's  attack range is reduced to 0 during Flap, Flap, Flap, further reduced to -203 with  Rapid Firecannon.\nThe following table refers for interactions while Smolder is flying:\n\n\nAttacking\n\nCauses Smolder to move towards the attack target.\n\n\nAbilities\n\nInterrupts\n\n\nMovement\n\nAllowed\n\n\nItems\n\nUsable\n\n\n\n\nDisabled\n\nN/A\n\n\nInterrupted by\n\n Zhonya's Hourglass\n\n\nConsumables\n\nUsable\n\n\nSpells\n\nUsable\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite  Flash  Teleport  Recall  Hexflash  Mark  Dash\n\n\nDisabled\n\nN/A\n\n\nInterrupted by\n\nN/A\n\n\nInterrupted by\n\nDeath Immobilizing effects",
+        "notes": "Smolder's  attack range is reduced to 0 during Flap, Flap, Flap.\nSmolder can't declare basic attacks for a brief moment after the end of the effect.\nThis is due to his attack range being reduced to 0, it doesn't apply when Smolder is very close to his target.\nThe number of additional bolts based on  Dragon Practice stacks are rounded down.\nSmolder reveals himself while attacking enemies, even inside terrain.\n Spell shield will block only one bolt.\nSelf  immobilizations such as  Zhonya's Hourglass also count for ending Flap, Flap, Flap.\n Recall is disabled while Smolder is inside terrain.\nFlap, Flap, Flap can interact with player-generated terrain.\nIf Smolder is inside terrain when the effect ends, he will be placed correspondingly to the nearest valid space.\nThe following table refers for interactions while Smolder is flying:\n\n\nAttacking\n\nCauses Smolder to move towards the attack target.\n\n\nAbilities\n\nInterrupts\n\n\nMovement\n\nAllowed\n\n\nItems\n\nUsable\n\n\n\n\nDisabled\n\nN/A\n\n\nInterrupted by\n\n Zhonya's Hourglass\n\n\nConsumables\n\nUsable\n\n\nSpells\n\nUsable\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite  Flash  Teleport  Recall  Hexflash  Mark  Dash\n\n\nDisabled\n\nN/A\n\n\nInterrupted by\n\nN/A\n\n\nInterrupted by\n\nDeath Immobilizing effects",
         "blurb": "Active:  Smolder takes flight for a short time, gaining  bonus movement speed and the ability to ignore terrain collision. While in flight, he automatically fires bolts at a nearby enemy, dealing physical damage with each hit. The number of attacks increases based on  critical strike chance.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -1420,7 +1292,7 @@
   },
   "releaseDate": "2024-01-31",
   "releasePatch": "14.2",
-  "patchLastChanged": "14.14",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 6300,
     "rp": 975,

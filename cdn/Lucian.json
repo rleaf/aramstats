@@ -4,7 +4,7 @@
   "name": "Lucian",
   "title": "the Purifier",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Lucian.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Lucian.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -312,7 +312,7 @@
             ]
           },
           {
-            "description": "Piercing Light's cast time ends prematurely if the initial target dies, allowing Lucian to attack and move freely, or to immediately begin casting either Ardent Blaze or The Culling.(bug)",
+            "description": "Piercing Light's cast time ends prematurely if the initial target dies, allowing Lucian to attack and move freely, or to immediately begin casting either Ardent Blaze or The Culling.(note)",
             "leveling": []
           }
         ],

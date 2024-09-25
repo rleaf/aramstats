@@ -4,7 +4,7 @@
   "name": "Shen",
   "title": "the Eye of Twilight",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Shen.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Shen.png",
   "resource": "ENERGY",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -226,7 +226,7 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Shen/ability-icon/p",
         "effects": [
           {
-            "description": "Innate: After completing an ability's effects, Shen grants himself a shield for 50 − 101 (based on level) (+ 12% bonus health) for 2.5 seconds. If Shen affects at least one other champion with an ability, Ki Barrier's cooldown is reduced by 4 − 7.5 (based on level) seconds.",
+            "description": "Innate: After completing an ability's effects, Shen grants himself a shield for 47 − 120 (based on level) (+ 13% bonus health) for 2.5 seconds. If Shen affects at least one other champion with an ability, Ki Barrier's cooldown is reduced by 4 − 7.5 (based on level) seconds.",
             "leveling": []
           },
           {
@@ -1004,7 +1004,7 @@
   },
   "releaseDate": "2010-03-24",
   "releasePatch": "1.0.0.81",
-  "patchLastChanged": "14.6",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

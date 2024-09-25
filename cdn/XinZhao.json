@@ -4,7 +4,7 @@
   "name": "Xin Zhao",
   "title": "the Seneschal of Demacia",
   "fullName": "Xin Zhao",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/XinZhao.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/XinZhao.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -36,7 +36,7 @@
     "armor": {
       "flat": 35,
       "percent": 0.0,
-      "perLevel": 4.7,
+      "perLevel": 5,
       "percentPerLevel": 0.0
     },
     "magicResistance": {
@@ -271,10 +271,10 @@
                   {
                     "values": [
                       16,
-                      25,
-                      34,
-                      43,
-                      52
+                      29,
+                      42,
+                      55,
+                      68
                     ],
                     "units": [
                       "",
@@ -308,10 +308,10 @@
                   {
                     "values": [
                       48,
-                      75,
-                      102,
-                      129,
-                      156
+                      87,
+                      126,
+                      165,
+                      204
                     ],
                     "units": [
                       "",
@@ -632,7 +632,7 @@
         "projectile": "FALSE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Spell shield will block only a single instance of damage - either the thrust or the slash.\nThe first strike will occur immediately and the second will occur after the cast time completes.\nThis ability will cast from wherever the caster is at the start of the cast time.\nThe first strike will occur from wherever Xin Zhao is at the start of the cast time.\nThis ability will cast from wherever the caster is at the end of the cast time.\nThe second strike will occur from wherever Xin Zhao is at the end of the cast time.\nThe first strike's hitbox includes a  275 radius 160° cone in front of Xin Zhao and an additional  125 radius around him.\nThe second strike's hitbox includes the same  125 radius around Xin Zhao, a missile with  1000 range and  80 total width, and a  -60 radius area check upon the end of the missile.\nThe 125 radius check does not hit champion summoned units.(bug)\nBecause Wind Becomes Lightning uses an older type of 'healing based on life steal' and not applies life steal,  Spirit Visage will amplify the life gain twice (+25% life steal and +25% healing), for a total of +56.25%.",
+        "notes": "Spell shield will block only a single instance of damage - either the thrust or the slash.\nThe first strike will occur immediately and the second will occur after the cast time completes.\nThis ability will cast from wherever the caster is at the start of the cast time.\nThe first strike will occur from wherever Xin Zhao is at the start of the cast time.\nThis ability will cast from wherever the caster is at the end of the cast time.\nThe second strike will occur from wherever Xin Zhao is at the end of the cast time.\nThe first strike's hitbox includes a  275 radius 160° cone in front of Xin Zhao and an additional  125 radius around him.\nThe second strike's hitbox includes the same  125 radius around Xin Zhao, a missile with  1000 range and  80 total width, and a  -60 radius area check upon the end of the missile.\nThe 125 radius check does not hit champion summoned units.(note)\nBecause Wind Becomes Lightning uses an older type of 'healing based on life steal' and not applies life steal,  Spirit Visage will amplify the life gain twice (+25% life steal and +25% healing), for a total of +56.25%.",
         "blurb": "Active:  Xin Zhao slashes in an arc, then thrusts his spear in a line in the target direction. Each strike deals physical damage to enemies hit and heals Xin Zhao based on his  life steal.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -925,7 +925,7 @@
   },
   "releaseDate": "2010-07-13",
   "releasePatch": "1.0.0.96",
-  "patchLastChanged": "14.5",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 1350,
     "rp": 585,

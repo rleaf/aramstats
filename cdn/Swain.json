@@ -4,7 +4,7 @@
   "name": "Swain",
   "title": "the Noxian Grand General",
   "fullName": "Jericho Swain",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Swain.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Swain.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -1077,7 +1077,7 @@
   },
   "releaseDate": "2010-10-05",
   "releasePatch": "1.0.0.102",
-  "patchLastChanged": "14.2",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

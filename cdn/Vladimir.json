@@ -4,7 +4,7 @@
   "name": "Vladimir",
   "title": "the Crimson Reaper",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Vladimir.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Vladimir.png",
   "resource": "CRIMSON_RUSH",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -130,7 +130,7 @@
       "percentPerLevel": 0.0
     },
     "aramDamageTaken": {
-      "flat": 1.0,
+      "flat": 1.05,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0
@@ -446,7 +446,7 @@
             "leveling": []
           },
           {
-            "description": "Enemies within the pool are dealt magic damage every 0.5 seconds over the duration and are slowed by 40%. Vladimir heals himself for 30% of the pre-mitigation damage dealt.",
+            "description": "Enemies within the pool are dealt magic damage every 0.5 seconds over the duration and are slowed by 40%. Vladimir heals himself for 30% of the pre-mitigation damage dealt, reduced to 18% against minions.",
             "leveling": [
               {
                 "attribute": "Magic Damage Per Tick",
@@ -991,7 +991,7 @@
   },
   "releaseDate": "2010-07-27",
   "releasePatch": "1.0.0.97",
-  "patchLastChanged": "14.13",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

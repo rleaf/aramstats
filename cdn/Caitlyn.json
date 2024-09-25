@@ -4,7 +4,7 @@
   "name": "Caitlyn",
   "title": "the Sheriff of Piltover",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Caitlyn.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Caitlyn.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -100,7 +100,7 @@
       "percentPerLevel": 0.0
     },
     "attackSpeedRatio": {
-      "flat": 0.594,
+      "flat": 0.61,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0
@@ -692,7 +692,7 @@
         "projectile": "TRUE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "This ability will cast from wherever the caster is at the end of the cast time.\nThe recoil can be used to pass through terrain.\nIf Caitlyn buffers  Piltover Peacemaker during 90 Caliber Net's cast time,  Piltover Peacemaker will start after the cast time.\nIf Caitlyn buffers an ability or basic attack during this ability's cast time, the buffered ability or basic attack will instead start after the dash ends.\nOther abilities can be cast while  dashing if they are input after the cast time.\n90 Caliber Net's missile will fail to fire if Caitlyn is  suppressed during the cast time.(bug)",
+        "notes": "This ability will cast from wherever the caster is at the end of the cast time.\nThe recoil can be used to pass through terrain.\nIf Caitlyn buffers  Piltover Peacemaker during 90 Caliber Net's cast time,  Piltover Peacemaker will start after the cast time.\nIf Caitlyn buffers an ability or basic attack during this ability's cast time, the buffered ability or basic attack will instead start after the dash ends.\nOther abilities can be cast while  dashing if they are input after the cast time.\n90 Caliber Net's missile will fail to fire if Caitlyn is  suppressed during the cast time.(note)",
         "blurb": "Active:  Caitlyn fires a heavy net that  slows the first target hit and deals magic damage to them.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -798,7 +798,7 @@
         "projectile": "TRUE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "The following will cancel Ace in the Hole's channel (mana expenditure is not compensated):\nCaitlyn is  interrupted.\nThe target becomes  untargetable.\nCaitlyn or her target  dies.\nAce in the Hole reveals the target and Caitlyn through a buff that lasts for up to 4 seconds.\nThe buff is applied to the target from the start of the cast time.\nThe buff ends prematurely when the channel is canceled or the bullet hits an enemy.\nThe target is revealed for 1 second if the buff is ended prematurely.\nIt is not removed if the cast time is cancelled or the bullet missile is destroyed.(bug)\nThe ability also goes on a 5-second  cooldown if Caitlyn enters  resurrection during the cast time.\nThe cast time does not end prematurely but the channel will be immediately canceled the moment the cast time completes.\nIf the target dies after the bullet has been fired, the shot will continue towards their corpse and may still hit other enemy champions.\nThe bullet has a  sight radius of 1500 attached to it.\nIf the target becomes  untargetable,  dies, or is too far away or no longer in  sight during the cast time, this ability will cancel but does not go on  cooldown nor pay its cost (if applicable).\nThis excludes losing sight of the target.\nThe following table refers for interactions while Caitlyn is  channeling:\n\n\nType\n\nChannel\n\n\nAttacking\n\nDisabled\n\n\nAbilities\n\nDisabled\n\n\nMovement\n\nDisabled\n\n\nItems\n\nUsable\n\n Shurelya's Battlesong  Youmuu's Ghostblade  Randuin's Omen\n\n\nDisabled\n\nAll the other item-actives are disabled\n\n\nInterrupted by\n\nN/A\n\n\nConsumables\n\nUsable\n\n\nSpells\n\nUsable\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite\n\n\nDisabled\n\n Flash  Teleport  Recall  Hexflash\n\n\nInterrupted by\n\nN/A\n\n\nInterrupted by\n\nDeath Cast-inhibiting effects",
+        "notes": "The following will cancel Ace in the Hole's channel (mana expenditure is not compensated):\nCaitlyn is  interrupted.\nThe target becomes  untargetable.\nCaitlyn or her target  dies.\nAce in the Hole reveals the target and Caitlyn through a buff that lasts for up to 4 seconds.\nThe buff is applied to the target from the start of the cast time.\nThe buff ends prematurely when the channel is canceled or the bullet hits an enemy.\nThe target is revealed for 1 second if the buff is ended prematurely.\nIt is not removed if the cast time is cancelled or the bullet missile is destroyed.(note)\nThe ability also goes on a 5-second  cooldown if Caitlyn enters  resurrection during the cast time.\nThe cast time does not end prematurely but the channel will be immediately canceled the moment the cast time completes.\nIf the target dies after the bullet has been fired, the shot will continue towards their corpse and may still hit other enemy champions.\nThe bullet has a  sight radius of 1500 attached to it.\nIf the target becomes  untargetable,  dies, or is too far away or no longer in  sight during the cast time, this ability will cancel but does not go on  cooldown nor pay its cost (if applicable).\nThis excludes losing sight of the target.\nThe following table refers for interactions while Caitlyn is  channeling:\n\n\nType\n\nChannel\n\n\nAttacking\n\nDisabled\n\n\nAbilities\n\nDisabled\n\n\nMovement\n\nDisabled\n\n\nItems\n\nUsable\n\n Shurelya's Battlesong  Youmuu's Ghostblade  Randuin's Omen\n\n\nDisabled\n\nAll the other item-actives are disabled\n\n\nInterrupted by\n\nN/A\n\n\nConsumables\n\nUsable\n\n\nSpells\n\nUsable\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite\n\n\nDisabled\n\n Flash  Teleport  Recall  Hexflash\n\n\nInterrupted by\n\nN/A\n\n\nInterrupted by\n\nDeath Cast-inhibiting effects",
         "blurb": "Active:  Caitlyn targets an enemy champion and takes time to line up the perfect shot, dealing massive physical damage to them at a huge range.",
         "missileSpeed": null,
         "rechargeRate": null,

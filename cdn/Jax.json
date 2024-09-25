@@ -4,7 +4,7 @@
   "name": "Jax",
   "title": "Grandmaster at Arms",
   "fullName": "Saijax Cail-Rynx Kohari Icath’un",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Jax.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Jax.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -706,9 +706,9 @@
                 "modifiers": [
                   {
                     "values": [
-                      60,
-                      110,
-                      160
+                      70,
+                      120,
+                      170
                     ],
                     "units": [
                       "",
@@ -769,9 +769,9 @@
                 "modifiers": [
                   {
                     "values": [
-                      15,
-                      40,
-                      65
+                      25,
+                      50,
+                      75
                     ],
                     "units": [
                       "",
@@ -798,9 +798,9 @@
                 "modifiers": [
                   {
                     "values": [
-                      9,
-                      24,
-                      39
+                      15,
+                      30,
+                      45
                     ],
                     "units": [
                       "",
@@ -827,9 +827,9 @@
                 "modifiers": [
                   {
                     "values": [
-                      15,
                       20,
-                      25
+                      25,
+                      30
                     ],
                     "units": [
                       "",
@@ -856,9 +856,9 @@
                 "modifiers": [
                   {
                     "values": [
-                      9,
                       12,
-                      15
+                      15,
+                      18
                     ],
                     "units": [
                       "",
@@ -944,7 +944,7 @@
   },
   "releaseDate": "2009-02-21",
   "releasePatch": "Alpha Week 2",
-  "patchLastChanged": "14.14",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 1350,
     "rp": 585,

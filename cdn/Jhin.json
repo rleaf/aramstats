@@ -4,7 +4,7 @@
   "name": "Jhin",
   "title": "the Virtuoso",
   "fullName": "Khada Jhin",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Jhin.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Jhin.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -238,7 +238,7 @@
             "leveling": []
           },
           {
-            "description": "Additionally, critical strikes grant Jhin 14% (+ 0.4% per 1% bonus attack speed) bonus movement speed for 2 seconds.",
+            "description": "Additionally, critical strikes against enemies grant Jhin 14% (+ 0.4% per 1% bonus attack speed) bonus movement speed for 2 seconds.",
             "leveling": []
           }
         ],
@@ -275,10 +275,10 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Jhin/ability-icon/q",
         "effects": [
           {
-            "description": "Active: Jhin throws a grenade at the target enemy that deals physical damage and can bounce to up to three additional nearby enemies.",
+            "description": "Active: Jhin throws a grenade at the target enemy that deals physical damage and can bounce to up to three additional nearby enemies, prioritizing the closest enemy that has not been hit.",
             "leveling": [
               {
-                "attribute": "Minimum Physical Damage",
+                "attribute": "Physical Damage",
                 "modifiers": [
                   {
                     "values": [
@@ -329,9 +329,67 @@
                     ]
                   }
                 ]
+              }
+            ]
+          },
+          {
+            "description": "The grenade's damage is increased by 35% any time an enemy dies by any means after being hit by the grenade before it strikes its next target.",
+            "leveling": [
+              {
+                "attribute": "Bonus Damage per Target Death",
+                "modifiers": [
+                  {
+                    "values": [
+                      15.4,
+                      24.15,
+                      32.9,
+                      41.65,
+                      50.4
+                    ],
+                    "units": [
+                      "",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ]
+                  },
+                  {
+                    "values": [
+                      15.4,
+                      18.025,
+                      20.65,
+                      23.275,
+                      25.9
+                    ],
+                    "units": [
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD",
+                      "% AD"
+                    ]
+                  },
+                  {
+                    "values": [
+                      21,
+                      21,
+                      21,
+                      21,
+                      21
+                    ],
+                    "units": [
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP",
+                      "% AP"
+                    ]
+                  }
+                ]
               },
               {
-                "attribute": "Maximum Physical Damage",
+                "attribute": "Maximum Total Physical Damage",
                 "modifiers": [
                   {
                     "values": [
@@ -384,10 +442,6 @@
                 ]
               }
             ]
-          },
-          {
-            "description": "The damage is increased by 35% of the base damage if the enemy the grenade last bounced off of dies.",
-            "leveling": []
           }
         ],
         "cost": {
@@ -852,7 +906,7 @@
             "leveling": []
           },
           {
-            "description": "Recast: After 0.25 seconds, Jhin fires a round in the target direction that grants sight around its trajectory for 0.5 seconds and deals physical damage to enemies hit, increased by 0% − 300% (based on target's missing health). The bullet stops upon hitting an enemy champion, slowing them by 80% for 0.5 seconds and revealing them for 2 seconds. Each cast has a static cooldown of 1 second.",
+            "description": "Recast: After 0.2 seconds into the cast time, Jhin fires a round in the target direction that grants sight around its trajectory for 0.5 seconds and deals physical damage to enemies hit, increased by 0% − 300% (based on target's missing health). The bullet stops upon hitting an enemy champion, slowing them by 80% for 0.5 seconds and revealing them for 2 seconds. Each cast has a static cooldown of 1 second.",
             "leveling": [
               {
                 "attribute": "Minimum Physical Damage per Bullet",
@@ -1031,7 +1085,7 @@
         "speed": "5000",
         "width": "160",
         "angle": "60°",
-        "castTime": "1",
+        "castTime": "1 / 0.25",
         "effectRadius": null,
         "targetRange": null
       }

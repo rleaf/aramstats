@@ -4,7 +4,7 @@
   "name": "Sona",
   "title": "Maven of the Strings",
   "fullName": "Sona Buvelle",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Sona.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Sona.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -2127,6 +2127,230 @@
       "splashArtist": [
         "Francis Tneh",
         "West Studio"
+      ]
+    },
+    {
+      "name": "Victorious",
+      "id": 37056,
+      "isBase": false,
+      "availability": "Upcoming",
+      "formatName": "Victorious",
+      "lootEligible": false,
+      "cost": "Special",
+      "sale": 0,
+      "distribution": "Reward for earning split points in Season 2024 - Split 2.",
+      "rarity": "NoRarity",
+      "chromas": [
+        {
+          "name": "Bronze",
+          "id": 37057,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/37/37057.png",
+          "colors": [
+            "#764D43",
+            "#764D43"
+          ],
+          "descriptions": [
+            {
+              "description": "This Chroma was awarded to players who accumulated at least 1000 Split Points and reached Bronze rank in any Summoner's Rift ranked queue in Season 2024 - Split 2",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        },
+        {
+          "name": "Challenger",
+          "id": 37065,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/37/37065.png",
+          "colors": [
+            "#1D62C8",
+            "#1D62C8"
+          ],
+          "descriptions": [
+            {
+              "description": "This Chroma was awarded to players who accumulated at least 80 Split Points and reached Challenger rank in any Summoner's Rift ranked queue in Season 2024 - Split 2",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 5,
+              "region": "riot"
+            }
+          ]
+        },
+        {
+          "name": "Diamond",
+          "id": 37062,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/37/37062.png",
+          "colors": [
+            "#65337F",
+            "#65337F"
+          ],
+          "descriptions": [
+            {
+              "description": "This Chroma was awarded to players who accumulated at least 80 Split Points and reached Diamond rank in any Summoner's Rift ranked queue in Season 2024 - Split 2",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 3,
+              "region": "riot"
+            }
+          ]
+        },
+        {
+          "name": "Emerald",
+          "id": 37061,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/37/37061.png",
+          "colors": [
+            "#26854C",
+            "#26854C"
+          ],
+          "descriptions": [
+            {
+              "description": "This Chroma was awarded to players who accumulated at least 80 Split Points and reached Emerald rank in any Summoner's Rift ranked queue in Season 2024 - Split 2",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 2,
+              "region": "riot"
+            }
+          ]
+        },
+        {
+          "name": "Gold",
+          "id": 37059,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/37/37059.png",
+          "colors": [
+            "#D9C445",
+            "#D9C445"
+          ],
+          "descriptions": [
+            {
+              "description": "This Chroma was awarded to players who accumulated at least 80 Split Points and reached Gold rank in any Summoner's Rift ranked queue in Season 2024 - Split 2",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        },
+        {
+          "name": "Grandmaster",
+          "id": 37064,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/37/37064.png",
+          "colors": [
+            "#B31316",
+            "#B31316"
+          ],
+          "descriptions": [
+            {
+              "description": "This Chroma was awarded to players who accumulated at least 80 Split Points and reached Grandmaster rank in any Summoner's Rift ranked queue in Season 2024 - Split 2",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 5,
+              "region": "riot"
+            }
+          ]
+        },
+        {
+          "name": "Master",
+          "id": 37063,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/37/37063.png",
+          "colors": [
+            "#9D228D",
+            "#9D228D"
+          ],
+          "descriptions": [
+            {
+              "description": "This Chroma was awarded to players who accumulated at least 80 Split Points and reached Master rank in any Summoner's Rift ranked queue in Season 2024 - Split 2",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 4,
+              "region": "riot"
+            }
+          ]
+        },
+        {
+          "name": "Platinum",
+          "id": 37060,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/37/37060.png",
+          "colors": [
+            "#55CDE5",
+            "#55CDE5"
+          ],
+          "descriptions": [
+            {
+              "description": "This Chroma was awarded to players who accumulated at least 80 Split Points and reached Platinum rank in any Summoner's Rift ranked queue in Season 2024 - Split 2",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 1,
+              "region": "riot"
+            }
+          ]
+        },
+        {
+          "name": "Silver",
+          "id": 37058,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/37/37058.png",
+          "colors": [
+            "#AAB5BA",
+            "#AAB5BA"
+          ],
+          "descriptions": [
+            {
+              "description": "This Chroma was awarded to players who accumulated at least 1000 Split Points and reached Silver rank in any Summoner's Rift ranked queue in Season 2024 - Split 2",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        }
+      ],
+      "lore": "Victorious Sona was earned by players who accumulated enough split points in Ranked. Luring the unsuspecting into a false sense of ease with her melodies, Sona is as quick to pluck her allies from the brink of death as she is to send her foes to their grand finale.",
+      "release": "0000-00-00",
+      "set": [
+        "Victorious"
+      ],
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/sona/skins/skin56/images/sona_splash_centered_56.skins_sona_skin56.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/sona/skins/skin56/images/sona_splash_uncentered_56.skins_sona_skin56.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/sona/skins/skin56/images/sona_splash_tile_56.skins_sona_skin56.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/sona/skins/skin56/sonaloadscreen_56.skins_sona_skin56.jpg",
+      "loadScreenVintagePath": null,
+      "newEffects": true,
+      "newAnimations": true,
+      "newRecall": true,
+      "newVoice": false,
+      "newQuotes": false,
+      "voiceActor": [
+        "Erin Fitzgerald"
+      ],
+      "splashArtist": [
+        "Pandart Studio"
       ]
     }
   ]

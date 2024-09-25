@@ -4,7 +4,7 @@
   "name": "Rell",
   "title": "the Iron Maiden",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Rell.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Rell.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -657,17 +657,17 @@
             "leveling": []
           },
           {
-            "description": "Active: Rell powers up herself and the target allied champion for 3 seconds, both gaining bonus movement speed that ramps up from 50% of its initial value over the first 2 seconds. The movement speed is increased while moving within 1200 units of the empowered ally or an enemy.",
+            "description": "Active: Rell powers up herself and the target allied champion for 3 seconds, both gaining bonus movement speed which doubles while moving within 1200 units of the empowered ally or an enemy. The bonus movement speed ramps up linearly from 75% of its maximum value over the first 2 seconds.",
             "leveling": [
               {
                 "attribute": "Initial Bonus Movement Speed",
                 "modifiers": [
                   {
                     "values": [
-                      6,
-                      7.5,
                       9,
+                      9.75,
                       10.5,
+                      11.25,
                       12
                     ],
                     "units": [
@@ -681,14 +681,35 @@
                 ]
               },
               {
-                "attribute": "Initial Increased Bonus Movement Speed",
+                "attribute": "Maximum Bonus Movement Speed",
                 "modifiers": [
                   {
                     "values": [
                       12,
+                      13,
+                      14,
                       15,
+                      16
+                    ],
+                    "units": [
+                      "%",
+                      "%",
+                      "%",
+                      "%",
+                      "%"
+                    ]
+                  }
+                ]
+              },
+              {
+                "attribute": "Initial Rally Bonus Movement Speed",
+                "modifiers": [
+                  {
+                    "values": [
                       18,
+                      19.5,
                       21,
+                      22.5,
                       24
                     ],
                     "units": [
@@ -702,36 +723,15 @@
                 ]
               },
               {
-                "attribute": "Bonus Movement Speed",
-                "modifiers": [
-                  {
-                    "values": [
-                      12,
-                      15,
-                      18,
-                      21,
-                      24
-                    ],
-                    "units": [
-                      "%",
-                      "%",
-                      "%",
-                      "%",
-                      "%"
-                    ]
-                  }
-                ]
-              },
-              {
-                "attribute": "Increased Bonus Movement Speed",
+                "attribute": "Maximum Rally Bonus Movement Speed",
                 "modifiers": [
                   {
                     "values": [
                       24,
+                      26,
+                      28,
                       30,
-                      36,
-                      42,
-                      48
+                      32
                     ],
                     "units": [
                       "%",
@@ -1004,7 +1004,7 @@
   },
   "releaseDate": "2020-12-10",
   "releasePatch": "10.25",
-  "patchLastChanged": "14.16",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

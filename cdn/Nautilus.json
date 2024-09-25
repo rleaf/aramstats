@@ -4,7 +4,7 @@
   "name": "Nautilus",
   "title": "the Titan of the Depths",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Nautilus.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Nautilus.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -267,7 +267,11 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Nautilus/ability-icon/q",
         "effects": [
           {
-            "description": "Active: Nautilus hurls his anchor in the target direction that stops on the first enemy or terrain hit.If the anchor hits an enemy, it deals magic damage and reveals them, dragging them toward Nautilus while he also dashes toward them within 0.9 seconds. Afterwards, the target is rooted for 0.1 seconds.",
+            "description": "Active: Nautilus hurls his anchor in the target direction that stops on the first enemy or terrain hit.",
+            "leveling": []
+          },
+          {
+            "description": "If the anchor hits an enemy, it deals magic damage, reveals them for 1.15 seconds, stuns them for 1 second, and drags them toward Nautilus while he also dashes toward them, both over 0.9 seconds.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
@@ -1899,16 +1903,38 @@
       "name": "Crystalis Indomitus",
       "id": 111036,
       "isBase": false,
-      "availability": "Upcoming",
+      "availability": "Rare",
       "formatName": "Crystalis Indomitus",
       "lootEligible": true,
       "cost": "Special",
       "sale": 0,
       "distribution": "100 Mythic Essence",
       "rarity": "Mythic",
-      "chromas": [],
+      "chromas": [
+        {
+          "name": "Fractured",
+          "id": 111037,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/111/111037.png",
+          "colors": [
+            "#469FFC",
+            "#8DDC26"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 4,
+              "region": "riot"
+            }
+          ]
+        }
+      ],
       "lore": "Long ago, Nautilus had been a fisherman by his friend Xerath's side. Together the two discovered a mass of powerful crystals, and greed drove his comrade to cast Nautilus into the water to drown. A single crystal sustained him and, as he slumbered, corrupted and empowered his body and mind. But even this could not destroy his strongest desire—revenge.",
-      "release": "0000-00-00",
+      "release": "2024-09-11",
       "set": [
         "Crystalis Indomitus"
       ],
@@ -1916,7 +1942,7 @@
       "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/nautilus/skins/skin36/images/nautilus_splash_uncentered_36.skins_nautilus_skin36.jpg",
       "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/nautilus/skins/skin36/images/nautilus_splash_tile_36.skins_nautilus_skin36.jpg",
       "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/nautilus/skins/skin36/nautilusloadscreen_36.skins_nautilus_skin36.jpg",
-      "loadScreenVintagePath": null,
+      "loadScreenVintagePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/nautilus/skins/skin36/nautilusloadscreen_36_le.skins_nautilus_skin36.jpg",
       "newEffects": true,
       "newAnimations": true,
       "newRecall": true,

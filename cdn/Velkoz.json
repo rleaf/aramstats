@@ -4,7 +4,7 @@
   "name": "Vel'Koz",
   "title": "the Eye of the Void",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Velkoz.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Velkoz.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -657,7 +657,7 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Velkoz/ability-icon/e",
         "effects": [
           {
-            "description": "Active: Vel'Koz hurls a disruptive anomaly that lands to the target location after 0.25 − 0.5 (based on cast distance) seconds, dealing magic damage to enemies hit and knocking them up and stunning them for 0.75 seconds, as well as granting sight of the area briefly.",
+            "description": "Active: Vel'Koz hurls a disruptive anomaly that lands to the target location after 0.25 − 0.55 (based on cast distance) seconds, dealing magic damage to enemies hit and knocking them up and stunning them for 0.75 seconds, as well as granting sight of the area briefly.",
             "leveling": [
               {
                 "attribute": "Magic Damage",

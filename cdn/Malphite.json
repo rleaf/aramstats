@@ -4,7 +4,7 @@
   "name": "Malphite",
   "title": "Shard of the Monolith",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Malphite.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Malphite.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -232,7 +232,7 @@
             "leveling": []
           },
           {
-            "description": "Innate: Malphite grants himself a shield for 9% of his maximum health. The shield lasts until it is broken, and refreshes after a few seconds of not taking damage.",
+            "description": "Innate: Malphite grants himself a shield equal to 10% of his maximum health. The shield lasts until it is broken, and refreshes after a few seconds of not taking damage.",
             "leveling": []
           }
         ],
@@ -913,7 +913,7 @@
   },
   "releaseDate": "2009-09-02",
   "releasePatch": "0.9.22.16",
-  "patchLastChanged": "13.8",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 450,
     "rp": 260,

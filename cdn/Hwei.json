@@ -4,7 +4,7 @@
   "name": "Hwei",
   "title": "the Visionary",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Hwei.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Hwei.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -649,7 +649,7 @@
                 ]
               },
               {
-                "attribute": "Total Magic Damage",
+                "attribute": "Total Fissure Magic Damage",
                 "modifiers": [
                   {
                     "values": [
@@ -686,7 +686,7 @@
                 ]
               },
               {
-                "attribute": "Maximum Total Damage",
+                "attribute": "Total Magic Damage",
                 "modifiers": [
                   {
                     "values": [
@@ -1046,18 +1046,18 @@
             ]
           },
           {
-            "description": "Pool of Reflection's shield strength is reduced to 50% for allies.",
+            "description": "Pool of Reflection's shield strength is reduced to 75% for allies.",
             "leveling": [
               {
                 "attribute": "Ally Initial Shield",
                 "modifiers": [
                   {
                     "values": [
-                      22.5,
-                      27.5,
-                      32.5,
-                      37.5,
-                      42.5
+                      33.75,
+                      41.25,
+                      48.75,
+                      56.25,
+                      63.75
                     ],
                     "units": [
                       "",
@@ -1069,11 +1069,11 @@
                   },
                   {
                     "values": [
-                      15,
-                      15,
-                      15,
-                      15,
-                      15
+                      22.5,
+                      22.5,
+                      22.5,
+                      22.5,
+                      22.5
                     ],
                     "units": [
                       "% AP",
@@ -1090,11 +1090,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      3.75,
-                      4.58,
-                      5.42,
-                      6.25,
-                      7.08
+                      5.63,
+                      6.88,
+                      8.13,
+                      9.38,
+                      10.63
                     ],
                     "units": [
                       "",
@@ -1106,11 +1106,11 @@
                   },
                   {
                     "values": [
-                      2.5,
-                      2.5,
-                      2.5,
-                      2.5,
-                      2.5
+                      3.75,
+                      3.75,
+                      3.75,
+                      3.75,
+                      3.75
                     ],
                     "units": [
                       "% AP",
@@ -1127,11 +1127,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      45,
-                      55,
-                      65,
-                      75,
-                      85
+                      67.5,
+                      82.5,
+                      97.5,
+                      112.5,
+                      127.5
                     ],
                     "units": [
                       "",
@@ -1143,11 +1143,11 @@
                   },
                   {
                     "values": [
-                      30,
-                      30,
-                      30,
-                      30,
-                      30
+                      45,
+                      45,
+                      45,
+                      45,
+                      45
                     ],
                     "units": [
                       "% AP",
@@ -1981,7 +1981,7 @@
   },
   "releaseDate": "2023-12-05",
   "releasePatch": "13.24",
-  "patchLastChanged": "14.11",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 6300,
     "rp": 975,

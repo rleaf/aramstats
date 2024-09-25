@@ -4,7 +4,7 @@
   "name": "Elise",
   "title": "the Spider Queen",
   "fullName": "Elise Kythera Zaavan",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Elise.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Elise.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -404,7 +404,7 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Elise/ability-icon/q",
         "effects": [
           {
-            "description": "Active: Elise pounces at the target enemy with her fangs and bites them, dealing magic damage and applying on-hit effects at 100% effectiveness. The damage based on the target's health ratio is capped against monsters.",
+            "description": "Active: Elise pounces at the target enemy with her fangs and bites them, dealing magic damage and applying on-hit effects at 100% effectiveness, as well as revealing them for 0.528 seconds from the start of the cast time. The damage based on the target's health ratio is capped against monsters.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
@@ -467,7 +467,7 @@
             ]
           },
           {
-            "description": "If there are active Spiderlings or Volatile Spiderlings nearby, they will dash alongside Elise towards Venomous Bite's target and reprioritize them.",
+            "description": "If there are active Spiderlings or Volatile Spiderlings nearby, they will dash alongside Elise to the target upon Venomous Bite's cast and reprioritize them.",
             "leveling": []
           }
         ],
@@ -502,7 +502,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Venomous Bite cannot be used to cross walls or impassable terrain.\nThe target will be damaged regardless.\n Spiderlings can cross walls and terrain to reach Venomous Bite's target and will attack provided Elise stays within their leash range.\nThere is a maximum range in which Spiderlings or Volatile Spiderlings can dash to the target.\n Spiderlings will dash even if they are  crowd controlled.\nVenomous Bite will always apply its effects after the cast time, even if the dash is interrupted.\nElise will not dash if the target is within basic attack range.\nVenomous Bite will still deal its damage but not apply on-hit effects if it is  blocked or  dodged. It cannot be missed while Elise is  blinded.\nIf the target becomes  untargetable,  dies, or is too far away or no longer in  sight during the cast time, this ability will cancel but does not go on  cooldown nor pay its cost (if applicable).",
+        "notes": "Elise will not dash if the target is within basic attack range.\nThis ability is disabled while  grounded or  rooted even if Elise is in the range in which she does not dash.\nIf Elise is allowed to dash, Venomous Bite can be used to cross sufficiently thin terrain.\n Spiderlings can cross walls and terrain to reach Venomous Bite's target and will attack provided Elise stays within their leash range.\nThere is a maximum range in which Spiderlings or Volatile Spiderlings can dash to the target.\n Spiderlings will dash even if they are  crowd controlled.\nVenomous Bite will always apply its effects after the cast time, even if the dash is interrupted.\nVenomous Bite will still deal its damage but not apply on-hit effects if it is  blocked or  dodged. It cannot be missed while Elise is  blinded.\nIf the target becomes  untargetable,  dies, or is too far away or no longer in  sight during the cast time, this ability will cancel but does not go on  cooldown nor pay its cost (if applicable).",
         "blurb": "Active:  Elise  pounces at the target enemy and deals damage based on the target's missing health, applying  on-hit effects.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -829,7 +829,7 @@
         "projectile": "TRUE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "This ability will cast from wherever the caster is at the start of the cast time.\nCocoon deals no damage and thus does not trigger  turret aggro, or effects such as  Elixir of Sorcery and  Sudden Impact's activation.",
+        "notes": "This ability will cast from wherever the caster is at the end of the cast time.\nCocoon deals no damage and thus does not trigger  turret aggro, or effects such as  Elixir of Sorcery and  Sudden Impact's activation.",
         "blurb": "Active:  Elise fires a web in the target direction that deals magic damage and  stuns the first enemy hit.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -849,19 +849,15 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Elise/ability-icon/e",
         "effects": [
           {
-            "description": "Active: Elise and her Spiderlings lift up into the air, vanishing and becoming unable to act for up to 2 seconds and granting sight of the area for the duration.",
+            "description": "Active: Elise and her Spiderlings lift up into the air over 0.6 seconds, immediately becoming untargetable and unable to act, and afterwards vanishing for up to 1.95 seconds and granting sight of the surrounding 900 units for the duration.",
             "leveling": []
           },
           {
-            "description": "Rappel can be recast on a target enemy within the duration, and does so automatically after the duration without a target.",
+            "description": "Rappel can be recast instantly on a target enemy within the duration, or without a target after a delay for the duration, and does the latter automatically after the duration.",
             "leveling": []
           },
           {
-            "description": "Recast: Elise and her Spiderlings instantly descend behind the target, or their current position if there is no target.",
-            "leveling": []
-          },
-          {
-            "description": "If cast directly on an enemy, Elise and her Spiderlings automatically recast on the target after 1 second. Upon landing this way, Spider Queen's bonuses are increased for 5 seconds.",
+            "description": "Recast: Elise and her Spiderlings reappear and descend onto the ground over 0.4 seconds, becoming targetable and able to act again afterwards. Additionally, Spider Queen's bonuses are increased for 5 seconds.",
             "leveling": [
               {
                 "attribute": "Spider Effects Increase",
@@ -885,6 +881,10 @@
                 ]
               }
             ]
+          },
+          {
+            "description": "If the recast was used on a target enemy, Elise and her Spiderlings descend behind the target's location. Otherwise, she and her Spiderlings will descend onto their current position without a target.",
+            "leveling": []
           },
           {
             "description": "Rappel's recast can be used while affected by cast-inhibiting crowd control.",
@@ -913,7 +913,7 @@
           ],
           "affectedByCdr": true
         },
-        "targeting": "Location / Unit",
+        "targeting": "Auto / Location / Unit",
         "affects": "Self, Enemies",
         "spellshieldable": null,
         "resource": null,
@@ -922,7 +922,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "When Elise casts Rappel, a circle outlines the area in which a target can be selected to descend upon.\nShe cannot descend outside the bounds of this circle.\nElise will descend behind her target with Rappel's recast.\nIf the target is at the edge of the circle, she will descend as close as possible to the target.\nThe buff granted from casting directly on an enemy is not lost if Elise switches to Human Form.\nRappel can be cast on any targetable enemy unit ( champions,  minions,  monsters,  wards,  traps, and jungle plants) except structures.\nElise will attempt to position behind her target if she descends closer than Rappel's max range.\nWithout additional vision, Elise cannot Rappel to  Rift Herald from the other side of the  Baron Nashor's pit, but can Rappel to  Dragon by standing near the  Scryer's Bloom spawn locations. This is a result of  sight being granted in a smaller circle than the target range limit for descending and the  Summoner's Rift map having height variations. With sight of the target, both can be accessible with Rappel from behind the pits.\nElise has a smaller range for ground-targeting. Elise will walk into range and then perform Rappel if this ability is cast while targeting a location outside of this range.\nIf Elise enters  resurrection during Rappel, she will descend back down immediately.\nThe following table refers for interactions while Elise is in Rappel:\n\n\nAttacking\n\nDescends onto the attack target.\n\n\nAbilities\n\nDisabled\n\n\nMovement\n\nDisabled\n\n\nItems\n\nUsable\n\nN/A\n\n\nDisabled\n\nAll items are disabled\n\n\nInterrupted by\n\nN/A\n\n\nConsumables\n\nDisabled\n\n\nSpells\n\nUsable\n\nN/A\n\n\nDisabled\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite  Flash  Teleport  Recall  Hexflash  Mark  Dash\n\n\nInterrupted by\n\nN/A\n\n\nInterrupted by\n\nDeath",
+        "notes": "When Elise casts Rappel, a circle outlines the area in which a target can be selected to descend upon.\nElise will always attempt to position behind her target at the same offset if she descends within than Rappel's max range (825), provided there is enough space at the other side. If the target is at the edge of the recast's radius, Elise will not appear at the exact offset behind her target but as close to them as possible instead.\nFor example, if the target's edge is barely within range for the recast, she will appear in front of them.\nIf Elise's location-targeted recast is used by issuing a movement command within the respective range of Rappel, she will descend as normal but then move to the location that the movement command was issued; her movement commands will not be interrupted from descending.\nThe delay for recasting without a target after Elise has lifted into the air is inconsistent.(bug)\nThe recast has a 0.33-seconds delay for issued movement commands, and a 0.5-second delay if the recast input itself is used.\nWhile Elise is lifting up into the air, she can buffer Rappel's recast by targeting an enemy with an attack command or the recast input itself in the meantime. She however cannot buffer Rappel's location-targeted recast.\nThe initial cast can also directly target an enemy to buffer the recast.\nElise will lift up into the air 0.05 seconds shorter in this case.\nThe bonuses granted for descending are not lost if Elise switches to Human Form.\nRappel can be cast on any targetable enemy unit ( champions,  minions,  monsters,  wards,  traps, and jungle plants) except structures.\nElise can Rappel to  Rift Herald from the other side of the  Baron Nashor's pit as well as to  Dragon by standing near the  Scryer's Bloom spawn locations. This is a result of  sight being granted in a smaller circle than the target range limit for descending and the  Summoner's Rift map having height variations.\nIf Elise enters  resurrection during Rappel, she will descend back down immediately.\nThe following table refers for interactions while Elise is in Rappel:\n\n\nAttacking\n\nDescends onto the attack target.\n\n\nAbilities\n\nDisabled\n\n\nMovement\n\nDescends onto her current position.\n\n\nItems\n\nUsable\n\nN/A\n\n\nDisabled\n\nAll items are disabled\n\n\nInterrupted by\n\nN/A\n\n\nConsumables\n\nDisabled\n\n\nSpells\n\nUsable\n\nN/A\n\n\nDisabled\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite  Flash  Teleport  Recall  Hexflash  Mark  Dash\n\n\nInterrupted by\n\nN/A\n\n\nInterrupted by\n\nDeath",
         "blurb": "Active:  Elise and her Spiderlings  vanish into the air for a short time.\nRappel can be recast on a target enemy within the duration, and does so automatically after the duration without a target.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -934,8 +934,8 @@
         "width": null,
         "angle": null,
         "castTime": "none",
-        "effectRadius": "700",
-        "targetRange": null
+        "effectRadius": null,
+        "targetRange": "825 /  900"
       }
     ],
     "R": [
@@ -952,7 +952,7 @@
             "leveling": []
           },
           {
-            "description": "Spider Form: Elise transforms into a spider, gaining 25 bonus movement speed, melee basic attacks with 125 range, and access to her arachnid abilities. Additionally, she summons all stored Spiderlings.",
+            "description": "Spider Form: Elise transforms into a spider, gaining 25 bonus movement speed, melee basic attacks with 125 range, and access to her arachnid abilities. Additionally, she summons all stored Spiderlings and heals them to full health.",
             "leveling": []
           },
           {
@@ -969,9 +969,9 @@
           "modifiers": [
             {
               "values": [
-                4,
-                4,
-                4
+                3,
+                3,
+                3
               ],
               "units": [
                 "",

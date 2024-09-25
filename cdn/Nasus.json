@@ -4,7 +4,7 @@
   "name": "Nasus",
   "title": "the Curator of the Sands",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Nasus.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Nasus.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -524,7 +524,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "If Wither's duration is affected by  Tenacity the effects will apply slower (negative tenacity percentage) or faster (positive tenacity percentage) so the maximum values are still reached when the modified duration ends.\nWither's cripple effectiveness calculates from its slow's base values, thus  slow resist will not interact with the attack speed modifier indirectly.\nBoth  slow and  cripple from Wither are considered to be a single debuff. (bug)\nTherefore,  slow immunity will prevent both, even without technical  cripple immunity.\nIf the target becomes  untargetable,  dies, or is too far away or no longer in  sight during the cast time, this ability will cancel but does not go on  cooldown nor pay its cost (if applicable).",
+        "notes": "Wither interrupts the target's attack windup when it is first applied. (bug)\nIf Wither's duration is affected by  Tenacity the effects will apply slower (negative tenacity percentage) or faster (positive tenacity percentage) so the maximum values are still reached when the modified duration ends.\nWither's cripple effectiveness calculates from its slow's base values, thus  slow resist will not interact with the attack speed modifier indirectly.\nBoth  slow and  cripple from Wither are considered to be a single debuff. (note)\nTherefore,  slow immunity will prevent both, even without technical  cripple immunity.\nIf the target becomes  untargetable,  dies, or is too far away or no longer in  sight during the cast time, this ability will cancel but does not go on  cooldown nor pay its cost (if applicable).",
         "blurb": "Active:  Nasus ages the target enemy champion for a few seconds, gradually  slowing and  crippling them over the duration.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -553,11 +553,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      55,
-                      95,
-                      135,
-                      175,
-                      215
+                      50,
+                      80,
+                      110,
+                      140,
+                      170
                     ],
                     "units": [
                       "",
@@ -595,11 +595,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      11,
-                      19,
-                      27,
-                      35,
-                      43
+                      10,
+                      16,
+                      22,
+                      28,
+                      34
                     ],
                     "units": [
                       "",
@@ -632,11 +632,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      110,
-                      190,
-                      270,
-                      350,
-                      430
+                      100,
+                      160,
+                      220,
+                      280,
+                      340
                     ],
                     "units": [
                       "",
@@ -940,7 +940,7 @@
   },
   "releaseDate": "2009-10-01",
   "releasePatch": "0.9.25.24",
-  "patchLastChanged": "14.13",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 1350,
     "rp": 585,

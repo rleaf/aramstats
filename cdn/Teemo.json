@@ -4,7 +4,7 @@
   "name": "Teemo",
   "title": "the Swift Scout",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Teemo.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Teemo.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -1045,10 +1045,10 @@
       "lore": "Undeterred by even the most dangerous and threatening of obstacles, Teemo scouts the world with boundless enthusiasm and a cheerful spirit. A yordle with an unwavering sense of morality, he takes pride in following the Bandle Scout's Code, sometimes with such eagerness that he is unaware of the broader consequences of his actions. Though some say the existence of the Scouts is questionable, one thing is for certain: Teemo's conviction is nothing to be trifled with.",
       "release": "2009-02-21",
       "set": [],
-      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/base/images/teemo_splash_centered_0.jpg",
-      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/base/images/teemo_splash_uncentered_0.jpg",
-      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/base/images/teemo_splash_tile_0.jpg",
-      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/base/teemoloadscreen.jpg",
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/base/images/teemo_splash_centered_0.asu_teemo.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/base/images/teemo_splash_uncentered_0.asu_teemo.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/base/images/teemo_splash_tile_0.asu_teemo.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/base/teemoloadscreen_0.asu_teemo.jpg",
       "loadScreenVintagePath": null,
       "newEffects": false,
       "newAnimations": false,
@@ -1056,7 +1056,9 @@
       "newVoice": false,
       "newQuotes": false,
       "voiceActor": [],
-      "splashArtist": []
+      "splashArtist": [
+        "Horace 'Hozure' Hsu"
+      ]
     },
     {
       "name": "Happy Elf",
@@ -1065,7 +1067,7 @@
       "availability": "Legacy",
       "formatName": "Happy Elf",
       "lootEligible": true,
-      "cost": 520,
+      "cost": 750,
       "sale": 0,
       "distribution": null,
       "rarity": "NoRarity",
@@ -1075,10 +1077,10 @@
       "set": [
         "Snowdown Showdown"
       ],
-      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin01/images/teemo_splash_centered_1.jpg",
-      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin01/images/teemo_splash_uncentered_1.jpg",
-      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin01/images/teemo_splash_tile_1.jpg",
-      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin01/teemoloadscreen_1.jpg",
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin01/images/teemo_splash_centered_1.asu_teemo.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin01/images/teemo_splash_uncentered_1.asu_teemo.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin01/images/teemo_splash_tile_1.asu_teemo.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin01/teemoloadscreen_1.asu_teemo.jpg",
       "loadScreenVintagePath": null,
       "newEffects": false,
       "newAnimations": false,
@@ -1086,7 +1088,10 @@
       "newVoice": false,
       "newQuotes": false,
       "voiceActor": [],
-      "splashArtist": []
+      "splashArtist": [
+        "Augusto Quirino",
+        "West Studio"
+      ]
     },
     {
       "name": "Recon",
@@ -1095,7 +1100,7 @@
       "availability": "Legacy",
       "formatName": "Recon",
       "lootEligible": true,
-      "cost": 520,
+      "cost": 750,
       "sale": 0,
       "distribution": null,
       "rarity": "NoRarity",
@@ -1105,10 +1110,10 @@
       "set": [
         "Legacy"
       ],
-      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin02/images/teemo_splash_centered_2.jpg",
-      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin02/images/teemo_splash_uncentered_2.jpg",
-      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin02/images/teemo_splash_tile_2.jpg",
-      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin02/teemoloadscreen_2.jpg",
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin02/images/teemo_splash_centered_2.asu_teemo.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin02/images/teemo_splash_uncentered_2.asu_teemo.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin02/images/teemo_splash_tile_2.asu_teemo.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin02/teemoloadscreen_2.asu_teemo.jpg",
       "loadScreenVintagePath": null,
       "newEffects": false,
       "newAnimations": false,
@@ -1116,7 +1121,10 @@
       "newVoice": false,
       "newQuotes": false,
       "voiceActor": [],
-      "splashArtist": []
+      "splashArtist": [
+        "Jiunn Kuo",
+        "Kudos Productions"
+      ]
     },
     {
       "name": "Badger",
@@ -1125,7 +1133,7 @@
       "availability": "Legacy",
       "formatName": "Badger",
       "lootEligible": true,
-      "cost": 520,
+      "cost": 750,
       "sale": 0,
       "distribution": null,
       "rarity": "NoRarity",
@@ -1135,10 +1143,10 @@
       "set": [
         "Legacy"
       ],
-      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin03/images/teemo_splash_centered_3.jpg",
-      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin03/images/teemo_splash_uncentered_3.jpg",
-      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin03/images/teemo_splash_tile_3.jpg",
-      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin03/teemoloadscreen_3.jpg",
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin03/images/teemo_splash_centered_3.asu_teemo.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin03/images/teemo_splash_uncentered_3.asu_teemo.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin03/images/teemo_splash_tile_3.asu_teemo.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin03/teemoloadscreen_3.asu_teemo.jpg",
       "loadScreenVintagePath": null,
       "newEffects": false,
       "newAnimations": false,
@@ -1146,7 +1154,10 @@
       "newVoice": false,
       "newQuotes": false,
       "voiceActor": [],
-      "splashArtist": []
+      "splashArtist": [
+        "Roanna Peroz",
+        "Kudos Productions"
+      ]
     },
     {
       "name": "Astronaut",
@@ -1187,10 +1198,10 @@
       "set": [
         "Astronauts"
       ],
-      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin04/images/teemo_splash_centered_4.jpg",
-      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin04/images/teemo_splash_uncentered_4.jpg",
-      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin04/images/teemo_splash_tile_4.jpg",
-      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin04/teemoloadscreen_4.jpg",
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin04/images/teemo_splash_centered_4.asu_teemo.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin04/images/teemo_splash_uncentered_4.asu_teemo.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin04/images/teemo_splash_tile_4.asu_teemo.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin04/teemoloadscreen_4.asu_teemo.jpg",
       "loadScreenVintagePath": null,
       "newEffects": true,
       "newAnimations": true,
@@ -1198,7 +1209,9 @@
       "newVoice": false,
       "newQuotes": false,
       "voiceActor": [],
-      "splashArtist": []
+      "splashArtist": [
+        "Kudos Productions"
+      ]
     },
     {
       "name": "Cottontail",
@@ -1327,13 +1340,13 @@
       "set": [
         "Cottontail"
       ],
-      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin05/images/teemo_splash_centered_5.jpg",
-      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin05/images/teemo_splash_uncentered_5.jpg",
-      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin05/images/teemo_splash_tile_5.jpg",
-      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin05/teemoloadscreen_5.jpg",
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin05/images/teemo_splash_centered_5.asu_teemo.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin05/images/teemo_splash_uncentered_5.asu_teemo.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin05/images/teemo_splash_tile_5.asu_teemo.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin05/teemoloadscreen_5.asu_teemo.jpg",
       "loadScreenVintagePath": null,
       "newEffects": true,
-      "newAnimations": true,
+      "newAnimations": false,
       "newRecall": false,
       "newVoice": false,
       "newQuotes": false,
@@ -1359,18 +1372,20 @@
       "set": [
         "Silver Age"
       ],
-      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin06/images/teemo_splash_centered_6.jpg",
-      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin06/images/teemo_splash_uncentered_6.jpg",
-      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin06/images/teemo_splash_tile_6.jpg",
-      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin06/teemoloadscreen_6.jpg",
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin06/images/teemo_splash_centered_6.asu_teemo.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin06/images/teemo_splash_uncentered_6.asu_teemo.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin06/images/teemo_splash_tile_6.asu_teemo.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin06/teemoloadscreen_6.asu_teemo.jpg",
       "loadScreenVintagePath": null,
       "newEffects": true,
-      "newAnimations": true,
+      "newAnimations": false,
       "newRecall": false,
       "newVoice": false,
       "newQuotes": false,
       "voiceActor": [],
-      "splashArtist": []
+      "splashArtist": [
+        "Terence 'Terrylefruit' Cantal"
+      ]
     },
     {
       "name": "Panda",
@@ -1389,19 +1404,19 @@
       "set": [
         "Wonders of the World"
       ],
-      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin07/images/teemo_splash_centered_7.jpg",
-      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin07/images/teemo_splash_uncentered_7.jpg",
-      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin07/images/teemo_splash_tile_7.jpg",
-      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin07/teemoloadscreen_7.jpg",
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin07/images/teemo_splash_centered_7.asu_teemo.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin07/images/teemo_splash_uncentered_7.asu_teemo.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin07/images/teemo_splash_tile_7.asu_teemo.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin07/teemoloadscreen_7.asu_teemo.jpg",
       "loadScreenVintagePath": null,
       "newEffects": true,
-      "newAnimations": true,
-      "newRecall": true,
+      "newAnimations": false,
+      "newRecall": false,
       "newVoice": false,
       "newQuotes": false,
       "voiceActor": [],
       "splashArtist": [
-        "Concept Art House"
+        "Kudos Productions"
       ]
     },
     {
@@ -1709,10 +1724,10 @@
       "set": [
         "Demonic"
       ],
-      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin14/images/teemo_splash_centered_14.jpg",
-      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin14/images/teemo_splash_uncentered_14.jpg",
-      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin14/images/teemo_splash_tile_14.jpg",
-      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin14/teemoloadscreen_14.jpg",
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin14/images/teemo_splash_centered_14.asu_teemo.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin14/images/teemo_splash_uncentered_14.asu_teemo.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin14/images/teemo_splash_tile_14.asu_teemo.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin14/teemoloadscreen_14.asu_teemo.jpg",
       "loadScreenVintagePath": null,
       "newEffects": true,
       "newAnimations": true,
@@ -1872,10 +1887,10 @@
       "set": [
         "Bees!"
       ],
-      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin18/images/teemo_splash_centered_18.jpg",
-      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin18/images/teemo_splash_uncentered_18.jpg",
-      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin18/images/teemo_splash_tile_18.jpg",
-      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin18/teemoloadscreen_18.jpg",
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin18/images/teemo_splash_centered_18.asu_teemo.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin18/images/teemo_splash_uncentered_18.asu_teemo.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin18/images/teemo_splash_tile_18.asu_teemo.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin18/teemoloadscreen_18.asu_teemo.jpg",
       "loadScreenVintagePath": null,
       "newEffects": true,
       "newAnimations": true,
@@ -1904,11 +1919,11 @@
       "set": [
         "Spirit Blossom"
       ],
-      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin25/images/teemo_splash_centered_25.jpg",
-      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin25/images/teemo_splash_uncentered_25.jpg",
-      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin25/images/teemo_splash_tile_25.jpg",
-      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin25/teemoloadscreen_25.jpg",
-      "loadScreenVintagePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin25/teemoloadscreen_25_le.jpg",
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin25/images/teemo_splash_centered_25.asu_teemo.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin25/images/teemo_splash_uncentered_25.asu_teemo.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin25/images/teemo_splash_tile_25.asu_teemo.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin25/teemoloadscreen_25.asu_teemo.jpg",
+      "loadScreenVintagePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin25/teemoloadscreen_25_le.asu_teemo.jpg",
       "newEffects": true,
       "newAnimations": true,
       "newRecall": true,
@@ -1936,11 +1951,11 @@
       "set": [
         "Spirit Blossom"
       ],
-      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin27/images/teemo_splash_centered_27.jpg",
-      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin27/images/teemo_splash_uncentered_27.jpg",
-      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin27/images/teemo_splash_tile_27.jpg",
-      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin27/teemoloadscreen_27.jpg",
-      "loadScreenVintagePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin27/teemoloadscreen_27_le.jpg",
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin27/images/teemo_splash_centered_27.asu_teemo.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin27/images/teemo_splash_uncentered_27.asu_teemo.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin27/images/teemo_splash_tile_27.asu_teemo.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin27/teemoloadscreen_27.asu_teemo.jpg",
+      "loadScreenVintagePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin27/teemoloadscreen_27_le.asu_teemo.jpg",
       "newEffects": true,
       "newAnimations": true,
       "newRecall": true,
@@ -2194,11 +2209,11 @@
       "set": [
         "Lunar Revel: Firecracker"
       ],
-      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin37/images/teemo_splash_centered_37.jpg",
-      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin37/images/teemo_splash_uncentered_37.jpg",
-      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin37/images/teemo_splash_tile_37.jpg",
-      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin37/teemoloadscreen_37.jpg",
-      "loadScreenVintagePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin37/teemoloadscreen_37_le.jpg",
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin37/images/teemo_splash_centered_37.asu_teemo.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin37/images/teemo_splash_uncentered_37.asu_teemo.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin37/images/teemo_splash_tile_37.asu_teemo.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin37/teemoloadscreen_37.asu_teemo.jpg",
+      "loadScreenVintagePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin37/teemoloadscreen_37_le.asu_teemo.jpg",
       "newEffects": true,
       "newAnimations": true,
       "newRecall": true,

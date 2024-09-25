@@ -4,7 +4,7 @@
   "name": "Ahri",
   "title": "the Nine-Tailed Fox",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Ahri.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Ahri.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -705,10 +705,10 @@
                   {
                     "values": [
                       80,
-                      110,
-                      140,
-                      170,
-                      200
+                      120,
+                      160,
+                      200,
+                      240
                     ],
                     "units": [
                       "",
@@ -720,11 +720,11 @@
                   },
                   {
                     "values": [
-                      60,
-                      60,
-                      60,
-                      60,
-                      60
+                      75,
+                      75,
+                      75,
+                      75,
+                      75
                     ],
                     "units": [
                       "% AP",
@@ -935,7 +935,7 @@
   },
   "releaseDate": "2011-12-14",
   "releasePatch": "1.0.0.131",
-  "patchLastChanged": "14.14",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

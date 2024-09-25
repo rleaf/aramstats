@@ -4,7 +4,7 @@
   "name": "Leona",
   "title": "the Radiant Dawn",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Leona.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Leona.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -34,7 +34,7 @@
       "percentPerLevel": 0.0
     },
     "armor": {
-      "flat": 47,
+      "flat": 43,
       "percent": 0.0,
       "perLevel": 4.8,
       "percentPerLevel": 0.0
@@ -359,7 +359,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "The enhanced attack will apply other  on-hit effects and can  critically strike as normal.\n Critical strikes do not interact with Shield of Daybreak's bonus damage.\n PENDING FOR TEST:: Shield of Daybreak's interactions with  dodging,  blocking, and  blinding effects.\nShield of Daybreak's attack does not put Leona's basic attack on cooldown.(bug)\nThis effectively performs a second  attack reset.\nThis is unlike other empowered attacks (including those which, similar to Shield of Daybreak, use a more unconventional spell cast rather than an attack override).\nLeona will wait out Shield of Daybreak's wind-down before automatically attacking, anyway. The player must issue the next attack themselves to gain the full benefit of the second reset.\nProbably not a bug because her High Noon skin gives the second attack a new distinguishable attack animation, which means that it's designed so.\nIf the target becomes  untargetable,  dies, or is too far away during the empowered attack's cast time, it is cancelled but not consumed.\nThe empowered attack will not trigger against buildings.",
+        "notes": "The enhanced attack will apply other  on-hit effects and can  critically strike as normal.\n Critical strikes do not interact with Shield of Daybreak's bonus damage.\n PENDING FOR TEST:: Shield of Daybreak's interactions with  dodging,  blocking, and  blinding effects.\nShield of Daybreak's attack does not put Leona's basic attack on cooldown.(note)\nThis effectively performs a second  attack reset.\nThis is unlike other empowered attacks (including those which, similar to Shield of Daybreak, use a more unconventional spell cast rather than an attack override).\nLeona will wait out Shield of Daybreak's wind-down before automatically attacking, anyway. The player must issue the next attack themselves to gain the full benefit of the second reset.\nProbably not a bug because her High Noon skin gives the second attack a new distinguishable attack animation, which means that it's designed so.\nIf the target becomes  untargetable,  dies, or is too far away during the empowered attack's cast time, it is cancelled but not consumed.\nThe empowered attack will not trigger against buildings.",
         "blurb": "Active:  Leona illuminates her shield, causing her next basic attack within a few seconds to deal bonus magic damage and briefly  stun the target.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -816,7 +816,7 @@
   },
   "releaseDate": "2011-07-13",
   "releasePatch": "1.0.0.121",
-  "patchLastChanged": "14.16",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 450,
     "rp": 260,
@@ -2383,7 +2383,7 @@
       "lootEligible": true,
       "cost": "Special",
       "sale": 0,
-      "distribution": "2000 Anima Squad Tokens",
+      "distribution": "125 Mythic Essence",
       "rarity": "Mythic",
       "chromas": [],
       "lore": "Sporting the latest in fashionable activewear for any on-the-go warrior, Leona defends her title of “Pride of the Runway” as easily as she rocks a bold lip color. Saving the world is important, but doing it with style? That's what Anima Squad is all about.",

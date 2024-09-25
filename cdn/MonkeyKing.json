@@ -4,7 +4,7 @@
   "name": "Wukong",
   "title": "the Monkey King",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/MonkeyKing.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/MonkeyKing.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -227,11 +227,11 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/MonkeyKing/ability-icon/p",
         "effects": [
           {
-            "description": "Innate: Whenever Wukong or his clone damage an enemy champion or monster, he generates a stack of Strength of Stone for 5 seconds, refreshing on subsequent hits and stacking up to 5 times. Stacks expire by one every second when the duration ends.",
+            "description": "Innate: Wukong gains 6 − 10 (based on level) bonus armor and regenerates an additional[ 0.35% of his maximum health every 5 seconds. ][ 0.07% of his maximum health each second. ]Whenever Wukong or his clone damage an enemy champion or monster, he generates a stack of Strength of Stone for 5 seconds, refreshing on subsequent hits and stacking up to 5 times. Stacks expire by one every second when the duration ends.",
             "leveling": []
           },
           {
-            "description": "Strength of Stone: Wukong gains 6 − 10 (based on level) bonus armor and bonus health regeneration equal to 0.35% of his maximum health, increased by 100% for each stack up to a maximum of 36 − 60 (based on level) bonus armor and 2.1% maximum health regeneration.",
+            "description": "Strength of Stone: For each stack,[ Stone Skin's effects are increased by 100%, ][ Wukong gains 6 − 10 (based on level) additional bonus armor and regenerates an additional 0.07% of his maximum health each second, ]up to a maximum of 36 − 60 (based on level) bonus armor and [ 2.1% maximum health regeneration every 5 seconds. ][ 0.42% maximum health regeneration each second. ]",
             "leveling": []
           }
         ],
@@ -247,7 +247,7 @@
         "onHitEffects": null,
         "occurrence": null,
         "notes": null,
-        "blurb": "Innate: Whenever  Wukong or his  clone damage an enemy  champion or  monster, he generates a stack of Strength of Stone, which stacks up to 5 times.",
+        "blurb": "Innate:  Wukong gains  bonus armor based on level and  health regeneration equal to a portion of his maximum health.",
         "missileSpeed": null,
         "rechargeRate": null,
         "collisionRadius": null,

@@ -4,7 +4,7 @@
   "name": "Akali",
   "title": "the Rogue Assassin",
   "fullName": "Akali Jhomen Tethi",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Akali.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Akali.png",
   "resource": "ENERGY",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -920,7 +920,7 @@
   },
   "releaseDate": "2010-05-11",
   "releasePatch": "1.0.0.85",
-  "patchLastChanged": "14.15",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

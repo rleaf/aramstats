@@ -4,7 +4,7 @@
   "name": "Ivern",
   "title": "the Green Father",
   "fullName": "Ivern Bramblefoot",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Ivern.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Ivern.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -599,11 +599,11 @@
                 "modifiers": [
                   {
                     "values": [
-                      85,
-                      125,
-                      165,
-                      205,
-                      245
+                      75,
+                      115,
+                      155,
+                      195,
+                      235
                     ],
                     "units": [
                       "",
@@ -678,11 +678,11 @@
                 "modifiers": [
                   {
                     "values": [
+                      40,
                       45,
                       50,
                       55,
-                      60,
-                      65
+                      60
                     ],
                     "units": [
                       "%",
@@ -850,7 +850,7 @@
   },
   "releaseDate": "2016-10-05",
   "releasePatch": "6.20",
-  "patchLastChanged": "14.5",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

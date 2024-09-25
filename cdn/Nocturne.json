@@ -4,7 +4,7 @@
   "name": "Nocturne",
   "title": "the Eternal Nightmare",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Nocturne.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Nocturne.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -225,7 +225,7 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Nocturne/ability-icon/p",
         "effects": [
           {
-            "description": "Innate: Periodically, Nocturne empowers his next basic attack to slash in a circle, dealing 120% AD physical damage to the target and nearby enemies and healing himself for 13 − 30 (based on level) (+ 30% AP) per enemy hit. Against minions, Umbra Blade's damage to secondary targets and healing are reduced by 50% and it applies on-hit effects(bug) to all targets at 100% effectiveness.",
+            "description": "Innate: Periodically, Nocturne empowers his next basic attack to slash in a circle, dealing 120% AD physical damage to the target and nearby enemies and healing himself for 13 − 30 (based on level) (+ 30% AP) per enemy hit. Against minions, Umbra Blade's damage to secondary targets and healing are reduced by 50% and it applies on-hit effects(note) to all targets at 100% effectiveness.",
             "leveling": []
           },
           {
@@ -264,7 +264,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "The primary target of the enhanced attack takes  basic damage while the secondary targets of the slash are dealt  default damage.\nThe enhanced attack will apply other on-hit effects (only to main target) and can  critically strike as normal.\nThe critical strike damage of the attack is notably unusual.(bug) It stems from a time where critical strikes by default did 200% AD damage, which meant that 110% of it equaled 220% AD, equal to a more standard Umbral Blades' bonus damage of 20% AD added to the critical damage. This also causes bonus critial damage such as  Infinity Edge's passive to be 10% stronger on the attack. Now, the formula reduces the expected critical damage slightly by -2.5% AD, which is 10% of the reduction in base critical damage from Pre-Season 11.\nThe empowered attack will not trigger against structures nor wards.\nBasic attacks against them will still grant the cooldown reduction.\nParry effects will only block the damage dealt to the primary target.",
+        "notes": "The primary target of the enhanced attack takes  basic damage while the secondary targets of the slash are dealt  default damage.\nThe enhanced attack will apply other on-hit effects (only to main target) and can  critically strike as normal.\nThe critical strike damage of the attack is notably unusual.(note) It stems from a time where critical strikes by default did 200% AD damage, which meant that 110% of it equaled 220% AD, equal to a more standard Umbral Blades' bonus damage of 20% AD added to the critical damage. This also causes bonus critial damage such as  Infinity Edge's passive to be 10% stronger on the attack. Now, the formula reduces the expected critical damage slightly by -2.5% AD, which is 10% of the reduction in base critical damage from Pre-Season 11.\nThe empowered attack will not trigger against structures nor wards.\nBasic attacks against them will still grant the cooldown reduction.\nParry effects will only block the damage dealt to the primary target.",
         "blurb": "Innate: Periodically,  Nocturne's next basic attack causes him to slash in a circle that deals increased physical damage to the target and nearby enemies,  healing him for each enemy hit.",
         "missileSpeed": null,
         "rechargeRate": null,

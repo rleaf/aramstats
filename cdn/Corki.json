@@ -4,7 +4,7 @@
   "name": "Corki",
   "title": "the Daring Bombardier",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Corki.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Corki.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -270,10 +270,10 @@
                   {
                     "values": [
                       70,
-                      120,
-                      170,
-                      220,
-                      270
+                      115,
+                      160,
+                      205,
+                      250
                     ],
                     "units": [
                       "",
@@ -760,8 +760,8 @@
                   {
                     "values": [
                       80,
-                      180,
-                      280
+                      160,
+                      240
                     ],
                     "units": [
                       "",
@@ -771,9 +771,9 @@
                   },
                   {
                     "values": [
-                      80,
-                      80,
-                      80
+                      70,
+                      70,
+                      70
                     ],
                     "units": [
                       "% bonus AD",
@@ -798,8 +798,8 @@
                   {
                     "values": [
                       160,
-                      360,
-                      560
+                      320,
+                      480
                     ],
                     "units": [
                       "",
@@ -809,9 +809,9 @@
                   },
                   {
                     "values": [
-                      160,
-                      160,
-                      160
+                      140,
+                      140,
+                      140
                     ],
                     "units": [
                       "% bonus AD",
@@ -889,7 +889,7 @@
   },
   "releaseDate": "2009-09-19",
   "releasePatch": "0.9.25.21",
-  "patchLastChanged": "14.16",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

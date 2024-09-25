@@ -4,7 +4,7 @@
   "name": "Pyke",
   "title": "the Bloodharbor Ripper",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Pyke.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Pyke.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -34,7 +34,7 @@
       "percentPerLevel": 0.0
     },
     "armor": {
-      "flat": 47,
+      "flat": 43,
       "percent": 0.0,
       "perLevel": 4.7,
       "percentPerLevel": 0.0
@@ -253,7 +253,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Game elements that increase health based on the champion's health (e.g  Overgrowth) will increase the health before getting converted by Gift of the Drowned Ones, thus granting increased bonus AD.\n Spirit Visage and  Grievous Wounds take effect after Gift of the Drowned Ones's healing cap.\nPyke's grey health does not have a time limit, and will stay on his health bar until Pyke leaves enemy vision or dies.\nSince Pyke's maximum health cannot be increased, Gift of the Drowned Ones reaches the upper cap of 55% of maximum health at 40.25 − 180.5 (based on level) bonus attack damage.\n Untargetable champions count towards Pyke's modified grey health storing.\nAmount of attack damage granted from list of items that grants health, converted with Gift of the Drowned Ones:\nThis table is automatically generated based on the data from Module:ItemData/data.\n\nItemCostAmountAvailabilityAbyssal Mask Abyssal Mask2500 21.4Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidAnathema's Chains Anathema's Chains2500 42.9ArenaAtma's Reckoning Atma's Reckoning2500 50ArenaBami's Cinder Bami's Cinder900 14.3Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidBlack Cleaver Black Cleaver3000 83.6Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidBlack Hole Gauntlet Black Hole Gauntlet0 64.3ArenaBloodsong Bloodsong400 14.3Classic Summoner's Rift 5v5Bounty of Worlds Bounty of Worlds400 14.3Classic Summoner's Rift 5v5Catalyst of Aeons Catalyst of Aeons1300 25Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidCelestial Opposition Celestial Opposition400 14.3Classic Summoner's Rift 5v5Chempunk Chainsword Chempunk Chainsword2800 72.9Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidCloak of Starry Night Cloak of Starry Night0 21.4ArenaCosmic Drive Cosmic Drive3000 25Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidCrown of the Shattered Queen Crown of the Shattered Queen0 21.4ArenaCrystalline Bracer Crystalline Bracer800 14.3Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidDark Seal Dark Seal350 3.6Classic Summoner's Rift 5v5Dead Man's Plate Dead Man's Plate2900 21.4Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidDemonic Embrace Demonic Embrace0 42.9ArenaDivine Sunderer Divine Sunderer0 80ArenaDoran's Blade Doran's Blade450 15.7Nexus Blitz, Classic Summoner's Rift 5v5Doran's Ring Doran's Ring400 6.4Nexus Blitz, Classic Summoner's Rift 5v5Doran's Shield Doran's Shield450 7.9Nexus Blitz, Classic Summoner's Rift 5v5Dream Maker Dream Maker400 14.3Classic Summoner's Rift 5v5Echoes of Helia Echoes of Helia2200 14.3Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidEdge of Night Edge of Night2800 67.9Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidEverfrost Everfrost0 35.7ArenaExperimental Hexplate Experimental Hexplate3000 76.4Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidFimbulwinter Fimbulwinter2400 39.3Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidForce of Entropy Force of Entropy0 64.3ArenaForce of Nature Force of Nature2800 28.6Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidGiant's Belt Giant's Belt900 25Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidGuardian's Blade Guardian's Blade950 40.7Arena, All Random All MidGuardian's Hammer Guardian's Hammer950 35.7Arena, All Random All MidGuardian's Horn Guardian's Horn950 10.7Arena, All Random All MidGuardian's Orb Guardian's Orb950 10.7Arena, All Random All MidGuardian's Shroud Guardian's Shroud500 21.4ArenaHaunting Guise Haunting Guise1300 14.3Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidHeartsteel Heartsteel3000 64.3Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidHexbolt Companion Hexbolt Companion0 35.7ArenaHextech Rocketbelt Hextech Rocketbelt2600 28.6Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidHollow Radiance Hollow Radiance2800 32.1Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidHullbreaker Hullbreaker3000 90Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidIceborn Gauntlet Iceborn Gauntlet2600 21.4Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidInnervating Locket Innervating Locket0 14.3ArenaJak'Sho, The Protean Jak'Sho, The Protean3200 21.4Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidKaenic Rookern Kaenic Rookern2900 28.6Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidKindlegem Kindlegem800 14.3Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidKnight's Vow Knight's Vow2200 14.3Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidLiandry's Torment Liandry's Torment3000 21.4Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidLightning Rod Lightning Rod0 35.7ArenaLocket of the Iron Solari Locket of the Iron Solari2200 14.3Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidMejai's Soulstealer Mejai's Soulstealer1500 7.1Classic Summoner's Rift 5v5Mikael's Blessing Mikael's Blessing2300 17.9Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidMoonflair Spellblade Moonflair Spellblade0 28.6ArenaMoonstone Renewer Moonstone Renewer2200 17.9Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidNight Harvester Night Harvester0 28.6ArenaOverlord's Bloodmail Overlord's Bloodmail3300 75.7Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidPhage Phage1100 29.3Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidPyromancer's Cloak Pyromancer's Cloak0 28.6ArenaRadiant Virtue Radiant Virtue0 28.6ArenaRanduin's Omen Randuin's Omen2700 25Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidReality Fracture Reality Fracture0 21.4ArenaRedemption Redemption2300 14.3Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidRiftmaker Riftmaker3100 25Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidRod of Ages Rod of Ages2600 28.6Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidRuby Crystal Ruby Crystal400 10.7Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidRunic Compass Runic Compass400 7.1Classic Summoner's Rift 5v5Rylai's Crystal Scepter Rylai's Crystal Scepter2600 28.6Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidShield of Molten Stone Shield of Molten Stone0 21.4ArenaSolstice Sleigh Solstice Sleigh400 14.3Classic Summoner's Rift 5v5Spear of Shojin Spear of Shojin3100 76.4Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidSpectre's Cowl Spectre's Cowl1250 14.3Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidSpirit Visage Spirit Visage2900 32.1Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidSterak's Gage Sterak's Gage3200 28.6Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidStridebreaker Stridebreaker3300 82.1Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidSundered Sky Sundered Sky3100 77.1Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidSunfire Aegis Sunfire Aegis2700 25Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidSword of Blossoming Dawn Sword of Blossoming Dawn2500 14.3ArenaTalisman of Ascension Talisman of Ascension0 0ArenaThe Golden Spatula The Golden Spatula0 115ArenaThornmail Thornmail2700 25Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidTitanic Hydra Titanic Hydra3300 89.3Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidTrailblazer Trailblazer2500 14.3Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidTrinity Force Trinity Force3333 66.4Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidTunneler Tunneler1150 32.9Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidTurbo Chemtank Turbo Chemtank0 78.6ArenaUnending Despair Unending Despair2800 28.6Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidVigilant Wardstone Vigilant Wardstone2300 17.9Classic Summoner's Rift 5v5Warmog's Armor Warmog's Armor3300 71.4Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidWatchful Wardstone Watchful Wardstone1100 10.7Classic Summoner's Rift 5v5Winged Moonplate Winged Moonplate800 10.7Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidWinter's Approach Winter's Approach2400 39.3Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidWorld Atlas World Atlas400 2.1Classic Summoner's Rift 5v5Zaz'Zak's Realmspike Zaz'Zak's Realmspike400 14.3Classic Summoner's Rift 5v5Zeke's Convergence Zeke's Convergence2200 21.4Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All Mid",
+        "notes": "Game elements that increase health based on the champion's health (e.g  Overgrowth) will increase the health before getting converted by Gift of the Drowned Ones, thus granting increased bonus AD.\n Spirit Visage and  Grievous Wounds take effect after Gift of the Drowned Ones's healing cap.\nPyke's grey health does not have a time limit, and will stay on his health bar until Pyke leaves enemy vision or dies.\nSince Pyke's maximum health cannot be increased, Gift of the Drowned Ones reaches the upper cap of 55% of maximum health at 40.25 − 180.5 (based on level) bonus attack damage.\n Untargetable champions count towards Pyke's modified grey health storing.\nAmount of attack damage granted from list of items that grants health, converted with Gift of the Drowned Ones:\nThis table is automatically generated based on the data from Module:ItemData/data.\n\nItemCostAmountAvailabilityAbyssal Mask Abyssal Mask2650 21.4Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidAnathema's Chains Anathema's Chains2500 42.9ArenaAtma's Reckoning Atma's Reckoning2500 50ArenaBami's Cinder Bami's Cinder900 10.7Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidBlack Cleaver Black Cleaver3000 68.6Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidBlack Hole Gauntlet Black Hole Gauntlet0 64.3ArenaBloodsong Bloodsong400 14.3Classic Summoner's Rift 5v5Bounty of Worlds Bounty of Worlds400 14.3Classic Summoner's Rift 5v5Catalyst of Aeons Catalyst of Aeons1300 25Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidCelestial Opposition Celestial Opposition400 14.3Classic Summoner's Rift 5v5Chempunk Chainsword Chempunk Chainsword3100 77.1Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidCloak of Starry Night Cloak of Starry Night0 21.4ArenaCosmic Drive Cosmic Drive3000 25Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidCrown of the Shattered Queen Crown of the Shattered Queen0 21.4ArenaCrystalline Bracer Crystalline Bracer800 14.3Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidDark Seal Dark Seal350 3.6Classic Summoner's Rift 5v5Dead Man's Plate Dead Man's Plate2900 25Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidDemonic Embrace Demonic Embrace0 50ArenaDivine Sunderer Divine Sunderer0 80ArenaDoran's Blade Doran's Blade450 15.7Nexus Blitz, Classic Summoner's Rift 5v5Doran's Ring Doran's Ring400 6.4Nexus Blitz, Classic Summoner's Rift 5v5Doran's Shield Doran's Shield450 7.9Nexus Blitz, Classic Summoner's Rift 5v5Dream Maker Dream Maker400 14.3Classic Summoner's Rift 5v5Echoes of Helia Echoes of Helia2200 14.3Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidEdge of Night Edge of Night3000 67.9Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidEverfrost Everfrost0 35.7ArenaExperimental Hexplate Experimental Hexplate3000 72.1Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidFimbulwinter Fimbulwinter2400 39.3Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidForce of Entropy Force of Entropy0 64.3ArenaForce of Nature Force of Nature2800 28.6Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidGiant's Belt Giant's Belt900 25Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidGuardian's Blade Guardian's Blade950 40.7Arena, All Random All MidGuardian's Hammer Guardian's Hammer950 35.7Arena, All Random All MidGuardian's Horn Guardian's Horn950 10.7Arena, All Random All MidGuardian's Orb Guardian's Orb950 10.7Arena, All Random All MidGuardian's Shroud Guardian's Shroud500 21.4ArenaHaunting Guise Haunting Guise1300 14.3Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidHeartsteel Heartsteel3000 64.3Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidHexbolt Companion Hexbolt Companion0 35.7ArenaHextech Rocketbelt Hextech Rocketbelt2600 25Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidHollow Radiance Hollow Radiance2800 28.6Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidHullbreaker Hullbreaker3000 75.7Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidIceborn Gauntlet Iceborn Gauntlet2900 21.4Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidInnervating Locket Innervating Locket0 14.3ArenaJak'Sho, The Protean Jak'Sho, The Protean3200 25Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidKaenic Rookern Kaenic Rookern2900 28.6Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidKindlegem Kindlegem800 14.3Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidKnight's Vow Knight's Vow2300 14.3Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidLiandry's Torment Liandry's Torment3000 21.4Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidLightning Rod Lightning Rod0 35.7ArenaLocket of the Iron Solari Locket of the Iron Solari2200 14.3Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidMejai's Soulstealer Mejai's Soulstealer1500 7.1Classic Summoner's Rift 5v5Mikael's Blessing Mikael's Blessing2300 17.9Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidMoonflair Spellblade Moonflair Spellblade0 28.6ArenaMoonstone Renewer Moonstone Renewer2200 14.3Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidMorellonomicon Morellonomicon2950 25Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidNight Harvester Night Harvester0 28.6ArenaOverlord's Bloodmail Overlord's Bloodmail3300 69.3Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidPhage Phage1100 29.3Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidPyromancer's Cloak Pyromancer's Cloak0 28.6ArenaRadiant Virtue Radiant Virtue0 28.6ArenaRanduin's Omen Randuin's Omen2700 25Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidReality Fracture Reality Fracture0 21.4ArenaRedemption Redemption2300 14.3Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidRiftmaker Riftmaker3100 25Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidRod of Ages Rod of Ages2600 28.6Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidRuby Crystal Ruby Crystal400 10.7Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidRunic Compass Runic Compass400 7.1Classic Summoner's Rift 5v5Rylai's Crystal Scepter Rylai's Crystal Scepter2600 28.6Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidShield of Molten Stone Shield of Molten Stone0 21.4ArenaSolstice Sleigh Solstice Sleigh400 14.3Classic Summoner's Rift 5v5Spear of Shojin Spear of Shojin3100 77.1Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidSpectre's Cowl Spectre's Cowl1250 14.3Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidSpirit Visage Spirit Visage2700 28.6Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidSterak's Gage Sterak's Gage3200 28.6Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidStridebreaker Stridebreaker3300 72.1Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidSundered Sky Sundered Sky3100 68.6Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidSunfire Aegis Sunfire Aegis2700 25Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidSword of Blossoming Dawn Sword of Blossoming Dawn2500 14.3ArenaTalisman of Ascension Talisman of Ascension0 0ArenaThe Golden Spatula The Golden Spatula0 115ArenaThornmail Thornmail2450 10.7Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidTitanic Hydra Titanic Hydra3300 82.9Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidTrailblazer Trailblazer2400 17.9Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidTrinity Force Trinity Force3333 59.8Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidTunneler Tunneler1150 32.9Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidTurbo Chemtank Turbo Chemtank0 78.6ArenaUnending Despair Unending Despair2800 25Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidVigilant Wardstone Vigilant Wardstone2300 17.9Classic Summoner's Rift 5v5Warmog's Armor Warmog's Armor3300 71.4Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidWatchful Wardstone Watchful Wardstone1100 10.7Classic Summoner's Rift 5v5Winged Moonplate Winged Moonplate800 14.3Nexus Blitz, Classic Summoner's Rift 5v5, All Random All MidWinter's Approach Winter's Approach2400 39.3Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All MidWorld Atlas World Atlas400 2.1Classic Summoner's Rift 5v5Zaz'Zak's Realmspike Zaz'Zak's Realmspike400 14.3Classic Summoner's Rift 5v5Zeke's Convergence Zeke's Convergence2200 21.4Nexus Blitz, Arena, Classic Summoner's Rift 5v5, All Random All Mid",
         "blurb": "Innate:  Pyke gains  attack damage equal to a portion of his  bonus health.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -672,7 +672,7 @@
   },
   "releaseDate": "2018-05-31",
   "releasePatch": "8.11",
-  "patchLastChanged": "14.14",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 3150,
     "rp": 790,
@@ -2136,7 +2136,7 @@
       "name": "Prestige Soul Fighter",
       "id": 555054,
       "isBase": false,
-      "availability": "Available",
+      "availability": "Rare",
       "formatName": "Prestige Soul Fighter",
       "lootEligible": true,
       "cost": "Special",
@@ -2165,6 +2165,231 @@
       "splashArtist": [
         "Yuyu Wong",
         "Kudos Productions"
+      ]
+    },
+    {
+      "name": "Fright Night",
+      "id": 555064,
+      "isBase": false,
+      "availability": "Upcoming",
+      "formatName": "Fright Night",
+      "lootEligible": true,
+      "cost": 1350,
+      "sale": 0,
+      "distribution": null,
+      "rarity": "Epic",
+      "chromas": [
+        {
+          "name": "Amethyst",
+          "id": 555070,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/555/555070.png",
+          "colors": [
+            "#9C68D7",
+            "#9C68D7"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        },
+        {
+          "name": "Catseye",
+          "id": 555066,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/555/555066.png",
+          "colors": [
+            "#FFEE59",
+            "#FFEE59"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        },
+        {
+          "name": "Emerald",
+          "id": 555067,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/555/555067.png",
+          "colors": [
+            "#2DA130",
+            "#2DA130"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        },
+        {
+          "name": "Ghoulish",
+          "id": 555073,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/555/555073.png",
+          "colors": [
+            "#68B856",
+            "#B69017"
+          ],
+          "descriptions": [
+            {
+              "description": "This chroma was released as a Loot exclusive in the Worlds 2024 event.",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 1,
+              "region": "riot"
+            }
+          ]
+        },
+        {
+          "name": "Pearl",
+          "id": 555071,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/555/555071.png",
+          "colors": [
+            "#ECF9F8",
+            "#ECF9F8"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        },
+        {
+          "name": "Ruby",
+          "id": 555065,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/555/555065.png",
+          "colors": [
+            "#D33528",
+            "#D33528"
+          ],
+          "descriptions": [
+            {
+              "description": "This chroma was released as a bundle exclusive in 2024.",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 1,
+              "region": "riot"
+            }
+          ]
+        },
+        {
+          "name": "Sapphire",
+          "id": 555069,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/555/555069.png",
+          "colors": [
+            "#2756CE",
+            "#2756CE"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        },
+        {
+          "name": "Tanzanite",
+          "id": 555072,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/555/555072.png",
+          "colors": [
+            "#54209B",
+            "#54209B"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        },
+        {
+          "name": "Turquoise",
+          "id": 555068,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/555/555068.png",
+          "colors": [
+            "#73BFBE",
+            "#73BFBE"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        }
+      ],
+      "lore": "Campers flail their way to shore, desperate to escape the deranged lifeguard dragging them to the depths. Cutting through chaos and frantic coughing, Pyke's waterlogged whistle pierces the air. Filled with dread, ready to accept their fate, the campers are met by the fishman giving them two thumbs up. They all survived the race!",
+      "release": "0000-00-00",
+      "set": [
+        "Fright Night"
+      ],
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/pyke/skins/skin64/images/pyke_splash_centered_64.skins_pyke_skin64.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/pyke/skins/skin64/images/pyke_splash_uncentered_64.skins_pyke_skin64.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/pyke/skins/skin64/images/pyke_splash_tile_64.skins_pyke_skin64.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/pyke/skins/skin64/pykeloadscreen_64.skins_pyke_skin64.jpg",
+      "loadScreenVintagePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/pyke/skins/skin64/pykeloadscreen_64_le.skins_pyke_skin64.jpg",
+      "newEffects": true,
+      "newAnimations": true,
+      "newRecall": true,
+      "newVoice": false,
+      "newQuotes": false,
+      "voiceActor": [
+        "Darien Sills-Evans"
+      ],
+      "splashArtist": [
+        "Ina Wong",
+        "West Studio"
       ]
     }
   ]

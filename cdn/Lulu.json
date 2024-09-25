@@ -4,7 +4,7 @@
   "name": "Lulu",
   "title": "the Fae Sorceress",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Lulu.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Lulu.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -226,7 +226,7 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Lulu/ability-icon/p",
         "effects": [
           {
-            "description": "Innate: Lulu is assisted by Pix, an untargetable faerie, who follows her around and fires a barrage of 3 bolts towards her target whenever she uses a basic attack on-attack. Each bolt deals 3 − 37 (based on level) (+ 5% AP) magic damage to the first enemy it collides with, for a total of 9 − 111 (based on level) (+ 15% AP) on hitting a single target with all three bolts.",
+            "description": "Innate: Lulu is assisted by Pix, an untargetable faerie, who follows her around and fires a barrage of 3 bolts towards her target whenever she uses a basic attack on-attack. Each bolt deals 5 − 39 (based on level) (+ 5% AP) magic damage to the first enemy it collides with, for a total of 15 − 117 (based on level) (+ 15% AP) on hitting a single target with all three bolts.",
             "leveling": []
           },
           {
@@ -996,7 +996,7 @@
   },
   "releaseDate": "2012-03-20",
   "releasePatch": "1.0.0.136",
-  "patchLastChanged": "14.13",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

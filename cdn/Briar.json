@@ -4,7 +4,7 @@
   "name": "Briar",
   "title": "the Restrained Hunger",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Briar.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Briar.png",
   "resource": "FRENZY",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -746,7 +746,7 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Briar/ability-icon/e",
         "effects": [
           {
-            "description": "Active: Briar charges for up to 1 second, during which she increases Chilling Scream's damage and range, and gains 35% damage reduction and heals herself every 0.25 seconds.",
+            "description": "Active: Briar prepares to unleash a scream in the target direction, charging for up to 1 second, during which she increases Chilling Scream's damage and range, and gains 35% damage reduction and heals herself every 0.25 seconds.",
             "leveling": [
               {
                 "attribute": "Heal Per Tick",
@@ -797,7 +797,7 @@
             "leveling": []
           },
           {
-            "description": "Recast: Briar unleashes a scream in the target direction that deals magic damage to enemies hit and slows them by 80% for 0.5 seconds.",
+            "description": "Recast: Briar unleashes the scream in the direction she targeted at the time of cast, dealing magic damage to enemies hit and slowing them by 80% for 0.5 seconds.",
             "leveling": [
               {
                 "attribute": "Maximum Magic Damage",
@@ -1184,7 +1184,7 @@
             "leveling": []
           },
           {
-            "description": "Casting Chilling Scream ends Hematomania early. Head Rush's cast does not shift her targeting priority during Hematomania.",
+            "description": "Casting Chilling Scream removes the target's mark and ends Hematomania early. Head Rush's cast does not shift her targeting priority during Hematomania.",
             "leveling": []
           }
         ],
@@ -1699,7 +1699,7 @@
       "lore": "Briar was an early draft of Aatrox's perfection, but was deemed a “failure”—because instead of using her finely-honed mind to get back at surface-dwellers, she loves humans! Now that Briar has joined up with Anima Squad, maybe they can show her how to be more than what she was made to be.",
       "release": "2024-07-31",
       "set": [
-        "Primordian"
+        "Anima Squad"
       ],
       "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/briar/skins/skin10/images/briar_splash_centered_10.skins_briar_skin10.jpg",
       "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/briar/skins/skin10/images/briar_splash_uncentered_10.skins_briar_skin10.jpg",

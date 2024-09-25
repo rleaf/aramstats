@@ -4,7 +4,7 @@
   "name": "Jinx",
   "title": "the Loose Cannon",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Jinx.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Jinx.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -96,7 +96,7 @@
     "attackSpeed": {
       "flat": 0.625,
       "percent": 0.0,
-      "perLevel": 1,
+      "perLevel": 1.4,
       "percentPerLevel": 0.0
     },
     "attackSpeedRatio": {
@@ -578,7 +578,7 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Jinx/ability-icon/e",
         "effects": [
           {
-            "description": "Active: Jinx tosses out 3 Chompers centered at the target location, landing after 0.4 seconds, arming after 0.5 seconds, and exploding after 5 seconds to deal magic damage to nearby enemies.",
+            "description": "Active: Jinx tosses out 3 Chompers centered at the target location, landing after 0.4 seconds, arming after 0.75 seconds, and exploding after 5 seconds to deal magic damage to nearby enemies.",
             "leveling": [
               {
                 "attribute": "Magic Damage",
@@ -920,7 +920,7 @@
         "projectile": "TRUE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Spell shield will not prevent the explosion.\nSuper Mega Death Rocket's projectile has an  icon on the mini-map while it is in flight. It can be seen by only Jinx and her allies.\nThe bonus damage based on missing health is based on each unit's own missing health and not the primary target's.\nUnlike similar spells, Super Mega Death Rocket will not increase it's damage when ranked up while the missile is in flight.(bug)\nThis is because the base damage is fixed at a multiple of the damage the rocket initially started with.\nThe bonus AD ratio will still update when AD is gained or lost between the cast and hit of the missile.\nThis ability will cast from wherever the caster is at the start of the cast time.",
+        "notes": "Spell shield will not prevent the explosion.\nSuper Mega Death Rocket's projectile has an  icon on the mini-map while it is in flight. It can be seen by only Jinx and her allies.\nThe bonus damage based on missing health is based on each unit's own missing health and not the primary target's.\nUnlike similar spells, Super Mega Death Rocket will not increase it's damage when ranked up while the missile is in flight.(note)\nThis is because the base damage is fixed at a multiple of the damage the rocket initially started with.\nThe bonus AD ratio will still update when AD is gained or lost between the cast and hit of the missile.\nThis ability will cast from wherever the caster is at the start of the cast time.",
         "blurb": "Active:  Jinx fires a rocket in the target direction that explodes upon the first enemy champion hit, dealing physical damage to the target and surrounding enemies.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -939,7 +939,7 @@
   },
   "releaseDate": "2013-10-10",
   "releasePatch": "3.12",
-  "patchLastChanged": "14.11",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 3150,
     "rp": 790,

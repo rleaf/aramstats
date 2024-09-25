@@ -4,7 +4,7 @@
   "name": "Diana",
   "title": "Scorn of the Moon",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Diana.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Diana.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -130,13 +130,13 @@
       "percentPerLevel": 0.0
     },
     "aramDamageTaken": {
-      "flat": 0.95,
+      "flat": 0.98,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0
     },
     "aramDamageDealt": {
-      "flat": 1.05,
+      "flat": 1.02,
       "percent": 0.0,
       "perLevel": 0.0,
       "percentPerLevel": 0.0

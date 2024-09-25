@@ -4,7 +4,7 @@
   "name": "Gnar",
   "title": "the Missing Link",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Gnar.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Gnar.png",
   "resource": "RAGE",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -46,7 +46,7 @@
       "percentPerLevel": 0.0
     },
     "attackDamage": {
-      "flat": 57,
+      "flat": 60,
       "percent": 0.0,
       "perLevel": 3.2,
       "percentPerLevel": 0.0
@@ -1160,8 +1160,8 @@
     ]
   },
   "releaseDate": "2014-08-14",
-  "releasePatch": "4.14",
-  "patchLastChanged": "14.11",
+  "releasePatch": "4.18",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

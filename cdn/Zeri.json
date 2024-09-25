@@ -4,7 +4,7 @@
   "name": "Zeri",
   "title": "The Spark of Zaun",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Zeri.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Zeri.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -232,7 +232,7 @@
             "leveling": []
           },
           {
-            "description": "At full charge, Zeri's next attack is empowered to consume all charge to deal 90 − 200 (based on level) (+ 110% AP) (+ 1% − 15% (based on level) of target's maximum health) magic damage. The damage based on the target's health ratio is capped at 300 against monsters.",
+            "description": "At full charge, Zeri's next attack is empowered to consume all charge to deal 75 − 160 (based on level) (+ 110% AP) (+ 1% − 11% (based on level) of target's maximum health) magic damage. The damage based on the target's health ratio is capped at 300 against monsters.",
             "leveling": []
           },
           {
@@ -406,7 +406,7 @@
         "projectile": "TRUE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Burst Fire is automatically learned with her first skill point upon spawning.\nAny of Burst Fire's rounds hitting a champion will draw minion aggro, regardless of whether or not other targets were hit first by Burst Fire's rounds.\nA lightning chain from a  Lightning Crash empowered Burst Fire will not draw minion aggro.\nBurst Fire does not trigger  Tear of the Goddess' Mana Charge.\nBurst Fire's cooldown is not reduced by  Navori Flickerblade.\n Amumu's  Tantrum's,  Fizz's  Nimble Fighter's, and  Leona's  Eclipse's flat damage reduction apply to each of the 7 instances of damage from Burst Fire.\n Warden's Mail's flat damage reduction and cap only apply to the first instance of damage.\n Guardian's Horn's flat damage reduction only applies to the first instance of damage, but handles it as damage-over-time (reduced to 25% effectiveness).\nBurst Fire still counts as an ability activation for the purposes of on-cast effects such as triggering  Force Pulse's passive.\nIt does not count as an ability activation for  Spellblade.\nBurst Fire can hit all enemy units that a basic attack would be able to target. This does include jungle plants, structures, and wards.\nWards will only be hit once by Burst Fire. Stealthed wards and traps will not be hit.\nChampion-summoned units behave differently depending on the unit.\nGangplank's  Powder Keg and Yorick’s  Dark Procession are hit only once by Burst Fire, and any subsequent rounds not empowered by  Spark Surge will stop upon reaching the same object.\nKalista’s  Sentinel is hit only once by Burst Fire, but any subsequent rounds will continue to travel through the Sentinel.\nIf Burst Fire hits an enemy while Zeri is not visible to enemies, the area around her (400 units) will be revealed for 4.5 seconds.\nBurst Fire rolls  critical strike for all rounds as well as the additional physical damage dealt when Zeri is  Overcharged.\nBurst Fire is parried by  dodge and  block.\n Blind causes Burst Fire to cast in a random direction. The rounds will still deal damage to enemies hit.\nBurst Fire's rounds are each fired in the target direction from where Zeri is at the time.\nOnly attack speed granted by being  Overcharged can exceed the cap of 1.5.\n Hail of Blades does not allow Zeri to exceed her attack speed cap.\nItems and runes that trigger off of attacking [eg  Fleet Footwork,  Kraken Slayer] will only trigger if Burst Fire hits a unit.\nIf Zeri would get full Energized stacks from a Burst Fire, the rest of the rounds will trigger Energized.\nBurst Fire's cast-indicator does not show  range increases; modified range VFX are still visible around the champion model.\nBurst Fire can apply the effect of  Horizon Focus when the enemy hit is within the last 50 units of this ability.(bug)\nBurst Fire uses a modified icon when empowered by  Spark Surge () and  Lightning Crash () as well as both ().\nDestroying a ward that is targetable but not visible to Zeri's team (e.g. a  Control Ward in Fog of War) via Burst Fire uniquely allows her to remove its accompanying ward timer (if it exists) without seeing the ward being destroyed.",
+        "notes": "Burst Fire is automatically learned with her first skill point upon spawning.\nAny of Burst Fire's rounds hitting a champion will draw minion aggro, regardless of whether or not other targets were hit first by Burst Fire's rounds.\nA lightning chain from a  Lightning Crash empowered Burst Fire will not draw minion aggro.\nBurst Fire does not trigger  Tear of the Goddess' Mana Charge.\nBurst Fire's cooldown is not reduced by  Navori Flickerblade.\n Amumu's  Tantrum's,  Fizz's  Nimble Fighter's, and  Leona's  Eclipse's flat damage reduction apply to each of the 7 instances of damage from Burst Fire.\n Warden's Mail's flat damage reduction and cap only apply to the first instance of damage.\n Guardian's Horn's flat damage reduction only applies to the first instance of damage, but handles it as damage-over-time (reduced to 25% effectiveness).\nBurst Fire still counts as an ability activation for the purposes of on-cast effects such as triggering  Force Pulse's passive.\nIt does not count as an ability activation for  Spellblade.\nBurst Fire can hit all enemy units that a basic attack would be able to target. This does include jungle plants, structures, and wards.\nWards will only be hit once by Burst Fire. Stealthed wards and traps will not be hit.\nChampion-summoned units behave differently depending on the unit.\nGangplank's  Powder Keg and Yorick’s  Dark Procession are hit only once by Burst Fire, and any subsequent rounds not empowered by  Spark Surge will stop upon reaching the same object.\nKalista’s  Sentinel is hit only once by Burst Fire, but any subsequent rounds will continue to travel through the Sentinel.\nIf Burst Fire hits an enemy while Zeri is not visible to enemies, the area around her (400 units) will be revealed for 4.5 seconds.\nBurst Fire rolls  critical strike for all rounds as well as the additional physical damage dealt when Zeri is  Overcharged.\nBurst Fire is parried by  dodge and  block.\n Blind causes Burst Fire to cast in a random direction. The rounds will still deal damage to enemies hit.\nBurst Fire's rounds are each fired in the target direction from where Zeri is at the time.\nOnly attack speed granted by being  Overcharged can exceed the cap of 1.5.\n Hail of Blades does not allow Zeri to exceed her attack speed cap.\nItems and runes that trigger off of attacking [eg  Fleet Footwork,  Kraken Slayer] will only trigger if Burst Fire hits a unit.\nIf Zeri would get full Energized stacks from a Burst Fire, the rest of the rounds will trigger Energized.\nBurst Fire's cast-indicator does not show  range increases; modified range VFX are still visible around the champion model.\nBurst Fire can apply the effect of  Horizon Focus when the enemy hit is within the last 50 units of this ability.(note)\nBurst Fire uses a modified icon when empowered by  Spark Surge () and  Lightning Crash () as well as both ().\nDestroying a ward that is targetable but not visible to Zeri's team (e.g. a  Control Ward in Fog of War) via Burst Fire uniquely allows her to remove its accompanying ward timer (if it exists) without seeing the ward being destroyed.",
         "blurb": "Active:  Zeri fires a burst of 7 rounds in the target direction that each deal physical damage to the first enemy hit. This is treated as a basic attack, can  critically strike, and applies  on-hit and on-attack effects to the first enemy hit.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -842,7 +842,7 @@
         "projectile": "FALSE",
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Zeri can move while casting Lightning Crash, and it does not interrupt her previous orders.\nZeri can stack Overcharge up to 100,000 times.\nApplies  area damage for the nova and  proc damage for the chain lightning.\n Spell shield blocks Lightning Crash's initial nova but does not prevent Zeri from becoming Overcharged.\nIt does not block  Burst Fire's electricity chain.\n Clones count for granting Overcharge.\nLightning Crash's and  Spark Surge's empowerments to  Burst Fire can combine together.\n Burst Fire electricity chain will not chain across structures.\nIf Zeri enters  resurrection during Overcharge, she will lose all stacks of the effect but Overcharge will not end prematurely.(bug)\nShe cannot gain stacks again after reviving while the buff is active.(bug)\nThis ability will cast from wherever the caster is at the end of the cast time.",
+        "notes": "Zeri can move while casting Lightning Crash, and it does not interrupt her previous orders.\nZeri can stack Overcharge up to 100,000 times.\nApplies  area damage for the nova and  proc damage for the chain lightning.\n Spell shield blocks Lightning Crash's initial nova but does not prevent Zeri from becoming Overcharged.\nIt does not block  Burst Fire's electricity chain.\n Clones count for granting Overcharge.\nLightning Crash's and  Spark Surge's empowerments to  Burst Fire can combine together.\n Burst Fire electricity chain will not chain across structures.\nIf Zeri enters  resurrection during Overcharge, she will lose all stacks of the effect but Overcharge will not end prematurely.(note)\nShe cannot gain stacks again after reviving while the buff is active.(bug)\nThis ability will cast from wherever the caster is at the end of the cast time.",
         "blurb": "Active:  Zeri explodes to deal magic damage to nearby enemies. If this hits at least one enemy champion, she enters Overcharged for a few seconds. Damaging an enemy will extend Overcharged.",
         "missileSpeed": null,
         "rechargeRate": null,
@@ -861,7 +861,7 @@
   },
   "releaseDate": "2022-01-20",
   "releasePatch": "12.2",
-  "patchLastChanged": "14.8",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 4800,
     "rp": 880,
@@ -1510,6 +1510,287 @@
       "splashArtist": [
         "Nathaniel Himawan",
         "West Studio"
+      ]
+    },
+    {
+      "name": "Fright Night",
+      "id": 221028,
+      "isBase": false,
+      "availability": "Upcoming",
+      "formatName": "Fright Night",
+      "lootEligible": true,
+      "cost": 1350,
+      "sale": 0,
+      "distribution": null,
+      "rarity": "Epic",
+      "chromas": [
+        {
+          "name": "Amethyst",
+          "id": 221036,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/221/221036.png",
+          "colors": [
+            "#9C68D7",
+            "#9C68D7"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        },
+        {
+          "name": "Aquamarine",
+          "id": 221034,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/221/221034.png",
+          "colors": [
+            "#6ABBEE",
+            "#6ABBEE"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        },
+        {
+          "name": "Catseye",
+          "id": 221031,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/221/221031.png",
+          "colors": [
+            "#FFEE59",
+            "#FFEE59"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        },
+        {
+          "name": "Emerald",
+          "id": 221032,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/221/221032.png",
+          "colors": [
+            "#2DA130",
+            "#2DA130"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        },
+        {
+          "name": "Ghoulish",
+          "id": 221039,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/221/221039.png",
+          "colors": [
+            "#68B856",
+            "#B69017"
+          ],
+          "descriptions": [
+            {
+              "description": "This chroma was released as a Loot exclusive in the Worlds 2024 event.",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 1,
+              "region": "riot"
+            }
+          ]
+        },
+        {
+          "name": "Meteorite",
+          "id": 221035,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/221/221035.png",
+          "colors": [
+            "#5F432B",
+            "#5F432B"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        },
+        {
+          "name": "Nightshade",
+          "id": 221038,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/221/221038.png",
+          "colors": [
+            "#3F95B1",
+            "#8655B3"
+          ],
+          "descriptions": [
+            {
+              "description": "This chroma was released as a Loot exclusive in the Worlds 2024 event.",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 1,
+              "region": "riot"
+            }
+          ]
+        },
+        {
+          "name": "Obsidian",
+          "id": 221037,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/221/221037.png",
+          "colors": [
+            "#27211C",
+            "#27211C"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        },
+        {
+          "name": "Ruby",
+          "id": 221030,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/221/221030.png",
+          "colors": [
+            "#D33528",
+            "#D33528"
+          ],
+          "descriptions": [
+            {
+              "description": "This chroma was released as a bundle exclusive in 2024.",
+              "region": "riot"
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": 1,
+              "region": "riot"
+            }
+          ]
+        },
+        {
+          "name": "Turquoise",
+          "id": 221033,
+          "chromaPath": "http://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/v1/champion-chroma-images/221/221033.png",
+          "colors": [
+            "#73BFBE",
+            "#73BFBE"
+          ],
+          "descriptions": [
+            {
+              "description": null,
+              "region": null
+            }
+          ],
+          "rarities": [
+            {
+              "rarity": null,
+              "region": null
+            }
+          ]
+        }
+      ],
+      "lore": "Head counselor, nurse, and necromancer at Creepaway Camp, Zeri wears many hats. Always ready to graft a hand or stitch up a mess, Zeri never leaves a camper behind. So when she drowned, campers put on their thinking caps and did as she had taught: a few stitches, a ZAP, and Zeri was back!",
+      "release": "0000-00-00",
+      "set": [
+        "Fright Night"
+      ],
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zeri/skins/skin28/images/zeri_splash_centered_28.skins_zeri_skin28.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zeri/skins/skin28/images/zeri_splash_uncentered_28.skins_zeri_skin28.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zeri/skins/skin28/images/zeri_splash_tile_28.skins_zeri_skin28.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zeri/skins/skin28/zeriloadscreen_28.skins_zeri_skin28.jpg",
+      "loadScreenVintagePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zeri/skins/skin28/zeriloadscreen_28_le.skins_zeri_skin28.jpg",
+      "newEffects": true,
+      "newAnimations": true,
+      "newRecall": true,
+      "newVoice": false,
+      "newQuotes": false,
+      "voiceActor": [
+        "Vanille Velasquez"
+      ],
+      "splashArtist": [
+        "Yuyu Wong",
+        "Kudos Productions"
+      ]
+    },
+    {
+      "name": "Prestige Fright Night",
+      "id": 221029,
+      "isBase": false,
+      "availability": "Upcoming",
+      "formatName": "Prestige Fright Night",
+      "lootEligible": false,
+      "cost": "Special",
+      "sale": 0,
+      "distribution": "2000 Worlds 2024 Tokens",
+      "rarity": "Mythic",
+      "chromas": [],
+      "lore": "Striking fear into the hearts of the unfashionable with her bold asymmetrical hair and oversized coat crawling with fine spider silk, Zeri's shocking new look is just to die for.",
+      "release": "0000-00-00",
+      "set": [
+        "Fright Night"
+      ],
+      "splashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zeri/skins/skin29/images/zeri_splash_centered_29.skins_zeri_skin29.jpg",
+      "uncenteredSplashPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zeri/skins/skin29/images/zeri_splash_uncentered_29.skins_zeri_skin29.jpg",
+      "tilePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zeri/skins/skin29/images/zeri_splash_tile_29.skins_zeri_skin29.jpg",
+      "loadScreenPath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zeri/skins/skin29/zeriloadscreen_29.skins_zeri_skin29.jpg",
+      "loadScreenVintagePath": "https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/characters/zeri/skins/skin29/zeriloadscreen_29_le.skins_zeri_skin29.jpg",
+      "newEffects": true,
+      "newAnimations": true,
+      "newRecall": true,
+      "newVoice": false,
+      "newQuotes": false,
+      "voiceActor": [
+        "Vanille Velasquez"
+      ],
+      "splashArtist": [
+        "Herbie Wang",
+        "Kudos Productions"
       ]
     }
   ]

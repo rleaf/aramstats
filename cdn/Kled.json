@@ -4,7 +4,7 @@
   "name": "Kled",
   "title": "the Cantankerous Cavalier",
   "fullName": "Kled and Skaarl",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Kled.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Kled.png",
   "resource": "COURAGE",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -1151,7 +1151,7 @@
             "leveling": []
           },
           {
-            "description": "Skaarl dashes toward the first enemy champion in range, colliding with the first visible enemy champion in his path to deal physical damage, increased by 0% − 200% (based on time traveling), and knock them back 100 units, though not through terrain.",
+            "description": "Kled & Skaarl dash toward the first enemy champion in range, colliding with the first visible enemy champion in his path to deal physical damage, increased by 0% − 200% (based on time traveling), and knock them back 100 units, though not through terrain.",
             "leveling": [
               {
                 "attribute": "Minimum Physical Damage",
@@ -1241,7 +1241,7 @@
         "projectile": null,
         "onHitEffects": null,
         "occurrence": null,
-        "notes": "Kled and  Skaarl will track the target if they change locations.\nThey will dash to the target's previous location if the target is too far away or moves beyond 2500 units.\nDuring the charge the duo gain:\n(950 − (current movement speed)) ÷ 12 × (time ÷ 0.25) bonus movement speed\nKled and  Skaarl are  immune to crowd control during the charge as well while dashing to the target.\nThe bonus movement speed is not affected by movement speed caps.\nThe charge will not give any movement speed to Kled if he has more than 1440 movement speed.\nThe trail will not give Kled and his allies any movement speed if they have more than 840 movement speed.\nMovement speed is granted merely by facing the direction of the draft.\nEnemies gain partial vision of Kled when he charges nearby.\nKled will re-path if his current pathing is blocked by a newly created terrain (either player created or by the  Mountainous Rift).\nThe charge will continue towards the target location even if Kled's location changes drastically.\nThe following table refers for interactions while Kled is charging:\n\n\nAttacking\n\nDisabled\n\n\nAbilities\n\nDisabled\n\n\nMovement\n\nAllowed, but cannot input movement commands.\n\n\nItems\n\nUsable\n\nN/A\n\n\nDisabled\n\nAll items are disabled\n\n\nInterrupted by\n\nN/A\n\n\nConsumables\n\nDisabled\n\n\nSpells\n\nUsable\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite\n\n\nDisabled\n\n Flash  Teleport  Recall  Hexflash  Mark  Dash\n\n\nInterrupted by\n\nN/A\n\n\nInterrupted by\n\nN/A",
+        "notes": "Kled and  Skaarl will track the target if they change locations.\nThey will dash to the target's previous location if the target is too far away or moves beyond 2500 units.\nDuring the charge the duo gain:\n(950 − (current movement speed)) ÷ 12 × (time ÷ 0.25) bonus movement speed\nKled and  Skaarl are  immune to crowd control during the charge as well while dashing to the target.\nThe bonus movement speed is not affected by movement speed caps.\nThe charge will not give any movement speed to Kled if he has more than 1440 raw movement speed.\nThe trail will not give Kled and his allies any movement speed if they have more than 840 raw movement speed.\nMovement speed is granted merely by facing the direction of the draft.\nEnemies gain partial vision of Kled when he charges nearby.\nKled will re-path if his current pathing is blocked by a newly created terrain (either player created or by the  Mountainous Rift).\nThe charge will continue towards the target location even if Kled's location changes drastically.\nThe following table refers for interactions while Kled is charging:\n\n\nAttacking\n\nDisabled\n\n\nAbilities\n\nDisabled\n\n\nMovement\n\nAllowed, but cannot input movement commands.\n\n\nItems\n\nUsable\n\nN/A\n\n\nDisabled\n\nAll items are disabled\n\n\nInterrupted by\n\nN/A\n\n\nConsumables\n\nDisabled\n\n\nSpells\n\nUsable\n\n Barrier  Clarity  Cleanse  Exhaust  Ghost  Heal  Ignite  Smite\n\n\nDisabled\n\n Flash  Teleport  Recall  Hexflash  Mark  Dash\n\n\nInterrupted by\n\nN/A\n\n\nInterrupted by\n\nN/A",
         "blurb": "Active: Kled &  Skaarl  unstoppably charge to a location, building up  bonus movement speed and  shield and leaving a draft in their wake that grants Mr. Kled's Wild Ride to allied champions that follow the draft.",
         "missileSpeed": null,
         "rechargeRate": null,

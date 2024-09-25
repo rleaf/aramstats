@@ -4,7 +4,7 @@
   "name": "Maokai",
   "title": "the Twisted Treant",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Maokai.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Maokai.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -296,10 +296,10 @@
                   {
                     "values": [
                       65,
-                      115,
-                      165,
-                      215,
-                      265
+                      110,
+                      155,
+                      200,
+                      245
                     ],
                     "units": [
                       "",
@@ -370,10 +370,10 @@
                   {
                     "values": [
                       185,
-                      245,
-                      305,
-                      365,
-                      425
+                      240,
+                      295,
+                      350,
+                      405
                     ],
                     "units": [
                       "",
@@ -693,7 +693,7 @@
             ]
           },
           {
-            "description": "A Sapling placed in brush instead lasts 30 (+ 2.5% bonus health) seconds, deals double damage to struck non- minion targets over 3 bursts, and slows them by 45% (+ 1% per 100 bonus health) (+ 1% per 100 AP), as well as reveals them for 3 seconds. The first instance of damage is dealt instantly and the second and third instances occur each 0.75 seconds thereafter. The total damage is capped at 600 against non-champions.",
+            "description": "A Sapling placed in brush instead lasts 30 (+ 1.5% bonus health) seconds, deals double damage to struck non- minion targets over 3 bursts, and slows them by 45% (+ 1% per 100 bonus health) (+ 1% per 100 AP), as well as reveals them for 3 seconds. The first instance of damage is dealt instantly and the second and third instances occur each 0.75 seconds thereafter. The total damage is capped at 600 against non-champions.",
             "leveling": [
               {
                 "attribute": "Total Enhanced Damage",
@@ -832,11 +832,11 @@
           "modifiers": [
             {
               "values": [
+                18,
+                17,
                 16,
                 15,
-                14,
-                13,
-                12
+                14
               ],
               "units": [
                 "",
@@ -997,7 +997,7 @@
   },
   "releaseDate": "2011-02-16",
   "releasePatch": "1.0.0.111",
-  "patchLastChanged": "14.5",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

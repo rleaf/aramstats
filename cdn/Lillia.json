@@ -4,7 +4,7 @@
   "name": "Lillia",
   "title": "the Bashful Bloom",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Lillia.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Lillia.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -226,7 +226,7 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Lillia/ability-icon/p",
         "effects": [
           {
-            "description": "Innate: Lillia's abilities apply Dream Dust to enemies hit, which deals[ 5% (+ 1.25% per 100 AP) of the target's maximum health total magic damage over 3 seconds, capped at 70 − 150 (based on level) ][ 0.83% (+ 0.2083% per 100 AP) of the target's maximum health magic damage every 0.5 seconds over 3 seconds, capped at 11.67 − 25 (based on level) per tick ]against monsters.",
+            "description": "Innate: Lillia's abilities apply Dream Dust to enemies hit, which deals[ 5% (+ 1.25% per 100 AP) of the target's maximum health total magic damage over 3 seconds, capped at 65 ][ 0.83% (+ 0.2083% per 100 AP) of the target's maximum health magic damage every 0.5 seconds over 3 seconds, capped at 10.83 per tick ]against monsters.",
             "leveling": []
           },
           {
@@ -853,26 +853,8 @@
         "icon": "https://cdn.communitydragon.org/latest/champion/Lillia/ability-icon/r",
         "effects": [
           {
-            "description": "Active: Lillia casts a magical lullaby over all enemy champions affected by Dream Dust, which arrives after 0.3 seconds and renders them drowsy for 1.5 seconds, slowing them by 10%. After the duration, they fall asleep for a duration.",
-            "leveling": [
-              {
-                "attribute": "Sleep Duration",
-                "modifiers": [
-                  {
-                    "values": [
-                      2,
-                      2.25,
-                      2.5
-                    ],
-                    "units": [
-                      " seconds",
-                      " seconds",
-                      " seconds"
-                    ]
-                  }
-                ]
-              }
-            ]
+            "description": "Active: Lillia casts a magical lullaby over all enemy champions affected by Dream Dust, which arrives after 0.3 seconds and renders them drowsy for 1.5 seconds, slowing them by 10%. After the duration, they fall asleep for 2 seconds.",
+            "leveling": []
           },
           {
             "description": "The next instance of non- persistent damage that a sleeping target takes from champions, large monsters or turrets consumes the debuff to deal additional magic damage.",
@@ -974,7 +956,7 @@
   },
   "releaseDate": "2020-07-22",
   "releasePatch": "10.15",
-  "patchLastChanged": "14.14",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

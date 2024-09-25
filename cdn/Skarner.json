@@ -4,7 +4,7 @@
   "name": "Skarner",
   "title": "the Primordial Sovereign",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Skarner.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Skarner.png",
   "resource": "MANA",
   "attackType": "MELEE",
   "adaptiveType": "PHYSICAL_DAMAGE",
@@ -995,7 +995,7 @@
   },
   "releaseDate": "2011-08-09",
   "releasePatch": "1.0.0.123",
-  "patchLastChanged": "14.16",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 4800,
     "rp": 880,

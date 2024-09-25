@@ -4,7 +4,7 @@
   "name": "Morgana",
   "title": "the Fallen",
   "fullName": "",
-  "icon": "http://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/Morgana.png",
+  "icon": "http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/Morgana.png",
   "resource": "MANA",
   "attackType": "RANGED",
   "adaptiveType": "MAGIC_DAMAGE",
@@ -908,7 +908,7 @@
   },
   "releaseDate": "2009-02-21",
   "releasePatch": "Alpha Week 2",
-  "patchLastChanged": "14.15",
+  "patchLastChanged": "14.18",
   "price": {
     "blueEssence": 1350,
     "rp": 585,
