@@ -13,6 +13,22 @@
   
   const version = [
    {
+      version: "3.12.0",
+      date: "10/13/24",
+        notes: `Sorry for delay on re-adding LT. I am also "temporarily" removing ARAM modifiers from champion pages as I was pulling data from the fandom wiki whose data is no longer reliable; looking into a more robust system.`,
+      add: [
+         `Lethal Tempo`
+      ],
+      remove: [
+         `ARAM modifiers`
+      ],
+      fix: [],
+      adjust: [
+         `SmallScreen CSS`
+      ],
+      known: [],
+   }, 
+   {
       version: "3.11.2",
       date: "9/24/24",
         notes: `Check 3.11.1 ✨edit✨`,

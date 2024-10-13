@@ -113,6 +113,7 @@ export default {
       },
 
       aramModifiers() {
+         return false 
          if (!this.store.championCDN) return
 
          const statMods = {

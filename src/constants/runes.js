@@ -2,6 +2,7 @@
    '8000': [
       [
          8005, // Press The Attack
+         8008, // Lethal Tempo
          8021, // Fleet Footwork
          8010, // Conqueror
       ],
