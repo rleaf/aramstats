@@ -13,6 +13,18 @@
   
   const version = [
    {
+      version: "3.12.1",
+      date: "10/15/24",
+        notes: ``,
+      add: [],
+      remove: [],
+      fix: [
+         `Starting items in the Overview section on champion pages (particularly health pots) rendering incorrectly when toggling between different core builds.`
+      ],
+      adjust: [],
+      known: [],
+   }, 
+   {
       version: "3.12.0",
       date: "10/13/24",
         notes: `Sorry for delay on re-adding LT. I am also "temporarily" removing ARAM modifiers from champion pages as I was pulling data from the fandom wiki whose data is no longer reliable; looking into a more robust system.`,

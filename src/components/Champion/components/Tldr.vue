@@ -296,11 +296,11 @@ export default {
                   </div>
                   <img
                      v-if="(typeof startingItems[0] === 'string')"
-                     v-for="i in startingItems[0].split('_')"
+                     v-for="(i, j) in startingItems[0].split('_')"
                      :src="this.itemImage(i)"
                      @mouseenter="this.store.setTooltipData({ event: $event, key: i, mode: 'items' })"
                      @mouseleave="this.store.tooltip.active = false"
-                     class="starting-image" alt="" :key="i">
+                     class="starting-image" alt="" :key="j">
                   <p class="no-data" v-else> Not enough data :(</p>
                </div>
                <div class="spells">
@@ -441,6 +441,14 @@ export default {
    padding-right: 20px;
    overflow: scroll;
    overflow-x: hidden;
+}
+
+.combinations::after {
+   position: absolute;
+   bottom: 0;
+   height: 100%;
+   content: '';
+   background: tomato;
 }
 
 .combinations::-webkit-scrollbar {
