@@ -13,9 +13,25 @@
   
   const version = [
    {
+      version: "3.13.0",
+      date: "10/24/24",
+      notes: `Light adjustments to summoner account stats.`,
+      add: [],
+      remove: [
+         `Fountainsitter stat.`
+      ],
+      fix: [],
+      adjust: [
+         `SmallScreen now appears at bottom & is clickable to remove.`,
+         `Red & Blue side winrate representation.`,
+         `Updated tooltips.`
+      ],
+      known: [],
+   }, 
+   {
       version: "3.12.1",
       date: "10/15/24",
-        notes: ``,
+      notes: ``,
       add: [],
       remove: [],
       fix: [
@@ -27,7 +43,7 @@
    {
       version: "3.12.0",
       date: "10/13/24",
-        notes: `Sorry for delay on re-adding LT. I am also "temporarily" removing ARAM modifiers from champion pages as I was pulling data from the fandom wiki whose data is no longer reliable; looking into a more robust system.`,
+      notes: `Sorry for delay on re-adding LT. I am also "temporarily" removing ARAM modifiers from champion pages as I was pulling data from the fandom wiki whose data is no longer reliable; looking into a more robust system.`,
       add: [
          `Lethal Tempo`
       ],
@@ -43,7 +59,7 @@
    {
       version: "3.11.2",
       date: "9/24/24",
-        notes: `Check 3.11.1 ✨edit✨`,
+      notes: `Check 3.11.1 ✨edit✨`,
       add: [],
       remove: [],
       fix: [

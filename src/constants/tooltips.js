@@ -57,10 +57,16 @@ export default {
 
    'account': [
       `Top level information about your account.`,
+      `<b>Champions Played</b>: How many champs you've played.`,
+      `<b>Winrate</b>: Account winrate.`,
+      `<b>Time Played</b>: How many days you've played.`,
+      `<b>Games</b>: Observed valid games.`,
+      `<b>Side Winrate</b>: Percentage of games you win red/blue side.`,
+      `<b>Side Playrate</b>: Percentage of games you play red/blue side.`,
    ],
    'championsTable': [
       `A table showcasing various top level statistics for the champions you've played. Click on a champion row to view more specific aggregated statistics or click on the dropdown arrow to view the matches.`,
-      `The smaller number the "per minute" variant of that stat.`
+      `The smaller number below a stat is the "per minute" variant.`
    ],
    'heatmap': [
       `Your activity on the abyss. Each cell represents a day where the brighter the color indicates more games played. Cells are hoverable for specific information.`,

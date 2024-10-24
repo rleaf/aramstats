@@ -295,7 +295,7 @@ export default {
                      <img rel="preload" :src="this.champIcon(champ._id)" alt="">
                   </div>
                   <div>
-                     <span>{{ this.getChampName(champ._id) }}</span>
+                     <span class="name">{{ this.getChampName(champ._id) }}</span>
                   </div>
                </router-link>
             </div>
@@ -461,15 +461,6 @@ export default {
       color: var(--color-font)
    }
 
-   .champion {
-      display: flex;
-      padding-left: 20px;
-      align-items: center;
-      height: 40px;
-      border-radius: 3px;
-      font-size: 0.85rem;
-   }
-
    .header {
       position: sticky;
       padding-top: 4vh;
@@ -566,6 +557,15 @@ export default {
       transform: rotate(180deg);
    }
 
+   .champion {
+      display: flex;
+      padding-left: 20px;
+      align-items: center;
+      height: 40px;
+      border-radius: 3px;
+      font-size: 0.85rem;
+   }
+
    .champion div {
       display: flex;
       align-items: center;
@@ -584,11 +584,11 @@ export default {
       position: relative;
    }
 
-   .champion div span {
+   span.name {
       transition: 200ms ease-in-out;
    }
 
-   .champion div span:hover {
+   span.name:hover {
       color: var(--color-font-focus);
    }
 
@@ -605,6 +605,7 @@ export default {
    .champion > div:nth-child(1) {
       min-width: 30px; 
    }
+
 
    /* CHAMPINON NAME */
    .champion > div:nth-child(2), .header > div:nth-child(1) {

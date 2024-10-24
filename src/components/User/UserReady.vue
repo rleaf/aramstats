@@ -519,9 +519,9 @@ export default {
             ['Winrate', this.computeAccountStats['winrate']],
             ['Time Played', this.computeAccountStats['time']],
             ['Games', this.computeAccountStats['games']],
-            ['Red Side Winrate', this.computeAccountStats['rw']],
-            ['Blue Side Winrate', this.computeAccountStats['bw']],
-            ['Fountain Sitting', this.computeAccountStats['fs']],
+            // ['Red Side Winrate', this.computeAccountStats['rw']],
+            // ['Blue Side Winrate', this.computeAccountStats['bw']],
+            // ['Fountain Sitting', this.computeAccountStats['fs']],
          ]
       },
 
@@ -686,8 +686,31 @@ export default {
                   :persist="true"
                   :tooltip="'implement'"/>
 
+               <div class="side-stats" style="padding-bottom: 30px;">
+                  <h3>Side Winrate</h3>
+                  <div class="visual">
+                     <span :style="{'width': parseInt(this.computeAccountStats['rw']) + '%'}"></span>
+                     <span :style="{'width': parseInt(this.computeAccountStats['bw']) + '%'}"></span>
+                  </div>
+                  <div class="details">
+                     <div>
+                        <svg width="10" height="10">
+                           <circle fill="var(--red-side)" cx="5" cy="5" r="5" />
+                        </svg>
+                        {{ this.computeAccountStats['rw'] }}
+                        <span class="game-count">{{ this.computeAccountStats[4] }}</span>
+                     </div>
+                     <div>
+                        <svg width="10" height="10">
+                           <circle fill="var(--blue-side)" cx="5" cy="5" r="5" />
+                        </svg>
+                        {{ this.computeAccountStats['bw'] }}
+                        <span class="game-count">{{ this.computeAccountStats[3] }}</span>
+                     </div>
+                  </div>
+               </div>
                <div class="side-stats">
-                  <h3>Playrate</h3>
+                  <h3>Side Playrate</h3>
                   <div class="visual">
                      <span :style="{'width': (this.computeAccountStats['rsg'] / this.computeAccountStats['games'] * 100 - 0.5) + '%'}"></span>
                      <span :style="{'width': (this.computeAccountStats['bsg'] / this.computeAccountStats['games'] * 100 - 0.5) + '%'}"></span>
@@ -1141,9 +1164,10 @@ button.active-update {
 
 .side-stats h3 {
    margin: 0;
-   margin-bottom: 10px;
+   margin-bottom: 8px;
    padding-left: 0.5rem;
-   font-size: 0.9rem;
+   font-size: 0.8rem;
+   font-weight: normal;
 }
 
 .side-stats .visual {
