@@ -54,9 +54,8 @@ export default {
          }, 2000);
       }
    },
-
+   
    methods: {
-      // https://ddragon.leagueoflegends.com/cdn/14.14.1/img/spell/AsheSpiritOfTheHawk.png
       abilityLetter(idx) {
          switch (idx) {
             case 0:
@@ -178,9 +177,9 @@ export default {
                         @mouseenter="this.store.setTooltipData({event: $event, key: id, mode: 'skills', skillIndex: i})"
                         @mouseleave="this.store.tooltip.active = false"
                         :key="i">
-                        <img v-if="this.store.championCDN" :src="this.store.championCDN.abilities[id][0].icon" rel="preload">
+                        <img v-if="this.store.championCDN" :src="`https://cdn.communitydragon.org/${this.store.patches[0]}/champion/${this.store.championCDN.id}/ability-icon/${id.toLowerCase()}`" rel="preload">
                         <div class="spell-letter">
-                           {{ abilityLetter(i) }}
+                           {{ id }}
                         </div>
                      </div>
                   </div>
@@ -239,7 +238,7 @@ export default {
          <Tldr  @scroll="scrollTo" :champion="this.champion" :patch="this.store.patches[0]" />
          <Items :champion="this.champion" :patch="this.store.patches[0]" :itemData="this.itemData"/>
          <Runes :champion="this.champion" :patch="this.store.patches[0]" />
-         <StartingSpells :champion="this.champion" :patch="this.store.patches[0]" :abilities="this.abilities"/>
+         <!-- <StartingSpells :champion="this.champion" :patch="this.store.patches[0]" :abilities="this.abilities"/> -->
       </div>
    </div>
 </template>

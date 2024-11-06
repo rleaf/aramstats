@@ -6,6 +6,7 @@
 
 const names = [
    [266, "Aatrox", "Aatrox"],
+   [799, "Ambessa", "Ambessa"],
    [103, "Ahri", "Ahri"],
    [84, "Akali", "Akali"],
    [166, "Akshan", "Akshan"],
@@ -178,6 +179,7 @@ const names = [
 // ID mapping to ddragon url for image assets
 const imageName = {
    266: "Aatrox",
+   799: "Ambessa",
    103: "Ahri",
    84: "Akali",
    166: "Akshan",
@@ -350,6 +352,7 @@ const imageName = {
 // ID mapping for the URL. Very similar to the imageName, but Monkeyking -> Wukong
 const urlName = {
    266: "Aatrox",
+   799: "Ambessa",
    103: "Ahri",
    84: "Akali",
    166: "Akshan",
@@ -522,6 +525,7 @@ const urlName = {
 // ID mapping for humans. Includes non alphabetic characters and spaces such as DrMundo -> Dr. Mundo, Ksante -> K'Sante
 const humanName = {
    266: "Aatrox",
+   799: "Ambessa",
    103: "Ahri",
    84: "Akali",
    166: "Akshan",
@@ -694,6 +698,7 @@ const humanName = {
 // Used for URL
 const urlToId = {
    "aatrox": 266,
+   "ambessa": 799,
    "ahri": 103,
    "akali": 84,
    "akshan": 166,

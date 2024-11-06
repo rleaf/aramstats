@@ -1,5 +1,6 @@
 const map = {
    "aatrox": 266,
+   "ambessa": 799,
    "ahri": 103,
    "akali": 84,
    "akshan": 166,

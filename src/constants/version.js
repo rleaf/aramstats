@@ -13,6 +13,22 @@
   
   const version = [
    {
+      version: "3.14.0",
+      date: "11/6/24",
+      notes: `Add Ambessa.`,
+      add: [
+         `Ambessa assets.`
+      ],
+      remove: [],
+      fix: [
+         `Champion abilities tooltip ordering. W ability tooltip was swapped with E.`
+      ],
+      adjust: [
+         `Meraki -> CDragon.`
+      ],
+      known: [],
+   }, 
+   {
       version: "3.13.0",
       date: "10/24/24",
       notes: `Light adjustments to summoner account stats.`,

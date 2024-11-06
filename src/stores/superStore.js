@@ -57,11 +57,28 @@ export const superStore = defineStore('super', {
          }
       },
 
-      // Champion CDN Data. Primarily used for skills
-      // Data generated using Meraki: https://github.com/meraki-analytics/lolstaticdata
+      /* 
+         Old championCDN data, pulled from Meraki.
+         Used to also include ARAM changes
+      */
+      // async initChampion(champ) {
+      //    try {
+      //       const url = `https://cdn.jsdelivr.net/gh/rleaf/aramstats@latest/cdn/${champ}.json`
+      //       this.championCDN = (await axios.get(url)).data
+      //    } catch (e) {
+      //       if (e instanceof Error) console.log(e)
+      //    }
+      // },
+
+      // Champion CDN Data. Alternatives to Meraki
+      // CDragon: https://cdn.communitydragon.org/14.22.1/champion/Aatrox/data.json
+      // DDragon: https://ddragon.leagueoflegends.com/cdn/${this.patches[0]}/data/en_US/champion/${champ}.json
+      // DDragon: https://ddragon.leagueoflegends.com/cdn/14.22.1/data/en_US/champion.json
       async initChampion(champ) {
+         if (!this.patches) await this.initPatches()
+
          try {
-            const url = `https://cdn.jsdelivr.net/gh/rleaf/aramstats@latest/cdn/${champ}.json`
+            const url = `https://cdn.communitydragon.org/${this.patches[0]}/champion/${champ}/data.json`
             this.championCDN = (await axios.get(url)).data
          } catch (e) {
             if (e instanceof Error) console.log(e)
