@@ -238,7 +238,7 @@ export default {
          <Tldr  @scroll="scrollTo" :champion="this.champion" :patch="this.store.patches[0]" />
          <Items :champion="this.champion" :patch="this.store.patches[0]" :itemData="this.itemData"/>
          <Runes :champion="this.champion" :patch="this.store.patches[0]" />
-         <!-- <StartingSpells :champion="this.champion" :patch="this.store.patches[0]" :abilities="this.abilities"/> -->
+         <StartingSpells :champion="this.champion" :patch="this.store.patches[0]" :abilities="this.abilities"/>
       </div>
    </div>
 </template>

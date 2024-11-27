@@ -13,6 +13,18 @@
   
   const version = [
    {
+      version: "3.14.1",
+      date: "11/27/24",
+      notes: ``,
+      add: [],
+      remove: [],
+      fix: [
+         `"Starting Items/Spells/Skill..." section on Champion page.`
+      ],
+      adjust: [],
+      known: [],
+   }, 
+   {
       version: "3.14.0",
       date: "11/6/24",
       notes: `Add Ambessa.`,

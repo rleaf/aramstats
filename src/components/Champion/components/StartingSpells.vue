@@ -25,7 +25,7 @@ export default {
       
       getAbilityImages(ability) {
          if (this.store.championCDN) {
-            return this.store.championCDN.abilities[ability.toUpperCase()][0].icon
+            return `https://cdn.communitydragon.org/${this.store.patches[0]}/champion/${this.store.championCDN.id}/ability-icon/${ability}`
          }
       },
 
