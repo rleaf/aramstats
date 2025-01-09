@@ -28,7 +28,7 @@
     "prerender-node": "^3.8.0",
     "promise-retry": "^2.0.1",
     "three": "^0.157.0",
-    "twisted": "^1.56.2",
+    "twisted": "^1.61.5",
     "vite-plugin-glsl": "^1.1.1",
     "vue": "^3.2.45",
     "vue-gtag": "^2.0.1",

@@ -13,6 +13,20 @@
   
   const version = [
    {
+      version: "3.14.2",
+      date: "1/9/25",
+      notes: ``,
+      add: [],
+      remove: [],
+      fix: [
+         `Update Viktor image assets.`
+      ],
+      adjust: [
+         `(SEA merge) Remove PH & TH regions from dropdown selection on hero. SG -> SEA.`
+      ],
+      known: [],
+   }, 
+   {
       version: "3.14.1",
       date: "11/27/24",
       notes: ``,
