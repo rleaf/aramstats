@@ -44,7 +44,7 @@ export default {
    },
 
    created() {
-      this.lookup() 
+      this.lookup()
    },
    
    methods: {
@@ -72,6 +72,7 @@ export default {
 
          axios.get(url, {params: { patch: this.patchParam }}).then(res => {
             this.champions = res.data
+            console.log(this.champions, 'toads')
             this.computeWinrates()
          }).catch(e => {
             console.log('error', e)

@@ -80,6 +80,7 @@ const map = {
    "malzahar": 90,
    "maokai": 57,
    "masteryi": 11,
+   "mel": 800,
    "milio": 902,
    "missfortune": 21,
    "wukong": 62,
