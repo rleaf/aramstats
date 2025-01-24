@@ -27,6 +27,22 @@ const updates = [
       imgCaption: ""
    },
    {
+      title: "✨Updates✨ Slow Queue Update Continued (Taiwan)",
+      version: "3.11.1",
+      date: "9/24/24",
+      body: [
+         `This is the continued update in regards to the spike of Taiwan users.`,
+         `I've not tested the new code on the backend server, but in this update, parsing summoners performs dramatically faster when compared to the previous iteration (both in local environments). While I hope this is enough for expediting the queue, I'll keep looking for other areas of improvement. Again, sorry for any inconveniences.`,
+         `✨UPDATE✨: Hello, it's me from the future. Summoners are indeed parsing dramatically faster however it will take a little bit to run through the backlog. The limiting factor is now the CPU and its bursting capabilities. There also seems to be issues with Axios handling concurrent HTTP requests where ~1/20 users will have to reparse. I am attempting to fix this. Thank you for your sacrifice.`,
+         `✨UPDATE 2✨: Some final updates (hopefully): 1. I have temporarily allowed my instance to indefinitely burst. With the CPU chugging along, an account with approximately 1000 ARAM games will complete parsing in 2 minutes and 30 seconds. As of time of writing, there are about 300 accounts remaining. This means the queue should complete in maximally 12.5 hours. I am unsure if I will leave bursting on for those 12.5 hours however. Some good news is that I've not seen the concurrent HTTP issues I mentioned in the first update.`,
+      ],
+      links: [],
+      img: [
+         'https://i.imgur.com/jiOcVei.png',
+      ], // Expected webp format
+      imgCaption: "Line chart of CPU utilization. (1) is when the I implemented this update - 3.11.1. (2) is when I ran out of bursting credits. Even though processing won't be as performant as it was between (1) and (2), it should be good enough."
+   },
+   {
       title: "Slow Queue Update (Taiwan)",
       version: "",
       date: "9/24/24",
