@@ -13,6 +13,22 @@
   
   const version = [
    {
+      version: "3.15.0",
+      date: "1/24/25",
+      notes: `Cleaning up.`,
+      add: [],
+      remove: [],
+      fix: [
+         `Summoner spell assets.`,
+         `Rune assets`,
+      ],
+      adjust: [
+         `v3.14.3 update message.`,
+         `Homogenize champion assets.`
+      ],
+      known: [],
+   }, 
+   {
       version: "3.14.4",
       date: "1/23/25",
       notes: ``,

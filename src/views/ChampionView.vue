@@ -1,7 +1,6 @@
 <script>
 import Loading from '../components/Loading.vue'
 import ChampionReady from '../components/Champion/ChampionReady.vue'
-import champions from '../constants/champions'
 import { superStore } from '../stores/superStore'
 import axios from 'axios'
 import Error from '../components/Error.vue'
@@ -26,7 +25,9 @@ export default {
    },
 
    created() {
-      const champ = champions.imageName[champions.urlToId[this.$route.params.champion.toLowerCase()]]
+      const champ = (this.$route.params.champion.toLowerCase() === 'wukong') ? 'monkeyking'
+         : this.store.nameToId[this.$route.params.champion.toLowerCase()]
+
       if (champ) this.store.initChampion(champ)
       this.store.initRunes()
       this.store.initSpells()
@@ -45,7 +46,6 @@ export default {
          } catch (e) {
             if (e instanceof Error) console.log(e)
          } finally {
-            // this.store.initChampion(champions.imageName[this.champion._id])
             this.loading = false
             return true          // Inject reactivity into DOM
          }

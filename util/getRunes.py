@@ -3,9 +3,9 @@ import json
 import os
 
 runeURLS = []
-directory = './images'
+directory = './util/images'
 def _getRuneLinks():
-   url = f'https://ddragon.leagueoflegends.com/cdn/14.10.1/data/en_US/runesReforged.json'
+   url = f'https://ddragon.leagueoflegends.com/cdn/15.2.1/data/en_US/runesReforged.json'
    r = requests.get(url, stream=True).json()
 
    for tree in r:
@@ -21,7 +21,7 @@ def getRuneImages(rune):
    if r.status_code == 200:
       r.raw.decode_content = True
       
-      with open(os.path.join('./images', f'{rune[0]}.png'), 'wb') as f:
+      with open(os.path.join('./util/images', f'{rune[0]}.png'), 'wb') as f:
          f.write(r.content)
 
       print('ye', f'{rune[0]}.png')

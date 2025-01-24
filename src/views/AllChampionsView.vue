@@ -13,7 +13,7 @@ export default {
    data() {
       return {
          store: superStore(),
-         champions: null,
+         allChampions: null,
          total: null,
          region: 'Global',
          sort: 1,
@@ -63,7 +63,7 @@ export default {
       },
       
       champIcon(id) {
-         return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/champion/${champions.imageName[id]}.png`
+         return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/champion/${champions[id][0]}.png`
       },
 
       lookup() {
@@ -71,7 +71,7 @@ export default {
          this.patchParam = new URLSearchParams(window.location.search).get('patch')
 
          axios.get(url, {params: { patch: this.patchParam }}).then(res => {
-            this.champions = res.data
+            this.allChampions = res.data
             this.computeWinrates()
          }).catch(e => {
             console.log('error', e)
@@ -79,8 +79,8 @@ export default {
       },
       
       computeWinrates() {
-         for (const i in this.champions) {
-            const c = this.champions[i]
+         for (const i in this.allChampions) {
+            const c = this.allChampions[i]
             c.winrate = Math.round(c.wins / c.games * 10000) / 100
 
             for (const j in c.metrics) {
@@ -124,11 +124,7 @@ export default {
       },
 
       getChampName(id) {
-         return champions.humanName[id]
-      },
-
-      champMap(name){
-         return champions.urlName[name]
+         return champions[id][1]
       },
 
       cleanPatch(patch) {
@@ -156,6 +152,10 @@ export default {
             default:
                return '-'
          }
+      },
+
+      championRoute(id) {
+         return (id === 62) ? 'wukong' : champions[id][0]
       }
    },
 
@@ -178,56 +178,56 @@ export default {
       },
 
       getChampionsList() {
-         if (this.champions) {
+         if (this.allChampions) {
             switch (true) {
                case this.sort === 0:
-                  return (this.descending) ? this.champions.sort((a, b) => champions.humanName[b._id].localeCompare(champions.humanName[a._id])) :
-                     this.champions.sort((a, b) => champions.humanName[a._id].localeCompare(champions.humanName[b._id]))
+                  return (this.descending) ? this.allChampions.sort((a, b) => champions[b._id][1].localeCompare(champions[a._id][1])) :
+                     this.allChampions.sort((a, b) => champions[a._id][1].localeCompare(champions[b._id][1]))
                case this.sort === 1:
-                  return (this.descending) ? this.champions.sort((a, b) => (a.winrate) - (b.winrate)) :
-                     this.champions.sort((a, b) => (b.winrate) - (a.winrate))
+                  return (this.descending) ? this.allChampions.sort((a, b) => (a.winrate) - (b.winrate)) :
+                     this.allChampions.sort((a, b) => (b.winrate) - (a.winrate))
                case this.sort === 2:
-                  return (this.descending) ? this.champions.sort((a, b) => (a.games) - (b.games)) :
-                     this.champions.sort((a, b) => (b.games) - (a.games))
+                  return (this.descending) ? this.allChampions.sort((a, b) => (a.games) - (b.games)) :
+                     this.allChampions.sort((a, b) => (b.games) - (a.games))
                case this.sort === 3:
-                  return (this.descending) ? this.champions.sort((a, b) => (a.pickRate) - (b.pickRate)) :
-                     this.champions.sort((a, b) => (b.pickRate) - (a.pickRate))
-               case this.sort === 4 && typeof(this.champions[0].dpm) === 'object':
-                  return (this.descending) ? this.champions.sort((a, b) => (a.dpm.m) - (b.dpm.m)) :
-                     this.champions.sort((a, b) => (b.dpm.m) - (a.dpm.m))
-               case this.sort === 5 && typeof(this.champions[0].dpm) === 'object':
-                  return (this.descending) ? this.champions.sort((a, b) => (a.dpm.v) - (b.dpm.v)) :
-                     this.champions.sort((a, b) => (b.dpm.v) - (a.dpm.v))
-               case this.sort === 6 && typeof(this.champions[0].dtpm) === 'object':
-                  return (this.descending) ? this.champions.sort((a, b) => (a.dtpm.m) - (b.dtpm.m)) :
-                     this.champions.sort((a, b) => (b.dtpm.m) - (a.dtpm.m))
-               case this.sort === 7 && typeof(this.champions[0].dtpm) === 'object':
-                  return (this.descending) ? this.champions.sort((a, b) => (a.dtpm.v) - (b.dtpm.v)) :
-                     this.champions.sort((a, b) => (b.dtpm.v) - (a.dtpm.v))
-               case this.sort === 8 && typeof(this.champions[0].dmpm) === 'object':
-                  return (this.descending) ? this.champions.sort((a, b) => (a.dmpm.m) - (b.dmpm.m)) :
-                     this.champions.sort((a, b) => (b.dmpm.m) - (a.dmpm.m))
-               case this.sort === 9 && typeof(this.champions[0].dmpm) === 'object':
-                  return (this.descending) ? this.champions.sort((a, b) => (a.dmpm.v) - (b.dmpm.v)) :
-                     this.champions.sort((a, b) => (b.dmpm.v) - (a.dmpm.v))
-               case this.sort === 10 && typeof(this.champions[0].gpm) === 'object':
-                  return (this.descending) ? this.champions.sort((a, b) => (a.gpm.m) - (b.gpm.m)) :
-                     this.champions.sort((a, b) => (b.gpm.m) - (a.gpm.m))
-               case this.sort === 11 && typeof(this.champions[0].gpm) === 'object':
-                  return (this.descending) ? this.champions.sort((a, b) => (a.gpm.v) - (b.gpm.v)) :
-                     this.champions.sort((a, b) => (b.gpm.v) - (a.gpm.v))
+                  return (this.descending) ? this.allChampions.sort((a, b) => (a.pickRate) - (b.pickRate)) :
+                     this.allChampions.sort((a, b) => (b.pickRate) - (a.pickRate))
+               case this.sort === 4 && typeof(this.allChampions[0].dpm) === 'object':
+                  return (this.descending) ? this.allChampions.sort((a, b) => (a.dpm.m) - (b.dpm.m)) :
+                     this.allChampions.sort((a, b) => (b.dpm.m) - (a.dpm.m))
+               case this.sort === 5 && typeof(this.allChampions[0].dpm) === 'object':
+                  return (this.descending) ? this.allChampions.sort((a, b) => (a.dpm.v) - (b.dpm.v)) :
+                     this.allChampions.sort((a, b) => (b.dpm.v) - (a.dpm.v))
+               case this.sort === 6 && typeof(this.allChampions[0].dtpm) === 'object':
+                  return (this.descending) ? this.allChampions.sort((a, b) => (a.dtpm.m) - (b.dtpm.m)) :
+                     this.allChampions.sort((a, b) => (b.dtpm.m) - (a.dtpm.m))
+               case this.sort === 7 && typeof(this.allChampions[0].dtpm) === 'object':
+                  return (this.descending) ? this.allChampions.sort((a, b) => (a.dtpm.v) - (b.dtpm.v)) :
+                     this.allChampions.sort((a, b) => (b.dtpm.v) - (a.dtpm.v))
+               case this.sort === 8 && typeof(this.allChampions[0].dmpm) === 'object':
+                  return (this.descending) ? this.allChampions.sort((a, b) => (a.dmpm.m) - (b.dmpm.m)) :
+                     this.allChampions.sort((a, b) => (b.dmpm.m) - (a.dmpm.m))
+               case this.sort === 9 && typeof(this.allChampions[0].dmpm) === 'object':
+                  return (this.descending) ? this.allChampions.sort((a, b) => (a.dmpm.v) - (b.dmpm.v)) :
+                     this.allChampions.sort((a, b) => (b.dmpm.v) - (a.dmpm.v))
+               case this.sort === 10 && typeof(this.allChampions[0].gpm) === 'object':
+                  return (this.descending) ? this.allChampions.sort((a, b) => (a.gpm.m) - (b.gpm.m)) :
+                     this.allChampions.sort((a, b) => (b.gpm.m) - (a.gpm.m))
+               case this.sort === 11 && typeof(this.allChampions[0].gpm) === 'object':
+                  return (this.descending) ? this.allChampions.sort((a, b) => (a.gpm.v) - (b.gpm.v)) :
+                     this.allChampions.sort((a, b) => (b.gpm.v) - (a.gpm.v))
                default:
-                  return this.champions.sort((a, b) => champions.humanName[a._id].localeCompare(champions.humanName[b._id]))
+                  return this.allChampions.sort((a, b) => champions[a._id[1]].localeCompare(champions[b._id][1]))
             }
          }
-      },
+      }
    }
 }
 
 </script>
 
 <template>
-   <div v-if="this.champions" class="champ-list-main">
+   <div v-if="this.allChampions" class="champ-list-main">
       <div class="utilities">
 
          <div class="patch-wrapper">
@@ -289,7 +289,7 @@ export default {
                {{ i+1 }}
             </div>
             <div>
-               <router-link :to="{ name: 'champions', params: { champion: this.champMap(champ._id) } }">
+               <router-link :to="{ name: 'champions', params: { champion: this.championRoute(champ._id) } }">
                   <div class="image-wrapper">
 
                      <img rel="preload" :src="this.champIcon(champ._id)" alt="">

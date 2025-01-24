@@ -9,7 +9,7 @@ import ImageStatDropdown from '../ImageStatDropdown.vue'
 // import RuneStatDropdown from '../RuneStatDropdown.vue'
 import Challenges from '../Challenges.vue'
 import Encounters from '../Encounters.vue'
-import _names from '@/constants/champions.js'
+import champions from '@/constants/champions.js'
 import { summonerStore } from '@/stores/summonerStore'
 import { superStore } from '../../stores/superStore'
 
@@ -31,7 +31,6 @@ export default {
          data: this._data,                   // Proxy data so it can mutate on Update click
          superStore: superStore(),           // Store for global settings
          summonerStore: summonerStore(),     // Store for summoner settings
-         names: _names,                      // Constant names to map championId to name
          championFilter: '',                 // Filter for table champion search 
          sortFilter: 0,                      // Determine if sort is active
          sortMod: false,                     // Determine if sort by PER MINUTE variant
@@ -146,7 +145,7 @@ export default {
       },
 
       filteredChampions() {
-         return this.data.championData.filter(c => this.names.urlName[c.championId].toLowerCase().includes(this.championFilter.toLowerCase()))
+         return this.data.championData.filter(c => champions[c.championId][1].toLowerCase().includes(this.championFilter.toLowerCase()))
       },
       
       sortedChampions() {
@@ -179,8 +178,8 @@ export default {
                   return (this.descending) ? this.filteredChampions.sort((a, b) => (a.games) - (b.games)) :
                      this.filteredChampions.sort((a, b) => (b.games) - (a.games))
                case 1:
-                  return (this.descending) ? this.filteredChampions.sort((a, b) => this.names.urlName[b.championId].localeCompare(this.names.urlName[a.championId])) : 
-                     this.filteredChampions.sort((a, b) => this.names.urlName[a.championId].localeCompare(this.names.urlName[b.championId]))
+                  return (this.descending) ? this.filteredChampions.sort((a, b) => champions[b.championId][1].localeCompare(champions[a.championId][1])) : 
+                     this.filteredChampions.sort((a, b) => champions[a.championId][1].localeCompare(champions[b.championId][1]))
                case 2:
                   return (this.descending) ? this.filteredChampions.sort((a, b) => (a.wins / a.games) - (b.wins / b.games)) : 
                      this.filteredChampions.sort((a, b) => (b.wins / b.games) - (a.wins / a.games))

@@ -1,5 +1,5 @@
  export default {
-   '8000': [
+   '8000': [ // Precision
       [
          8005, // Press The Attack
          8008, // Lethal Tempo
@@ -34,9 +34,9 @@
          8143, // Sudden Impact
       ],
       [
-         8136, // Zombie Ward
-         8120, // Ghost Poro
-         8138, // Eyeball Collection
+         8137, // Sixth Sense
+         8140, // Grisly Mementos
+         8141, // Deep Ward
       ],
       [
          8135, // Treasure Hunter
@@ -51,7 +51,7 @@
          8230, // Phase Rush
       ],
       [
-         8224, // Nullifying Orb
+         8224, // Axiom Arcanist
          8226, // Manaflow Band
          8275, // Nimbus Cloak
       ],
@@ -89,7 +89,7 @@
          8316, // Jack Of All Trades
       ],
    ],
-   '8400': [
+   '8400': [ // Resolve
       [
          8437, // Grasp Of The Undying
          8439, // Aftershock

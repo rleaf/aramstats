@@ -16,7 +16,7 @@ const updates = [
       version: "3.14.3",
       date: "1/23/25",
       body: [
-         `There are new issues with the Riot API that directly impact the Aramstats crawler. I've implemented small changes to the crawler to handle some of them however overall crawling speeds will be affected. I'll try to keep an eye out for updates.`
+         `There are new issues with the Riot API that directly impacts the Aramstats crawler. I've implemented small changes to handle some of them however overall speeds will be slower. I'll try to keep an eye out for updates.`
       ],
       links: [
          ['GH: Empty response', 'https://github.com/RiotGames/developer-relations/issues/1035'],

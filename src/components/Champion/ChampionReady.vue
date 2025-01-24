@@ -19,8 +19,8 @@ export default {
       return {
          championCDN: null,
          abilities: [],
-         name: champions.humanName[this.champion._id],
-         backName: champions.imageName[this.champion._id],
+         name: champions[this.champion._id][1],
+         backName: champions[this.champion._id][0],
          patchAlert: false,
          itemTooltip: false,
          itemData: null,
@@ -173,11 +173,11 @@ export default {
                   <div class="name">{{ this.name }}</div>
                   <div class="title">{{ this.title }}</div>
                   <div class="champion-abilities">
-                     <div v-for="(id, i) of 'PQWER'"
+                     <div v-if="this.store.championCDN" v-for="(id, i) of 'PQWER'"
                         @mouseenter="this.store.setTooltipData({event: $event, key: id, mode: 'skills', skillIndex: i})"
                         @mouseleave="this.store.tooltip.active = false"
                         :key="i">
-                        <img v-if="this.store.championCDN" :src="`https://cdn.communitydragon.org/${this.store.patches[0]}/champion/${this.store.championCDN.id}/ability-icon/${id.toLowerCase()}`" rel="preload">
+                        <img  :src="`https://cdn.communitydragon.org/${this.store.patches[0]}/champion/${this.store.championCDN.id}/ability-icon/${id.toLowerCase()}`" rel="preload">
                         <div class="spell-letter">
                            {{ id }}
                         </div>

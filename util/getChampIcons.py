@@ -13,7 +13,7 @@ Util function. Pull all champs icons from `champs_url`
 
 champs = []
 champs_url = 'http://ddragon.leagueoflegends.com/cdn/13.23.1/data/en_US/champion.json'
-directory = './images'
+directory = './util/images'
 
 
 def _buildList():
@@ -56,13 +56,13 @@ def _getChallengeIcons(id, tier):
       print('nada on', f'{id}.png')
 
 def _getSpells(spell):
-   image_url = f'https://ddragon.leagueoflegends.com/cdn/13.9.1/img/spell/{spell}.png'
+   image_url = f'https://ddragon.leagueoflegends.com/cdn/15.2.1/img/spell/{spell}.png'
    r = requests.get(image_url, stream=True)
 
    if r.status_code == 200:
       r.raw.decode_content = True
 
-      with open(os.path.join('./images', f'{spell}.png'), 'wb') as f:
+      with open(os.path.join('./util/images', f'{spell}.png'), 'wb') as f:
          f.write(r.content)
 
       print('ye', f'{spell}.png')
@@ -107,8 +107,8 @@ def main():
       os.mkdir(directory)
 
    # getChampionAssets()
-   getChallengeIcons()
-   # getSpells()
+   # getChallengeIcons()
+   getSpells()
 
 
 main()

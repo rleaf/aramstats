@@ -5,26 +5,9 @@ export default {
    data() {
       return {
          store: superStore(),
-         // containerFocus: false,
          step: -1,
          input: '',
          region: 'RG',
-         table: {
-            'na': 'NA1',
-            'euw': 'EUW',
-            'eune': 'EUNE',
-            'kr': 'KR1',
-            'lan': 'LAN',
-            'las': 'LAS',
-            'oce': 'OCE',
-            'sea': 'SG2',
-            'tr': 'TR1',
-            'ru': 'RU1',
-            'jp': 'JP1',
-            'br': 'BR1',
-            'vn': 'VN2',
-            'tw': 'TW2',
-         },
       }
    },
 
@@ -111,7 +94,7 @@ export default {
 
          const identifiers = this.input.split('#')
          let _gameName = identifiers[0]
-         let _tagLine = (identifiers.length === 2) ? identifiers[1] : this.table[this.region]
+         let _tagLine = (identifiers.length === 2) ? identifiers[1] : this.store.searchRegions[this.region]
          
          this.$router.push({ name: `user`, params: {
             region: this.region,
@@ -131,7 +114,7 @@ export default {
             this.step = -1
             return 0
          }
-         return this.store.champions.filter(champ => champ.front.toLowerCase().startsWith(this.input.toLowerCase())).slice(0, 5)
+         return this.store.idToRoute.filter(champ => champ.front.toLowerCase().startsWith(this.input.toLowerCase())).slice(0, 5)
       },
    }
 }
@@ -152,12 +135,12 @@ export default {
             </span>
             <div class="shadow" v-show="this.input && this.region !== 'RG' && !this.input.includes('#')">
                <p>{{ `${this.input}`}}</p>
-               <p>#{{ this.table[this.region] }}</p>
+               <p>#{{ this.store.searchRegions[this.region] }}</p>
             </div>
          </div>
          <select ref="regionButton" v-model="this.region" @change="regionSelect()">
             <option value="RG" hidden disabled>Region</option>
-            <option v-for="region in Object.keys(this.table)" :value="region" :key="region">{{ region.toUpperCase() }}</option>
+            <option v-for="region in Object.keys(this.store.searchRegions)" :value="region" :key="region">{{ region.toUpperCase() }}</option>
          </select>
       </div>
       <div class="champion-search" v-show="this.store.navContainerFocus && this.filteredChamps.length">

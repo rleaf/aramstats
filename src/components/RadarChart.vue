@@ -1,6 +1,6 @@
 <script>
 import * as echarts from 'echarts'
-import classBook from '@/constants/championClasses'
+import champions from '@/constants/champions'
 
 export default {
    data() {
@@ -27,7 +27,7 @@ export default {
    methods: {
       processData() {
          for (const c of this.data) {
-            for (const v of classBook[c.championId]) {
+            for (const v of champions[c.championId][2]) {
                switch (v) {
                   case 'Enchanter':
                   case 'Catcher':

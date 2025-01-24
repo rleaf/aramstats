@@ -1,5 +1,5 @@
 <script>
-import names from '@/constants/champions.js'
+import champions from '@/constants/champions.js'
 import Match from './Match.vue'
 import { summonerStore } from '../stores/summonerStore'
 
@@ -9,8 +9,6 @@ export default {
    },
    data() {
       return {
-         iconTable: names.imageName,
-         humanTable: names.humanName,
          matchToggle: false,
          championPool: summonerStore().championPool,
          patchCount: 1,
@@ -74,9 +72,11 @@ export default {
 
    computed: {
       championIcon() {
-         return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/champion/${this.iconTable[this.data.championId]}.png`
+         return `https://ddragon.leagueoflegends.com/cdn/${this.patch}/img/champion/${champions[this.data.championId][0]}.png`
       },
-
+      championName() {
+         return champions[this.data.championId][1]
+      },
       winrate() {
          return Math.round((this.data.wins / this.data.games) * 100)
       },
@@ -111,7 +111,8 @@ export default {
             <div class="icon-wrapper">
                <img class="icon" :src="championIcon" alt="">
             </div>
-            {{ this.humanTable[this.data.championId] }}
+            <!-- {{ champions[this.data.championId][1] }} -->
+            {{ championName }}
          </div>
          <div class="winrate">
             {{ winrate }}%

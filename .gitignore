@@ -4,6 +4,10 @@ __pycache__/
 # Frontend
 /public
 
+# Assets
+/util/images
+/util/out
+
 # Logs
 logs
 *.log

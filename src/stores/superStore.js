@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import champions from '../constants/champions'
 import axios from 'axios'
 
 export const superStore = defineStore('super', {
@@ -24,6 +25,22 @@ export const superStore = defineStore('super', {
             runeRow: null,
          },
          navContainerFocus: false, // Boolean to determine if nav search bar is focused.
+         searchRegions: {          // Regions for search bar
+            'na': 'NA1',
+            'euw': 'EUW',
+            'eune': 'EUNE',
+            'kr': 'KR1',
+            'lan': 'LAN',
+            'las': 'LAS',
+            'oce': 'OCE',
+            'sea': 'SG2',
+            'tr': 'TR1',
+            'ru': 'RU1',
+            'jp': 'JP1',
+            'br': 'BR1',
+            'vn': 'VN2',
+            'tw': 'TW2',
+         },
       }
    },
    actions: {
@@ -81,6 +98,7 @@ export const superStore = defineStore('super', {
             const url = `https://cdn.communitydragon.org/${this.patches[0]}/champion/${champ}/data.json`
             this.championCDN = (await axios.get(url)).data
          } catch (e) {
+
             if (e instanceof Error) console.log(e)
          }
       },
@@ -133,6 +151,24 @@ export const superStore = defineStore('super', {
       cleanPatch: (state) => {
          if (!state.patches) return
          return state.patches[0].split('.').slice(0, 2).join('.')
+      },
+
+      nameToId: () => {
+         const ret = {}
+         Object.keys(champions).forEach(k => ret[champions[k][0].toLowerCase()] = k)
+         return ret
+      },
+
+      idToRoute: () => {
+         const o = []
+         for (const champion of Object.values(champions)) {
+            o.push({
+               back: (champion === 62) ? 'wukong' : champion[0].toLowerCase(),
+               front: champion[1],
+               image: champion[0].toLowerCase()
+            })
+         }
+         return o
       }
    }
 })
