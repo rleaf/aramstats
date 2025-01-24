@@ -13,6 +13,18 @@
   
   const version = [
    {
+      version: "3.14.4",
+      date: "1/23/25",
+      notes: ``,
+      add: [],
+      remove: [],
+      fix: [
+         "Fix Mel assets. "
+      ],
+      adjust: [],
+      known: [],
+   }, 
+   {
       version: "3.14.3",
       date: "1/23/25",
       notes: ``,
