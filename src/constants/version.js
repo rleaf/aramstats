@@ -19,7 +19,8 @@
       add: [],
       remove: [],
       fix: [
-         "Fix Mel assets. "
+         "Mel assets.",
+         "Nav search regions to correspond w/ SEA merge."
       ],
       adjust: [],
       known: [],
