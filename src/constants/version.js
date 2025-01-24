@@ -13,6 +13,18 @@
   
   const version = [
    {
+      version: "3.14.3",
+      date: "1/9/25",
+      notes: ``,
+      add: [],
+      remove: [],
+      fix: [],
+      adjust: [
+         `Crawler temporarily omitting 'queue' param for match-v5. Gonna revert when related GH issue is resolved.`
+      ],
+      known: [],
+   }, 
+   {
       version: "3.14.2",
       date: "1/9/25",
       notes: ``,
