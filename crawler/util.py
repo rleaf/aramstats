@@ -63,8 +63,7 @@ def get_summoner_matches_on_patch(puuid: str, region: str, current_patch: str) -
 
 def get_matchlist(puuid: str, region: str, start: int, count: int) -> list[str]:
    try:
-      # return lol_watcher.match.matchlist_by_puuid(puuid=puuid, region=region, start=start, count=count, queue=450)
-      return lol_watcher.match.matchlist_by_puuid(puuid=puuid, region=region, start=start, count=count)
+      return lol_watcher.match.matchlist_by_puuid(puuid=puuid, region=region, start=start, count=count, queue=450)
    except ApiError as e:
       if e.response.status_code == 429:
          print('We should retry in {} seconds.'.format(e.response.headers['Retry-After']))

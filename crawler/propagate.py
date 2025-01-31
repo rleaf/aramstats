@@ -40,8 +40,6 @@ class Propagate():
          # print(match_id)
          match = util.get_match(match_id, self.region)
          # Continue/Break on...
-         # TEMPORARY 1/23/25: If match is not ARAM for https://github.com/RiotGames/developer-relations/issues/1035
-         if match['info']['queueId'] != 450: continue
          # ...404 match or ...dead match/remake. Remakes are < 210, but setting to 300 as an arbitrary cutoff for "pointless" games. (5 minute length)
          if match == 404 or match['info']['gameDuration'] < 300: continue
          # ...old patch

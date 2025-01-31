@@ -16,7 +16,7 @@ onMounted(async () => {
 
 <template>
     <SmallScreen />
-    <Header />
+    <!-- <Header /> -->
     <!-- <Notification /> -->
     <Nav />
 </template>

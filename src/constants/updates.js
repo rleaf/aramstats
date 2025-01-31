@@ -19,7 +19,7 @@ const updates = [
          `There are new issues with the Riot API that directly impacts the Aramstats crawler. I've implemented small changes to handle some of them however overall speeds will be slower. I'll try to keep an eye out for updates.`
       ],
       links: [
-         ['GH: Empty response', 'https://github.com/RiotGames/developer-relations/issues/1035'],
+         ['✨Fixed✨ GH: Empty response', 'https://github.com/RiotGames/developer-relations/issues/1035'],
          ['GH: 500 response', 'https://github.com/RiotGames/developer-relations/issues/1031'],
          ['Lolalytics (good alternative site)', 'https://lolalytics.com/lol/tierlist/aram/'],
       ],
