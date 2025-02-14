@@ -14,7 +14,8 @@ export default defineConfig({
     Sitemap({
         outDir: './public',
         hostname: 'https://aramstats.lol',
-        dynamicRoutes: ['/about', '/champions', '/updates', ...routes]
+        dynamicRoutes: ['/about', '/champions', '/updates', ...routes],
+        changefreq: 'monthly',
       }),
     glsl(), // requires `"type": "module"` in package.json
   ],
