@@ -3,10 +3,10 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import glsl from 'vite-plugin-glsl'
 import Sitemap from 'vite-plugin-sitemap'
-import champions from './src/constants/champions'
+// import champions from './src/constants/champions'
 
-const routes = Object.values(champions).map(n => `/champions/${n[1]}`)
-console.log(routes)
+// const routes = Object.values(champions).map(n => `/champions/${n[1]}`)
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -14,8 +14,8 @@ export default defineConfig({
     Sitemap({
         outDir: './public',
         hostname: 'https://aramstats.lol',
-        dynamicRoutes: ['/about', '/champions', '/updates', ...routes],
-        changefreq: 'monthly',
+        dynamicRoutes: ['/about', '/champions', '/updates'],
+        changefreq: 'weekly',
       }),
     glsl(), // requires `"type": "module"` in package.json
   ],
