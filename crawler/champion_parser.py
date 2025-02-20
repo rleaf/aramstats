@@ -19,8 +19,7 @@ class ChampionParser():
       patch = util.get_latest_patch(two=True)
       collection_list = db.list_collection_names()
       match_collection_name = f"{patch[0]}_matches"
-      champion_collection = f"TEST_{patch[0]}_championstats"
-      self.diagnostics = True if os.environ['NODE_ENV'] == 'dev' else False
+      champion_collection = f"{patch[0]}_championstats"
       self.items = util.get_items()
       self.champions = util.get_champions()
       self.batch_size = 10 # Number of match documents in a batch. Care bear: 1 match = 10 champions, so bulk_writing to 100 champion documents for a 10 batch size
@@ -38,15 +37,16 @@ class ChampionParser():
             self.trail = None
          else:
             self.trail = meta_collection.find_one({ "_id": "crawler" })["trail"]
-      self.query = {} if self.trail is None else { '_id': { "$gt": self.trail } }
-      print("Starting champion parser")
-
+      # self.query = self.trail if self.trail == {} else { '_id': { "$gt": self.trail } }
+      self.query = { '_id': { "$gt": self.trail } } if self.trail else {}
+      # { "_id": self.query }
+      # print("Starting champion parser")
       trail_id = None
       for i, batch in enumerate(self.get_batches()):
          trail_id = batch[-1]['_id']
-         # if (i % 5 == 0 and i > 0): # Update every 50 matches
-         #    meta_collection.update_one({ "_id": "crawler" }, { "$set": {"trail": ObjectId(trail_id)} })
-         
+         if (i % 5 == 0 and i > 0): # Update every 50 matches
+            meta_collection.update_one({ "_id": "crawler" }, { "$set": {"trail": ObjectId(trail_id)} })
+
          # start = time.perf_counter()
          print(f"On batch {i}")
          with Pool() as p:
@@ -57,9 +57,8 @@ class ChampionParser():
             
          # finish = time.perf_counter()   
          # print(f"Finished batch {i} in {round(finish-start, 2)} second(s)")
-   
-      print(f"Updating index")
-      # if trail_id is not None: meta_collection.update_one({ "_id": "crawler" }, { "$set": {"trail": ObjectId(trail_id)} })
+
+      if trail_id is not None: meta_collection.update_one({ "_id": "crawler" }, { "$set": {"trail": ObjectId(trail_id)} })
       self.preprocess()
 
    def preprocess(self):
@@ -77,7 +76,7 @@ class ChampionParser():
          champion_winrate_pickrate.append({ "_id": doc["_id"], "games": doc["games"], "wins": doc["wins"]})
          total += doc["games"]
 
-         data = ([core, list(doc["raw"]["core"][core]["levels"].items())] for core in doc["raw"]["core"])
+         data = ([core, list(doc["raw"]["core"][core]["levels"].items())] for core in doc["raw"]["core"] if doc["core"])
 
          with Pool() as p:
             cleaned_levels = p.map(levels, data)
@@ -111,8 +110,13 @@ class ChampionParser():
       """
       batch = []
       i = 0
-
+      if self.query == {}:
+         print('Starting from the beginning')
+      else:
+         print(f"Starting from {self.query}")
       for i, doc in enumerate(self.match_collection.find(self.query).sort("_id", 1)):
+      # for i, doc in enumerate(self.match_collection.find({ "_id": { "$gt": ObjectId(self.query) } }).sort("_id", 1)):
+         
          if i % self.batch_size == 0 and i > 0:
             yield batch
             del batch[:]

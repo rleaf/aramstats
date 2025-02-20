@@ -13,6 +13,18 @@
   
   const version = [
    {
+      version: "3.15.1",
+      date: "2/20/25",
+      notes: `A little early to share, but since I'm here - I am working on a SSR version of aramstats built on Nuxt/Nitro stack. This may end up a 4.0 release and allow for faster implementation of cool stuff. TBD.`,
+      add: [],
+      remove: [],
+      fix: [
+         `Champion stats process incorrectly parsing games.`,
+      ],
+      adjust: [],
+      known: [],
+   }, 
+   {
       version: "3.15.0",
       date: "1/24/25",
       notes: `Cleaning up.`,
